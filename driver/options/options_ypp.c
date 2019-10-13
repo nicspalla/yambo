@@ -224,4 +224,14 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_desc[2]="rtplot=l   => <string>=(b)ands,(t)ime,(e)nergy";
  options[*i_opt].long_desc[3]="rtplot=d   => <string>=(t)ime";
  /* GPL_EXCLUDE_END */
+
+/*
+  Models
+*/
+ *i_opt=*i_opt+1;
+ options[*i_opt].short_desc="Models Initialization";
+ options[*i_opt].long_opt="models";
+ options[*i_opt].bin="ypp_models";
+ options[*i_opt].yambo_string="models";
+ options[*i_opt].section="Models";
 };

@@ -102,6 +102,9 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  !
  call io_control(ACTION=OP_RD_CL,SEC=(/1,2/),COM=NONE,MODE=DUMP,ID=ID)
  iinf=io_DB1(en,k,ID)
+#if defined _MODELS
+ iinf=0
+#endif
  if (iinf/=0) then
    call ypp_finalize("Where is the SAVE?")
    return
@@ -119,6 +122,9 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  !
  call io_control(ACTION=OP_RD_CL,SEC=(/1/),COM=NONE,MODE=DUMP,ID=ID)
  iinf=io_WF(ID) 
+#if defined _MODELS
+ iinf=0
+#endif
  if (iinf/=0) then
    call ypp_finalize("Where is the SAVE?")
    return
@@ -128,9 +134,12 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  !
  call io_control(ACTION=OP_RD_CL,SEC=(/1,2/),COM=NONE,MODE=DUMP,ID=ID)
  i_err=io_GROT(ID) 
+#if defined _MODELS
+ i_err=0
+#endif
  if (i_err/=0) then
    write_to_log=.TRUE.
-   call ypp_finalize("Missing post-setup databases. Please run yambo as it is first.")
+   call ypp_finalize("Missing post-setup databases. Please run >yambo first.")
    return
  endif
  !
@@ -158,6 +167,14 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  call msg('s',':: Bands                 :',n_bands)
  call msg('s',':: Symmetries            :',nsym)
  call msg('s',':: RL vectors            :',ng_vec)
+ !
+#if defined _MODELS
+ !
+ call MODELS_driver( )
+ !
+ return
+ !
+#endif
  !
  ! BZ sampling index 
  !

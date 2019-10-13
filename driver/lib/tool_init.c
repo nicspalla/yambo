@@ -76,6 +76,9 @@ struct tool_struct tool_init( )
 #if defined _QED && defined _RT && defined _ELPH
  pj="qed";
 #endif
+#if defined _MODELS
+ pj="models";
+#endif
 
  if (pj!=NULL) {
   t.bin = malloc(strlen(tool)+strlen(pj)+1);

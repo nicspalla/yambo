@@ -124,6 +124,7 @@ void launcher(int argc, char *argv[],int np, int pid, struct yambo_seed_struct y
  {
   if (pid==0 && y.in_file_N == -1) {
    fprintf(stderr," \n%s\n\n","yambo: cannot access CORE database (SAVE/*db1 and/or SAVE/*wf)");
+   exit(0);
   };
   if (pid==0 && y.in_file_N == -2) {
    fprintf(stderr," \n%s\n\n","yambo: invalid command line options and/or build");

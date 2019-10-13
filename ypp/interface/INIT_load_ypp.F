@@ -371,4 +371,7 @@ subroutine INIT_ypp_load(defs)
  !
 #endif
  !
+#if defined _MODELS
+#endif
+ !
 end subroutine

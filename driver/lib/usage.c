@@ -38,7 +38,7 @@ void usage(options_struct *options, struct tool_struct t, char *what, int n_opti
  /*
    Order
  */
- int n_orders=17,n_order_elements;
+ int n_orders=18,n_order_elements;
  char *order[]={
  "Help & version", /* 1 */
  "Input file & Directories", /* 2 */
@@ -56,7 +56,8 @@ void usage(options_struct *options, struct tool_struct t, char *what, int n_opti
  "Plots", /* 14 */
  "Utilites", /* 15 */
  "Wannier", /* 16 */
- "undef", /* 17 */
+ "Models", /* 17 */
+ "undef", /* 18 */
  };
 
  if (strcmp(what,"help")==0) {

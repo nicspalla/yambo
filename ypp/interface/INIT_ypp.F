@@ -759,7 +759,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
    call PP_redux_wait
  endif
  !
- if (master_cpu) then
+ if (master_cpu.and..not.infile_editing) then
    call rm_file(trim(repfile))
    open(unit=11,file=trim(repfile))
    call write_the_logo(11,' ')
