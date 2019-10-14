@@ -289,7 +289,6 @@ integer function io_DB1(E,k,ID)
      YAMBO_ALLOC(n_atoms_species,(n_atomic_species))
      YAMBO_ALLOC(Z_species,(n_atomic_species))
      YAMBO_ALLOC(atom_pos,(3,n_atoms_species_max,n_atomic_species))
-     !
    endif
    !
  endif

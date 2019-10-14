@@ -159,6 +159,17 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  !
  call section('*','Y(ambo) P(ost)/(re) P(rocessor)')
  !
+#if defined _MODELS
+ !
+ ! Models
+ !
+ call MODELS_driver( )
+ !
+ call ypp_finalize(" ")
+ return
+ !
+#endif
+ !
  call section('*','Core DB')
  call msg('s',':: Electrons             :',default_nel)
  call msg('s',':: Temperature       [ev]:',input_GS_Tel)
@@ -167,14 +178,6 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  call msg('s',':: Bands                 :',n_bands)
  call msg('s',':: Symmetries            :',nsym)
  call msg('s',':: RL vectors            :',ng_vec)
- !
-#if defined _MODELS
- !
- call MODELS_driver( )
- !
- return
- !
-#endif
  !
  ! BZ sampling index 
  !

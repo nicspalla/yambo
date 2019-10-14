@@ -23,4 +23,14 @@
 !
 module YPP_models
  !
+ use pars,  ONLY:schlen,SP
+ use units, ONLY:HA2EV
+ !
+ logical           :: l_models
+ character(schlen) :: MODEL_kind="2bands"
+ real(SP)          :: MODEL_U=1./HA2EV
+ real(SP)          :: MODEL_T=1./HA2EV
+ real(SP)          :: MODEL_Eg=1./HA2EV
+ integer           :: MODEL_k(3)=(/2,2,2/)
+ !
 end module YPP_models

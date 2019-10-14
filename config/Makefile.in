@@ -77,7 +77,7 @@ MAG_PROJ = yambo_magnetic ypp_magnetic
 RT_PROJ  = yambo_rt ypp_rt
 NL_PROJ  = yambo_nl ypp_nl
 RTE_PROJ = yambo_rt yambo_qed yambo_pl ypp_rt
-MOD_PROJ = yambo_models ypp_models
+MOD_PROJ = ypp_models
 KERR_PROJ= yambo_kerr
 ALL      = $(CORE) $(PH_PROJ) $(SC_PROJ) $(MAG_PROJ) $(RTE_PROJ) $(NL_PROJ) $(KERR_PROJ) $(MOD_PROJ) $(TESTS)
 BROKEN   = yambo_electric
@@ -267,10 +267,6 @@ yambo_rt: libs
 	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_RT -D_ELPH -D_yambo"; $(mk_driver_src)
 	@+LIBS2DO="$(PJ_RTLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_RT -D_ELPH"; $(mksrc)
 	@+X2DO="yambo_rt"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(PJ_RTLIBS_LD)"; ADF="-D_RT -D_ELPH"; $(mkx)
-yambo_models: libs
-	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_MODELS -D_yambo"; $(mk_driver_src)
-	@+LIBS2DO="$(PJ_MODLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_MODELS"; $(mksrc)
-	@+X2DO="yambo_models"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(PJ_MODLIBS_LD)"; ADF="-D_MODELS"; $(mkx)
 yambo_nl: libs
 	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_NL -D_RT -D_ELPH -D_yambo"; $(mk_driver_src)
 	@+LIBS2DO="$(PJ_NLLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_NL -D_RT -D_ELPH"; $(mksrc)
@@ -336,7 +332,7 @@ ypp_rt: libs
 ypp_models: libs
 	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_MODELS -D_ypp"; $(mk_driver_src)
 	@+LIBS2DO="$(YPPMOD_MAIN_LIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_MODELS"; $(mksrc)
-	@+LIBS2DO="$(YPPRT_LIBS)"; XPATH="ypp"; VPATH="$(topdir)/ypp"; ADF="-D_MODELS"; $(mk_ypp_src)
+	@+LIBS2DO="$(YPPMOD_LIBS)"; XPATH="ypp"; VPATH="$(topdir)/ypp"; ADF="-D_MODELS"; $(mk_ypp_src)
 	@+X2DO="ypp_models"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(YPPMOD_MAIN_LIBS_LD)"; \
 	X_ypp_LIBS="$(YPPMOD_LIBS_LD)"; ADF="-D_MODELS"; $(mk_ypp_x)
 ypp_nl: libs

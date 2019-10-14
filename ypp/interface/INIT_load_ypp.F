@@ -45,6 +45,9 @@ subroutine INIT_ypp_load(defs)
 &                        Eh_pumped_pair_BZ_width,Eh_mu,Eh_temp,h_mu_autotune_thr
  use real_time,     ONLY:RT_bands
 #endif
+#if defined _MODELS
+ use YPP_models,    ONLY:MODEL_U,MODEL_T,MODEL_k,MODEL_kind,MODEL_Eg
+#endif
 #if defined _YPP_SC
  use YPPm,          ONLY:V_value
 #endif
@@ -80,11 +83,11 @@ subroutine INIT_ypp_load(defs)
  call it('r',defs,'Random_Grid','[R] Random grids')
  call it('r',defs,'High_Symm',  '[R] High_Symmetry points and paths') 
  !
- call it('r',defs,'amplitude', '[R] Amplitude')
+ call it('r',defs,'amplitude',    '[R] Amplitude')
  call it('r',defs,'plot',         '[R] Plot')
  call it('r',defs,'density',      '[R] Density')
  call it('r',defs,'current',      '[R] Current')
- call it('r',defs,'bnds',        '[R] Bands')
+ call it('r',defs,'bnds',         '[R] Bands')
  call it('r',defs,'wavefunction', '[R] Wavefunction')
 #if defined _YPP_ELPH
  call it('r',defs,'eliashberg',   '[R] Eliashberg')
@@ -372,6 +375,11 @@ subroutine INIT_ypp_load(defs)
 #endif
  !
 #if defined _MODELS
+ call it(defs,'Kind','Model Kind ("2bands")',MODEL_kind)
+ call it(defs,'Eg','Elemental gap',MODEL_Eg,unit=E_unit)
+ call it(defs,'U','Coloumb parameter',MODEL_U,unit=E_unit)
+ call it(defs,'T','Overlap parameter',MODEL_T,unit=E_unit)
+ call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
 #endif
  !
 end subroutine

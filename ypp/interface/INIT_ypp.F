@@ -36,7 +36,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  use it_tools,       ONLY:ofiles_append,initinfio,initactivate,infile_dump,runlevel_is_on,&
 &                         PARSER_force_command_line_value
  use it_m,           ONLY:initdefs,initmode,infile,nrnlvls,rnlvls,infile_verbosity,&
-                          V_general,V_qp,V_all,V_real_time,V_nl_optics
+                          V_general,V_qp,V_all,V_real_time,V_nl_optics,rstatus
  use drivers,        ONLY:infile_editing
  use com,            ONLY:file_exists,write_to_report,repfile,write_the_logo,rename_file
  use stderr,         ONLY:STRING_split,write_to_log,log_as_a_file,logfile,STRING_match,STRING_same
@@ -45,6 +45,9 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  use LIVE_t,         ONLY:live_timing_is_on
  use parser_m,       ONLY:PARSER_array
  use IO_m,           ONLY:rm_file,OP_RD_CL,DUMP,io_control,NONE
+#if defined _MODELS
+ use YPP_models,     ONLY:l_models
+#endif
 #if defined _YPP_SC
  use YPPm,           ONLY:l_mean_potential
  use SC,             ONLY:SC_bands
@@ -349,7 +352,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
 #if defined _YPP_NL
      l_NL_X   =  trim(rstr_piece(i1)) == 'nonlinear'
 #endif   
-     !    
+     !
    enddo
  enddo
  !
@@ -531,6 +534,13 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  l_QP_DBs_manipulate = runlevel_is_on('QPDB_merge')
  !
  ! GPL_EXCLUDE_START
+ !
+#if defined _MODELS
+ l_models  = runlevel_is_on('models')
+ if (l_models) then
+   call initactivate(1,"kind Eg U T Kgrid")
+ endif
+#endif
  !
 #if defined _YPP_SC
  if (l_mean_potential) then
@@ -747,7 +757,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  call rename_file(repfile)
  !
  live_timing_is_on =master_cpu
- write_to_report   =master_cpu
+ write_to_report   =any(rstatus/=0)
  write_to_log      =master_cpu
  !
  ! Input file
@@ -759,7 +769,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
    call PP_redux_wait
  endif
  !
- if (master_cpu.and..not.infile_editing) then
+ if (write_to_report.and..not.infile_editing) then
    call rm_file(trim(repfile))
    open(unit=11,file=trim(repfile))
    call write_the_logo(11,' ')

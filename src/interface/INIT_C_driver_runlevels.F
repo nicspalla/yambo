@@ -35,8 +35,8 @@ subroutine INIT_C_driver_runlevels(defs)
  ! Work Space
  !
  integer           :: i_c,i_s
- character(lchlen) :: string,desc,bin
- character(schlen) :: bin_strings(10)
+ character(lchlen) :: string,desc,bin,no_bin
+ character(schlen) :: bin_strings(10),no_bin_strings(10)
  logical           :: bin_is_ok
  !
  do i_c=0,199
@@ -46,17 +46,25 @@ subroutine INIT_C_driver_runlevels(defs)
    bin=" "
    !
    call get_runlevel(bin,3,i_c)
+   call get_runlevel(no_bin,4,i_c)
    !
    if (trim(bin)=="EMPTY") cycle
    !
    call STRING_split(bin,bin_strings)
+   call STRING_split(no_bin,no_bin_strings)
    !
    bin_is_ok=.FALSE.
    !
    do i_s=1,10
      if (len_trim(bin_strings(i_s))==0) cycle
-     if (trim(bin_strings(i_s))==trim(code_bin)) bin_is_ok=.TRUE.
+     if (trim(bin_strings(i_s))==trim(code_bin))  bin_is_ok=.TRUE.
      if (trim(bin_strings(i_s))==trim(code_tool)) bin_is_ok=.TRUE.
+   enddo
+   !
+   do i_s=1,10
+     if (len_trim(no_bin_strings(i_s))==0) cycle
+     if (trim(no_bin_strings(i_s))==trim(code_bin))  bin_is_ok=.FALSE.
+     if (trim(no_bin_strings(i_s))==trim(code_tool)) bin_is_ok=.FALSE.
    enddo
    !
    if (.not.bin_is_ok) cycle
