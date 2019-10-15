@@ -40,7 +40,7 @@ subroutine INTERPOLATION_create_the_grid(K,units,grid_dim)
  integer  :: i1,i2,i3,ic
  character(schlen) :: ch
  !
- if(any(grid_dim(:)<1)) call error("Wrong grid dimension")
+ if (any(grid_dim(:)<1)) call error("Wrong grid dimension")
  !
  write (ch,'(2a)') trim(K%description),"-ptbz"
  !
@@ -73,9 +73,9 @@ subroutine INTERPOLATION_create_the_grid(K,units,grid_dim)
   K%units='i'
   !
   call k_reduce(K,.TRUE.)
-  call msg('s','[GRID_INTERP] Points (IBZ) : ',K%nibz)
+  call msg('s','[GRID] Points (IBZ) : ',K%nibz)
   call k_expand(K)
-  call msg('s','                      (BZ) : ',K%nbz)
+  call msg('s','               (BZ) : ',K%nbz)
   call k_ibz2bz(K,'d',.TRUE.)
   call k_ibz2bz(K,'a',.TRUE.)
   !

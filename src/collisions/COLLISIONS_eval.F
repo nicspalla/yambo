@@ -104,6 +104,7 @@ subroutine COLLISIONS_eval(E,X,k,xk,q,Xw)
  !
  if (l_elphoton_scatt)     call COLLISIONS_basic_operations( "alloc",      P_collisions )
  if (l_elel_scatt)         call COLLISIONS_basic_operations( "alloc", GW_NEQ_collisions )
+ stop
  !
  ! GPL_EXCLUDE_END
  !

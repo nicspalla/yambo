@@ -57,6 +57,9 @@ subroutine YPP_SET_defaults()
 &                         l_gkkp, l_phonons, ph_broad, ph_freqs_file, ph_modes_file
  use ELPH,           ONLY:gsqF_energy_steps
 #endif
+#if defined _MODELS
+ use YPP_models,     ONLY:MODEL_U,MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg
+#endif
  !
  implicit none
  !
@@ -259,6 +262,14 @@ subroutine YPP_SET_defaults()
  B_theta=0._SP
  B_psi=0._SP
  !
+#endif
+ !
+#if defined _MODELS
+ MODEL_U=1./HA2EV
+ MODEL_overlap=1./HA2EV
+ MODEL_Eg=1./HA2EV
+ MODEL_k=(/2,2,2/)
+ MODEL_kind="2bands"
 #endif
  !
  ! GPL_EXCLUDE_END

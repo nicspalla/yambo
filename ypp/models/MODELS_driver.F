@@ -29,12 +29,13 @@ subroutine MODELS_driver( )
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
 &                           Z_species, n_atoms, mag_syms
- use R_lattice,        ONLY:ng_vec, g_vec, bz_samp,bz_samp_reset 
+ use R_lattice,        ONLY:ng_vec, g_vec, bz_samp,bz_samp_reset,rl_sop
  use wave_func,        ONLY:wf_ncx, wf_nc_k, wf_igk,wf_ng
  use xc_functionals,   ONLY:GS_xc_KIND,GS_xc_FUNCTIONAL,GS_exx_FRACTION,GS_exx_SCREENING
  use global_XC,        ONLY:H_SE_Hartree
- use IO_m,             ONLY:io_control,OP_WR_CL,NONE,mk_dir
+ use IO_m,             ONLY:io_control,OP_WR_CL,REP,mk_dir
  use com,              ONLY:com_path,more_io_path,core_io_path
+ use vec_operate,      ONLY:define_b_and_DL_vol
  !
 #include<memory.h>
  !
@@ -42,7 +43,7 @@ subroutine MODELS_driver( )
  !
  type(levels )      :: E
  type(bz_samp)      :: k
- integer            :: io_err,ID
+ integer            :: io_err,ID,is,i2,i3
  integer, external  :: io_DB1
  !
  if (n_bands>0) return
@@ -61,6 +62,7 @@ subroutine MODELS_driver( )
  a(1,:)=(/1.,0.,0./)
  a(2,:)=(/0.,1.,0./)
  a(3,:)=(/0.,0.,1./)
+ call define_b_and_DL_vol()
  n_atomic_species=1
  n_atoms_species_max=1
  YAMBO_ALLOC(n_atoms_species,(n_atomic_species))
@@ -88,12 +90,14 @@ subroutine MODELS_driver( )
  dl_sop(1,:,1)=(/1.,0.,0./)
  dl_sop(2,:,1)=(/0.,1.,0./)
  dl_sop(3,:,1)=(/0.,0.,1./)
+ YAMBO_ALLOC(rl_sop,(3,3,nsym))
+ do is=1,nsym
+   forall (i2=1:3,i3=1:3) rl_sop(i2,i3,is)=dl_sop(i2,i3,is)*alat(i2)/alat(i3)
+ enddo
  !
  ! K-points
  !
- k%nibz=product(MODEL_k)
- YAMBO_ALLOC(k%pt,(k%nibz,3))
- k%pt=0.
+ call INTERPOLATION_create_the_grid(k,'i',MODEL_k)
  !
  ! RL
  !
@@ -124,7 +128,12 @@ subroutine MODELS_driver( )
  call mk_dir(com_path)
  call mk_dir(trim(core_io_path)//"/SAVE")
  call mk_dir(trim(more_io_path)//"/SAVE")
- call io_control(ACTION=OP_WR_CL,COM=NONE,SEC=(/1,2/),ID=ID)
+ call io_control(ACTION=OP_WR_CL,COM=REP,SEC=(/1,2/),ID=ID)
  io_err=io_DB1(E,k,ID)
+ !
+ ! Collisions
+ !============
+ !
+ !call 
  !
 end subroutine

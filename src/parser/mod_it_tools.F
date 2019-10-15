@@ -370,9 +370,10 @@ module it_tools
        enddo
      endif
      !
-     !Verbosity variables defaults update
+     ! Verbosity variables defaults update
      !
      if (initmode<=1.and.present(verb_level)) call initverbosity(name,v_id,'r1',defs,verb_level)
+     !
    end subroutine
    !
    subroutine loadc1var(defs,name,description,defval,unit,verb_level)
