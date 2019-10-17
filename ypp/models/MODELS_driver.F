@@ -24,18 +24,18 @@
 subroutine MODELS_driver( )
  !
  use pars,             ONLY:pi
- use YPP_models,       ONLY:MODEL_k,MODEL_kind
+ use YPP_models,       ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_Eg
  use electrons,        ONLY:levels,default_nel,n_spin,nel,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
 &                           Z_species, n_atoms, mag_syms
  use R_lattice,        ONLY:ng_vec, g_vec, bz_samp,bz_samp_reset,rl_sop
- use wave_func,        ONLY:wf_ncx, wf_nc_k, wf_igk,wf_ng
+ use wave_func,        ONLY:wf_ncx, wf_nc_k, wf_igk,wf_ng,wf_nb_io,wf_nb_io_groups,io_WF
  use xc_functionals,   ONLY:GS_xc_KIND,GS_xc_FUNCTIONAL,GS_exx_FRACTION,GS_exx_SCREENING
  use global_XC,        ONLY:H_SE_Hartree
  use IO_m,             ONLY:io_control,OP_WR_CL,REP,mk_dir
  use com,              ONLY:com_path,more_io_path,core_io_path
- use vec_operate,      ONLY:define_b_and_DL_vol
+ use vec_operate,      ONLY:define_b_and_DL_vol,iku_v_norm
  !
 #include<memory.h>
  !
@@ -43,15 +43,15 @@ subroutine MODELS_driver( )
  !
  type(levels )      :: E
  type(bz_samp)      :: k
- integer            :: io_err,ID,is,i2,i3
+ integer            :: io_err,ID,is,i2,i3,ik
  integer, external  :: io_DB1
- !
- if (n_bands>0) return
  !
  call section("*","Yambo "//trim(MODEL_kind)//" initialization")
  !
  call E_reset(E)
  call bz_samp_reset(k)
+ !
+ if (n_bands>0) return
  !
  ! DB1 filling
  !=============
@@ -116,10 +116,16 @@ subroutine MODELS_driver( )
  n_spinor=1
  n_sp_pol=1
  E%nb=2
+ wf_nb_io=2
+ wf_nb_io_groups=2
  YAMBO_ALLOC(E%E,(E%nb,k%nibz,n_sp_pol))
  YAMBO_ALLOC(E%f,(E%nb,k%nibz,n_sp_pol))
- E%f=0.
- E%E=0.
+ E%f(1,:,:)=2.
+ E%f(2,:,:)=1.
+ do ik=1,k%nibz
+   E%E(1,ik,:)=-( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
+   E%E(2,ik,:)= ( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
+ enddo
  !
  ! I/O
  !=====
@@ -130,10 +136,7 @@ subroutine MODELS_driver( )
  call mk_dir(trim(more_io_path)//"/SAVE")
  call io_control(ACTION=OP_WR_CL,COM=REP,SEC=(/1,2/),ID=ID)
  io_err=io_DB1(E,k,ID)
- !
- ! Collisions
- !============
- !
- !call 
+ call io_control(ACTION=OP_WR_CL,COM=REP,SEC=(/1/),ID=ID)
+ io_err=io_WF(ID)
  !
 end subroutine
