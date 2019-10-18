@@ -80,6 +80,10 @@ subroutine WF_load(WF,iG_in,iGo_max_in,bands_to_load,kpts_to_load,sp_pol_to_load
  !
  integer ::io_err,ID
  !
+#if defined _MODELS
+ return
+#endif
+ !
  ! Close iG/iGo_max to the nearest shell
  !
  iG_max=iG_in

@@ -36,8 +36,8 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
 &                         l_SC_RESTART,l_Mean_Potential,it_to_start,l_froze_density,  &
 &                         l_NSC_shot,SC_preconditioning,V_mean,SC_up_W_iters
  use hamiltonian,    ONLY:rho_n,magn_n,l_sc_V_is_local,H_nl_sc,WF_G_max,WF_Go_indx,   &
-&                         V_hartree_sc,Hzero,V_xc_sc,E_reference,l_sc_XC_is_local,            &
-&                         H_QP_table_setup,H_rotation
+&                         V_hartree_sc,Hzero,V_xc_sc,E_reference,l_sc_XC_is_local,    &
+&                         H_QP_table_setup,H_rotation,H_ref_bands
  use wave_func,      ONLY:WF,WAVEs,WF_copy
  use FFT_m,          ONLY:fft_size
  use linear_algebra, ONLY:DIAGO
@@ -185,7 +185,16 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
  !
  !  Hzero (kinetic + potential)
  !=============================
+#if defined _MODELS
+ Hzero=cZERO
+ do ib=H_ref_bands(1),H_ref_bands(2)
+   Hzero(ib,ib,:,:) = E_reference%E(ib,:,:)  
+ enddo
+#else
  call Bare_Hamiltonian(E,Xk,k)
+#endif
+ !
+#if !defined _MODELS
  !
  ! Reference wavefunctions
  !
@@ -203,6 +212,8 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    io_V=io_SC_components('V' ,E,ID(3))
  endif
  !
+#endif
+ !
  if (l_SC_RESTART) then
    !
    if ((1._SP-SC_cycle_mixing)>1.E-5) call &
@@ -210,6 +221,7 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    !
    ! RESTART
    !
+#if !defined _MODELS
    do i_sp_pol=1,n_sp_pol
      do ik=1,QP_nk
        call io_control(ACTION=RD_CL_IF_END,SEC=(/ik+1+(i_sp_pol-1)*QP_nk/),ID=ID(2))
@@ -227,6 +239,7 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    V_xc_nm1 = V_xc_sc
    rho_nm1  = rho_n
    if(n_spin>1) magn_nm1  = magn_n
+#endif
    !
    it_to_start=it_now+1
    !
@@ -315,6 +328,8 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    !
 #endif
    ! 
+#if !defined _MODELS
+   !
    ! IO [V_xc]: this is the only DB that must be written on-fly
    !            Both WFs and Energies are written ay the end of the loop
    !===========
@@ -323,86 +338,94 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    if (.not.l_sc_V_is_local) call io_control(ACTION=OP_WR,   COM=NONE,SEC=(/1/),ID=ID(3))
    io_V=io_SC_components('V' ,E,ID(3))
    !
-   do i_sp_pol=1,n_sp_pol
+#endif
    !
-   do ik = 1, QP_nk 
+   do i_sp_pol=1,n_sp_pol
      !
-     H_nl_sc=cZERO
-     !
-     ! Build H_nl_sc
-     !===============
-     !
-     if (l_use_collisions .or. (.not.l_sc_V_is_local) ) then
+     do ik = 1, QP_nk 
        !
-       ! Without collisions FOCK goes in QP_Vnl_xc and CORR in QP_Sc.
-       ! With    collisions FOCK and CORR (with also Hartree) go in QP_Vnl_xc
+       H_nl_sc=cZERO
        !
-       if (l_sc_fock.or.l_sc_sex.or.l_use_collisions) call V_qp_basis_to_H(ik,i_sp_pol,QP_Vnl_xc,H_nl_sc)
+       ! Build H_nl_sc
+       !===============
        !
-       if (l_sc_coh.or.l_sc_sex)                      call V_qp_basis_to_H(ik,i_sp_pol,QP_Sc,    H_nl_sc)
-       !
-       ! Rotate H_nl_sc in the WFo basis.
-       !
-       if (.not.l_use_collisions.and.it_now>1) call OBS_rotate(H_rotation(:,:,ik,i_sp_pol),H_nl_sc,SC_bands(2)-SC_bands(1)+1,-1)
-       ! 
-       ! I/O [H_nl_sc]
-       !
-       call io_control(ACTION=WR_CL_IF_END,COM=NONE,SEC=(/ik+1/),ID=ID(3))
-       io_V=io_SC_components('V',E,ID(3))
-       !
-       ! Mixing for non-local self-energies
-       !====================================
-       !
-       if (l_SC_nl_mix) then
-          !
-          if(it>1) H_nl_sc = SC_cycle_mixing*H_nl_sc + (1._SP-SC_cycle_mixing)*H_nl_nm1(:,:,ik,i_sp_pol)
-          !
-          H_nl_nm1(:,:,ik,i_sp_pol)= H_nl_sc
-          !
+       if (l_use_collisions .or. (.not.l_sc_V_is_local) ) then
+         !
+         ! Without collisions FOCK goes in QP_Vnl_xc and CORR in QP_Sc.
+         ! With    collisions FOCK and CORR (with also Hartree) go in QP_Vnl_xc
+         !
+         if (l_sc_fock.or.l_sc_sex.or.l_use_collisions) call V_qp_basis_to_H(ik,i_sp_pol,QP_Vnl_xc,H_nl_sc)
+         !
+         if (l_sc_coh.or.l_sc_sex)                      call V_qp_basis_to_H(ik,i_sp_pol,QP_Sc,    H_nl_sc)
+         !
+         ! Rotate H_nl_sc in the WFo basis.
+         !
+         if (.not.l_use_collisions.and.it_now>1) call OBS_rotate(H_rotation(:,:,ik,i_sp_pol),H_nl_sc,SC_bands(2)-SC_bands(1)+1,-1)
+         ! 
+         ! I/O [H_nl_sc]
+         !
+#if !defined _MODELS
+         call io_control(ACTION=WR_CL_IF_END,COM=NONE,SEC=(/ik+1/),ID=ID(3))
+         io_V=io_SC_components('V',E,ID(3))
+#endif
+         !
+         ! Mixing for non-local self-energies
+         !====================================
+         !
+         if (l_SC_nl_mix) then
+            !
+            if(it>1) H_nl_sc = SC_cycle_mixing*H_nl_sc + (1._SP-SC_cycle_mixing)*H_nl_nm1(:,:,ik,i_sp_pol)
+            !
+            H_nl_nm1(:,:,ik,i_sp_pol)= H_nl_sc
+            !
+         endif
+         !
        endif
        !
-     endif
-     !
 #if defined _ELECTRIC
-     if(l_sc_electric) H_nl_sc=H_nl_sc+W_electric(:,:,ik,i_sp_pol)
+       if(l_sc_electric) H_nl_sc=H_nl_sc+W_electric(:,:,ik,i_sp_pol)
 #endif
-     ! Add local V_xc
+       ! Add local V_xc
+       !
+       if (l_sc_XC_is_local.and..not.l_use_collisions)     call V_real_space_to_H(ik,i_sp_pol,H_nl_sc,WFo,'xc ',Vxc=V_xc_sc)
+       !
+       ! Add V_Hartree
+       !
+       if  (l_sc_hartree.and..not.COLLISIONS_have_HARTREE) call V_real_space_to_H(ik,i_sp_pol,H_nl_sc,WFo,'def',V=V_hartree_sc)
+       !
+       call PP_redux_wait(H_nl_sc)
+       !
+       ! Add Hzero
+       !
+       H_nl_sc = H_nl_sc + Hzero(:,:,ik,i_sp_pol)
+       !
+       ! Diagonalize H_nl_sc 
+       !=====================
+       !
+       call LINEAR_ALGEBRA_driver(DIAGO,M=H_nl_sc,E_real=E%E(:SC_bands(2),ik,i_sp_pol))
+       !
+       ! Rotation (WFo->WF) matrix
+       !
+       H_rotation(:,:,ik,i_sp_pol)=H_nl_sc(:,:) 
+       !
+       ! New wave functions 
+       !====================
+       !
+#if !defined _MODELS
+       call WF_rotate(ik,i_sp_pol,WFo,fft_size)
+#endif
+       !
+       if (l_NSC_shot) call live_timing(steps=1)
+       ! 
+       ! Mean Potential 
+       !================
+       !
+#if !defined _MODELS
+       if (l_Mean_Potential) call V_Mean_Potential(ik,i_sp_pol,WFo)
+#endif
+       !
+     enddo ! ik
      !
-     if (l_sc_XC_is_local.and..not.l_use_collisions)     call V_real_space_to_H(ik,i_sp_pol,H_nl_sc,WFo,'xc ',Vxc=V_xc_sc)
-     !
-     ! Add V_Hartree
-     !
-     if  (l_sc_hartree.and..not.COLLISIONS_have_HARTREE) call V_real_space_to_H(ik,i_sp_pol,H_nl_sc,WFo,'def',V=V_hartree_sc)
-     !
-     call PP_redux_wait(H_nl_sc)
-     !
-     ! Add Hzero
-     !
-     H_nl_sc = H_nl_sc + Hzero(:,:,ik,i_sp_pol)
-     !
-     ! Diagonalize H_nl_sc 
-     !=====================
-     !
-     call LINEAR_ALGEBRA_driver(DIAGO,M=H_nl_sc,E_real=E%E(:SC_bands(2),ik,i_sp_pol))
-     !
-     ! Rotation (WFo->WF) matrix
-     !
-     H_rotation(:,:,ik,i_sp_pol)=H_nl_sc(:,:) 
-     !
-     ! New wave functions 
-     !====================
-     !
-     call WF_rotate(ik,i_sp_pol,WFo,fft_size)
-     !
-     if (l_NSC_shot) call live_timing(steps=1)
-     ! 
-     ! Mean Potential 
-     !================
-     !
-     if (l_Mean_Potential) call V_Mean_Potential(ik,i_sp_pol,WFo)
-     !
-   enddo ! ik
-   !
    enddo ! i_sp_pol
    !
    if (l_NSC_shot) call OCCUPATIONS_Fermi(E,k,mode="OCCUPATIONS") 
@@ -435,8 +458,10 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
      rho_nm1 = rho_n 
      if(n_spin>1) magn_nm1 = magn_n 
      !
+#if !defined _MODELS
      if(.not.l_froze_density) call el_density_and_current(E,k,rho=rho_n)
      if(n_spin>1) call el_magnetization(E,k,magn_n)
+#endif
      !
      ! Update dipoles and recalcolate the dielectric constant
      ! ======================================================
@@ -471,7 +496,9 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
      ! Total Energy 
      !==============
      !
+#if !defined _MODELS
      call SC_Energy(E_total,E_tot_Hartree,E_tot_xc,E,k,rho_n)
+#endif
      !
      ! Convergences
      !==============
@@ -486,17 +513,21 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
      enddo
      !
      rho_convergence = 0._SP
+#if !defined _MODELS
      do ir=1,fft_size
        rho_convergence = rho_convergence + abs(rho_n(ir)-rho_nm1(ir))/nel
      enddo
+#endif
      !
      magn_convergence = 0._SP
+#if !defined _MODELS
      if(n_spin>1) then
        do ir=1,fft_size
          if (n_sp_pol==2) magn_convergence = abs(magn_n(ir,3)-magn_nm1(ir,3))/nel
          if (n_spinor==2) magn_convergence = v_norm(magn_n(ir,:)-magn_nm1(ir,:))/nel
        enddo
      endif
+#endif
      !
      if(it_now==it_to_start) dumb_ch ='[SC] Iteration:'
      dumb_ch2='            '//trim(intc(it_now))//' :'
