@@ -24,7 +24,7 @@
 subroutine MODELS_driver( )
  !
  use pars,             ONLY:pi
- use YPP_models,       ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_Eg
+ use MODELS,           ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_Eg
  use electrons,        ONLY:levels,default_nel,n_spin,nel,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
@@ -75,7 +75,7 @@ subroutine MODELS_driver( )
  ! GS
  !
  input_GS_Tel=0.
- default_nel=1.
+ default_nel=2.
  GS_xc_KIND=H_SE_Hartree
  GS_xc_FUNCTIONAL=0
  GS_exx_FRACTION=0.
@@ -121,7 +121,7 @@ subroutine MODELS_driver( )
  YAMBO_ALLOC(E%E,(E%nb,k%nibz,n_sp_pol))
  YAMBO_ALLOC(E%f,(E%nb,k%nibz,n_sp_pol))
  E%f(1,:,:)=2.
- E%f(2,:,:)=1.
+ E%f(2,:,:)=0.
  do ik=1,k%nibz
    E%E(1,ik,:)=-( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
    E%E(2,ik,:)= ( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )

@@ -110,12 +110,12 @@ PJ_RTLIBS_LD = $(BASIC_LIBS_LD) interpolate real_time_control qp_control setup \
                tddft dipoles pol_function qp acfdt bse collisions hamiltonian \
                real_time_hamiltonian real_time_propagation real_time_el-ph real_time_lifetimes real_time_common
 
-PJ_PLLIBS    = $(BASIC_LIBS) interpolate real_time_control qp_control setup \
-               tddft dipoles pol_function qp acfdt bse collisions hamiltonian sc \
-               real_time_hamiltonian real_time_propagation real_time_el-ph real_time_lifetimes real_time_common
-PJ_PLLIBS_LD = $(BASIC_LIBS_LD) interpolate real_time_control qp_control setup \
-               tddft dipoles pol_function qp acfdt bse collisions hamiltonian sc \
-               real_time_hamiltonian real_time_propagation real_time_el-ph real_time_lifetimes real_time_common
+PJ_SCRTLIBS    = $(BASIC_LIBS) interpolate real_time_control qp_control setup \
+                 tddft dipoles pol_function qp acfdt bse collisions hamiltonian sc \
+                 real_time_hamiltonian real_time_propagation real_time_el-ph real_time_lifetimes real_time_common
+PJ_SCRTLIBS_LD = $(BASIC_LIBS_LD) interpolate real_time_control qp_control setup \
+                 tddft dipoles pol_function qp acfdt bse collisions hamiltonian sc \
+                 real_time_hamiltonian real_time_propagation real_time_el-ph real_time_lifetimes real_time_common
 
 PJ_NLLIBS    = $(PJ_RTLIBS) nloptics
 PJ_NLLIBS_LD = $(PJ_RTLIBS_LD) nloptics
@@ -261,16 +261,16 @@ yambo_sc: libs
 	@+X2DO="yambo_sc"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(PJ_SCLIBS_LD)"; ADF="-D_SC"; $(mkx)
 yambo_pl: libs
 	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_RT -D_SC -D_ELPH -D_PL -D_yambo"; $(mk_driver_src)
-	@+LIBS2DO="$(PJ_PLLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_RT -D_SC -D_ELPH -D_PL"; $(mksrc)
-	@+X2DO="yambo_pl"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(PJ_PLLIBS_LD)"; ADF="-D_RT -D_SC -D_ELPH -D_PL"; $(mkx)
+	@+LIBS2DO="$(PJ_SCRTLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_RT -D_SC -D_ELPH -D_PL"; $(mksrc)
+	@+X2DO="yambo_pl"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(PJ_SCRTLIBS_LD)"; ADF="-D_RT -D_SC -D_ELPH -D_PL"; $(mkx)
 yambo_rt: libs
 	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_RT -D_ELPH -D_yambo"; $(mk_driver_src)
 	@+LIBS2DO="$(PJ_RTLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_RT -D_ELPH"; $(mksrc)
 	@+X2DO="yambo_rt"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(PJ_RTLIBS_LD)"; ADF="-D_RT -D_ELPH"; $(mkx)
 yambo_models: libs
-	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_RT -D_ELPH -D_MODELS -D_yambo"; $(mk_driver_src)
-	@+LIBS2DO="$(PJ_RTLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_RT -D_ELPH -D_MODELS"; $(mksrc)
-	@+X2DO="yambo_models"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(PJ_RTLIBS_LD)"; ADF="-D_RT -D_ELPH -D_MODELS"; $(mkx)
+	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_RT -D_SC -D_ELPH -D_MODELS -D_yambo"; $(mk_driver_src)
+	@+LIBS2DO="$(PJ_SCRTLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_RT -D_SC -D_ELPH -D_MODELS"; $(mksrc)
+	@+X2DO="yambo_models"; XPATH="driver"; VPATH="$(topdir)/driver"; XLIBS="$(PJ_SCRTLIBS_LD)"; ADF="-D_RT -D_SC -D_ELPH -D_MODELS"; $(mkx)
 yambo_nl: libs
 	@+LIBS2DO="$(DRIVER_LIBS)"; XPATH="driver"; VPATH="$(topdir)/driver"; ADF="-D_NL -D_RT -D_ELPH -D_yambo"; $(mk_driver_src)
 	@+LIBS2DO="$(PJ_NLLIBS)"; XPATH="src"; VPATH="$(topdir)/src"; ADF="-D_NL -D_RT -D_ELPH"; $(mksrc)

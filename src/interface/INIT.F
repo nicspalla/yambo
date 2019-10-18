@@ -213,6 +213,9 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
  call logicalson
  !
  call INIT_activate()
+#if defined _MODELS
+ call INIT_activate_models()
+#endif
  !
 #if defined _RT
  if (check_verbosity("real_time").and.l_real_time) call INIT_DephMatrix()
@@ -289,6 +292,9 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
      if (mode=='Game_Over') initmode=3
      if (mode=='parser_input_file') initmode=4
      call INIT_load(defs,en,q,k,X,Xw,Dip)
+#if defined _MODELS
+     call INIT_load_models(defs)
+#endif
    end subroutine
    !
    subroutine logicalson
@@ -333,6 +339,9 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
        l_elph_scatt=runlevel_is_on('el_ph_scatt')
        l_elphoton_scatt=runlevel_is_on('el_photon_scatt')
        ! GPL_EXCLUDE_END
+#endif
+#if defined _SC && defined _MODELS
+       l_sc_run=runlevel_is_on('scrun')
 #endif
 #if defined _SC && !defined _RT
        l_sc_run=runlevel_is_on('scrun')

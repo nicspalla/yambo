@@ -27,6 +27,9 @@ integer function G_index(v1)
  use zeros,        ONLY:G_iku_zero
  use vec_operate,  ONLY:v_is_zero,iku_v_norm
  use R_lattice,    ONLY:g_vec,ng_in_shell,n_g_shells,E_of_shell
+#if defined _MODELS
+ use R_lattice,    ONLY:ng_closed
+#endif
  use com,          ONLY:error
  !
  implicit none
@@ -37,6 +40,12 @@ integer function G_index(v1)
  real(SP)  :: E_of_shell_v1
  !
  G_index=0
+#if defined _MODELS
+ if (ng_closed==1) then
+   G_index=1
+   return
+ endif
+#endif
  !
  E_of_shell_v1=iku_v_norm(v1)**2/2._SP
  !

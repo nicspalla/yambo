@@ -133,6 +133,8 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
  NG_max=maxval((/N_g_vecs_H,N_g_vecs_X,N_g_vecs_C/))
  NG_XC =max(N_g_vecs_X,N_g_vecs_C)
  !
+#if !defined _MODELS
+ !
  call msg('s', '['//trim(H_potential)//'] Plane waves (H,X,C) :',(/N_g_vecs_H,N_g_vecs_X,N_g_vecs_C/))
  !
  ! WFs
@@ -163,6 +165,8 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
    YAMBO_ALLOC(rhotw_tmp,(N_g_vecs_H))
    !
  endif
+ !
+#endif
  !
  iscp_XC%qs   =1
  iscp_XC%iqref=0
@@ -337,14 +341,18 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
      isc_H%qs   = 1
      iscp_H%qs  = 1
      !
+#if !defined _MODELS
      call scatter_Gamp(isc_H,'x')
+#endif
      !
      i_k_s      = 1
      !
      isc_H%is  =(/i_n,i_k,i_k_s,i_sp/)
      isc_H%os  =(/i_m,i_k,i_k_s,i_sp/)
      !
+#if !defined _MODELS
      call scatter_Bamp(isc_H)
+#endif
      !
      do i_q_fake=1,q%nbz
        !
@@ -365,6 +373,7 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
            iscp_H%os =(/i_mp,i_p,1,i_sp/)
            !
            eval_coll=.not.all((/i_n==i_np,i_m==i_mp,i_k==i_p/))
+#if !defined _MODELS
            if (     eval_coll) call scatter_Bamp(iscp_H)
            if (.not.eval_coll) iscp_H%rhotw=isc_H%rhotw
            !
@@ -381,10 +390,12 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
              !$omp end parallel do
              !
            enddo
+#endif
            !
            if ( PAR_IND_Bp_mat%element_1D( B_mat_index(i_np,i_mp,COLL_bands) ) ) then
              !
              pre_factor1=cZERO
+#if !defined _MODELS
              if(index(H_potential,"HARTREE")>0) then
                !$omp parallel do default(shared), private(ig1), reduction(+:pre_factor1)
                do ig1=2,N_g_vecs_H
@@ -402,6 +413,7 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
                  pre_factor2=pre_factor2+TDDFT_ALDA_R_space(isc_H%is,isc_H%os,iscp_H%is,iscp_H%os,'RES')
                enddo
              endif
+#endif
              !
              HXC_COLL_element(1)%v3_c(i_np,i_mp,i_p)=4._SP*pi*pre_factor1+Co*pre_factor2
              !
@@ -414,6 +426,7 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
            if ( PAR_IND_Bp_mat%element_1D( B_mat_index(i_mp,i_np,COLL_bands) ) ) then
              !
              pre_factor1=cZERO
+#if !defined _MODELS
              if(index(H_potential,"HARTREE")>0) then
                !$omp parallel do default(shared), private(ig1), reduction(+:pre_factor1)
                do ig1=2,N_g_vecs_H
@@ -431,6 +444,7 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
                  pre_factor2=pre_factor2+TDDFT_ALDA_R_space(isc_H%is,isc_H%os,iscp_H%is,iscp_H%os,'CPL')
                enddo
              endif
+#endif
              !
              HXC_COLL_element(1)%v3_c(i_mp,i_np,i_p)=4._SP*pi*pre_factor1+Co*pre_factor2
              !
@@ -447,6 +461,11 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
    end subroutine compute_loc_HXC_collisions
    !
    subroutine compute_MBPT_XC_collisions()
+     !
+#if defined _MODELS
+     use MODELS,   ONLY:MODEL_U,l_MODEL_no_intraband
+#endif
+     !
      !
      ! Scattering geometry
      !=====================
@@ -522,7 +541,9 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
          !
          iscp_XC%os(1)=i_mp
          !
+#if !defined _MODELS
          call scatter_Bamp(iscp_XC)
+#endif
          !
          do i_np=COLL_bands(1),COLL_bands(2)
            !
@@ -532,6 +553,10 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
            !
            isc_XC%os(1)=i_np
            !
+#if defined _MODELS
+           if (l_MODEL_no_intraband.and.i_np==i_mp) cycle
+           HXC_COLL_element(1)%v3_c(i_np,i_mp,i_kmq)=MODEL_U
+#else
            if (any(isc_XC%is/=iscp_XC%is).or.any(isc_XC%os/=iscp_XC%os)) then
              call scatter_Bamp(isc_XC)
            else
@@ -564,6 +589,7 @@ subroutine COLLISIONS_HXC(X,Xk,E,k,q,Xw)
            if(index(H_potential,"COH")>0 ) &
 &            COH_COLL_element(1)%v3_c(i_np,i_mp,i_kmq)=COH_COLL_element(1)%v3_c(i_np,i_mp,i_kmq) &
 &                                                      +2._SP         *pi*             pre_factor2
+#endif
            !
            call live_timing(steps=1)
            !

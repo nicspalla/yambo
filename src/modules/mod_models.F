@@ -21,16 +21,17 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-module YPP_models
+module MODELS
  !
  use pars,  ONLY:schlen,SP
  use units, ONLY:HA2EV
  !
  logical           :: l_models
+ logical           :: l_MODEL_no_intraband
  character(schlen) :: MODEL_kind
  real(SP)          :: MODEL_U
  real(SP)          :: MODEL_overlap
  real(SP)          :: MODEL_Eg
  integer           :: MODEL_k(3)
  !
-end module YPP_models
+end module MODELS

@@ -569,6 +569,11 @@ subroutine INIT_activate()
  endif
  !
 #endif
+ !
+#if defined _MODELS
+ call INIT_activate_models( )
+#endif
+ !
  contains
    !
 #if defined _RT

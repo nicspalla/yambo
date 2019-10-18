@@ -90,6 +90,9 @@ subroutine G_shells_finder()
  !
  call degeneration_finder(G_mod,ng_closed,first_G_in_shell,ng_in_shell_TMP,n_g_shells,&
 &                        1.E-5_SP,Include_single_values=.TRUE.)
+#if defined _MODELS
+ if (ng_closed==1) n_g_shells=1
+#endif
  !
  ! Init
  !
@@ -156,7 +159,7 @@ subroutine G_shells_finder()
  call PP_redux_wait(g_rot)
  call PP_redux_wait(E_of_shell_TMP)
  !
- ! Redefine ng_in_shell_TMP witg actual position of the last element of the
+ ! Redefine ng_in_shell_TMP with the actual position of the last element of the
  ! degenerate group
  !
  do i_m=2,n_g_shells
@@ -176,6 +179,12 @@ subroutine G_shells_finder()
    !
  enddo
  n_g_shells=n_g_shells_no_holes
+#if defined _MODELS
+ if (ng_closed==1) then
+   ng_in_shell_TMP(1)=1
+   n_g_shells=1
+ endif
+#endif
  !
  ! Shells Allocation & Transfer 
  !

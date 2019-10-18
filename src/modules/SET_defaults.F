@@ -26,10 +26,10 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  ! GPL_EXCLUDE_START
  use debug,      ONLY:dbg
  ! GPL_EXCLUDE_END
- use C_driver,   ONLY:code_branch
  use pars,       ONLY:SP,cZERO
  use units,      ONLY:HA2EV,FS2AUT,kWCMm22AU
  use LOGO,       ONLY:ID_logo,ID_logo_stderr
+ use C_driver,   ONLY:code_branch
  use X_m,        ONLY:current_iq,self_detect_E_range,X_FILL_UP_matrix_only,eps_2_alpha,l_drude,&
 &                     alpha_dim,use_X_DbGd,X_DbGd_nkpts,Chi_mode,skip_cond_sum_rule,&
 &                     eval_alpha,&
@@ -129,6 +129,9 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
 #endif
  use timing_m,    ONLY:timing_allocate,nclockx
  use openmp,      ONLY:OPENMP_initialize,OPENMP_update,master_thread,omp_is_off
+#if defined _MODELS
+ use MODELS,      ONLY:MODEL_U,MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg
+#endif
  !
  implicit none
  !
@@ -650,6 +653,14 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  MAG_theta=0._SP
  phase_trick=.FALSE.
  !
+#endif
+ !
+#if defined _MODELS
+ MODEL_U=1./HA2EV
+ MODEL_overlap=1./HA2EV
+ MODEL_Eg=1./HA2EV
+ MODEL_k=(/2,2,2/)
+ MODEL_kind="2bands"
 #endif
  !
 end subroutine

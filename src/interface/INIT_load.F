@@ -681,7 +681,7 @@ subroutine INIT_load(defs,en,q,k,X,Xw,Dip)
 #endif
  !
  call DIP_mirror_bands(en)
- ! 
+ !
  contains 
    !
 #if defined _RT

@@ -40,6 +40,7 @@ integer function io_COLLISIONS(ID,COLL,COLL_element,i_coll_)
  use stderr,        ONLY:intc
  use drivers,       ONLY:l_elel_scatt,l_elphoton_scatt
  use timing_m,      ONLY:timing
+ !
 #include<memory.h>
  !
  integer, intent(inout)            ::ID

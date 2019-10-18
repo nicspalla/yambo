@@ -46,7 +46,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  use parser_m,       ONLY:PARSER_array
  use IO_m,           ONLY:rm_file,OP_RD_CL,DUMP,io_control,NONE
 #if defined _MODELS
- use YPP_models,     ONLY:l_models
+ use MODELS,         ONLY:l_models
 #endif
 #if defined _YPP_SC
  use YPPm,           ONLY:l_mean_potential

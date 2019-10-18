@@ -156,16 +156,20 @@ module it_tools
      !
      ! Work Space
      !
-     character(schlen):: on_names(maxrnlvls)
+     character(schlen):: on_names(maxrnlvls),off_names(maxrnlvls)
      integer          :: i2,i3
-     call STRING_split(on_name,on_names)
+     call STRING_split(on_name ,on_names )
+     call STRING_split(off_name,off_names)
      ext_loop: do i2=1,nrnlvls
        if (rstatus(i2)==0) cycle
        do i3=1,maxrnlvls
          if (len_trim(on_names(i3))==0) cycle
          if (trim(rnlvls(i2,1))==trim(on_names(i3))) cycle ext_loop
        enddo
-       if (trim(rnlvls(i2,1))==off_name.or.off_name=='all') rstatus(i2)=0
+       do i3=1,maxrnlvls
+         if (len_trim(off_names(i3))==0) cycle
+         if (trim(rnlvls(i2,1))==trim(off_names(i3)))  rstatus(i2)=0
+       enddo
      enddo ext_loop
    end subroutine
    ! 
@@ -521,6 +525,7 @@ module it_tools
      integer,      optional::verb_level 
      logical,      optional::protect
      character(1), optional::case
+     v_id=0
      if (initmode==0) then
        chst=0
        nchv=nchv+1
@@ -558,7 +563,7 @@ module it_tools
      !
      !Verbosity variables defaults update
      !
-     if (initmode<=1.and.present(verb_level)) call initverbosity(name,v_id,'ch',defs,verb_level)
+     if (initmode<=1.and.present(verb_level).and.v_id>0) call initverbosity(name,v_id,'ch',defs,verb_level)
      !
    end subroutine
    !
@@ -986,7 +991,8 @@ module it_tools
    !
    subroutine initactivate(mode,names)
      !
-     ! mode =  1 : activate var names
+     ! mode =  2 : activate var names with 0 verbosity
+     ! mode =  1 : activate var names 
      ! mode = -1 : deactivate var names
      !
      integer ::      mode

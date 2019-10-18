@@ -46,7 +46,7 @@ subroutine INIT_ypp_load(defs)
  use real_time,     ONLY:RT_bands
 #endif
 #if defined _MODELS
- use YPP_models,    ONLY:MODEL_U,MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg
+ use MODELS,        ONLY:MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg
 #endif
 #if defined _YPP_SC
  use YPPm,          ONLY:V_value
@@ -377,7 +377,6 @@ subroutine INIT_ypp_load(defs)
 #if defined _MODELS
  call it(defs,'Kind','Model Kind ("2bands")',MODEL_kind)
  call it(defs,'Eg','Elemental gap',MODEL_Eg,unit=E_unit)
- call it(defs,'OnSiteU','Coloumb parameter',MODEL_U,unit=E_unit)
  call it(defs,'Overlap','Overlap parameter',MODEL_overlap,unit=E_unit)
  call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
 #endif

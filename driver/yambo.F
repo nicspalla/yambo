@@ -32,7 +32,8 @@ integer function yambo(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_d
  !
  use drivers,       ONLY:l_HF_and_locXC,l_sc_run,l_eval_collisions,l_real_time,&
 &                        l_optics,l_chi,l_em1s,l_ppa,l_bss,l_bse,l_em1d,&
-&                        l_gw0,l_life,l_acfdt,l_dipoles,l_nl_optics
+&                        l_gw0,l_life,l_acfdt,l_dipoles,l_nl_optics,l_sc_fock,&
+&                        l_sc_hartree,l_sc_is_libDFT
 #if defined _SCALAPACK
  use drivers,       ONLY:l_slk_test
 #endif
@@ -173,6 +174,11 @@ integer function yambo(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_d
  !=========
  !
  driver_now= l_sta_X.or.l_dyn_X.or.l_dipoles.or.l_real_time.or.l_sc_run.or.l_nl_optics
+ !
+ if (l_real_time.or.l_sc_run) then
+   call XC_switch( )
+   if (l_sc_fock.or.l_sc_hartree.or.l_sc_is_libDFT) driver_now=.FALSE.
+ endif
  !
  if (driver_now) call DIPOLE_driver(DIPen, Xk, q, X(i_X_kind), Dip)
  if (driver_now) call mem_manager_report
