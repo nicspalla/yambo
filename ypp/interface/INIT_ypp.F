@@ -21,7 +21,7 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
+subroutine INIT_ypp(E,instr,FINALIZE)
  !
  use units,          ONLY:FS2AUT
  use YPPm,           ONLY:l_plot,l_map_WFs,l_map_kpts,l_mag,l_k_grid,l_high_sym_pts,BSiq,&
@@ -36,9 +36,9 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  use it_tools,       ONLY:ofiles_append,initinfio,initactivate,infile_dump,runlevel_is_on,&
 &                         PARSER_force_command_line_value
  use it_m,           ONLY:initdefs,initmode,infile,nrnlvls,rnlvls,infile_verbosity,&
-                          V_general,V_qp,V_all,V_real_time,V_nl_optics,rstatus
+                          V_general,V_qp,V_all,V_real_time,V_nl_optics
  use drivers,        ONLY:infile_editing
- use com,            ONLY:file_exists,write_to_report,repfile,write_the_logo,rename_file
+ use com,            ONLY:write_to_report,repfile
  use stderr,         ONLY:STRING_split,write_to_log,log_as_a_file,logfile,STRING_match,STRING_same
  use electrons,      ONLY:n_spin,n_spinor,levels
  use parallel_m,     ONLY:master_cpu,PP_redux_wait
@@ -74,17 +74,18 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
 #include<memory.h>
  !
  type(levels)     ::E
- integer          ::lnstr
- character(lnstr) ::instr
+ character(*)     ::instr
  logical          ::FINALIZE
  !
  ! Work Space
  !
  logical          ::l_init_QP,l_flag
  type(initdefs)   ::defs
- integer, external::io_RIM,io_COL_CUT,io_ATMPROJ_pwscf
  integer          ::i1,i2,ID,io_err,i_cycle
  character(schlen)::rstr_piece(60) 
+ !
+ integer, external::io_RIM,io_COL_CUT,io_ATMPROJ_pwscf
+ logical, external::file_exists 
  !
 #if defined _YPP_SC
  type(levels)     ::E_dummy
@@ -202,9 +203,9 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
    !
    if (i1<50) then
      if( trim(rstr_piece(i1)) == 'infver' .and. STRING_same(rstr_piece(i1+1),'gen') ) infile_verbosity=V_general
-     if( trim(rstr_piece(i1)) == 'infver' .and. STRING_same(rstr_piece(i1+1),'rt')  )  infile_verbosity=V_real_time
-     if( trim(rstr_piece(i1)) == 'infver' .and. STRING_same(rstr_piece(i1+1),'nl')  )  infile_verbosity=V_nl_optics
-     if( trim(rstr_piece(i1)) == 'infver' .and. STRING_same(rstr_piece(i1+1),'qp')  )  infile_verbosity=V_qp
+     if( trim(rstr_piece(i1)) == 'infver' .and. STRING_same(rstr_piece(i1+1),'rt')  ) infile_verbosity=V_real_time
+     if( trim(rstr_piece(i1)) == 'infver' .and. STRING_same(rstr_piece(i1+1),'nl')  ) infile_verbosity=V_nl_optics
+     if( trim(rstr_piece(i1)) == 'infver' .and. STRING_same(rstr_piece(i1+1),'qp')  ) infile_verbosity=V_qp
      if( trim(rstr_piece(i1)) == 'infver' .and. STRING_same(rstr_piece(i1+1),'all') ) infile_verbosity=V_all
    endif
    !
@@ -352,7 +353,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
 #if defined _YPP_NL
      l_NL_X   =  trim(rstr_piece(i1)) == 'nonlinear'
 #endif   
-     !
+     !    
    enddo
  enddo
  !
@@ -509,11 +510,12 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  !
  if ((l_dos.or.l_bands).and.n_spinor==2) call initactivate(1,'WFReference')
  !
+ l_flag=l_bands
 #if defined _YPP_RT
- if (l_bands.or.l_RT_bands) then
-#else
- if (l_bands) then
+ l_flag=l_bands.or.l_RT_bands
 #endif
+ !
+ if (l_flag) then
    !
    call initactivate(1,"INTERP_mode OutputAlat cooIn cooOut NormN NelFac")
    !
@@ -543,9 +545,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
 #endif
  !
 #if defined _YPP_SC
- if (l_mean_potential) then
-   call initactivate(1,"PotValue")
- endif
+ if (l_mean_potential) call initactivate(1,"PotValue")
 #endif
  !
  ! GPL_EXCLUDE_END
@@ -750,6 +750,10 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  !
  ! LOG/REP files
  !
+ live_timing_is_on =master_cpu.and..not.infile_editing
+ write_to_report   =master_cpu.and..not.infile_editing
+ write_to_log      =master_cpu.and..not.infile_editing
+ !
  call INIT_report_and_log_files()
  !
  if (log_as_a_file) call rename_file(logfile)
@@ -757,7 +761,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
  call rename_file(repfile)
  !
  live_timing_is_on =master_cpu
- write_to_report   =any(rstatus/=0)
+ write_to_report   =master_cpu
  write_to_log      =master_cpu
  !
  ! Input file
@@ -769,7 +773,7 @@ subroutine INIT_ypp(E,instr,lnstr,FINALIZE)
    call PP_redux_wait
  endif
  !
- if (write_to_report.and..not.infile_editing) then
+ if (master_cpu) then
    call rm_file(trim(repfile))
    open(unit=11,file=trim(repfile))
    call write_the_logo(11,' ')
