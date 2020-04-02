@@ -34,6 +34,7 @@
 
 void launcher(int argc, char *argv[],int np, int pid, struct yambo_seed_struct y,int *use_editor, int *use_mpi)
 {
+ int yambo_err;
  /* 
    Par Environments? Yes? => Return
  */
@@ -61,9 +62,10 @@ void launcher(int argc, char *argv[],int np, int pid, struct yambo_seed_struct y
    Running the Fortran YAMBO driver 
  ===========================================================================
  */
- F90_FUNC(yambo)(
+ yambo_err=F90_FUNC(yambo)(
 #include <fortran_arguments.h>
  );
+ if(yambo_err==2) exit(0); /* DB listing mode */
 #endif
 #if defined _ypp
  /* 
@@ -114,7 +116,7 @@ void launcher(int argc, char *argv[],int np, int pid, struct yambo_seed_struct y
    Input file edit ?
  ===========================================================================
  */
- if ( y.in_file_N ==1 && *use_editor==0  ) {*use_editor=1;};
+ if ( y.in_file_N ==1 && *use_editor ==0 ) {*use_editor=1;};
  if ( y.in_file_N ==0 || y.in_file_N ==2 ) {*use_editor=0;};
  /* 
    Error message
@@ -124,7 +126,6 @@ void launcher(int argc, char *argv[],int np, int pid, struct yambo_seed_struct y
  {
   if (pid==0 && y.in_file_N == -1) {
    fprintf(stderr," \n%s\n\n","yambo: cannot access CORE database (SAVE/*db1 and/or SAVE/*wf)");
-   exit(0);
   };
   if (pid==0 && y.in_file_N == -2) {
    fprintf(stderr," \n%s\n\n","yambo: invalid command line options and/or build");
