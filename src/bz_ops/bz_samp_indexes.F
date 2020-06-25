@@ -55,7 +55,8 @@ subroutine bz_samp_indexes(k,Xk,q)
 &                         qindx_X,qindx_B,qindx_S,qindx_C,&
 &                         bse_scattering,qindx_alloc,Xk_grid_is_uniform,&
 &                         k_grid,k_grid_b,q_pt,k_pt,bz_samp,q_norm,q0_def_norm,&
-&                         q_sstar,coll_scattering,q_source,Xk_grid_new_mapping
+&                         q_sstar,coll_scattering,q_source,smallest_q_norm,&
+&                         Xk_grid_new_mapping
  use IO_m,           ONLY:io_control,OP_RD_CL,OP_WR_CL,VERIFY,REP
  use parser_m,       ONLY:parser
  use timing_m,       ONLY:timing
@@ -225,8 +226,7 @@ subroutine bz_samp_indexes(k,Xk,q)
  if (coll_scattering) string=trim(string)//' + COLL'
  call msg('nr',trim(string))
  !
- if (n_threads> Xk%nbz) call live_timing('X indexes',1)
- if (n_threads<=Xk%nbz) call live_timing('X indexes',Xk%nbz/n_threads)
+ call live_timing('X indexes',max(1,Xk%nbz/n_threads))
  !
  if(Xk_grid_new_mapping) call k_find_smallest_q(Xk%ptbz,q_step,Xk%nbz)
  !
@@ -292,13 +292,11 @@ subroutine bz_samp_indexes(k,Xk,q)
  !
  if(coll_scattering) then
    call msg('rn',' Indices: Scattering and Self-Energy')
-   if (n_threads> k%nbz) call live_timing('SSE indexes',1)
-   if (n_threads<=k%nbz) call live_timing('SSE indexes',Xk%nbz/n_threads)
+   call live_timing('SSE indexes',max(1,Xk%nbz/n_threads))
  else
    call msg('rn',' Indices: Self-Energy')
    i1=QP_states_k(2)-QP_states_k(1)+1
-   if (n_threads> i1) call live_timing('SE indexes',1)
-   if (n_threads<=i1) call live_timing('SE indexes',i1/n_threads)
+   call live_timing('SE indexes',max(1,i1/n_threads))
  endif
  !
  call k_ibz2bz(k,'a',.false.)
@@ -562,14 +560,16 @@ subroutine bz_samp_indexes(k,Xk,q)
        k_pt=k%pt
        if(allocated(q_sstar)) q_sstar=1
        q_norm=q0_def_norm
+       smallest_q_norm=q0_def_norm
      else
        q_pt=q%pt
        k_pt=k%pt
-       do i1=1,q%nibz
+       q_sstar=q%sstar
+       q_norm(1)=q0_def_norm
+       do i1=2,q%nibz
          q_norm(i1)=iku_v_norm(q_pt(i1,:))
        enddo
-       q_norm(1)=q0_def_norm
-       q_sstar=q%sstar
+       smallest_q_norm=minval(q_norm(2:))
      endif
      !
    end subroutine q_shadows

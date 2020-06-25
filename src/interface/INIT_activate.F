@@ -541,6 +541,7 @@ subroutine INIT_activate()
    ! GPL_EXCLUDE_START
    !
    call INIT_RT_ctl_switch('G')
+   !
    call initactivate(1,'RTskipImposeN RTeeImposeE InducedField')
    call initactivate(1,'Gauge VelGaugeCorr VelGaugeDiam PfromJ RTUpdateSOC RTUpdateE SaveGhistory')
    call initactivate(1,'RTEqScatt RTImpForMet RTzeroTempRef RTEvalEnergy RTEvalEntropy')
@@ -554,7 +555,7 @@ subroutine INIT_activate()
    !
    call initactivate(1,'RTBands Integrator GrKind TwoAlpha RADLifeTime RAD_prefactor PhLifeTime RTehEny ScattTresh') 
    call initactivate(1,'RTstep NEsteps NETime DipoleEtresh')
-   call initactivate(1,'IOtime')
+   call initactivate(1,'IOtime IOCachetime')
    !
    ! n_ext_fields is by default 0.  It is set to the input number of fields when a command line option is provided (below in init.F)
    ! or parsed from the input file in INIT_load.F

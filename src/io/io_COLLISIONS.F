@@ -75,7 +75,7 @@ integer function io_COLLISIONS(ID,COLL,COLL_element,i_coll_)
    call error("COLLISIONS I/O : Unknown database type ")
  endif
  !
- io_COLLISIONS=io_connect(desc=db_name,type=2,ID=ID)
+ io_COLLISIONS=io_connect(desc=db_name,type=2,ID=ID,FORCE_READ_MODE=(.not.any(io_sec(ID,:)==1)))
  if(io_COLLISIONS/=0) goto 1
  !
  if (any(io_sec(ID,:)==1)) then
@@ -205,7 +205,7 @@ integer function io_COLLISIONS(ID,COLL,COLL_element,i_coll_)
    !
    call io_fragment(ID,i_fragment=i_coll)
    !
-   call def_variable_bulk(ID,'N_COLLISIONS_STATES',1,(/1/),IP+100)
+   call def_variable_bulk(ID,'N_COLLISIONS_STATES',1,(/1/),IP+100,silent=.true.)
    call  io_variable_bulk(ID,1,I0=COLL_element%N)
    !
  endif
@@ -219,7 +219,7 @@ integer function io_COLLISIONS(ID,COLL,COLL_element,i_coll_)
    call def_variable_bulk(ID,'COLLISIONS_TABLE',1,&
 &                           (/COLL%D(1,2)-COLL%D(1,1)+1,&
 &                             COLL%D(2,2)-COLL%D(2,1)+1,&
-&                             COLL%D(3,2)-COLL%D(3,1)+1/),0)
+&                             COLL%D(3,2)-COLL%D(3,1)+1/),0,silent=.true.)
    !
    call  io_variable_bulk(ID,1,CH3=COLL_element%table(COLL%D(1,1):COLL%D(1,2),&
 &                                                    COLL%D(2,1):COLL%D(2,2),&
@@ -227,11 +227,11 @@ integer function io_COLLISIONS(ID,COLL,COLL_element,i_coll_)
    !
    if(COLL%kind==QP_SE_GW_NEQ.or.COLL%kind==QP_SE_GW_QED) then
      ! Real collisions
-     call def_variable_bulk(ID,'COLLISIONS_v',1,(/COLL_element%N/),SP)
+     call def_variable_bulk(ID,'COLLISIONS_v',1,(/COLL_element%N/),SP,silent=.true.)
      call  io_variable_bulk(ID,1,R1=COLL_element%v_r)
    else
      ! Complex collisions
-     call def_variable_bulk(ID,'COLLISIONS_v',1,(/2,COLL_element%N/),SP)
+     call def_variable_bulk(ID,'COLLISIONS_v',1,(/2,COLL_element%N/),SP,silent=.true.)
      call  io_variable_bulk(ID,1,C1=COLL_element%v_c)
    endif
    !
