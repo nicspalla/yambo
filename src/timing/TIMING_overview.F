@@ -1,6 +1,6 @@
 ! 
 !        Copyright (C) 2004 WanT Group
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM, AF
@@ -29,7 +29,8 @@ subroutine TIMING_overview(list,main_name)
  use LIVE_t,        ONLY:LIVE_message
  use com,           ONLY:msg
  use stderr,        ONLY:log_as_a_file
- use parallel_m,    ONLY:ncpu,myid,master_cpu,PP_redux_wait,PP_bcast
+ use parallel_m,    ONLY:ncpu,myid,master_cpu
+ use parallel_int,  ONLY:PP_redux_wait,PP_bcast
  use vec_operate,   ONLY:sort
  !
  implicit none

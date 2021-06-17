@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM, DS
@@ -21,7 +21,7 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine def_variable_elemental(ID,VAR,VAR_SZ,VAR_KIND,MENU,par_io_kind)
+subroutine def_variable_elemental(ID,VAR,VAR_SZ,VAR_KIND,MENU,dim_names,par_io_kind)
  !
  use netcdf
  use pars,       ONLY:SP,DP,IP,LP,schlen,lchlen,nf90_SP,DB_menu_length
@@ -38,12 +38,13 @@ subroutine def_variable_elemental(ID,VAR,VAR_SZ,VAR_KIND,MENU,par_io_kind)
  !
  implicit none
  !
- integer               :: ID
- character(*)          :: VAR
- integer               :: VAR_SZ
- integer               :: VAR_KIND
- integer               :: MENU          ! MENU = 1 (on) 0 (off)
- character(*),optional :: par_io_kind
+ integer     , intent(in) :: ID
+ character(*), intent(in) :: VAR
+ integer     , intent(in) :: VAR_SZ
+ integer     , intent(in) :: VAR_KIND
+ integer     , intent(in) :: MENU          ! MENU = 1 (on) 0 (off)
+ character(schlen), optional, intent(in) :: dim_names(:)
+ character(*),      optional, intent(in) :: par_io_kind
  !
  ! Work Space
  !
@@ -119,19 +120,9 @@ subroutine def_variable_elemental(ID,VAR,VAR_SZ,VAR_KIND,MENU,par_io_kind)
      ch=STRING_pack(MODE,trim(io_file(ID)),"]",repeat('-',max( DB_menu_length-len_trim(io_file(ID))-4,1) ))
    else
      !
-     ! GPL_EXCLUDE_START
-     !
      write (ch,'(a,i6.6,2a,3(a,i2.2),a,i5.5,a)')  '- S/N ',io_serial_number(ID),' ',&
 &            repeat('-',DB_menu_length-35),'- v.',io_code_version(ID,1),'.',io_code_version(ID,2),&
 &            '.',io_code_version(ID,3),' r.',io_code_revision(ID,1),' -'
-     !
-     ! GPL_EXCLUDE_END
-     !
-     ! GPL_INCLUDE_START
-!     write (ch,'(a,i6.6,2a,3(a,i2.2),a,i5.5,a)')  '- S/N ',io_serial_number(ID),' ',&
-!&          repeat('-',DB_menu_length-35),'- v.',io_code_version(ID,1),'.',io_code_version(ID,2),&
-!&          '.',io_code_version(ID,3),' r.',io_code_revision(ID,2),' -'
-     ! GPL_INCLUDE_END
      !
    endif
    !

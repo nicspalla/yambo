@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -29,6 +29,7 @@ module YPPm
  use QP_m,      ONLY:QP_t
  use electrons, ONLY:levels
  use X_m,       ONLY:X_t
+ use DIPOLES,   ONLY:DIPOLE_t
  !
  implicit none
  !
@@ -39,9 +40,11 @@ module YPPm
  logical  :: l_q_grid
  logical  :: l_shifted_grid
  logical  :: l_random_grid
+ logical  :: l_regular_grid
  logical  :: l_high_sym_pts
  integer  :: N_path_pts
  integer  :: BZ_random_nkpts
+ integer  :: K_grid(3)
  real(SP) :: alat_used_for_output
  character(schlen) :: coo_in
  character(schlen) :: coo_out
@@ -70,18 +73,20 @@ module YPPm
  !
  ! Projection mode
  !
- type(bz_samp)     :: SLICE_k
- type(levels)      :: SLICE_E
- character(schlen) :: PROJECT_mode="none" ! ATOM,LINE,PLANE
- character(schlen) :: PROJECT_path="none" 
- integer           :: PROJECT_steps=-1
- integer           :: PROJECT_depth=-1
- real(SP)          :: PROJECT_threshold=5.
- real(SP)          :: PROJECT_plane_X(3)
- real(SP)          :: PROJECT_plane_Y(3)
- logical           :: l_PROJECT_atom
- logical           :: l_PROJECT_line
- logical           :: l_PROJECT_plane
+ type(bz_samp)        :: SLICE_k
+ type(levels)         :: SLICE_E
+ character(schlen)    :: PROJECT_mode="none" ! ATOM,LINE,PLANE
+ character(schlen)    :: PROJECT_path="none" 
+ integer              :: PROJECT_steps=-1
+ integer              :: PROJECT_N_par=0
+ integer              :: PROJECT_N_perp=1
+ real(SP)             :: PROJECT_threshold=5.
+ real(SP)             :: PROJECT_plane_X(3)
+ real(SP)             :: PROJECT_plane_Y(3)
+ integer, allocatable :: PROJECT_k_map(:)
+ logical              :: l_PROJECT_atom
+ logical              :: l_PROJECT_line
+ logical              :: l_PROJECT_plane
  ! 
  ! DOS
  !
@@ -107,6 +112,7 @@ module YPPm
  integer               ::BANDS_steps
  character(lchlen)     ::CIRCUIT_E_DB_path  = "none"
  character(schlen)     ::BANDS_path  = " "
+ character(schlen)     ::INTERP_input_mode='BOLTZ'
  type(levels)          ::CIRCUIT_E_db
  integer               ::INTERP_grid(3)  ! Interpolation Grid
  real(SP)              ::Nel_fac
@@ -149,6 +155,17 @@ module YPPm
  real(SP), allocatable ::v2plot2D(:,:)
  real(SP)              ::current_dir(3)=(/1.,1.,1./)
  !
+ ! Dipoles
+ !
+ type(DIPOLE_t)    ::DIPs
+ character(schlen) ::DIPs_kind
+ logical           ::l_dipoles
+ integer           ::DIPs_C_bands(2)
+ integer           ::DIPs_V_bands(2)
+ real(SP)          ::DIPs_E_range(2)
+ real(SP)          ::DIPs_direction(3)=(/1._SP,0._SP,0._SP/)
+ real(SP), allocatable :: DIPs_mask(:,:,:)
+ !
  ! Exc/SP Properties
  !
  logical      ::l_excitons
@@ -157,17 +174,20 @@ module YPPm
  logical      ::l_amplitude
  logical      ::l_spin
  logical      ::l_free_hole
+ logical      ::l_average_eh
  logical      ::l_angular_momentum
  logical      ::l_position
  integer      ::ncell(3) 
  integer      ::BSiq    
+ logical      ::BSiq_via_command_line=.FALSE.
  real(SP)     ::r_hole(3)    
  real(SP)     ::deg_energy   
  real(SP)     ::EXCITON_E_treshold
  real(SP)     ::EXCITON_Res_treshold
  real(SP)     ::EXCITON_weight_treshold   
  real(SP)     ::WF_multiplier   
- character(schlen)    ::state_ctl 
+ character(schlen)    :: AVE_exc
+ character(schlen)    :: state_ctl 
  integer              :: EXCITONS_n_user_states=0
  integer, allocatable :: EXCITONS_user_indexes(:)
  type EXCITON_spin
@@ -196,7 +216,7 @@ module YPPm
  !
  ! BZ Double Grid
  !
- logical           :: l_map_kpts
+ logical            :: l_map_kpts
  integer, parameter :: MAX_FineGd_DBs=20
  integer            :: n_FineGd_DBs
  integer            :: BZ_FineGd_nkpts_to_use
@@ -204,7 +224,7 @@ module YPPm
  !
  ! Perturbative SOC
  !
- logical           :: l_map_WFs
+ logical           :: l_SOC_map
  integer           :: SOC_bands_to_map(2)
  integer           :: SOC_bands_buffer
  character(lchlen) :: perturbative_SOC_path
@@ -258,19 +278,15 @@ module YPPm
  real(SP)    :: E_field(2,3)
  real(SP)    :: B_field,B_theta,B_psi
  !
- ! Convert wave--functions
- !
- logical     :: l_fix_save
- !
  ! BSE data
  !
- complex(SP), allocatable ::BS_R_left(:)
- complex(SP), allocatable ::BS_R_right(:)
+ complex(SP), pointer     ::BS_R_left(:)
+ complex(SP), pointer     ::BS_R_right(:)
  complex(SP), allocatable ::BS_E(:)
  real(SP),    pointer     ::BS_E_SOC_corr(:,:) => null()
  real(SP),    pointer     ::BS_R_PL(:,:)       => null()
  complex(SP), pointer     ::BS_R_kerr(:)       => null()
- type(X_t)         ::Xbsk 
+ type(X_t)                ::Xbsk 
  !
  interface
    !
@@ -282,7 +298,6 @@ module YPPm
      character(*)          ::form
      real(SP),    optional ::wk(nk)
      character(*),optional ::coo_out
-     !
    end subroutine
    !
    subroutine excitons_degeneracy_average(N,BS_E_degs,R,C,VERB)

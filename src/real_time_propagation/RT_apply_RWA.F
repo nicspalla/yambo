@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !            http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM DS
@@ -99,7 +99,7 @@ subroutine RT_apply_RWA(ik,E,k,dT,dTp,dG_out,dG_in)
    ! This explains the need for the special definition
    !    sumGAMMA=abs(E%W(i_n,ik,1))+abs(E%W(i_np,ik,1))           (2)
    ! instead of
-   !    sumGAMMA=sum(REF_lifetimes(i_n,ik,:))                     (3)
+   !    sumGAMMA=sum(REF_lifetime(i_n,ik,:))                     (3)
    ! with i_n=i_np.
    ! 
    ! This difference is due to two reasons:

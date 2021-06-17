@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -216,7 +216,7 @@ module LIVE_t
      ! rfmt    =right formatting (n nn r)
      ! sfmt    =Message formatting
      !
-     use stderr,     ONLY : c_print,logfile,logfile_unit,write_to_log,intc,logfile_unit
+     use stderr,     ONLY : c_print,logfile_unit,write_to_log,intc
      use parallel_m, ONLY : myid,ncpu,n_nodes,host_name
      implicit none
      character(*)          :: message
@@ -233,8 +233,7 @@ module LIVE_t
      !
      rfmt_=" "
      sfmt_="%s"
-     if (.not.log_as_a_file) lfmt_="r"
-     if (     log_as_a_file) lfmt_="n"
+     lfmt_="n"
      !
      if (present(lfmt)) lfmt_=trim(lfmt)
      if (present(rfmt)) rfmt_=trim(rfmt)

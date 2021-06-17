@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM, DS
@@ -28,10 +28,10 @@ subroutine PARALLEL_global_dimensions(E,Xk,q,ENVIRONMENT)
 &                        PAR_EH_range,PAR_Dip_ib,PAR_Dip_ib_lim,PAR_X_ib,PAR_X_iq,PAR_n_G_vectors,&
 &                        PAR_n_freqs,PAR_K_range,PAR_n_bands
  use drivers,       ONLY:l_eval_collisions,l_elph_corr,l_gw0,l_HF_and_locXC,l_life,l_sc_run
- use BS,            ONLY:BS_bands,BS_nT_at_k
+ use BS,            ONLY:BS_bands,BS_nT_at_k,BS_n_eh_spaces
  use X_m,           ONLY:X_ng
 #if defined _ELPH
- use ELPH,          ONLY:elph_nDBs_used,QP_PH_n_G_bands,elph_use_q_grid
+ use ELPH,          ONLY:elph_nQ_used,QP_PH_n_G_bands,elph_use_q_grid
 #endif
 #if defined _SC
  use SC,            ONLY:SC_bands
@@ -64,6 +64,7 @@ subroutine PARALLEL_global_dimensions(E,Xk,q,ENVIRONMENT)
  ! K-pts
  !-------
  PAR_K_range=Xk%nibz
+ if (ENVIRONMENT=="BZ_Indexes"               ) PAR_K_range=Xk%nibz
  if (ENVIRONMENT=="DIPOLES"                  ) PAR_K_range=Xk%nibz
  if (index(ENVIRONMENT, "Response_G_space")>0) PAR_K_range=Xk%nbz
  if (ENVIRONMENT=="Response_T_space"         ) PAR_K_range=Xk%nibz
@@ -74,8 +75,8 @@ subroutine PARALLEL_global_dimensions(E,Xk,q,ENVIRONMENT)
  !------------
  if (ENVIRONMENT=="DIPOLES"                  ) PAR_n_c_bands= (/PAR_Dip_ib_lim(2),PAR_Dip_ib(2)/)
  if (index(ENVIRONMENT, "Response_G_space")>0) PAR_n_c_bands= (/E%nbf+1,PAR_X_ib(2)/)
- if (ENVIRONMENT=="Response_G_space"         )                 PAR_n_c_bands= (/E%nbf+1,PAR_X_ib(2)/)
- if (ENVIRONMENT=="Response_T_space"         )                 PAR_n_c_bands= (/E%nbf+1,BS_bands(2)/)
+ if (ENVIRONMENT=="Response_G_space"         ) PAR_n_c_bands= (/E%nbf+1,PAR_X_ib(2)/)
+ if (ENVIRONMENT=="Response_T_space"         ) PAR_n_c_bands= (/E%nbf+1,BS_bands(2)/)
  !
  ! VAL bands
  !-----------
@@ -86,9 +87,9 @@ subroutine PARALLEL_global_dimensions(E,Xk,q,ENVIRONMENT)
 #else
  if (index(ENVIRONMENT, "Response_G_space")>0       ) PAR_n_v_bands= (/PAR_X_ib(1),E%nbm/)
 #endif
- if (ENVIRONMENT=="Response_T_space")                 PAR_n_v_bands= (/BS_bands(1),E%nbm/)
+ if (ENVIRONMENT=="Response_T_space"                ) PAR_n_v_bands= (/BS_bands(1),E%nbm/)
  !
- ! # G vectors 
+ ! # G vectors
  !-------------
  if (index(ENVIRONMENT, "Response_G_space")>0) PAR_n_G_vectors= X_ng
  !
@@ -109,19 +110,31 @@ subroutine PARALLEL_global_dimensions(E,Xk,q,ENVIRONMENT)
 #endif
 #if defined _ELPH
    if (l_elph_corr.and.elph_use_q_grid)         PAR_Q_bz_range=(/1,nqbz/)
-   if (l_elph_corr.and..not.elph_use_q_grid)    PAR_Q_bz_range=(/1,elph_nDBs_used/)
+   if (l_elph_corr.and..not.elph_use_q_grid)    PAR_Q_bz_range=(/1,elph_nQ_used/)
 #endif
  endif
  !
  !
  ! EH-range
  !----------
- if (ENVIRONMENT=="Response_T_space"                ) then
+ if (ENVIRONMENT=="Response_T_space") then
+   ! Set this value just to properly define a parallel range
+   PAR_EH_range=(PAR_n_c_bands(2)-PAR_n_c_bands(1)+1)*PAR_n_v_bands(2)-PAR_n_v_bands(1)+1
+ endif
+ if (ENVIRONMENT=="Response_T_space_transitions") then
    PAR_EH_range=maxval( BS_nT_at_k )
-   do i_k=1,Xk%nibz
+   do i_k=1,Xk%nibz*BS_n_eh_spaces
      if (BS_nT_at_k(i_k)<PAR_EH_range.and.BS_nT_at_k(i_k)>0) PAR_EH_range=BS_nT_at_k(i_k)
    enddo
  endif
+ !
+ ! EH Bands 
+ !----------
+#if defined _ELPH
+ if (ENVIRONMENT=="Phonon_Self_Energy"              ) then
+    PAR_n_bands=(/1,(QP_PH_n_G_bands(2)-QP_PH_n_G_bands(1)+1)**2/)
+ endif
+#endif
  !
  ! Generic Bands
  !---------------
@@ -136,7 +149,7 @@ subroutine PARALLEL_global_dimensions(E,Xk,q,ENVIRONMENT)
    if (l_sc_run)           PAR_n_bands=SC_bands
 #endif
 #if defined _ELPH
-   if (l_elph_corr)        PAR_n_bands=(/1,QP_PH_n_G_bands/)
+   if (l_elph_corr)        PAR_n_bands=(/QP_PH_n_G_bands(1),QP_PH_n_G_bands(2)/)
 #endif
  endif
 #if defined _RT

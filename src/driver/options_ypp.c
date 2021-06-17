@@ -1,5 +1,5 @@
 /*
-         Copyright (C) 2000-2020 the YAMBO team
+         Copyright (C) 2000-2021 the YAMBO team
                http://www.yambo-code.org
  
   Authors (see AUTHORS file for details): AM
@@ -32,7 +32,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  */
  *i_opt=*i_opt+1;
  options[*i_opt].short_desc="BZ Grid generator";
- options[*i_opt].long_desc[0]="<string>=(k)pt,(q)pt,(s)hifted,(h)igh symmetry,(r)andom";
+ options[*i_opt].long_desc[0]="<string>=(k)pt,(q)pt,(s)hifted,(h)igh symmetry,(r)andom,r(e)gular";
  options[*i_opt].long_opt="grid";
  options[*i_opt].short_opt='k';
  options[*i_opt].bin="ypp";
@@ -59,18 +59,18 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].yambo_string="wannier";
  options[*i_opt].section="Wannier";
  /* 
-  Convertions
+  SOC
  */
  *i_opt=*i_opt+1;
- options[*i_opt].short_desc="WFs";
- options[*i_opt].long_opt= "wf";
- options[*i_opt].long_desc[0]="<string>=(p)erturbative SOC mapping, (c)onversion";
+ options[*i_opt].short_desc="Perturbative SOC mapping";
+ options[*i_opt].long_opt="soc";
  options[*i_opt].short_opt='w';
  options[*i_opt].bin="ypp";
- options[*i_opt].no_bin="ypp_models";
- options[*i_opt].char_var=1;
- options[*i_opt].yambo_string="WFs";
- options[*i_opt].section="Convertions";
+ options[*i_opt].yambo_string="WFs_SOC_map";
+ options[*i_opt].section="SOC";
+ /* 
+  Convertions
+ */
  *i_opt=*i_opt+1;
  options[*i_opt].short_desc="Remove symmetries not consistent with an external perturbation";
  options[*i_opt].long_opt=  "fixsym";
@@ -97,6 +97,8 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].bin="ypp_ph";
  options[*i_opt].yambo_string="gkkp"  ;
  options[*i_opt].section="Convertions";
+ options[*i_opt].long_desc[0]="<string>=(g)kkp,(d)ouble grid,(p)lot gkkp";
+ options[*i_opt].char_var=1;
 #endif
  /* 
   Plots
@@ -119,23 +121,17 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].section="Plots";
  *i_opt=*i_opt+1;
  options[*i_opt].short_desc="Electronic properties";
- /* GPL_EXCLUDE_START */
  options[*i_opt].long_desc[0]="<string>=(h)artree,(f)ock,(coh),(sex),(cohsex),(exx),(exxc),(srpa),(d)ef,(ip)";
-#if defined _YPP_ELPH  
+#if defined _ELPH  
  options[*i_opt].long_desc[0]="<string>=(w)ave,(d)ensity,(m)ag,do(s),(b)ands,(c)urrent,(e)lias";
 #elif defined _YPP_MAGNETIC 
  options[*i_opt].long_desc[0]="<string>=(w)ave,(d)ensity,(m)ag,do(s),(b)ands,(c)urrent,angu(l)ar,(p)osition";
 #else
  options[*i_opt].long_desc[0]="<string>=(w)ave,(d)ensity,(m)ag,do(s),(b)ands,(c)urrent";
 #endif
- /* GPL_EXCLUDE_END */
- /* GPL_INCLUDE_START 
- options[*i_opt].long_desc[0]="<string>=(w)ave,(d)ensity,(m)ag,do(s),(b)ands";
-    GPL_INCLUDE_END */
  options[*i_opt].long_opt="electron";
  options[*i_opt].short_opt='s';
  options[*i_opt].bin="ypp"; 
- options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="electrons";
  options[*i_opt].section="Plots";
  options[*i_opt].char_var=1;
@@ -144,18 +140,24 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="exciton";
  options[*i_opt].short_opt='e';
  options[*i_opt].bin="ypp ypp_ph";
- options[*i_opt].no_bin="ypp_models";
- /* GPL_EXCLUDE_START */
-#if defined _YPP_ELPH  
- options[*i_opt].long_desc[0]="<string>=(s)ort,(sp)in,(a)mplitude,(w)ave,(e)lias,(g)kkp";
+#if defined _ELPH  
+ options[*i_opt].long_desc[0]="<string>=(s)ort,(sp)in,(a)mplitude,(w)ave,(i)nterpolate,";
+ options[*i_opt].long_desc[1]="         (e)lias,(g)kkp,(p)h-assisted dos";
 #else
- options[*i_opt].long_desc[0]="<string>=(s)ort,(sp)in,(a)mplitude,(w)ave";
+ options[*i_opt].long_desc[0]="<string>=(s)ort,(sp)in,(a)mplitude,(w)ave,(i)nterpolate";
 #endif
- /* GPL_EXCLUDE_END */
- /* GPL_INCLUDE_START 
- options[*i_opt].long_desc[0]="<string>=(s)ort,(sp)in,(a)mplitude,(w)ave";
-    GPL_INCLUDE_END */
  options[*i_opt].yambo_string="excitons";
+ options[*i_opt].section="Plots";
+ options[*i_opt].char_var=1;
+ *i_opt=*i_opt+1;
+ options[*i_opt].short_desc="Dipole properties";
+ options[*i_opt].long_opt="dipoles";
+ options[*i_opt].bin="ypp";
+ options[*i_opt].long_desc[0]="<string>=(exc)itonic,(ip)independent-particle";
+#if defined _YPP_RT  
+ options[*i_opt].long_desc[0]="<string>=(exc)itonic,(ip)independent-particle,(m)ask";
+#endif
+ options[*i_opt].yambo_string="dipoles";
  options[*i_opt].section="Plots";
  options[*i_opt].char_var=1;
  *i_opt=*i_opt+1;
@@ -164,6 +166,12 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].bin="ypp";
  options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="freehole";
+ options[*i_opt].section="Plots";
+ *i_opt=*i_opt+1;
+ options[*i_opt].short_desc="Average hole/electron wavefunction";
+ options[*i_opt].long_opt="avehole";
+ options[*i_opt].bin="ypp";
+ options[*i_opt].yambo_string="avehole";
  options[*i_opt].section="Plots";
 #if !defined _YPP_RT  
  *i_opt=*i_opt+1;
@@ -179,7 +187,6 @@ void options_ypp(struct options_struct options[],int *i_opt)
 /*
   Real-Time
 */
- /* GPL_EXCLUDE_START */
  *i_opt=*i_opt+1;
  options[*i_opt].short_desc="Non-linear response analysis";
  options[*i_opt].long_opt="nl";
@@ -196,7 +203,6 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].yambo_string="RTDBs";
  options[*i_opt].section="Real-Time";
  options[*i_opt].char_var=1;
- /* GPL_EXCLUDE_END */
  *i_opt=*i_opt+1;
  options[*i_opt].short_desc="TD observables plot";
  options[*i_opt].long_opt="rtplot";
@@ -205,12 +211,9 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].bin="ypp_rt";
  options[*i_opt].yambo_string="TDplots"; /* TDplots */
  options[*i_opt].section="Real-Time";
- /* GPL_EXCLUDE_START */
- options[*i_opt].long_desc[0]="<string1>=(X)response,Tr(a)bs,(o)ccupations,(l)ifetimes,(d)ensity";
- /* GPL_EXCLUDE_END */
- /* GPL_INCLUDE_START 
- options[*i_opt].long_desc[0]="<string1>=(X)response,Tr(a)bs";
-    GPL_INCLUDE_END */
+ options[*i_opt].long_desc[0]="<string>=(X)response,(a)bsorption,(o)ccupations,(l)ifetimes,(d)ensity";
+ options[*i_opt].long_desc[1]=" ";
+ options[*i_opt].long_desc[2]="response uses the time-resolved polarization. absorption amends the Kubo expression with the time-dependent occupations";
  *i_opt=*i_opt+1;
  options[*i_opt].short_desc="TD plot control";
  options[*i_opt].char_var=1;
@@ -219,23 +222,8 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].bin="ypp_rt";
  options[*i_opt].yambo_string="TDplotmode"; /* TDpol */
  options[*i_opt].section="Real-Time";
- /* GPL_INCLUDE_START 
- options[*i_opt].long_desc[0]="rtplot=X/a => <string>=(t)ime";
-    GPL_INCLUDE_END */
- /* GPL_EXCLUDE_START */
  options[*i_opt].long_desc[0]="rtplot=X/a => <string>=(t)ime";
  options[*i_opt].long_desc[1]="rtplot=o   => <string>=(b)ands,(t)ime,(e)nergy,(d)os";
  options[*i_opt].long_desc[2]="rtplot=l   => <string>=(b)ands,(t)ime,(e)nergy";
- options[*i_opt].long_desc[3]="rtplot=d   => <string>=(t)ime";
- /* GPL_EXCLUDE_END */
-
-/*
-  Models
-*/
- *i_opt=*i_opt+1;
- options[*i_opt].short_desc="Models Initialization";
- options[*i_opt].long_opt="models";
- options[*i_opt].bin="ypp_models";
- options[*i_opt].yambo_string="models";
- options[*i_opt].section="Models";
+ options[*i_opt].long_desc[3]="rtplot=d   => <string>=(t)ime";/
 };

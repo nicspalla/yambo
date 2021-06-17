@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AF
@@ -929,10 +929,17 @@ CONTAINS
       !
       CALL iotk_scan_begin( iunit, "magnetization", IERR=ierr)
       IF (ierr/=0) RETURN
+      !
       CALL qexsd_scan_logical( iunit, "noncolin", noncolin, IERR=ierr)
       IF (ierr/=0) RETURN
-      CALL qexsd_scan_logical( iunit, "do_magnetization", domag, IERR=ierr)
+      !
+      CALL qexsd_scan_logical( iunit, "do_magnetization", domag, LFOUND=lfound, IERR=ierr)
+      IF (.not.lfound) then
+         domag=.false.
+         ierr=0
+      ENDIF
       IF (ierr/=0) RETURN
+      !
       CALL iotk_scan_end( iunit, "magnetization", IERR=ierr)
       IF (ierr/=0) RETURN
       !

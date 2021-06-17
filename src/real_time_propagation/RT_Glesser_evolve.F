@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM CA DS
@@ -79,15 +79,11 @@ subroutine RT_Glesser_evolve(En,kpt,dG_old,dG_in,dG_out,dT,dTp)
    !
    if(.not.l_RT_RWA)           call RT_Dephasing_step(dG_out(:,:,ik),dG_old(:,:,ik),ik,dT)
    !
-   ! GPL_EXCLUDE_START
-   !
    ! Carriers relaxation step:
    !
    ! G(T0+dt) = G(T0) - i dt * Sigma_relax(T)
    !
    call RT_Scattering_step(dG_old(:,:,ik),dG_in(:,:,ik),dG_out(:,:,ik),ik,dT)
-   !
-   ! GPL_EXCLUDE_END
    !
    call RT_G_symmetrization(dG_out(:,:,ik),ik)
    !

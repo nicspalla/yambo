@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -38,7 +38,6 @@ module drivers
  !
  ! Real Time
  !
- logical :: l_photolum           =.FALSE.
  logical :: l_real_time          =.FALSE.
  logical :: l_sc_run             =.FALSE.
  logical :: l_sc_electric        =.FALSE.
@@ -53,12 +52,14 @@ module drivers
  logical :: l_elphoton_corr      =.FALSE.
  logical :: l_elel_corr          =.FALSE.
  logical :: l_elph_corr          =.FALSE.
+ logical :: l_phel_corr          =.FALSE.
  !
  ! The non-eq. self-energy scattering "kind"
  !
  logical :: l_elphoton_scatt     =.FALSE.
  logical :: l_elel_scatt         =.FALSE.
  logical :: l_elph_scatt         =.FALSE.
+ logical :: l_phel_scatt         =.FALSE.
  !
  ! Electron-Phonon specific flags
  !
@@ -81,8 +82,6 @@ module drivers
  logical :: l_dipoles            =.FALSE.
  logical :: l_bse                =.FALSE.
  logical :: l_bss                =.FALSE.
- logical :: l_kerr               =.FALSE.
- logical :: l_anomalous_Hall     =.FALSE.
  !
  ! ... and the kernel
  !
@@ -94,9 +93,7 @@ module drivers
  logical :: l_lrc_fxc            =.FALSE.
  logical :: l_pf_fxc             =.FALSE.
  logical :: l_td_hf              =.FALSE.
- logical :: l_W_eh               =.FALSE.
- logical :: l_W_eh_diag          =.FALSE.
- logical :: l_W_eh_cpl           =.FALSE.
+ logical :: l_td_sex             =.FALSE.
  !
  ! XC kinds (Potential)
  !

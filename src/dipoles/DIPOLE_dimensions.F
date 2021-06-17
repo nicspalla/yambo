@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM, DS
@@ -54,7 +54,9 @@ subroutine DIPOLE_dimensions(Xen,Dip,bands,q0)
  l_X_terminator = X_terminator_Kind/='none'
  !
  if (     l_col_cut) q_norm(1)    =q0_def_norm
- if (.not.l_col_cut) bare_qpg(1,1)=q0_def_norm
+ if (.not.l_col_cut.and.allocated(bare_qpg)) then
+   bare_qpg(1,1)=q0_def_norm
+ endif
  !
  ! Set up band limits
  !

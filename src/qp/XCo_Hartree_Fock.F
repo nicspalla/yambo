@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -31,7 +31,8 @@ subroutine XCo_Hartree_Fock(E,k,Xk,q,mode)
  use LIVE_t,        ONLY:live_timing
  use stderr,        ONLY:intc
  use electrons,     ONLY:levels,spin_occ,spin
- use parallel_m,    ONLY:PP_redux_wait,PAR_IND_Xk_ibz,PAR_IND_QP,&
+ use parallel_int,  ONLY:PP_redux_wait,PARALLEL_global_indexes,PARALLEL_WF_distribute,PARALLEL_WF_index
+ use parallel_m,    ONLY:PAR_IND_Xk_ibz,PAR_IND_QP,&
 &                        PAR_IND_QP_ID,PAR_IND_Q_ibz,PAR_IND_G_b,&
 &                        PAR_IND_Q_ibz_ID,n_WF_bands_to_load
  use collision_el,  ONLY:elemental_collision,elemental_collision_free,elemental_collision_alloc
@@ -44,7 +45,7 @@ subroutine XCo_Hartree_Fock(E,k,Xk,q,mode)
  use timing_m,      ONLY:timing
  use openmp,        ONLY:OPENMP_update,master_thread,n_threads_SE
  use wave_func,     ONLY:WF,WF_buffer,WF_buffered_IO
- use interfaces,    ONLY:PARALLEL_global_indexes,PARALLEL_WF_distribute,PARALLEL_WF_index,WF_load,QP_state_print
+ use interfaces,    ONLY:WF_load,QP_state_print
  use wrapper,       ONLY:Vstar_dot_VV
  use global_XC,     ONLY:WF_exx_screening
  use pseudo,        ONLY:becp, pp_is_uspp
@@ -96,7 +97,7 @@ subroutine XCo_Hartree_Fock(E,k,Xk,q,mode)
    !
    call PARALLEL_global_indexes(E,k,q,"Self_Energy")
    !
-   ! Final states (k-q,n')...
+   ! Final states (k-q,np)...
    call PARALLEL_WF_distribute(K_index=PAR_IND_Xk_ibz,B_index=PAR_IND_G_b,CLEAN_UP=.TRUE.)
    ! Initial states (k,n \in QP)...
    call PARALLEL_WF_distribute(QP_index=PAR_IND_QP)
@@ -265,7 +266,7 @@ subroutine XCo_Hartree_Fock(E,k,Xk,q,mode)
    !$omp end parallel
 #endif
    !
-   QP_Vnl_xc(i_qp)=QP_Vnl_xc(i_qp)+ DP_Sx
+   QP_Vnl_xc(i_qp)=QP_Vnl_xc(i_qp)+ cmplx(DP_Sx,kind=SP)
    !
  enddo
  !

@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -29,16 +29,18 @@ subroutine setup(en,Xen,Ken,k,Xk)
  use parser_m,       ONLY:parser
  use wave_func,      ONLY:wf_ng,wf_ncx
  use electrons,      ONLY:levels,n_met_bands,n_full_bands,E_duplicate,E_reset
- use D_lattice,      ONLY:a,alat,nsym,i_time_rev,DL_vol,Tel,dl_sop,&
+ use D_lattice,      ONLY:a,alat,nsym,i_time_rev,DL_vol,Tel,dl_sop,atom_mass,&
 &                         atoms_spatial_inversion,i_space_inv,input_Tel_is_negative,&
 &                         inv_index,atoms_string,load_PT_elements,n_atoms_species,Z_species,&
 &                         n_atomic_species,PT_elements,non_periodic_directions,lattice,&
 &                         symmetry_group_table,mag_syms,idt_index,symmetry_equiv_atoms
  use R_lattice,      ONLY:RL_vol,b,n_g_shells,ng_in_shell,Xk_grid_new_mapping,FineGd_desc,&
-&                         rl_sop,bz_samp,g_vec,E_of_shell,ng_closed,bz_samp_duplicate_Fg
+&                         rl_sop,bz_samp,g_vec,E_of_shell,ng_closed,bz_samp_duplicate_Fg,MAX_kpts_to_report
  use com,            ONLY:msg,fat_log
  use stderr,         ONLY:intc
- use IO_m,           ONLY:REP,DUMP,NONE,io_control,OP_RD_CL
+ use units,          ONLY:HA2EV
+ use IO_int,         ONLY:io_control
+ use IO_m,           ONLY:REP,DUMP,NONE,OP_RD_CL
  use vec_operate,    ONLY:c2a,define_b_and_DL_vol
  use zeros,          ONLY:k_iku_zero,k_rlu_zero,G_iku_zero,define_zeros
  use interfaces,     ONLY:OCCUPATIONS_Fermi,DESC_write
@@ -65,7 +67,7 @@ subroutine setup(en,Xen,Ken,k,Xk)
  ! Work Space
  !
  real(SP)          :: Tel_SAVE,tmp_V(3)
- integer           :: i1,i2,i3,is,i_err,nbf_m_SAVE(2),ID,n_to_print
+ integer           :: i1,i2,i3,ik,is,i_err,nbf_m_SAVE(2),ID,n_to_print
  type(levels)      :: Xen_COPY
  character(schlen) :: dumb_ch
  integer, external :: k_lattice,io_Double_Grid
@@ -94,6 +96,12 @@ subroutine setup(en,Xen,Ken,k,Xk)
      atoms_string=trim(atoms_string)//trim(intc(n_atoms_species(is)))//PT_elements(Z_species(is))
      if (is<n_atomic_species) atoms_string=atoms_string//"+"
      call msg('r','number of '//PT_elements(Z_species(is))//' atoms    ',n_atoms_species(is))
+   enddo
+ endif
+ !
+ if (allocated(atom_mass)) then
+   do is=1,n_atomic_species
+       call msg('r','Mass of '//PT_elements(Z_species(is))// '    ',atom_mass(is))
    enddo
  endif
  !
@@ -269,8 +277,8 @@ subroutine setup(en,Xen,Ken,k,Xk)
  ! 
  ! E_dbgd
  !
- call io_control(ACTION=OP_RD_CL,COM=NONE,SEC=(/1/),MODE=DUMP,ID=ID)
- i_err=io_Double_Grid(en,k,ID)
+ call io_control(ACTION=OP_RD_CL,COM=REP,SEC=(/1/),MODE=DUMP,ID=ID)
+ i_err=io_Double_Grid(en,k,ID,'electrons')
  !
  call bz_samp_duplicate_Fg(k%FGibz,Xk%FGibz,k%nibz) 
  call bz_samp_duplicate_Fg(k%FGbz,Xk%FGbz,k%nbz) 
@@ -356,7 +364,13 @@ subroutine setup(en,Xen,Ken,k,Xk)
  !
  ! Energies report
  !
- if (l_setup.or.fat_log.or.index(code_bin,'ypp')>0) call REPORT_Energies(en%E,k,Xk,en%nb,(/1,k%nibz/),'E',.FALSE.,.TRUE.)
+ if (l_setup.or.fat_log.or.index(code_bin,'ypp')>0) then
+   K_LOOP: do ik=1,k%nibz
+     call REPORT_Energies(en%E,k,Xk,en%nb,(/ik,ik/),'E',.FALSE.,.TRUE.)
+     call REPORT_Energies(en%f/HA2EV,k,Xk,en%nb,(/ik,ik/),'occ',.FALSE.,.TRUE.)
+     if (ik==MAX_kpts_to_report.and..not.fat_log) exit K_LOOP
+   enddo K_LOOP
+ endif
  !
  ! Once the occupations have been evaluated I dump Xen in Ken
  !

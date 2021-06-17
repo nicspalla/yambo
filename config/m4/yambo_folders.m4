@@ -1,5 +1,5 @@
 #
-#        Copyright (C) 2000-2020 the YAMBO team
+#        Copyright (C) 2000-2021 the YAMBO team
 #              http://www.yambo-code.org
 #
 # Authors (see AUTHORS file for details): DS AM
@@ -133,7 +133,7 @@ if ! test -d "$extlibs_path/${FCKIND}/${FC}/bin";     then mkdir    "$extlibs_pa
 #
 if  test -d "$extlibs_path/${FCKIND}/${FC}" ; then
  BIN_LIBRARIES=$extlibs_path/${FCKIND}/${FC}/bin/* ;
- BIN_NETCDF=$extlibs_path/${FCKIND}/${FC}/${NETCDF_VER}/${HDF5_VER}/bin/* ;
+ BIN_NETCDF=$extlibs_path/${FCKIND}/${FC}/${NETCDF_VER}/${IO_LIB_VER}/bin/* ;
  BIN_SLEPC=$extlibs_path/${FCKIND}/${FC}/${build_precision}/bin/* ;
  for file in $BIN_LIBRARIES $BIN_NETCDF $BIN_SLEPC; do
   if test -f $file; then 
@@ -143,13 +143,17 @@ if  test -d "$extlibs_path/${FCKIND}/${FC}" ; then
 fi
 #
 if [[ "$compdir" != "$srcdir" ]] && [[ "$srcdir" != "." ]] ; then
+ cp     $srcdir/Makefile $compdir/
+ cp -r  $srcdir/config   $compdir/ 
  if test ! -d "$compdir/driver"     ; then mkdir "$compdir/driver"     ; fi
+ if test ! -d "$compdir/lib/archive"; then mkdir "$compdir/lib/archive"; fi
+ cp     $srcdir/lib/archive/package.list   $compdir/lib/archive
 
  if test ! -d "$compdir/ypp"        ; then mkdir "$compdir/ypp"        ; fi
  if test ! -d "$compdir/interfaces" ; then mkdir "$compdir/interfaces" ; fi
  if test ! -d "$compdir/lib"        ; then mkdir "$compdir/lib"        ; fi
 
- for folder in ["driver/include" "include/headers/common" "include/headers/parser" "src/common"] ; do
+ for folder in ["include/driver" "include/headers/common" "include/headers/parser" "src/common"] ; do
    cd "$srcdir/$folder" ;
    if test ! -d "$compdir/$folder"; then mkdir "$compdir/$folder"     ; fi
    for file in `ls *.h*` ; do

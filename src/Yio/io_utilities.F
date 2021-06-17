@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM, DS
@@ -135,11 +135,10 @@ function get_name(desc,subfolder,type,CORE_IO,MORE_IO,COM_IO,ALT_JOB_STRING,ALT_
  !
 end function get_name
 !
-!
 function all_locations(desc,subfolder)
  !
  use pars,            ONLY:lchlen,num_of_alternative_locations
- use IO_m,            ONLY:get_name
+ use IO_int,          ONLY:get_name
  use com,             ONLY:n_alt_jobstr,alt_jobdir,alt_jobstr,n_max_jobstr
  !
  implicit none
@@ -189,7 +188,6 @@ function all_locations(desc,subfolder)
  enddo
  !
 end function all_locations
-!
 !
 function desc_to_varname(desc)
  !

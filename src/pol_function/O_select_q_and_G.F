@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -107,8 +107,8 @@ integer function O_select_q_and_G(iq,q,X,Q_plus_G_pt,Q_plus_G_sq_modulus)
    Q_plus_G_pt=Q_plus_G_pt+g_vec(O_select_q_and_G,:)
    Q_plus_G_sq_modulus=iku_v_norm(Q_plus_G_pt)**2
    call msg('rs',trim(RL_msg(2)))
-   call msg('r','Momentum shift [cc]',g_vec(O_select_q_and_G,:))
-   call msg('r','Total Momentum [cc]',Q_plus_G_pt(:))
+   call msg('r','Momentum shift     ',g_vec(O_select_q_and_G,:),"[c.c.]")
+   call msg('r','Total Momentum     ',Q_plus_G_pt(:),"[c.c.]")
  endif
  !
 end function

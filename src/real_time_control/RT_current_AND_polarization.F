@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM CA DS
@@ -46,7 +46,7 @@ subroutine RT_current_AND_polarization(k,E,G_input,A_input)
  use fields,         ONLY:gauge_field
  use DIPOLES,        ONLY:DIP_iR,DIP_v,DIP_spin,DIP_orbital
  use parallel_m,     ONLY:PAR_DIPk_nibz,PAR_G_k_range
- use RT_interfaces,  ONLY:RT_average_operator
+ use RT_operations,  ONLY:RT_average_operator
  !
  implicit none
  !
@@ -103,8 +103,6 @@ subroutine RT_current_AND_polarization(k,E,G_input,A_input)
    !
  endif
  !
- ! GPL_EXCLUDE_START
- !
  if(n_spin>1) then
    !
    ! C : Spin magnetization
@@ -143,7 +141,5 @@ subroutine RT_current_AND_polarization(k,E,G_input,A_input)
    endif
    ! 
  endif
- !
- ! GPL_EXCLUDE_END
  !
 end subroutine RT_current_AND_polarization

@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -32,12 +32,13 @@ subroutine TDDFT_BSK_disk_2_FXC(iq,Xk,W,X_static)
  use matrix_operate,ONLY:UP_matrix_index
  use com,           ONLY:isec
  use LIVE_t,        ONLY:live_timing
- use parallel_m,    ONLY:PP_redux_wait
+ use parallel_int,  ONLY:PP_redux_wait
  use D_lattice,     ONLY:DL_vol
  use interfaces,    ONLY:WF_load,WF_free
  use wave_func,     ONLY:WF
  use X_m,           ONLY:X_t
- use IO_m,          ONLY:io_control,OP_RD,RD,NONE,RD_CL,VERIFY,OP_RD_CL,REP
+ use IO_int,        ONLY:io_control
+ use IO_m,          ONLY:OP_RD,RD,NONE,RD_CL,VERIFY,OP_RD_CL,REP
  use TDDFT,         ONLY:FXC,FXC_n_g_corr,FXC_K_diagonal,io_BS_Fxc
 #include<memory.h>
  type(bz_samp) ::Xk
@@ -89,7 +90,7 @@ subroutine TDDFT_BSK_disk_2_FXC(iq,Xk,W,X_static)
  !
  ! Kernel 2 FXC
  !
- YAMBO_ALLOC(FXC_K_diagonal,(BS_K_dim))
+ YAMBO_ALLOC(FXC_K_diagonal,(BS_K_dim(1)))
  YAMBO_ALLOC(FXC,(FXC_n_g_corr,FXC_n_g_corr,W%n_freqs))
  O_x_dim=maxval(BS_nT_at_k)
  FXC_K_diagonal=0._SP

@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -39,10 +39,10 @@ integer function io_DB1(E,k,ID)
  use wave_func,        ONLY:wf_igk_d
 #endif
  use LIVE_t,           ONLY:live_timing_is_on
- use IO_m,             ONLY:io_connect, io_disconnect, io_sec,variable_exist, &
-&                           io_elemental, io_status, io_bulk,read_is_on,&
+ use IO_int,           ONLY:io_connect,io_disconnect,io_elemental,io_bulk,ver_is_gt_or_eq
+ use IO_m,             ONLY:io_sec,variable_exist,io_status,read_is_on,&
 &                           serial_number,io_serial_number,io_code_revision,&
-&                           DUMP,io_mode,write_is_on,io_code_version,ver_is_gt_or_eq
+&                           DUMP,io_mode,write_is_on,io_code_version
  use QP_m,             ONLY:QP_nk,QP_nb,QP_n_G_bands
  use BS,               ONLY:BS_bands
  use xc_functionals,   ONLY:GS_xc_KIND,GS_xc_FUNCTIONAL,GS_exx_FRACTION,GS_exx_SCREENING
@@ -141,7 +141,7 @@ integer function io_DB1(E,k,ID)
    !
    if (i_time_rev==1) then
      call io_elemental(ID,I0=nsym,CHECK=.true.,OP=(/"=="/),&
-&                      VAR=' Symmetries',TERMINATOR='spatial+T-rev')
+&                      VAR=' Symmetries',TERMINATOR='spatial+T-reV')
    else
      call io_elemental(ID,I0=nsym,CHECK=.true.,OP=(/"=="/),&
 &                      VAR=' Symmetries',TERMINATOR='spatial')
@@ -157,7 +157,7 @@ integer function io_DB1(E,k,ID)
    n_spin=max(n_sp_pol,n_spinor,1)
    !
    call io_elemental(ID, UNIT=HA2EV,R0=input_GS_Tel,CHECK=.true.,OP=(/"=="/),&
-&                    VAR=' Temperature',TERMINATOR='ev')
+&                    VAR=' Temperature',TERMINATOR='eV')
    call io_elemental(ID, R0=default_nel,CHECK=.true.,OP=(/"=="/),&
 &                    VAR=' Electrons                       ')
    call io_elemental(ID, I0=GS_xc_KIND)

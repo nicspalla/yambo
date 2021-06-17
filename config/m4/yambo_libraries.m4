@@ -1,5 +1,5 @@
 #
-#        Copyright (C) 2000-2020 the YAMBO team
+#        Copyright (C) 2000-2021 the YAMBO team
 #              http://www.yambo-code.org
 #
 # Authors (see AUTHORS file for details): AM
@@ -27,20 +27,53 @@ AC_DEFUN([AC_YAMBO_LIBRARIES],[
 DRIVER_INCS="-I$PWD/lib/yambo/driver/include/ -I$PWD/include/driver"
 AC_SUBST(DRIVER_INCS)
 
-AC_MSG_CHECKING([driver lib])
-cd lib/
-if ! test -d "yambo/driver/src"; then
- git clone git@github.com:yambo-code/yambo-libraries.git yambo
-else
- cd yambo
- git pull
- cd ../
+if [[ "$compdir" != "$srcdir" ]] && [[ "$srcdir" != "." ]] ; then
+ if test ! -d "$compdir/lib/" ;      then mkdir  $compdir/lib/                   ; fi
+ if test ! -d "$compdir/lib/yambo" ; then cp -r  $srcdir/lib/yambo $compdir/lib/ ; fi
 fi
-cd ../
 
-m4_include([lib/yambo/driver/config/version.m4])
-
-AC_MSG_RESULT([@ version $YDRI_VERSION.$YDRI_SUBVERSION.$YDRI_PATCHLEVEL])
+if test -f ".git" || test -d ".git"; then
+  #
+  # git procedure
+  #
+  AC_MSG_CHECKING([the yambo-libraries git repository])
+  cd lib/
+  if ! test -d "yambo/driver/src"; then
+    git clone git@github.com:yambo-code/yambo-libraries.git yambo >& /dev/null
+  else
+    cd yambo
+    git checkout master >& /dev/null
+    git pull >& /dev/null
+    cd ../
+  fi
+  m4_include([lib/yambo/driver/config/version.m4])
+  AC_MSG_RESULT([@ version $YDRI_VERSION.$YDRI_SUBVERSION.$YDRI_PATCHLEVEL])
+  AC_MSG_CHECKING([the libraries archive ])
+  cp yambo/external/*.gz  $compdir/lib/archive
+  cd ../
+  AC_MSG_RESULT(populated)
+  #
+else
+  #
+  # direct download procedure
+  #
+  make download
+  TARBALL=`find lib/archive -name 'Ydriver*'`
+  AC_MSG_NOTICE([Extracting yambo internal librar(ies)])
+  if ! test -d "lib/yambo/driver/src"; then
+    AC_MSG_CHECKING([the internal library ${TARBALL}])
+    tar -xzf $TARBALL
+    rm   -rf lib/yambo
+    mkdir -p lib/yambo
+    mv yambo-libraries-*/* lib/yambo
+    rm -rf yambo-libraries-*
+    cd lib/yambo
+    m4_include([lib/yambo/driver/config/version.m4])
+    AC_MSG_RESULT([@ version $YDRI_VERSION.$YDRI_SUBVERSION.$YDRI_PATCHLEVEL])
+    cd ../../
+  fi 
+  #
+fi
 
 
 ])

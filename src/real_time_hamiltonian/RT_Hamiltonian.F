@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM CA DS
@@ -64,7 +64,8 @@ subroutine RT_Hamiltonian(dG_in,A_input,E,k)
 &                         l_update_SOC,l_velocity_gauge_corr
  use fields,         ONLY:gauge_field
  use wave_func,      ONLY:WF
- use parallel_m,     ONLY:PAR_IND_Xk_ibz,PAR_COM_Xk_ibz_A2A,PP_redux_wait,PAR_G_k_range
+ use parallel_m,     ONLY:PAR_IND_Xk_ibz,PAR_COM_Xk_ibz_A2A,PAR_G_k_range
+ use parallel_int,   ONLY:PP_redux_wait
  use xc_functionals, ONLY:V_xc,XC_potential_driver
  use global_XC,      ONLY:WF_xc_functional,WF_kind
  use collision_ext,  ONLY:COLLISIONS_have_HARTREE
@@ -129,7 +130,6 @@ subroutine RT_Hamiltonian(dG_in,A_input,E,k)
      deallocate(delta_magn)
    endif
    !
-   !
    ! The Vxc term
    !--------------
    if (eval_DFT) then
@@ -137,13 +137,11 @@ subroutine RT_Hamiltonian(dG_in,A_input,E,k)
      V_xc_sc=V_xc-REF_V_xc_sc
    endif
    !
-   ! GPL_EXCLUDE_START
-   !
    ! Update of SOC term
    !
    if(n_spinor==2 .and. l_update_SOC ) then
      !
-     allocate(V_scf(fft_size),V_scf_grad(fft_size,3))
+     allocate(V_scf(fft_size))
      V_scf=cZERO
      if(eval_HARTREE) V_scf=V_scf+V_Hartree_sc(:,1)
      if(eval_DFT)     then
@@ -158,8 +156,6 @@ subroutine RT_Hamiltonian(dG_in,A_input,E,k)
      !
    endif
    !
-   ! GPL_EXCLUDE_END
-   !
    ! Add H_nl_sc to Ho_plus_Sigma 
    !---------------------------------
    do ik=1,nXkibz 
@@ -169,9 +165,7 @@ subroutine RT_Hamiltonian(dG_in,A_input,E,k)
      if (.not.PAR_IND_Xk_ibz%element_1D(ik) ) cycle
      !
      call V_real_space_to_H(ik,1,H_nl_sc,WF,'def+xc',V=V_hartree_sc,Vxc=V_xc_sc)
-     ! GPL_EXCLUDE_START
      if(n_spinor==2.and.l_update_soc) call Vgrad_real_space_to_H(ik,H_nl_sc,WF,V_scf_grad)
-     ! GPL_EXCLUDE_END
      !
      call PP_redux_wait(H_nl_sc,COMM=PAR_COM_Xk_ibz_A2A%COMM)
      !
@@ -209,7 +203,6 @@ subroutine RT_Hamiltonian(dG_in,A_input,E,k)
  !
  ! The External Field
  !====================
- !if (l_NE_with_fields.and.any((/Efield(:n_ext_fields)%t_final>=NE_time/))) then
  if (l_NE_with_fields) then
    !
    call timing('RT Apply Field',OPR='start')
@@ -253,13 +246,9 @@ subroutine RT_Hamiltonian(dG_in,A_input,E,k)
    !
  endif
  !
- !GPL_EXCLUDE_START
- !
  ! Pseudo potential terms needed for velocity gauge
  !==================================================
  if (l_velocity_gauge_corr) call Pseudo_Hamiltonian(k,E,.false.)
- !
- !GPL_EXCLUDE_END
  !
  call timing('RT Hamiltonian',OPR='stop')
  !

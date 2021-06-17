@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -23,20 +23,23 @@
 !
 module R_lattice
  !
- use pars,        ONLY:SP,schlen, IP
+ use pars,        ONLY:SP,schlen,IP
  use descriptors, ONLY:IO_desc
  !
 #include<dev_defs.h>
 #include<memory.h>
  !
+ integer, parameter:: MAX_kpts_to_report=50
+ !
  ! K lattice
  !
- integer  :: k_grid(3)
- integer  :: k_grid_dim
- real(SP) :: k_grid_uc_vol
- real(SP) :: k_grid_b(3,3)
- logical  :: Xk_grid_is_uniform
- logical  :: Xk_grid_new_mapping
+ integer           :: k_grid(3)
+ integer           :: k_grid_dim
+ real(SP)          :: k_grid_uc_vol
+ real(SP)          :: k_grid_b(3,3)
+ logical           :: Xk_grid_is_uniform
+ logical           :: Xk_grid_new_mapping
+ character(schlen) :: k_GRIDS_string="X S B C"
  !
  ! Q/K-sampling
  !
@@ -52,7 +55,7 @@ module R_lattice
  real(SP) :: b(3,3)
  real(SP) :: q0_def_norm, q0_shift_norm, smallest_q_norm
  real(SP),allocatable :: q_norm(:)
- character(schlen)    :: q_source="User defined / from ndb.kindx."
+ character(schlen)    :: q_source="is User defined and/or read from the database"
  character(schlen)    :: BZ_FineGd_mode="mixed" ! or "unexpanded"/"expanded"
  !
  type bz_fine_grid
@@ -115,10 +118,13 @@ module R_lattice
  integer  :: QP_states_k(2)
  logical  :: bse_scattering
  logical  :: coll_scattering
+ logical  :: X_scattering
+ logical  :: sigma_scattering
  integer, allocatable :: qindx_X(:,:,:)
  integer, allocatable :: qindx_B(:,:,:)
  integer, allocatable :: qindx_S(:,:,:)
  integer, allocatable :: qindx_C(:,:,:)
+ integer  :: qindx_B_max
  !
  ! SYMs
  !
@@ -182,14 +188,22 @@ module R_lattice
    !
    integer function k_the_nearest(k_ref,k,n_k,k_dist,ROTATE_k_ref,k_symm,i_err,border_point)
      use pars, ONLY: SP
-     integer :: n_k
-     real(SP):: k_ref(3)
-     real(SP):: k(n_k,3)
-     real(SP),optional :: k_dist(n_k)
-     logical, optional :: ROTATE_k_ref,border_point
-     integer, optional :: k_symm
-     integer, optional :: i_err
-   end function 
+     integer,  intent(in) :: n_k
+     real(SP), intent(in) :: k_ref(3)
+     real(SP), intent(in) :: k(n_k,3)
+     real(SP), intent(out),  optional :: k_dist(n_k)
+     logical,  intent(out),  optional :: border_point
+     logical,  intent(in) ,  optional :: ROTATE_k_ref
+     integer,  intent(out),  optional :: k_symm
+     integer,  intent(out),  optional :: i_err
+   end function
+   ! 
+   function qindx_B_load(ikbz,ikp_bz,ID)
+     !
+     integer, dimension(2) :: qindx_B_load
+     integer, intent(in) :: ID,ikbz,ikp_bz
+     !
+   end function qindx_B_load
    !
  end interface
  !
@@ -197,22 +211,36 @@ module R_lattice
    !
    subroutine qindx_alloc(what)
      !
+     use parallel_m,   ONLY:PAR_K_scheme
+     !
      character(*), intent(in) :: what
      !
-     if(  index(what,"X")/=0 .or. index(what,"ALL")/=0) then
+     integer :: nK_qindx_B
+     !
+     if(  (index(what,"X")/=0 .or. index(what,"ALL")/=0) .and. X_scattering) then
        YAMBO_ALLOC(qindx_X,(nqibz,nXkbz,2))
+       qindx_X=0
      endif
      !
-     if( (index(what,"S")/=0 .or. index(what,"ALL")/=0) .and. Xk_grid_is_uniform) then
+     if( (index(what,"S")/=0 .or. index(what,"ALL")/=0) .and. Xk_grid_is_uniform .and. sigma_scattering) then
        YAMBO_ALLOC(qindx_S,(QP_states_k(2),nqbz,2))
+       qindx_S=0
      endif
      !
      if( (index(what,"B")/=0 .or. index(what,"ALL")/=0) .and. Xk_grid_is_uniform .and. bse_scattering) then
-       YAMBO_ALLOC(qindx_B,(nXkbz,nXkbz,2))
+#if defined _PAR_IO
+       nK_qindx_B=PAR_K_scheme%nbz
+#else
+       if(PAR_K_scheme%nbz> 0) nK_qindx_B=PAR_K_scheme%nbz  ! read mode
+       if(PAR_K_scheme%nbz==0) nK_qindx_B=nXkbz             ! write mode
+#endif
+       YAMBO_ALLOC(qindx_B,(nXkbz,nK_qindx_B,2))
+       qindx_B=0
      endif
      !
      if( (index(what,"C")/=0 .or. index(what,"ALL")/=0) .and. Xk_grid_is_uniform .and. coll_scattering) then
        YAMBO_ALLOC(qindx_C,(nXkbz,nXkbz,2))
+       qindx_C=0
      endif
      !
    end subroutine
@@ -225,13 +253,13 @@ module R_lattice
        YAMBO_FREE(qindx_X)
      endif
      if(  index(what,"B")/=0 .or. index(what,"ALL")/=0) then
-     YAMBO_FREE(qindx_B)
+       YAMBO_FREE(qindx_B)
      endif
      if(  index(what,"S")/=0 .or. index(what,"ALL")/=0) then
-     YAMBO_FREE(qindx_S)
+       YAMBO_FREE(qindx_S)
      endif
      if(  index(what,"C")/=0 .or. index(what,"ALL")/=0) then
-     YAMBO_FREE(qindx_C)
+       YAMBO_FREE(qindx_C)
      endif
    end subroutine qindx_free
    !
@@ -256,6 +284,32 @@ module R_lattice
      YAMBO_ALLOC(FG%N_mapped,(N_coarse))
      FG%k_range=0
      FG%N_mapped=0
+   end subroutine
+   !
+   subroutine bz_samp_FineGd_default(FG,k,nk)
+     type(bz_fine_grid)::FG
+     type(bz_samp)     ::k
+     integer, optional ::nk 
+     ! ws
+     integer           ::ik,ic,nk_
+     nk_=k%nibz
+     if (present(nk)) then
+       nk_=nk
+     endif
+     FG%N=nk_
+     do ik=1,nk_
+       if (nk_>k%nibz) then
+         FG%pt(ik,:)=k%ptbz(ik,:)
+         FG%weights(ik)=1._SP
+       else
+         FG%pt(ik,:)=k%pt(ik,:)
+         FG%weights(ik)=k%weights(ik)
+       endif
+       FG%k_range(ik,:)=ik
+       FG%E_map(ik)=ik
+       FG%k_map(ik)=ik
+       FG%N_mapped(ik)=1
+     enddo
    end subroutine
    !
    subroutine bz_samp_FineGd_reset(FG)

@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !            http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AC MG 
@@ -49,7 +49,8 @@ subroutine NL_Integrator(E,k,q,X,Integrator,i_time,V_bands)
  use electrons,      ONLY:levels,n_sp_pol
  use X_m,            ONLY:X_t
  use R_lattice,      ONLY:bz_samp
- use parallel_m,     ONLY:PP_redux_wait,PAR_IND_Xk_ibz,PAR_COM_Xk_ibz_INDEX,PAR_Xk_ibz_index
+ use parallel_m,     ONLY:PAR_IND_Xk_ibz,PAR_COM_Xk_ibz_INDEX,PAR_Xk_ibz_index
+ use parallel_int,   ONLY:PP_redux_wait
 #if defined _TIMING
  use timing_m,       ONLY:timing
 #endif

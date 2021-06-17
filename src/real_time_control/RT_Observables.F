@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM CA DS
@@ -62,8 +62,6 @@ subroutine RT_Observables(en,k,dG_lesser,OBSERVABLES)
    return
  endif
  !
- ! GPL_EXCLUDE_START
- !
  ! Carriers number
  !================
  call RT_carriers_number(en,k,NCarr)
@@ -81,8 +79,6 @@ subroutine RT_Observables(en,k,dG_lesser,OBSERVABLES)
  call RT_entropy(en,k,dG_lesser,Entr,TEntr,EnEntr,E_IP)
  !
  OBSERVABLES(1:21)=(/NCarr(:),TFit(:),EfFit(:),Ener(:),Entr(:),TEntr(:),EnEntr(:)/)
- !
- ! GPL_EXCLUDE_END
  !
  call timing('RT observables',OPR='stop')
  !

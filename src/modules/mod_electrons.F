@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -23,7 +23,7 @@
 !
 module electrons
  !
- use pars,  ONLY:SP,IP,rZERO
+ use pars,  ONLY:SP,rZERO
  !
 #include<memory.h>
  !
@@ -65,7 +65,6 @@ module electrons
    real(SP), allocatable:: E(:,:,:)
    real(SP), allocatable:: W(:,:,:)
    real(SP), allocatable:: f(:,:,:)
-   !real(SP), allocatable:: Z(:,:,:)
    real(SP), allocatable:: df(:,:,:)
  end type E_fine_grid
  !

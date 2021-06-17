@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -34,7 +34,8 @@ subroutine TDDFT_do_X_W_typs(iq,X,wv)
  use TDDFT,         ONLY:FXC_type,FXC_K_diagonal,FXC,FXC_n_g_corr,&
 &                        FXC_per_memstps,FXC_n_mem_freqs,FXC_is_retarded,&
 &                        FXC_LRC_alpha,FXC_LRC_beta,io_BS_Fxc
- use IO_m,          ONLY:io_control,OP_RD_CL,VERIFY,REP
+ use IO_int,        ONLY:io_control
+ use IO_m,          ONLY:OP_RD_CL,VERIFY,REP
 #include<memory.h>
  type(X_t)   :: X
  type(w_samp):: wv
@@ -77,8 +78,6 @@ subroutine TDDFT_do_X_W_typs(iq,X,wv)
  !
  if (iq<0) return
  !
- ! GPL_EXCLUDE_START
- !
  ! Fxc DB
  !
  call io_control(ACTION=OP_RD_CL,COM=REP,MODE=VERIFY,SEC=(/1,2/),ID=ID)
@@ -92,7 +91,6 @@ subroutine TDDFT_do_X_W_typs(iq,X,wv)
  ! FXC_K_diagonal has been allocated in ioFxc_err
  !
  YAMBO_ALLOC(FXC,(FXC_n_g_corr,FXC_n_g_corr,FXC_n_mem_freqs))
- !
  !
  ! As wv%p is read from DB %n_freqs is not setup in freqs_setup.
  ! Note that wv%n_freqs MUST respect the FXC_n_mem_freqs value.
@@ -118,9 +116,7 @@ subroutine TDDFT_do_X_W_typs(iq,X,wv)
  X%ordering="R"
  if (.not.FXC_is_retarded) X%ordering="r"
  !
- YAMBO_ALLOC(X_poles,(BS_K_dim))
+ YAMBO_ALLOC(X_poles,(BS_K_dim(1)))
  X_poles=FXC_K_diagonal
- !
- ! GPL_EXCLUDE_END
  !
 end subroutine

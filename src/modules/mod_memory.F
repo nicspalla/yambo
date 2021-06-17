@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -82,9 +82,10 @@ module memory
  interface
    !
    subroutine MEM_global_mesg(what,xkind,HOST_SIZE)
+    use pars,          ONLY:IPL
     character(*), intent(in) :: what
     integer,      intent(in) :: xkind
-    integer,      intent(in) :: HOST_SIZE(:)
+    integer(IPL), intent(in) :: HOST_SIZE(:)
    end subroutine MEM_global_mesg
    !
  end interface

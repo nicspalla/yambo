@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -190,8 +190,8 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands)
    enddo
    if (i_Ef(1)/=i_Ef(2).or.i_Ef(1)/=i_Ef_fine(2)) then
      Tel=Tel+Tel_step
-     i_Ef(1)=i_Ef(1)-2
-     i_Ef(2)=i_Ef(2)+2
+     i_Ef(1)=max(1,i_Ef(1)-2)
+     i_Ef(2)=min(i_Ef(2)+2,n_total_states)
    endif
    !
    ! 5. Use a secant-like procedure to converge to the final Level

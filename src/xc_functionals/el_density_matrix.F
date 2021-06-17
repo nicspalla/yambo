@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM, DS
@@ -35,7 +35,8 @@ subroutine el_density_matrix(G_lesser,en,Xk,rho,lowest_band)
  use FFT_m,          ONLY:fft_size,fft_rot_r
  use wave_func,      ONLY:WF,WAVEs
  use real_time,      ONLY:RT_bands,RTibz
- use parallel_m,     ONLY:PP_redux_wait,PAR_IND_WF_k,PAR_IND_B_mat_ordered,PAR_IND_WF_linear,PAR_G_k_range
+ use parallel_m,     ONLY:PAR_IND_WF_k,PAR_IND_B_mat_ordered,PAR_IND_WF_linear,PAR_G_k_range
+ use parallel_int,   ONLY:PP_redux_wait
  use matrix_operate, ONLY:UP_matrix_index
  use timing_m,       ONLY:timing
  !
@@ -63,9 +64,9 @@ subroutine el_density_matrix(G_lesser,en,Xk,rho,lowest_band)
    !
    do i_sp_pol=1,n_sp_pol
      do ik=1,Xk%nibz
-       if (.not.any(PAR_IND_WF_linear%element_2D(:,ik))) cycle
+       if (.not.any(PAR_IND_WF_linear%element_2D(lowest_band:RT_bands(1)-1,ik))) cycle
        call WF_load(WF_tmp,WF_G_max,WF_Go_indx,(/1,RT_bands(1)-1/),(/ik,ik/),(/i_sp_pol,i_sp_pol/),&
-       &                      space='R',title='-RT',keep_states_to_load=.true.)
+&                   space='R',title='-RT',keep_states_to_load=.true.)
        do ib1=lowest_band,RT_bands(1)-1
          !
          if (.not.PAR_IND_WF_linear%element_2D(ib1,ik)) cycle

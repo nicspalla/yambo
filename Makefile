@@ -21,10 +21,12 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 # MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 #
+topdir = .
 ifeq ($(wildcard config/mk/defs.mk),config/mk/defs.mk)
  include config/mk/defs.mk
+else ifeq ($(MAKECMDGOALS), download)
 else
- $(error Run ./configure first)
+ include config/mk/no_configure_help.mk
 endif
 #
 # STAMPS and CFGFILES
@@ -44,6 +46,8 @@ changelog:
 	./sbin/gitchangelog.py > ChangeLog
 interfaces: ext-libs
 	for target in $(INTERFCS) ; do rm -f "$(bindir)/$$target" ; $(MAKE) $$target; if test ! -f "$(bindir)/$$target"; then echo "$$target build failed"; break;fi ; done
+gpl: ext-libs
+	for target in $(GPL)      ; do rm -f "$(bindir)/$$target" ; $(MAKE) $$target; if test ! -f "$(bindir)/$$target"; then echo "$$target build failed"; break;fi ; done
 core: ext-libs
 	for target in $(CORE)     ; do rm -f "$(bindir)/$$target" ; $(MAKE) $$target; if test ! -f "$(bindir)/$$target"; then echo "$$target build failed"; break;fi ; done
 ph-project: ext-libs
@@ -60,6 +64,8 @@ rtext-project: ext-libs
 	for target in $(RTE_PROJ) ; do rm -f "$(bindir)/$$target" ; $(MAKE) $$target; if test ! -f "$(bindir)/$$target"; then echo "$$target build failed"; break;fi ; done
 kerr-project: ext-libs
 	for target in $(KERR_PROJ); do rm -f "$(bindir)/$$target" ; $(MAKE) $$target; if test ! -f "$(bindir)/$$target"; then echo "$$target build failed"; break;fi ; done
+main: ext-libs 
+	for target in $(MAIN)     ; do rm -f "$(bindir)/$$target" ; $(MAKE) $$target; if test ! -f "$(bindir)/$$target"; then echo "$$target build failed"; break;fi ; done
 all: ext-libs 
 	for target in $(ALL)      ; do rm -f "$(bindir)/$$target" ; $(MAKE) $$target; if test ! -f "$(bindir)/$$target"; then echo "$$target build failed"; break;fi ; done
 #
@@ -68,6 +74,7 @@ all: ext-libs
 #==============
 #
 # External libraries
+include config/mk/actions/download_external_libraries.mk
 include config/mk/actions/compile_external_libraries.mk
 #
 # Internal libraries
@@ -77,7 +84,7 @@ include config/mk/actions/compile_internal_libraries.mk
 include config/mk/actions/compile_yambo_libraries.mk
 #
 # All libs 
-libs:	ext-libs int-libs yambo-libs
+libs: ext-libs int-libs
 #
 # Yambo 
 include config/mk/actions/compile_yambo.mk
@@ -90,6 +97,9 @@ include config/mk/actions/compile_ypp.mk
 #
 # Cleans
 include config/mk/actions/clean.mk
+#
+# Utils
+include config/mk/actions/help.mk
 #
 #===========
 # Functions

@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -31,12 +31,9 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
  !
  use drivers,        ONLY:infile_editing,l_em1s,l_acfdt,l_HF_and_locXC,l_col_cut,l_alda_fxc,l_bs_fxc,l_optics,l_bse,l_bss,&
 &                         l_chi,l_cohsex,l_life,l_rpa_IP,l_td_hartree,l_tddft,list_dbs,l_td_hf,l_setup,l_sc_run,l_rim,&
-&                         l_real_time,l_ppa,l_lrc_fxc,l_gw0,l_elel_corr,l_elel_scatt,l_elph_corr,l_W_eh_diag,l_W_eh_cpl,l_W_eh,&
+&                         l_real_time,l_ppa,l_lrc_fxc,l_gw0,l_elel_corr,l_elel_scatt,l_elph_corr,l_td_sex,&
 &                         l_elph_Hamiltonian,l_elph_scatt,l_elphoton_corr,l_elphoton_scatt,l_em1d,l_eval_collisions,&
-&                         l_sc_magnetic,l_dipoles,l_pf_fxc,l_nl_optics
-#if defined _PL
- use drivers,        ONLY:l_photolum
-#endif
+&                         l_sc_magnetic,l_dipoles,l_pf_fxc,l_nl_optics,l_phel_scatt,l_phel_corr
 #if defined _SCALAPACK
  use drivers,        ONLY:l_slk_test
 #endif
@@ -44,24 +41,22 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
  use parser_m,       ONLY:parser
  use electrons,      ONLY:levels,E_reset
  use frequency,      ONLY:w_samp,W_duplicate,W_reset
- use it_tools,       ONLY:it,infile_dump,ofiles_append,&
-&                         switch_off_runlevel,check_verbosity,runlevel_is_on
+ use it_tools,       ONLY:it,infile_dump,ofiles_append,switch_off_runlevel,check_verbosity,runlevel_is_on
  use it_m,           ONLY:initdefs,rstatus,initmode,infile,nrnlvls,rnlvls
- use parallel_m,     ONLY:PP_redux_wait
+ use parallel_int,   ONLY:PP_redux_wait
  use com,            ONLY:msg,repfile_unit,inpfile_unit,com_path,write_to_report
  use vec_operate,    ONLY:v_norm
  use LIVE_t,         ONLY:live_timing_is_on
- use QP_m,           ONLY:QP_t,QP_state,QP_reset,&
-&                         QP_table,COHSEX_use_empties
+ use QP_m,           ONLY:QP_t,QP_state,QP_reset,QP_table,COHSEX_use_empties
  use X_m,            ONLY:X_t,X_duplicate,X_reset,Chi_mode
  use DIPOLES,        ONLY:DIPOLE_t,DIPOLES_reset
- use stderr,         ONLY:write_to_log,log_as_a_file,logfile,logfile_unit,STRING_add,STRING_remove,STRING_same
+ use stderr,         ONLY:write_to_log,log_as_a_file,logfile,logfile_unit,STRING_same
  use R_lattice,      ONLY:q0_def_norm,bz_samp,bz_samp_reset
- use BS,             ONLY:BS_bands,BS_n_g_W,&
-&                         BS_eh_en,BSE_mode,BS_res_mode,BS_cpl_mode,BSK_mode
+ use BS,             ONLY:BS_bands,BS_n_g_W,BS_eh_en,BSE_mode,BSK_mode,BS_K_coupling,BS_res_K_corr,BS_res_K_exchange,&
+&                         BS_W_is_diagonal,BS_cpl_K_corr,BS_cpl_K_exchange
  use BS_solvers,     ONLY:BSS_mode,BSS_q0
 #if defined  _ELPH
- use ELPH,           ONLY:elph_nDBs,elph_nDBs_used
+ use ELPH,           ONLY:elph_nQ,elph_nQ_used
 #endif
 #if defined _SC
  use QP_m,           ONLY:QP_ng_Sx
@@ -90,6 +85,7 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
  ! Work Space
  !
  type(initdefs)   ::defs
+ logical          ::dummy_logical
  !
  ! I/O related
  !
@@ -97,8 +93,7 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
  type(QP_t)       ::qp
  type(w_samp)     ::Xxcw
  type(levels)     ::en_sc
- !
- integer          :: io_X_err(4),io_BS_err,io_BS_Fxc_err,io_QINDX_err,io_ELPH_err,io_SC_E_err,i_r
+ integer          :: io_X_err(4),io_BS_err,io_BS_Fxc_err,io_QINDX_err,io_ELPH_err(2),io_SC_E_err,i_r
  !
  logical, external:: file_exists
  !
@@ -241,7 +236,7 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
  !
  !If qp limits are requested they are added at the end of the input file
  !
- QP_field=any((/l_HF_and_locXC,l_gw0,l_life/)).and..not.l_sc_run
+ QP_field=any((/l_HF_and_locXC,l_gw0,l_life/)).and..not.l_sc_run.and..not.l_phel_corr
  !
  if (QP_field) then
    !
@@ -314,9 +309,6 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
        l_chi=runlevel_is_on('chi')
        l_bse=runlevel_is_on('bse')
        l_bss=runlevel_is_on('bss')
-#if defined _PL
-       l_photolum=runlevel_is_on('photolum')
-#endif
        l_tddft=runlevel_is_on('tddft')
        l_em1d=runlevel_is_on('em1d')
        l_em1s=runlevel_is_on('em1s')
@@ -328,24 +320,16 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
        l_rim=runlevel_is_on('rim_cut')
        l_col_cut=runlevel_is_on('rim_cut')
        l_cohsex=runlevel_is_on('cohsex')
-       !
-       ! GPL_EXCLUDE_START
-       !
        l_acfdt=runlevel_is_on('acfdt')
-       !
-       ! GPL_EXCLUDE_END
-       !
 #if defined _SCALAPACK
        l_slk_test =runlevel_is_on('slktest')
 #endif
 #if defined _RT
        !
        l_real_time=runlevel_is_on('negf')
-       ! GPL_EXCLUDE_START
        l_elel_scatt =runlevel_is_on('el_el_scatt')
        l_elph_scatt=runlevel_is_on('el_ph_scatt')
        l_elphoton_scatt=runlevel_is_on('el_photon_scatt')
-       ! GPL_EXCLUDE_END
 #endif
 #if defined _SC && defined _MODELS
        l_sc_run=runlevel_is_on('scrun')
@@ -360,26 +344,33 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
 #if defined _NL
        l_nl_optics=runlevel_is_on('nloptics')
 #endif
-#if defined  _ELPH
+#if defined  _ELPH || defined _PHEL
        if (.not.CLOSE_Gs) then
          !
          ! Only in this case ioELPH_err is defined
          !
-         if (io_ELPH_err==0.or.l_real_time) then
+         if (io_ELPH_err(1)==0) then
            l_elph_corr=runlevel_is_on('el_ph_corr')
+           l_phel_corr=runlevel_is_on('ph_el_corr')
          else
            l_elph_corr=.FALSE.
-           call switch_off_runlevel('el_ph_corr',on_name=' ')
+           l_phel_corr=.FALSE.
+           call switch_off_runlevel('el_ph_corr ph_el_corr',on_name=' ')
+         endif
+         if (io_ELPH_err(2)==0) then
+           l_elph_scatt=runlevel_is_on('el_ph_scatt')
+           l_phel_scatt=runlevel_is_on('ph_el_scatt')
+         else
+           l_elph_scatt=.FALSE.
+           l_phel_scatt=.FALSE.
+           call switch_off_runlevel('el_ph_scatt ph_el_scatt',on_name=' ')
          endif
          !
-         ! GPL_EXCLUDE_START
-         l_elph_Hamiltonian=runlevel_is_on('ElPhHam').and.io_ELPH_err==0
-         ! GPL_EXCLUDE_END
+         l_elph_Hamiltonian=runlevel_is_on('ElPhHam').and.io_ELPH_err(1)==0
        else
          l_elph_corr=runlevel_is_on('el_ph_corr')
-         ! GPL_EXCLUDE_START
          l_elph_Hamiltonian=runlevel_is_on('ElPhHam')
-         ! GPL_EXCLUDE_END
+         l_phel_corr=runlevel_is_on('ph_el_corr')
        endif
        l_elel_corr=runlevel_is_on('el_el_corr')
 #endif
@@ -391,7 +382,7 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
        ! In some cases l_elel_corr is switched on by default
        !
        if (.not.l_elel_corr) then
-         l_elel_corr=(l_gw0.or.l_life).and.(.not.l_elph_corr.and..not.l_elphoton_corr)
+         l_elel_corr=(l_gw0.or.l_life).and.(.not.l_elph_corr.and..not.l_elphoton_corr.and..not.l_phel_corr)
        endif
        !
        ! Check if this runlevel is allowed in the
@@ -410,24 +401,23 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
      l_pf_fxc     = STRING_same(Chi_mode,'PF')
      l_bs_fxc     = STRING_same(trim(Chi_mode),"BSFXC").or.STRING_same(trim(BSK_mode),"BSFXC")
      l_tddft      = l_alda_fxc.or.l_lrc_fxc.or.l_bs_fxc
-     l_td_hf      = trim(BSK_mode)=="HF"
-     l_W_eh       = trim(BSK_mode)=="SEX"
+     l_td_hf      = STRING_same(trim(BSK_mode),"HF")
+     l_td_sex     = STRING_same(trim(BSK_mode),"SEX")
      !
    end subroutine logicalson
    !
    subroutine Dip_check_ordered
      !
      implicit none
-     logical :: all_bands
+     logical :: all_bands,l_local
      !
-     call parser('DipBandsAll',all_bands)
+     call parser('DipBandsALL',all_bands)
      !
      Dip%bands_ordered=.not.all_bands
-#if defined _SC  || defined _RT || defined _NL
-     if ( l_sc_run.or.l_real_time.or.l_nl_optics ) Dip%bands_ordered=.false.
-#endif
+     l_local=l_sc_run.or.l_real_time.or.l_nl_optics 
+     if (l_local)         Dip%bands_ordered=.false.
 #if defined _QED
-     if (l_elphoton_corr)                          Dip%bands_ordered=.false.
+     if (l_elphoton_corr) Dip%bands_ordered=.false.
 #endif
      !
    end subroutine Dip_check_ordered
@@ -446,9 +436,9 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
        call W_duplicate(Xxcw,Xw(3))
        call initactivate(2,'XfnQP_E')
      endif
-     if (.not.l_elel_corr.and..not.l_elph_corr.and..not.l_elphoton_corr) l_elel_corr=.true.
+     if (.not.any((/l_elel_corr,l_elph_corr,l_elphoton_corr,l_phel_corr/))) l_elel_corr=.true.
 #if defined  _ELPH
-     elph_nDBs_used=elph_nDBs
+     elph_nQ_used=elph_nQ
 #endif
      if (l_gw0.and.l_elel_corr) call initactivate(1,'HF_and_locXC')
      !
@@ -456,16 +446,15 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
      if (l_em1d)   call initactivate(1,'dipoles')
      if (l_optics) call initactivate(1,'dipoles')
      if (l_ppa)    call initactivate(1,'em1d dipoles')
-     if (l_gw0.and..not.l_ppa.and..not.l_cohsex.and..not.&
-&        l_HF_and_locXC.and..not.l_elph_corr.and..not.l_elphoton_corr)  &
-&                  call initactivate(1,'em1d dipoles')
+     if (l_gw0.and..not.any((/l_ppa,l_cohsex,l_HF_and_locXC,&
+&                             l_elph_corr,l_phel_corr,l_elphoton_corr/))) call initactivate(1,'em1d dipoles')
      if (l_cohsex) call initactivate(1,'em1s dipoles')
      if (l_bss)    call initactivate(1,'optics dipoles bse')
      if (l_bs_fxc) BSS_mode="t"
      !
      if (l_bse) then
        !
-       if (l_alda_fxc) BS_res_mode='x'
+       if (l_alda_fxc) BS_res_K_exchange=.TRUE.
        !
        if (io_X_err(2)==0) then
          if (io_BS_err/=0) BS_n_g_W=X(2)%ng
@@ -477,10 +466,6 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
      endif
      !
      if (l_gw0.and.l_cohsex) call parser('UseEbands',COHSEX_use_empties)
-     !
-#if defined _PL
-     if (l_photolum) call initactivate(1,'bse optics dipoles')
-#endif
      !
 #if defined _SC
      if (l_sc_magnetic) call initactivate(1,'potential')
@@ -526,22 +511,22 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
      X(4)%q0(:)=X(4)%q0(:)*q0_def_norm/v_norm(X(4)%q0)
      !
      if (len_trim(BSE_mode)==0                ) BSE_mode="retarded"
-     if (STRING_same(trim(BSE_mode),"causal")) BSE_mode="retarded"
+     if (STRING_same(trim(BSE_mode),"causal") ) BSE_mode="retarded"
      !
      if (l_bse) then
-       if (l_rpa_IP)                   BS_res_mode='none'
-       if (l_td_hartree)               BS_res_mode='x'
-       if (l_tddft)                    BS_res_mode='x'
-       if (l_bs_fxc)                   BS_res_mode='c'
-       if (l_td_hf)                    BS_res_mode='xcd'
-       if (l_W_eh)                     BS_res_mode='xc'
-       if (index(BSE_mode,'coupling')>0) BS_cpl_mode=trim(BS_res_mode)
-       !
-       if(l_W_eh) then
-         call parser('WehDiag',l_W_eh_diag)
-         call parser('WehCpl' ,l_W_eh_cpl )
-         if (     l_W_eh_diag)         BS_res_mode=trim(STRING_add(BS_res_mode,'d'))
-         if (.not.l_W_eh_cpl )         BS_cpl_mode=trim(STRING_remove(BS_cpl_mode,'c'))
+       BS_res_K_exchange=l_td_hartree.or.l_tddft.or.l_td_hf.or.l_td_sex
+       BS_res_K_corr    =l_bs_fxc.or.l_td_hf.or.l_td_sex
+       BS_W_is_diagonal =l_td_hf
+       BS_K_coupling    =index(BSE_mode,'coupling')>0
+       if (BS_K_coupling) then
+         BS_cpl_K_exchange=BS_res_K_exchange  
+         BS_cpl_K_corr    =BS_res_K_corr      
+       endif
+       if(l_td_sex) then
+         call parser('WehDiag',dummy_logical)
+         if (     dummy_logical) BS_W_is_diagonal=.TRUE. 
+         call parser('WehCpl' ,dummy_logical )
+         if (.not.dummy_logical) BS_cpl_K_corr=.FALSE.
        endif
      endif
      !
@@ -561,11 +546,10 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
        endif
        !
      endif
-#if !defined _ELPH  && !defined _QED
+#if !defined _ELPH  && !defined _QED && !defined _PHEL
      if (l_gw0) l_elel_corr=.true.
 #endif
      !
    end subroutine varsetup2
-   !
    !
 end function

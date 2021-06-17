@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -23,9 +23,7 @@
 !
 subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  !
- ! GPL_EXCLUDE_START
  use debug,      ONLY:dbg
- ! GPL_EXCLUDE_END
  use pars,       ONLY:SP,cZERO
  use C_driver,   ONLY:code_branch
  use units,      ONLY:HA2EV,FS2AUT,kWCMm22AU
@@ -38,7 +36,8 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
 &                     l_X_terminator,X_terminator_E,global_gauge,&
 &                     Chi_linalg_mode,X_use_lin_sys,X_use_gpu,X_DbGd_percentual
  use DIPOLES,    ONLY:use_covariant_approach,use_real_space_approach,&
-&                     Vnl_commutator_warning,use_shifted_grids_approach,use_g_space_approach
+&                     Vnl_commutator_warning,use_shifted_grids_approach,use_g_space_approach,&
+&                     compute_P2_dipoles,compute_Spin_dipoles,compute_Orb_dipoles
  use QP_m,       ONLY:QP_dSc_steps,QP_n_W_freqs,QP_G_Zoom_treshold,&
 &                     QP_dSc_test,QP_solver,QP_G_damp,QP_dSc_delta,&
 &                     QP_cg_percent,QP_n_states,SC_E_threshold, &
@@ -50,7 +49,8 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  use QP_CTL_m,   ONLY:QP_ctl_user,QP_ctl_DB_user
  use functions,  ONLY:bose_E_cut
  use D_lattice,  ONLY:i_space_inv,inv_index,n_atoms_species_max,n_atomic_species,mag_syms,&
-&                     input_Tel_is_negative,non_periodic_directions,lattice,Bose_Temp
+&                     input_Tel_is_negative,non_periodic_directions,lattice,Bose_Temp,    &
+&                     molecule_position
  use pseudo,     ONLY:pp_n_l_times_proj_max,pp_kbv_dim
  use R_lattice,  ONLY:n_g_shells,ng_closed,bse_scattering,coll_scattering,&
 &                     Xk_grid_is_uniform,RIM_id_epsm1_reference,RIM_epsm1,&
@@ -66,33 +66,30 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  use FFT_m,      ONLY:fft_dim_loaded,fft_size,fft_dim,fft_multiplier
  use IO_m,       ONLY:io_reset,max_io_units,serial_number,frag_WF
  use BS_solvers, ONLY:BSS_mode,BSS_n_freqs,BSS_er,BSS_dr,&
-&                     BSS_q0,Haydock_threshold,Haydock_iterIO,BSS_uses_DbGd,BSS_Wd,&
+&                     BSS_q0,Haydock_threshold,Haydock_iterIO,Haydock_iterMAX,BSS_uses_DbGd,BSS_Wd,&
 &                     BSS_damp_reference,BSS_Vnl_included,BSS_uses_GreenF,BSS_inversion_mode,&
-&                     BSS_add_antiresonant,BSS_perturbative_width,K_INV_EPS,K_INV_PL
+&                     BSS_perturbative_width,K_INV_EPS,K_INV_PL
  use descriptors,ONLY:IO_desc_reset
 #if defined _SLEPC && !defined _SLEPC_OFF
- use BS_solvers, ONLY:BSS_slepc_extraction, BSS_slepc_ncv, BSS_slepc_tol, BSS_target_E, Slepc_shell
+ use BS_solvers, ONLY:BSS_slepc_extraction,BSS_slepc_ncv,BSS_slepc_tol,BSS_slepc_target_E,BSS_slepc_maxit,&
+ &                    BSS_slepc_precondition,BSS_slepc_approach
 #endif
- use BS,         ONLY:BS_n_g_W,BS_eh_en,BS_identifier,BS_q,BS_eh_win,&
-&                     BS_res_mode,BS_K_dim,BS_cpl_mode,BS_not_const_eh_f,BSK_mode,&
-&                     BS_K_is_ALDA,BSE_mode,L_kind,BS_K_cutoff,BS_perturbative_SOC
+ use BS,         ONLY:BS_n_g_W,BS_eh_en,BS_identifier,BS_q,BS_eh_win,MAX_BSK_LIN_size,&
+&                     BS_K_dim,BS_not_const_eh_f,BSK_mode,l_BSE_kernel_complete,&
+&                     BS_K_is_ALDA,BSE_mode,BSE_prop,L_kind,BS_K_cutoff,BS_perturbative_SOC,BSK_IO_mode
  use TDDFT,      ONLY:FXC_type,FXC_n_g_corr,&
 &                     FXC_per_memstps,FXC_LRC_alpha,FXC_PF_alpha,FXC_LRC_beta,FXC_SVD_digits,&
 &                     FXC_is_retarded,TDDFT_mode
  use ACFDT,      ONLY:ACFDT_n_lambda,ACFDT_n_freqs,ACFDT_E_range
 #if defined _ELPH 
- use ELPH,       ONLY:ph_modes,elph_nb,gsqF_energy_steps,eval_G_using_KK,&
+ use ELPH,       ONLY:ph_modes,elph_nb,gsqF_energy_steps,eval_G_using_KK,use_PH_DbGd,EkplusQ_mode,&
 &                     elph_Ham_bands,elph_Ham_ik,elph_branches,RES_tresh,FAN_deltaE_treshold,DW_deltaE_treshold
 #endif
- use zeros,      ONLY:zero_norm,k_iku_zero,k_rlu_zero,G_iku_zero,zero_dfl
+ use zeros,      ONLY:zero_norm,k_iku_zero,k_rlu_zero,G_iku_zero,G_mod_zero,zero_dfl
  use memory,     ONLY:MEMs,LARGE_MEMs,N_MEM_max,N_MEM_SAVE_max,MEM_element_init
  use xc_functionals,  ONLY:GS_xc_FUNCTIONAL,GS_xc_KIND,GS_exx_FRACTION,GS_exx_SCREENING 
-#if defined _KERR
- use drivers,    ONLY:l_kerr,l_anomalous_Hall
-#endif
-#if defined _PL
+ use BS,         ONLY:l_BS_anomalous_Hall
  use PHOTOLUM,   ONLY:PL_weights
-#endif
 #if defined _SC 
  use SC,         ONLY:SC_iterations,SC_rho_threshold,SC_potential,OEP_approx,l_NSC_shot,&
 &                     compatible_SC_DB,SC_cycle_mixing,SC_fft_size,found_SC_DB,&
@@ -109,16 +106,13 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  use RT_control, ONLY:CARR_RT_IO_t,OBS_RT_IO_t,OUTPUT_RT_IO_t,GF_RT_IO_t,SAVE_G_history,RT_ctl_db,&
 &                     CACHE_OBS_last_point,CACHE_OBS_INTERVAL_time,CACHE_OBS_INTERVAL_time_INPUT,   &
 &                     CACHE_OBS_steps,CACHE_OBS_steps_now,RT_NAN_found
- use real_time,  ONLY:RT_step,NE_steps,NE_time,Integrator_name,RT_life_extrap_times,      &
-&                     Gr_kind,two_alpha,l_RT_CCA_Kernel,l_lftm_fit_temperatures,          &
-&                     RAD_LifeTime,Phase_LifeTime,EP_abs_prefactor,                       &
-&                     NE_tot_time,NE_MEM_treshold,EE_prefactor,EP_prefactor,              &
-&                     RT_eh_en,l_lftm_fit_stable,Nfitted_lifetimes,RT_Tfit_lifetimes,     &
-&                     RT_Efit_lifetimes,l_update_SOC,                                     &
-&                     DbGd_EE_percent,RT_scatt_tresh,integrator_step,RT_nk,               &
-&                     RAD_prefactor,i_MEM_old,i_MEM_prev,i_MEM_now,G_MEM_steps,           &
-&                     RT_is_statically_dephased,RT_is_dynamically_dephased,               &
-&                     RT_deph_deg_thresh,RT_deph_cv_only,                                 &
+ use RT_lifetimes,ONLY:RT_life_extrap_times
+ use real_time,  ONLY:RT_step,NE_steps,NE_time,Integrator_name,&
+&                     Gr_kind,two_alpha,RAD_LifeTime,Phase_LifeTime,&
+&                     NE_tot_time,NE_MEM_treshold,RT_eh_en,l_update_SOC,&
+&                     DbGd_EE_percent,RT_scatt_tresh,integrator_step,RT_nk,&
+&                     i_MEM_old,i_MEM_prev,i_MEM_now,G_MEM_steps,&
+&                     RT_deph_deg_thresh,RT_deph_cv_only,&
 &                     NE_time_step_update_last_point,NE_time_step_update_jump,NE_time_step_update_jump_INPUT, &
 &                     NE_initial_time_step_update,NE_step_update_treshold
  use fields,     ONLY:Efield,Efield_reset,n_ext_fields_max,n_ext_fields,A_vecpot_reset,   &
@@ -130,7 +124,7 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
 &                     NL_verb_name,NL_bands,n_order,NL_desc
  use fields,     ONLY:Efield,Efield_reset
 #endif
-#if defined _MAGNETIC
+#if defined _SC
  use magnetic,    ONLY:MAG_B,MAG_radius,MAG_hamiltonian_type,MAG_landau,MAG_pauli,&
 &                      MAG_gauge,MAG_psi,MAG_theta,phase_trick
 #endif
@@ -139,10 +133,7 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
 #endif
  use timing_m,    ONLY:timing_allocate,nclockx
  use openmp,      ONLY:OPENMP_initialize,OPENMP_update,master_thread,omp_is_off
-#if defined _MODELS
- use MODELS,      ONLY:MODEL_U,MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg
-#endif
- use cuda_m,      ONLY:have_cuda
+ use cuda_m,      ONLY:cuda_setup,have_cuda
  !
  implicit none
  !
@@ -154,9 +145,7 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  !
  ! Printed reals format lengths 
  !
- ! GPL_EXCLUDE_START
  include 'branch.inc'
- ! GPL_EXCLUDE_END
  !
  call set_real_printed_length()
  !
@@ -181,15 +170,21 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  call OPENMP_initialize( )
  call OPENMP_update(master_thread)
  !
+ ! Node name
+ !
+ call CREATE_hosts_COMM( )
+ !
+ ! CUDA environment defs
+ !
+ call cuda_setup()
+ !
  ! Stack Size 
  !
  call remove_stack_limit()
  !
- ! GPL_EXCLUDE_START
  ! Debug
  !
  call dbg('reset')
- ! GPL_EXCLUDE_END
  !
  ! Clocks
  !
@@ -198,16 +193,13 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  call MEM_element_init(MEMs,N_MEM_max)
  call MEM_element_init(LARGE_MEMs,N_MEM_SAVE_max)
  !
- ! Node name
- !
- call CREATE_hosts_COMM( )
- !
  ! ZEROs 
  !
  zero_norm =zero_dfl
  k_iku_zero=zero_dfl
  k_rlu_zero=zero_dfl
  G_iku_zero=zero_dfl
+ G_mod_zero=1.E-5
  !
  ! PATHS  ...
  !
@@ -272,6 +264,7 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  !
  input_Tel_is_negative=.FALSE.
  non_periodic_directions='none'
+ molecule_position=0._SP
  lattice='Unknown'
  Bose_Temp=-1./HA2EV
  !
@@ -365,6 +358,9 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  use_covariant_approach     = .FALSE.
  use_real_space_approach    = .FALSE.
  use_g_space_approach       = .TRUE.
+ compute_P2_dipoles         = .FALSE.
+ compute_Spin_dipoles       = .FALSE.
+ compute_Orb_dipoles        = .FALSE.
  use_X_DbGd=.FALSE.
  X_DbGd_percentual=1.
  eps_2_alpha=1._SP
@@ -440,13 +436,13 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  BS_identifier=0
  BS_q=1
  BS_eh_win=100._SP
- BS_res_mode='xc'
- BS_cpl_mode='none'
  L_kind='Lbar'
- BSE_mode='retarded'
+ BSE_mode='resonant'
+ BSE_prop='abs'
  BSK_mode=' '
+ BSK_IO_mode='2D_standard'
+ l_BSE_kernel_complete=.false.
  TDDFT_mode=' '
- BSS_add_antiresonant=.FALSE.
  BSS_Wd=cZERO
  l_drude=.false.
  BS_K_dim=0
@@ -462,6 +458,7 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  BS_not_const_eh_f=.FALSE.
  BS_perturbative_SOC=.FALSE.
  Haydock_threshold=-0.02_SP
+ Haydock_iterMAX=1000
  Haydock_iterIO=100
  BSS_Vnl_included=.FALSE.
  BSS_uses_GreenF=.FALSE.
@@ -470,14 +467,18 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  K_INV_PL%treshold =0.5_SP
  K_INV_EPS%what    = "EPS"
  K_INV_EPS%treshold=0.01_SP
+ K_INV_EPS%max_treshold=40._SP
  BSS_n_freqs=100
+ MAX_BSK_LIN_size=45000*45000 ! 46341 is the sqare root of the maximum integer in IP: 2147483647
  !
 #if defined _SLEPC && !defined _SLEPC_OFF
+ BSS_slepc_approach='none'
+ BSS_slepc_precondition='none'
  BSS_slepc_extraction='ritz'
+ BSS_slepc_maxit=0
  BSS_slepc_ncv=0
  BSS_slepc_tol=1E-6_SP
- BSS_target_E=0
- Slepc_shell=.TRUE.
+ BSS_slepc_target_E=0._SP
 #endif
  !
  ! TDDFT
@@ -504,14 +505,8 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  GS_exx_FRACTION=0.0             ! no EXX part  
  GS_exx_SCREENING=0.0            ! no screening
  !
-#if defined _KERR
- l_kerr=.false.
- l_anomalous_Hall=.false.
-#endif
- !
-#if defined _PL
+ l_BS_anomalous_Hall=.false.
  PL_weights=(/1._SP,1._SP,1._SP/)
-#endif
  !
 #if defined _ELPH 
  !
@@ -527,6 +522,9 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  RES_tresh=0.01_SP
  DW_deltaE_treshold=1.E-6_SP/HA2EV
  FAN_deltaE_treshold=1.E-6_SP/HA2EV
+ use_PH_DbGd=.FALSE.
+ EkplusQ_mode='interp' ! other possible choise DFT
+ !
 #endif
  !
 #if defined _SC || defined _RT || defined _QED
@@ -578,7 +576,6 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  !
  ! RT dynamics 
  !
- l_RT_CCA_Kernel=.FALSE.
  l_update_SOC=.FALSE.
  !
  ! RT current 
@@ -612,8 +609,6 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  Phase_LifeTime = 0._SP
  RT_deph_deg_thresh = 1.E-5_SP
  RT_deph_cv_only =.FALSE.
- RT_is_statically_dephased=.FALSE.
- RT_is_dynamically_dephased=.FALSE.
  !
  NE_MEM_treshold=0._SP
  RT_nk=0
@@ -631,18 +626,6 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  !
  Gr_kind="HS"
  two_alpha=1
- !
- ! FITs
- !
- l_lftm_fit_stable=.FALSE.
- l_lftm_fit_temperatures=.FALSE.
- Nfitted_lifetimes=0
- RT_Tfit_lifetimes=0._SP
- RT_Efit_lifetimes=0._SP
- RAD_prefactor=0._SP
- EE_prefactor=0._SP
- EP_prefactor=0._SP
- EP_abs_prefactor=0._SP
  !
  ! RT_ctl
  !
@@ -685,13 +668,13 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  Efield(1)%intensity=1000._SP*kWCMm22AU
  Efield(1)%FWHM=2._SP*FS2AUT
  Efield(1)%ef_name="SOFTSIN"
- NL_verb_name='low'
+ NL_verb_name='high'
  !
  call IO_desc_reset(NL_desc)
  !
 #endif
  !
-#if defined _MAGNETIC
+#if defined _SC
  !
  ! Magnetic
  !
@@ -705,14 +688,6 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  MAG_theta=0._SP
  phase_trick=.FALSE.
  !
-#endif
- !
-#if defined _MODELS
- MODEL_U=1./HA2EV
- MODEL_overlap=1./HA2EV
- MODEL_Eg=1./HA2EV
- MODEL_k=(/2,2,2/)
- MODEL_kind="2bands"
 #endif
  !
 end subroutine

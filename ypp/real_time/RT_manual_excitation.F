@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): DS AM
@@ -26,12 +26,13 @@ subroutine RT_manual_excitation(E,k,SUCCESS)
  use pars,           ONLY:SP
  use units,          ONLY:BO2ANG,HA2EV
  use D_lattice,      ONLY:DL_vol
+ use vec_operate,    ONLY:c2a
  use R_lattice,      ONLY:bz_samp,k_the_nearest
  use stderr,         ONLY:intc
  use electrons,      ONLY:levels,spin_occ,E_reset,E_duplicate,n_sp_pol
  use com,            ONLY:msg
  use real_time,      ONLY:RT_carriers,RT_bands,RTibz
- use YPPm,           ONLY:BANDS_path,CIRCUIT_k,CIRCUIT_k_label
+ use YPPm,           ONLY:BANDS_path,CIRCUIT_k,CIRCUIT_k_label,coo_in
  use YPP_interfaces, ONLY:k_special
  use YPP_real_time,  ONLY:Eh_pumped_pair_energy,Eh_pumped_pair_width,        &
 &                         Eh_pumped_pair_BZ_regions,Eh_pumped_pair_deltaE,  &
@@ -96,6 +97,9 @@ subroutine RT_manual_excitation(E,k,SUCCESS)
    !
    do i_region=1,Eh_pumped_pair_n_BZ_regions
      local_k=Eh_pumped_pair_BZ_regions(i_region,:)
+     !
+     if (trim(coo_in)=="cc")  call c2a(v_in=local_k,mode="kc2i")
+     if (trim(coo_in)=="rlu") call c2a(v_in=local_k,mode="ka2i")
      !
      i_k_near=k_the_nearest(local_k,RT_carriers%kpt,RT_carriers%nk,k_dist,ROTATE_k_ref=.TRUE.,i_err=i_err)
      !
@@ -192,7 +196,7 @@ subroutine RT_manual_excitation(E,k,SUCCESS)
  !
  if (.not.SUCCESS) return
  !
- RT_carriers%delta_f=0._SP
+ RT_carriers%OCC_el%dN=0._SP
  ic=0
  STOP_the_LOOP=.FALSE.
  !
@@ -209,10 +213,10 @@ subroutine RT_manual_excitation(E,k,SUCCESS)
        occupation=1.
      endif
      if (Pump_level(ib,ik)>0) then
-       RT_carriers%delta_f(i_RT)= spin_occ*occupation
-       delta_Nel=delta_Nel+RT_carriers%delta_f(i_RT)*2._SP*RTibz%weights(ik)
+       RT_carriers%OCC_el%dN(i_RT)= spin_occ*occupation
+       delta_Nel=delta_Nel+RT_carriers%OCC_el%dN(i_RT)*2._SP*RTibz%weights(ik)
      else if (Pump_level(ib,ik)<0) then
-       RT_carriers%delta_f(i_RT)=-spin_occ*occupation
+       RT_carriers%OCC_el%dN(i_RT)=-spin_occ*occupation
      endif
    enddo
    if (.not.STOP_the_LOOP) STOP_the_LOOP=delta_Nel>Eh_pumped_Nel
@@ -220,7 +224,7 @@ subroutine RT_manual_excitation(E,k,SUCCESS)
  !
  call msg('sr','[RT] Carrier number  [USER]',Eh_pumped_Nel)
  call msg('sr','[RT]                 [GRID]',delta_Nel)
- call msg('sr','[RT]         density [cm-3]',delta_Nel/(DL_vol*BO2ANG**3*1.E-24_SP))
+ call msg('sr','[RT]         density       ',delta_Nel/(DL_vol*BO2ANG**3*1.E-24_SP),"[cm-3]")
  !
  call E_reset(E_local)
  !

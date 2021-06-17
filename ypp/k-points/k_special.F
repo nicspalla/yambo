@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2021 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -139,74 +139,87 @@ subroutine k_special(LIST_only)
      !
      call orthorombic_lengths(ap,bp)
      !
-     call k_add((/0._SP,0._SP,0._SP/),'G' ) 
-     call k_add(SPECIAL_k%pt(1,:)+(/0._SP,0._SP,cp/),'Z' )
+     call k_add((/0._SP,0._SP,0._SP/),'G' ) ! 1 
+     call k_add(SPECIAL_k%pt(1,:)+(/0._SP,0._SP,cp/),'Z' )! 2
      !
-     call k_add((/fp,0._SP,0._SP/),'X' )
-     call k_add(SPECIAL_k%pt(3,:)+(/0._SP,0._SP,cp/),'A' )
+     call k_add((/fp,0._SP,0._SP/),'X' ) ! 3
+     call k_add(SPECIAL_k%pt(3,:)+(/0._SP,0._SP,cp/),'A' ) ! 4
      !
-     call k_add((/0._SP,bp,0._SP/),'Y' )
-     call k_add(SPECIAL_k%pt(5,:)+(/0._SP,0._SP,cp/),'T' )
+     call k_add((/0._SP,bp,0._SP/),'Y' ) ! 5
+     call k_add(SPECIAL_k%pt(5,:)+(/0._SP,0._SP,cp/),'T' ) ! 6
      !
-     call k_add((/ap/2._SP,bp/2._SP,0._SP/),'S' )
-     call k_add(SPECIAL_k%pt(7,:)+(/0._SP,0._SP,cp/),'R' )
+     call k_add((/ap/2._SP,bp/2._SP,0._SP/),'S' ) ! 7
+     call k_add(SPECIAL_k%pt(7,:)+(/0._SP,0._SP,cp/),'R' ) ! 8
      !
-     call k_add((/ep,bp,0._SP/),'X1' )
-     call k_add(SPECIAL_k%pt(9,:)+(/0._SP,0._SP,cp/),'A1' )
+     call k_add((/ep,bp,0._SP/),'X1' ) ! 9 
+     call k_add(SPECIAL_k%pt(9,:)+(/0._SP,0._SP,cp/),'A1' ) ! 10
      !
-     call k_add(SPECIAL_k%pt(3,:)+SPECIAL_k%pt(5,:),'X2' )
+     call k_add(SPECIAL_k%pt(3,:)+SPECIAL_k%pt(5,:),'X2' ) ! X+Y
      call k_add(SPECIAL_k%pt(4,:)-2.*SPECIAL_k%pt(3,:),'A2' )
      call k_add(SPECIAL_k%pt(4,:)-2.*SPECIAL_k%pt(2,:),'A3' )
      call k_add(SPECIAL_k%pt(4,:)+SPECIAL_k%pt(5,:),'A4' )
      call k_add(SPECIAL_k%pt(13,:)+SPECIAL_k%pt(5,:),'A5' )
      call k_add(SPECIAL_k%pt(12,:)+SPECIAL_k%pt(5,:),'A6' )
      !
+     ! Y direction
+     !
+     call k_add(SPECIAL_k%pt(3,:)-SPECIAL_k%pt(5,:), 'X3' ) ! X-Y
+     call k_add(-SPECIAL_k%pt(3,:)-SPECIAL_k%pt(5,:),'X4' ) ! -X-Y
+     call k_add(-SPECIAL_k%pt(5,:),'Yp' ) ! -Y
+     !
      ! X=+, Z=- quadrant
      !
+     call k_ORTHO_b_gt_a_add( (/0.88_SP,0._SP  /),"XYpm1 XYp1" )
      call k_ORTHO_b_gt_a_add( (/0.88_SP,0._SP  /),"XYpm1" )
      call k_ORTHO_b_gt_a_add( (/0.50_SP,0._SP  /),"XYpp1 XYpm2" )
      call k_ORTHO_b_gt_a_add( (/0.50_SP,0.26_SP/),"XYpm3 Ypm3 Gpm2 Gpp1" )
      call k_ORTHO_b_gt_a_add( (/0.88_SP,0.26_SP/),"XYpm4" )
      !
+     call k_ORTHO_b_gt_a_add( (/0.62_SP,0.26_SP/),"Gp1" )
      call k_ORTHO_b_gt_a_add( (/0.72_SP,0.26_SP/),"Gpm1" )
      call k_ORTHO_b_gt_a_add( (/0.50_SP,0.50_SP/),"Gpm3 Gmp1 Gmm2" )
      !
+     call k_ORTHO_b_gt_a_add( (/0.62_SP,0.1_SP/),"Yp1" )
      call k_ORTHO_b_gt_a_add( (/0.62_SP,0.16_SP/),"Ypm1" )
      call k_ORTHO_b_gt_a_add( (/0.50_SP,0.16_SP/),"Ypp1 Ypm2" )
      call k_ORTHO_b_gt_a_add( (/0.62_SP,0.26_SP/),"Ypm4" )
      !
      ! X=+, Z=+ quadrant
      !
-     call k_ORTHO_b_gt_a_add( (/0.12_SP,0._SP  /),"XYpp2" )
-     call k_ORTHO_b_gt_a_add( (/0.12_SP,0.26_SP/),"XYpp3" )
+     call k_ORTHO_b_gt_a_add( (/0.12_SP,0._SP  /),"XYpp2 XYp2" )
+     call k_ORTHO_b_gt_a_add( (/0.12_SP,0.26_SP/),"XYpp3 XYp3" )
      !
      call k_ORTHO_b_gt_a_add( (/0.28_SP,0.26_SP/),"Gpp2" )
+     call k_ORTHO_b_gt_a_add( (/0.38_SP,0.50_SP/),"Gp3 Gm2" )
      call k_ORTHO_b_gt_a_add( (/0.28_SP,0.50_SP/),"Gpp3 Gmp2" )
      !
+     call k_ORTHO_b_gt_a_add( (/0.38_SP,0.1_SP/),"Yp2" )
      call k_ORTHO_b_gt_a_add( (/0.38_SP,0.16_SP/),"Ypp2" )
-     call k_ORTHO_b_gt_a_add( (/0.38_SP,0.26_SP/),"Ypp3" )
+     call k_ORTHO_b_gt_a_add( (/0.38_SP,0.26_SP/),"Ypp3 Yp3 Gp2" )
      !
      ! X=-, Z=- quadrant
      !
-     call k_ORTHO_b_gt_a_add( (/0.88_SP,0.74_SP/),"XYmm1" )
+     call k_ORTHO_b_gt_a_add( (/0.88_SP,0.74_SP/),"XYmm1 XYm1" )
      call k_ORTHO_b_gt_a_add( (/0.50_SP,0.74_SP/),"Gmm3 XYmp1 Ymp1 Ymm2 XYmm2" )
      call k_ORTHO_b_gt_a_add( (/0.50_SP,1._SP  /),"XYmm3" )
      call k_ORTHO_b_gt_a_add( (/0.88_SP,1._SP  /),"XYmm4" )
      !
+     call k_ORTHO_b_gt_a_add( (/0.62_SP,0.50_SP/),"Gm1" )
      call k_ORTHO_b_gt_a_add( (/0.72_SP,0.50_SP/),"Gmm1" )
      call k_ORTHO_b_gt_a_add( (/0.50_SP,0.84_SP/),"Ymm3" )
      call k_ORTHO_b_gt_a_add( (/0.72_SP,0.74_SP/),"Gmm4" )
      !
-     call k_ORTHO_b_gt_a_add( (/0.62_SP,0.74_SP/),"Ymm1" )
+     call k_ORTHO_b_gt_a_add( (/0.62_SP,0.74_SP/),"Ymm1 Ym1" )
      call k_ORTHO_b_gt_a_add( (/0.62_SP,0.84_SP/),"Ymm4" )
      !
      ! X=-, Z=+ quadrant
      !
-     call k_ORTHO_b_gt_a_add( (/0.12_SP,1._SP  /),"XYmp3" )
-     call k_ORTHO_b_gt_a_add( (/0.12_SP,0.74_SP/),"XYmp2" )
+     call k_ORTHO_b_gt_a_add( (/0.12_SP,1._SP  /),"XYmp3 XYm3" )
+     call k_ORTHO_b_gt_a_add( (/0.12_SP,0.74_SP/),"XYmp2 XYm2" )
      call k_ORTHO_b_gt_a_add( (/0.28_SP,0.74_SP/),"Gmp3" )
+     call k_ORTHO_b_gt_a_add( (/0.38_SP,0.9_SP/),"Ym3" )
      call k_ORTHO_b_gt_a_add( (/0.38_SP,0.84_SP/),"Ymp3" )
-     call k_ORTHO_b_gt_a_add( (/0.38_SP,0.74_SP/),"Ymp2" )
+     call k_ORTHO_b_gt_a_add( (/0.38_SP,0.74_SP/),"Ymp2 Ym2 Gm3" )
      !
    case('CUB')
      !
