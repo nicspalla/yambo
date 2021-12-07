@@ -43,7 +43,7 @@ module BS_solvers
    complex(SP), allocatable :: fragment(:)
  end type Haydock_vector
  !
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
  !
  ! Slepc
  !==========
@@ -67,7 +67,7 @@ module BS_solvers
  !=========
  type(IO_desc)    :: BSS_desc
  character(schlen):: BSS_mode
- complex(SP) :: BSS_Wd
+ complex(SP)      :: BSS_Wd
  integer  :: BSS_n_freqs
  integer  :: BSS_n_eig            !number of eigenvalues to find
  real(SP) :: BSS_er(2)
@@ -80,11 +80,10 @@ module BS_solvers
  logical  :: BSS_perturbative_width
  logical  :: BSS_eels_to_eps
  logical  :: BSS_uses_pert_SOC=.FALSE.
- !
  logical  :: run_Haydock=.FALSE.
  logical  :: run_inversion=.FALSE.
  logical  :: run_Diago=.FALSE.
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
  logical  :: run_Slepc=.FALSE.
 #endif
  !
@@ -132,6 +131,7 @@ module BS_solvers
    complex(SP), allocatable :: spectra(:,:)
  end type K_Inversion_data
  !
+ type(K_Inversion_data), save :: K_INV_PI_PH
  type(K_Inversion_data), save :: K_INV_EPS
  type(K_Inversion_data), save :: K_INV_PL
  !

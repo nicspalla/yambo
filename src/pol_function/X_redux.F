@@ -49,7 +49,7 @@ subroutine X_redux(iq,X_par,Xw,X)
  use interfaces,    ONLY:LINEAR_ALGEBRA_driver,MATRIX_transfer
  use stderr,        ONLY:intc
  use X_m,           ONLY:X_t,X_use_lin_sys,X_use_gpu,X_par_lower_triangle
- use TDDFT,         ONLY:FXC_n_g_corr,FXC,FXC_LRC_alpha,FXC_LRC_beta,FXC_SVD_digits
+ use TDDFT,         ONLY:FXC_n_g_corr,F_xc_gspace,FXC_LRC_alpha,FXC_LRC_beta,FXC_SVD_digits
  use timing_m,      ONLY:timing
  use cuda_m
  use deviceXlib_m
@@ -128,7 +128,7 @@ subroutine X_redux(iq,X_par,Xw,X)
    call MATRIX_init( "SLK", K_FXC , FXC_n_g_corr, 1 )
    YAMBO_ALLOC(K_FXC%blc,(K_FXC%BLCrows(1):K_FXC%BLCrows(2),K_FXC%BLCcols(1):K_FXC%BLCcols(2),1))
    K_FXC%blc=cZERO
-   call MATRIX_transfer(M=-FXC(:,:,1),M_out=K_FXC)
+   call MATRIX_transfer(M=-F_xc_gspace(:,:,1),M_out=K_FXC)
  endif
  !
  do iw_par=1,maxval(PAR_n_freqs_global)
@@ -212,18 +212,18 @@ subroutine X_redux(iq,X_par,Xw,X)
        call error("[LA] SLK library required but not available")
 #endif
      else
-       call M_by_M('N','N',X%ng,FXC_n_g_corr,FXC_n_g_corr,cONE,-Xo%blc(:,:FXC_n_g_corr,1),X%ng,&
-&                  FXC(:,:,1),FXC_n_g_corr,cZERO,KERNEL%blc(:,:FXC_n_g_corr,1),X%ng)
+       call M_by_M('N','N',X%ng,FXC_n_g_corr,FXC_n_g_corr,-cONE,Xo%blc(:FXC_n_g_corr,:FXC_n_g_corr,1),X%ng,&
+&                  F_xc_gspace(:,:,1),FXC_n_g_corr,cZERO,KERNEL%blc(:FXC_n_g_corr,:FXC_n_g_corr,1),X%ng)
      endif
      !
    endif
-   !
-   ! no Fxc [delta_(g1,g2)-Xo(g1,g2)*v(g2)]
    !
    if (compute_on_gpu) then
      if (l_bs_fxc.or.l_lrc_fxc.or.l_alda_fxc) call dev_memcpy(KERNEL%blc_d,KERNEL%blc)
      call dev_memcpy(Xo%blc_d,Xo%blc)
    endif
+   !
+   ! no Fxc [delta_(g1,g2)-Xo(g1,g2)*v(g2)]
    !
    call X_redux_build_kernel(KERNEL,Xo,Xo_rows,Xo_cols)
    !
@@ -250,35 +250,36 @@ subroutine X_redux(iq,X_par,Xw,X)
      !
    endif
    !
-   ! update X by multiplying left and right for v_coul^1/2 (diagonal in reciprocal space)
+   ! When calculating EPS1 multiply X left and right by v_coul^1/2 (diagonal in reciprocal space)
    !
-   if (compute_on_gpu) then
-      !
-!      call dev_mat_upd_dMd(Xo_rows(2)-Xo_rows(1)+1,Xo_cols(2)-Xo_cols(1)+1,BUFFER%blc_d(:,:,iw_par),&
-!&                          bare_qpg_d(Xo_rows(1):,iq),"R",bare_qpg_d(iq,Xo_cols(1):),"R",scal=cmplx(4._SP*pi,kind=SP)) 
-      !
-      BUFFER_blc_d => BUFFER%blc_d
-      !
-      !$cuf kernel do(2)
-      do ig2=Xo_cols(1),Xo_cols(2)
-        do ig1=Xo_rows(1),Xo_rows(2)
-          BUFFER_blc_d(ig1,ig2,iw_par)=BUFFER_blc_d(ig1,ig2,iw_par)*4._SP*pi/bare_qpg_d(iq,ig1)/bare_qpg_d(iq,ig2)
+   if (X%whoami/=1) then
+     !
+     if (compute_on_gpu) then
+        !
+        BUFFER_blc_d => BUFFER%blc_d
+        !
+        !$cuf kernel do(2)
+        do ig2=Xo_cols(1),Xo_cols(2)
+          do ig1=Xo_rows(1),Xo_rows(2)
+            BUFFER_blc_d(ig1,ig2,iw_par)=BUFFER_blc_d(ig1,ig2,iw_par)*4._SP*pi/bare_qpg_d(iq,ig1)/bare_qpg_d(iq,ig2)
+          enddo
         enddo
-      enddo
-      !
-      call dev_stream_sync(stream_default)
-      call dev_memcpy_async(BUFFER%blc(:,:,BUFFER%I),BUFFER%blc_d(:,:,BUFFER%I), stream_d2h)
-      !
-   else
-      !
-      !$omp parallel do default(shared), private(ig1,ig2), collapse(2)
-      do ig2=Xo%cols(1),Xo%cols(2)
-        do ig1=Xo%rows(1),Xo%rows(2)
-          BUFFER%blc(ig1,ig2,iw_par)=BUFFER%blc(ig1,ig2,iw_par)*4._SP*pi/bare_qpg(iq,ig1)/bare_qpg(iq,ig2)
+        !
+        call dev_stream_sync(stream_default)
+        call dev_memcpy_async(BUFFER%blc(:,:,BUFFER%I),BUFFER%blc_d(:,:,BUFFER%I), stream_d2h)
+        !
+     else
+        !
+        !$omp parallel do default(shared), private(ig1,ig2), collapse(2)
+        do ig2=Xo%cols(1),Xo%cols(2)
+          do ig1=Xo%rows(1),Xo%rows(2)
+            BUFFER%blc(ig1,ig2,iw_par)=BUFFER%blc(ig1,ig2,iw_par)*4._SP*pi/bare_qpg(iq,ig1)/bare_qpg(iq,ig2)
+          enddo
         enddo
-      enddo
-      !$omp end parallel do
-      !
+        !$omp end parallel do
+        !
+     endif
+     !
    endif
    !
    if (PAR_n_freqs>0) call live_timing(steps=1)
@@ -306,7 +307,7 @@ subroutine X_redux(iq,X_par,Xw,X)
  if (X_par%INTER_comm%n_CPU>1) then
    !
    call MATRIX_reset(X_par)
-   call X_PARALLEL_alloc(X_par,X%ng,Xw%n_freqs,"X,CPU_ONLY")
+   call X_ALLOC_parallel(X_par,X%ng,Xw%n_freqs,"X,CPU_ONLY")
    !
  endif
  !

@@ -24,18 +24,19 @@
 subroutine INIT_read_command_line(rstr,init_)
  !
  use pars,           ONLY:schlen
- use drivers,        ONLY:infile_editing,l_bse,l_alda_fxc,l_chi,l_elel_corr,&
+ use drivers,        ONLY:infile_editing,l_bse,l_alda_fxc,l_chi,l_elel_corr,l_X,&
 &                         l_elel_scatt,l_elph_corr,l_elph_scatt,l_elphoton_corr,&
 &                         l_elphoton_scatt,l_em1s,l_em1d,l_ppa,l_phel_scatt,l_phel_corr,l_dipoles
  use BS,             ONLY:BSK_mode
  use BS_solvers,     ONLY:BSS_mode
  use X_m,            ONLY:Chi_mode
  use QP_m,           ONLY:QP_solver
+ use memory,         ONLY:USER_MEM_limit_string,GET_user_MEM_limit
  use LIVE_t,         ONLY:USER_wall_time_string,GET_user_WALL_time
  use stderr,         ONLY:STRING_split,STRING_match,STRING_same
  use it_tools,       ONLY:runlevel_is_on,switch_off_runlevel
  use it_m,           ONLY:V_RL,V_kpt,V_sc,V_qp,V_io,V_general,V_resp,      &
-&                         V_real_time,V_nl_optics,V_all,V_parallel,        &
+&                         V_real_time,V_nl_optics,V_all,V_parallel,V_ph,   &
 &                         infile_verbosity,nrnlvls,rnlvls
 #if defined _SC || defined _RT
  use hamiltonian,    ONLY:H_potential
@@ -58,8 +59,12 @@ subroutine INIT_read_command_line(rstr,init_)
  integer            ::i1,i2,i3,i_field,n_pieces,i_cycle
  logical            ::l_user_kernel,V_is_defined
  logical, external  ::INIT_read_command_line_potentials
- integer, parameter ::n_strings_not_allowed=8
+ integer, parameter ::n_strings_not_allowed=10
  character(schlen)  ::rstr_piece(2*nrnlvls),strings_to_not_use_as_runlevels(n_strings_not_allowed),V_string,scattp_piece(10)
+ !
+ ! Input file editing mode is by default off
+ !
+ infile_editing=.FALSE.
  !
  ! Keep track if the user provided a kernel option
  !
@@ -69,14 +74,16 @@ subroutine INIT_read_command_line(rstr,init_)
  ! a string related to a runlevel this is erronously switched on.
  !
  strings_to_not_use_as_runlevels=" "
- strings_to_not_use_as_runlevels(1)="jobstr"
- strings_to_not_use_as_runlevels(2)="ifile"
- strings_to_not_use_as_runlevels(3)="idir"
- strings_to_not_use_as_runlevels(4)="odir"
- strings_to_not_use_as_runlevels(5)="cdir"
- strings_to_not_use_as_runlevels(6)="com_path"
- strings_to_not_use_as_runlevels(7)="more_io_path"
- strings_to_not_use_as_runlevels(8)="core_io_path"
+ strings_to_not_use_as_runlevels( 1)="jobstr"
+ strings_to_not_use_as_runlevels( 2)="ifile"
+ strings_to_not_use_as_runlevels( 3)="idir"
+ strings_to_not_use_as_runlevels( 4)="odir"
+ strings_to_not_use_as_runlevels( 5)="cdir"
+ strings_to_not_use_as_runlevels( 6)="com_path"
+ strings_to_not_use_as_runlevels( 7)="more_io_path"
+ strings_to_not_use_as_runlevels( 8)="core_io_path"
+ strings_to_not_use_as_runlevels( 9)="wallt"
+ strings_to_not_use_as_runlevels(10)="memorylimit"
  !
  ! Split the string in pieces
  !
@@ -93,13 +100,21 @@ subroutine INIT_read_command_line(rstr,init_)
      !
      if (trim(rstr_piece(i1))=='ifile') cycle
      !
+     if ( trim(rstr_piece(i1)) == 'wallt' ) then
+       USER_wall_time_string=trim(rstr_piece(i1+1))
+       if (i_cycle==1) call GET_user_WALL_time()
+     endif
+     !
+     if ( trim(rstr_piece(i1)) == 'memorylimit' ) then
+       USER_MEM_limit_string=trim(rstr_piece(i1+1))
+       if (i_cycle==1) call GET_user_MEM_limit()
+     endif
+     !
      ! String suitable for runlevel switching?
      !
-     if (i1>1) then
-       do i2=1,n_strings_not_allowed
-         if (trim(rstr_piece(i1-1)) == trim(strings_to_not_use_as_runlevels(i2))) cycle INPUT_strings_loop
-       enddo
-     endif
+     do i2=1,n_strings_not_allowed
+       if (trim(rstr_piece(i1)) == trim(strings_to_not_use_as_runlevels(i2))) cycle INPUT_strings_loop
+     enddo
      !
      ! Input File editing?
      !
@@ -122,6 +137,7 @@ subroutine INIT_read_command_line(rstr,init_)
      ! V_real_time=8
      ! V_parallel=9
      ! V_nl_optics=10
+     ! V_ph=10
      ! V_all=99
      !
      if ( trim(rstr_piece(i1)) == 'infver' ) then
@@ -134,13 +150,9 @@ subroutine INIT_read_command_line(rstr,init_)
        if (STRING_same( trim(rstr_piece(i1+1)) , "resp").or.STRING_same( trim(rstr_piece(i1+1)) , "x")) infile_verbosity=V_resp
        if (STRING_same( trim(rstr_piece(i1+1)) , "rt")) infile_verbosity=V_real_time
        if (STRING_same( trim(rstr_piece(i1+1)) , "nl")) infile_verbosity=V_nl_optics
+       if (STRING_same( trim(rstr_piece(i1+1)) , "ph")) infile_verbosity=V_ph
        if (STRING_same( trim(rstr_piece(i1+1)) , "par")) infile_verbosity=V_parallel
        if (STRING_same( trim(rstr_piece(i1+1)) , "all")) infile_verbosity=V_all
-     endif
-     !
-     if ( trim(rstr_piece(i1)) == 'wallt' ) then
-       USER_wall_time_string=trim(rstr_piece(i1+1))
-       if (i_cycle==1) call GET_user_WALL_time()
      endif
      !
      if ( trim(rstr_piece(i1)) == 'dipoles' )  then
@@ -148,9 +160,11 @@ subroutine INIT_read_command_line(rstr,init_)
      endif
      !
      if ( trim(rstr_piece(i1)) == 'screen') then
-       l_em1s= STRING_same(trim(rstr_piece(i1+1)),'s')
-       l_em1d= (STRING_same(trim(rstr_piece(i1+1)),'f') )
-       l_ppa = (STRING_same(trim(rstr_piece(i1+1)),'p') )
+       l_em1s= STRING_match(trim(rstr_piece(i1+1)),'s')
+       l_em1d= (STRING_match(trim(rstr_piece(i1+1)),'d') )
+       l_ppa = (STRING_match(trim(rstr_piece(i1+1)),'p') )
+       l_X   = (STRING_match(trim(rstr_piece(i1+1)),'X') )
+       if (l_X)   call initactivate(1,'Xx')
        if (l_em1s) call initactivate(1,'em1s')
        if (l_em1d) call initactivate(1,'em1d')
        if (l_ppa)  call initactivate(1,'ppa')
@@ -227,9 +241,10 @@ subroutine INIT_read_command_line(rstr,init_)
      !
      if ( trim(rstr_piece(i1)) == 'dyson' ) then
        QP_solver=trim(rstr_piece(i1+1))
-       if (.not.any((/trim(QP_solver)=='n',trim(QP_solver)=='s',trim(QP_solver)=='g',trim(QP_solver)=='r'/)))  QP_solver='n'
+       if (.not.any((/STRING_match(QP_solver,'n'),STRING_match(QP_solver,'s'),&
+&                     STRING_match(QP_solver,'g')/)))  QP_solver='n'
 #if !defined  _ELPH && !defined _QED
-         l_elel_corr=.true.
+       l_elel_corr=.true.
 #endif
        !
        if ( i_cycle == 2 .and. trim(Chi_mode)==' ') Chi_mode='HARTREE'
@@ -266,15 +281,15 @@ subroutine INIT_read_command_line(rstr,init_)
          infile_editing=.true.
          l_ppa=.TRUE.
          if (i_cycle==1) QP_solver="n"
-         call initactivate(1,'ppa')
+         call initactivate(1,'ppa el_el_corr')
        else if (trim(rstr_piece(i1+1))=='c') then
          infile_editing=.true.
          if (i_cycle==1) QP_solver="n"
-         call initactivate(1,'cohsex dyson')
+         call initactivate(1,'cohsex dyson el_el_corr')
        else if (trim(rstr_piece(i1+1))=='r') then
          infile_editing=.true.
          if (i_cycle==1) QP_solver="s"
-         call initactivate(1,'em1d')
+         call initactivate(1,'em1d el_el_corr')
 #if defined  _ELPH 
        else if (trim(rstr_piece(i1+1))=='fan') then
          infile_editing=.true.

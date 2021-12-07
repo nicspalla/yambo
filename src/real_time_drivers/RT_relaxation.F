@@ -68,7 +68,6 @@ subroutine RT_relaxation(E,k,q,Time)
 #if defined _PHEL
  use drivers,        ONLY:l_phel_scatt
  use R_lattice,      ONLY:nqibz
- use real_time,      ONLY:RTibz,RT_levels
 #endif
  use parallel_m,     ONLY:PAR_IND_Xk_ibz,PARs_PH_Q_ibz
  use RT_occupations, ONLY:l_RT_relax_time_approx 
@@ -163,7 +162,7 @@ subroutine RT_relaxation(E,k,q,Time)
      !
      if (.not.PARs_PH_Q_ibz%IND%element_1D(iq)) cycle
      !
-     call PHEL_Lifetimes(iq,E,k,q,RT_bands,RTibz,RT_levels)
+     !call PHEL_Lifetimes(iq,E,k,q,RT_bands,RTibz,RT_levels)
      !
    enddo
    !

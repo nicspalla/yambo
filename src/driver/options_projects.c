@@ -34,7 +34,7 @@ void options_projects(struct options_struct options[],int *i_opt)
  options[*i_opt].short_desc="Self-Consistent Single-Particle Calculations";
  options[*i_opt].long_opt="sc";
  options[*i_opt].short_opt='s';
- options[*i_opt].bin="yambo_sc";
+ options[*i_opt].bin="yambo_sc yambo_models";
  options[*i_opt].yambo_string="scrun";
  options[*i_opt].section=desc;
  *i_opt=*i_opt+1;
@@ -55,7 +55,7 @@ void options_projects(struct options_struct options[],int *i_opt)
  options[*i_opt].long_desc[13]="Potentials can be combined. Example: use hf for Hartree-Fock";
  options[*i_opt].long_opt="potential";
  options[*i_opt].short_opt='v';
- options[*i_opt].bin="yambo_sc yambo_rt yambo_nl";
+ options[*i_opt].bin="yambo_sc yambo_rt yambo_nl yambo_models";
  options[*i_opt].yambo_string="potential";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;
@@ -77,7 +77,7 @@ void options_projects(struct options_struct options[],int *i_opt)
  options[*i_opt].short_desc="Collisions";
  options[*i_opt].long_opt="collisions";
  options[*i_opt].short_opt='e';
- options[*i_opt].bin="yambo_rt yambo_sc yambo_nl";
+ options[*i_opt].bin="yambo_rt yambo_sc yambo_nl yambo_models";
  options[*i_opt].yambo_string="collisions";
  options[*i_opt].section=desc;
  *i_opt=*i_opt+1;
@@ -128,7 +128,7 @@ void options_projects(struct options_struct options[],int *i_opt)
 #endif
  options[*i_opt].long_opt="scattering";
  options[*i_opt].short_opt='s';
- options[*i_opt].bin="yambo_rt";
+ options[*i_opt].bin="yambo_rt yambo_models";
  options[*i_opt].yambo_string="scattp";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;

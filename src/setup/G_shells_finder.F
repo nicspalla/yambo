@@ -208,6 +208,12 @@ subroutine G_shells_finder()
  endif
  !
  n_g_shells=n_g_shells_no_holes
+#if defined _MODELS
+ if (ng_closed==1) then
+   ng_in_shell_TMP(1)=1
+   n_g_shells=1
+ endif
+#endif
  !
  ! Shells Allocation & Transfer 
  !

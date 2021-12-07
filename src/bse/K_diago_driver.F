@@ -23,7 +23,7 @@
 !
 ! headers
 !
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
 #include <petsc/finclude/petscsys.h>
 #include <petsc/finclude/petscvec.h>
 #include <petsc/finclude/petscmat.h>
@@ -43,7 +43,7 @@ subroutine K_diago_driver(iq,W,X_static)
 &                         BS_res_ares_n_mat,l_BS_optics !,BS_Blocks_symmetrize_K,&
  use BS_solvers,     ONLY:io_BSS_diago,BSS_perturbative_width,BSS_mode,&
 &                         BSS_write_eig_2_db,BSS_eh_W,BS_mat,BSS_n_eig,BS_E
- use X_m,            ONLY:X_t
+ use X_m,            ONLY:X_t,X_OUTPUT_driver
  use electrons,      ONLY:n_sp_pol
  use frequency,      ONLY:w_samp
  use com,            ONLY:isec
@@ -54,7 +54,7 @@ subroutine K_diago_driver(iq,W,X_static)
  use IO_m,           ONLY:REP,VERIFY,OP_WR_CL,OP_RD_CL
  use parser_m,       ONLY:parser
  use timing_m,       ONLY:timing
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
  use interfaces,     ONLY:MATRIX_slepc
  !
  use petscmat
@@ -82,27 +82,24 @@ subroutine K_diago_driver(iq,W,X_static)
  !
  ! Slepc specific
  !
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
  Mat                   :: slepc_mat
  PetscErrorCode        :: ierr
 #endif
  !
  ! Excitonic hamiltonian, residuals independent
  !==============================================
- !
  real(SP),allocatable    :: BS_E_real(:)
  real(SP)   ,pointer     :: BS_E_SOC_corr(:,:) => null()
  complex(SP),allocatable :: BS_corrections(:,:)
  !
  ! Coupling
- !
  complex(SP),allocatable :: BS_V_left(:,:)
  complex(SP),allocatable :: BS_V_right(:,:)
  complex(SP),pointer     :: BS_overlap(:,:)    => null()
  !
  ! Residuals, different for each response function
  !=================================================
- !
  complex(SP),pointer     :: BS_R_left(:)         => null()
  complex(SP),pointer     :: BS_R_right(:)        => null()
  !
@@ -114,29 +111,32 @@ subroutine K_diago_driver(iq,W,X_static)
  complex(SP),pointer     :: BS_R_right_magn(:,:) => null()
  !
  ! I/O
- !
  integer                 :: io_err,ID
  type(X_t),intent(in)    :: X_static
  !
  l_diago     = index(BSS_mode,'d')/=0
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
  l_slepc     = index(BSS_mode,'s')/=0
 #endif
  !
  if(l_diago) Solver="Diago"
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
  if(l_slepc) Solver="Slepc"
 #endif
  !
  call timing(trim(Solver)//' Solver',OPR='start')
  !
+ ! Output files initialization
+ !=============================
+ call X_OUTPUT_driver("DEF INIT",solver=Solver) 
+ !
  ! Sectioning
  !============
  if (isec(2)/=0) sec="="
  if (isec(2)==0) sec="+"
- call section("+P",trim(Solver)//' Solver @q'//trim(intc(iq)))
+ call section(sec,trim(Solver)//' Solver @q'//trim(intc(iq)))
  !  
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
  if(l_slepc) call K_slepc_local_init()
 #endif
  !
@@ -162,7 +162,7 @@ subroutine K_diago_driver(iq,W,X_static)
    !========================
    call io_control(ACTION=OP_RD_CL,COM=REP,MODE=VERIFY,SEC=(/1,2/),ID=ID)
    io_err=io_BSS_diago(iq,i_BS_mat,ID,X_static,BS_E,BS_R_left,BS_R_right,BS_E_SOC_corr,&
-  &                                BS_R_left_magn,BS_R_right_magn,BS_R_right_kerr,BS_R_PL)
+&                      BS_R_left_magn,BS_R_right_magn,BS_R_right_kerr,BS_R_PL)
    !
    K_is_not_hermitian=BS_K_coupling.or.(allocated(BSS_eh_W).and..not.BSS_perturbative_width)
    !
@@ -194,7 +194,7 @@ subroutine K_diago_driver(iq,W,X_static)
        !
      endif
      !
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
      if(l_slepc) then
        ! 1. Here we will define a PetscShell matrix and define the matrix-vector multiplication
        ! using the K_multiply_by_V function used in the Haydock method
@@ -219,7 +219,7 @@ subroutine K_diago_driver(iq,W,X_static)
      if (K_is_not_hermitian) then
        !
        if(l_diago) call LINEAR_ALGEBRA_driver(DIAGO,M=BS_mat,E_cmpl=BS_E,V_left=BS_V_left,V_right=BS_V_right)
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
        if(l_slepc) call MATRIX_slepc(slepc_mat,l_target_energy,BSS_n_eig,BS_V_right,V_left=BS_V_left,E_cmpl=BS_E)
 #endif
        !
@@ -228,7 +228,7 @@ subroutine K_diago_driver(iq,W,X_static)
      else
        !
        if(l_diago) call LINEAR_ALGEBRA_driver(DIAGO,M=BS_mat,E_real=BS_E_real)
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
        if(l_slepc) call MATRIX_slepc(slepc_mat,l_target_energy,BSS_n_eig,BS_mat,E_real=BS_E_real)
 #endif
        !
@@ -236,7 +236,7 @@ subroutine K_diago_driver(iq,W,X_static)
        !
      endif
      !
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
      !
      ! BSS_n_eig could be lowered by MATRIX_slepc
      if (Input_n_eig>BSS_n_eig) then
@@ -256,17 +256,17 @@ subroutine K_diago_driver(iq,W,X_static)
        !
        call K_diago_overlap_matrix(BS_V_left,BS_V_right,BS_overlap)
        !
-       if(l_BS_optics ) call K_diago_non_hermitian_residuals(BS_E,BS_R_left,BS_R_right,BS_V_left,BS_V_right,BS_overlap)
-       if(l_BS_kerr   ) call K_diago_kerr_residual(BS_E,BS_V_right,BS_R_right_kerr)
-       if(l_BS_magnons) call K_diago_non_herm_magnons_residual(BS_R_left_magn,BS_R_right_magn,BS_V_left,BS_V_right,BS_overlap)
-       if(l_BS_photolum)call PL_diago_residual(BS_V_left,BS_V_right,BS_R_PL,K_is_not_hermitian,BS_overlap)
+       if (l_BS_optics ) call K_diago_non_hermitian_residuals(BS_E,BS_R_left,BS_R_right,BS_V_left,BS_V_right,BS_overlap)
+       if (l_BS_kerr   ) call K_diago_kerr_residual(BS_E,BS_V_right,BS_R_right_kerr)
+       if (l_BS_magnons) call K_diago_non_herm_magnons_residual(BS_R_left_magn,BS_R_right_magn,BS_V_left,BS_V_right,BS_overlap)
+       if (l_BS_photolum)call PL_diago_residual(BS_V_left,BS_V_right,BS_R_PL,K_is_not_hermitian,BS_overlap)
        !
      else
        !
-       if(l_BS_optics)  call K_diago_hermitian_residuals(i_BS_mat,BS_E_real,BS_R_left,BS_R_right)
-       if(l_BS_kerr   ) call K_diago_kerr_residual(BS_E,BS_mat,BS_R_right_kerr)
-       if(l_BS_magnons) call K_diago_herm_magnons_residual(i_BS_mat,BS_R_left_magn,BS_R_right_magn)
-       if(l_BS_photolum)call PL_diago_residual(BS_mat,BS_mat,BS_R_PL,K_is_not_hermitian)
+       if (l_BS_optics)  call K_diago_hermitian_residuals(i_BS_mat,BS_E_real,BS_R_left,BS_R_right)
+       if (l_BS_kerr   ) call K_diago_kerr_residual(BS_E,BS_mat,BS_R_right_kerr)
+       if (l_BS_magnons) call K_diago_herm_magnons_residual(i_BS_mat,BS_R_left_magn,BS_R_right_magn)
+       if (l_BS_photolum)call PL_diago_residual(BS_mat,BS_mat,BS_R_PL,K_is_not_hermitian)
        !
      endif
      !
@@ -312,13 +312,12 @@ subroutine K_diago_driver(iq,W,X_static)
  enddo
  !
  ! Initialize & write the output file 
- !=====================================
- call K_output_file(iq,"open "//trim(Solver))
- call K_output_file(iq,trim(Solver))
+ !====================================
+ call K_OUTPUT(iq,W,"open dump close "//trim(Solver),"ALL")
  !
  ! CLEAN
  !
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
  if(l_slepc) call K_slepc_local_free()
 #endif
  !
@@ -363,7 +362,7 @@ subroutine K_diago_driver(iq,W,X_static)
          YAMBO_ALLOC_P(BS_overlap,(BSS_n_eig,BSS_n_eig))
        else
          YAMBO_ALLOC(BS_E_real,(BSS_n_eig))
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
          if(l_slepc) then
            if (BS_K_coupling) then
              YAMBO_ALLOC(BS_mat,(BS_H_dim,BSS_n_eig))
@@ -402,7 +401,7 @@ subroutine K_diago_driver(iq,W,X_static)
      !
    end subroutine local_free
    !
-#if defined _SLEPC && !defined _SLEPC_OFF
+#if defined _SLEPC && !defined _NL
    !
    subroutine K_slepc_resize_variables()
      !

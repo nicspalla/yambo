@@ -40,12 +40,12 @@
 subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_W,q_weight)
  !
  use pars,          ONLY:SP,pi,cZERO
- use units,         ONLY:HA2THZ,HA2EV
  use electrons,     ONLY:levels,spin_occ
  use frequency,     ONLY:w_samp
  use ELPH,          ONLY:gsqF_fan,gsqF_dw,gsqF_ca_corr,gsqF_life_bose,gsqF_life_f,GKKP,&
 &                        gsqF_energy_steps,gsqF_dw,eval_G_using_KK,elph_use_q_grid,PH_freqs,&
-&                        FAN_deltaE_treshold,DW_deltaE_treshold,PH_freqs_sq,use_PH_DbGd
+&                        FAN_deltaE_treshold,DW_deltaE_treshold,PH_freqs_sq,use_PH_DbGd, &
+&                        elph_grids_are_expanded
  use QP_m,          ONLY:QP_table,QP_time_order_sign
  use R_lattice,     ONLY:bz_samp
  use functions,     ONLY:Fermi_fnc_derivative
@@ -65,23 +65,22 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  ! Work Space
  !
  integer  :: iw
- integer  :: ik,ik_bz,ib,iE_fg,iq_fg,ik_plus_q_dg,ic,nq_around,iq_idx
+ integer  :: ik,ik_bz,ib,iE_fg,iq_fg,ic,nq_around,iq_idx
  complex(SP) :: delta_E
  real(SP) :: delta_E_at_gamma,f_occ,E_kpq
  real(SP) :: one_minus_2f_occ,gsqF_damping,ph_E
- real(SP) :: weight_dbg,ph_E_dbg,q_dbg_weight,DW_weight
+ real(SP) :: weight_dbg,DW_weight
  !
  logical  :: eval_DW
  !
  ! Residues
  !
- real(SP) ::gsqF_RES_life_B,gsqF_RES_life_f,gsqf_RES_ca_corr,gsqF_RES_fan,gsqF_RES_DW 
+ real(SP) ::gsqF_RES_life_B,gsqF_RES_life_f,gsqF_RES_fan,gsqF_RES_DW 
  !
  ! Denominators
  !
  real(SP) :: gsqF_DEN_life_B(gsqF_energy_steps)
  real(SP) :: gsqF_DEN_life_f(gsqF_energy_steps)
- real(SP) :: gsqf_DEN_ca_corr(gsqF_energy_steps)
  real(SP) :: gsqF_DEN_fan(gsqF_energy_steps)
  real(SP) :: gsqF_DEN_DW 
  !
@@ -89,7 +88,9 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  !
  ib   =QP_table(i_qp,1)
  ik   =QP_table(i_qp,3)
- ik_bz=sum(k%nstar(:ik-1))+1
+ !
+ ik_bz=ik
+ if(ik>1) ik_bz=sum(k%nstar(:ik-1))+1
  !
  ! Phonon frequency
  !
@@ -102,13 +103,14 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  !
  ! Define outgoing energies and occupations
  !
- if (elph_use_q_grid) then
+ if (elph_use_q_grid.and..not.elph_grids_are_expanded) then
    E_kpq=en%E(ob,ok,1)
    f_occ=en%f(ob,ok,1)/spin_occ
  else
    E_kpq=GKKP%E_kpq(iq_bz)%E(ob,ik_bz,1)
    f_occ=GKKP%E_kpq(iq_bz)%f(ob,ik_bz,1)/spin_occ
  endif
+ !
  !
  ! Frequency Loop
  !
@@ -163,10 +165,10 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  ! which does not allow zero-energy transitions between the
  ! perturbed stated and itself
  !
- if (elph_use_q_grid) then
-   delta_E_at_gamma=en%E(ib,ik,1)  -en%E(ob,ik,1)
+ if (elph_use_q_grid.and..not.elph_grids_are_expanded) then
+   delta_E_at_gamma=en%E(ib,ik,1)               -en%E(ob,ik,1)
  else
-   delta_E_at_gamma=en%E(ib,ik,1)  -GKKP%E_kpq(1)%E(ob,ik_bz,1)
+   delta_E_at_gamma=GKKP%E_kpq(1)%E(ib,ik_bz,1) -GKKP%E_kpq(1)%E(ob,ik_bz,1)
  endif
  !
  eval_DW=(.not.abs(delta_E_at_gamma)<DW_deltaE_treshold)

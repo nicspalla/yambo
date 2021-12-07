@@ -26,8 +26,9 @@ subroutine K_exchange_collisions(iq,Xk,i_T_grp)
  use pars,           ONLY:SP,cZERO
  use D_lattice,      ONLY:nsym,i_time_rev,sop_inv,sop_inv_d
  use BS,             ONLY:BS_T_grp,K_EXCH_collision,BS_oscillators_alloc,BS_n_g_exch,&
-&                         L_kind,l_BS_magnons
+&                         BSE_L_kind,l_BS_magnons
  use R_lattice,      ONLY:g_rot,g_rot_d,qindx_X,bz_samp
+ use stderr,         ONLY:STRING_match
  use electrons,      ONLY:n_sp_pol
  use timing_m,       ONLY:timing
  use openmp,         ONLY:OPENMP_update,master_thread
@@ -101,9 +102,8 @@ subroutine K_exchange_collisions(iq,Xk,i_T_grp)
      !
      ! G==0 term
      !
-     if(trim(L_kind)=="full") BS_T_grp(i_T_grp)%DEV_VAR(O_x)(1,i_T_el)=BS_T_grp(i_T_grp)%dipoles_opt(1,i_T_el,1)
-     if(trim(L_kind)=="Lbar") BS_T_grp(i_T_grp)%DEV_VAR(O_x)(1,i_T_el)=cZERO
-     if(trim(L_kind)/="Lbar".and.trim(L_kind)/="full")  call error('set Lkind = Lbar or full ')
+     if (STRING_match(BSE_L_kind,"full")) BS_T_grp(i_T_grp)%DEV_VAR(O_x)(1,i_T_el)=BS_T_grp(i_T_grp)%dipoles_opt(1,i_T_el,1)
+     if (STRING_match(BSE_L_kind,"bar"))  BS_T_grp(i_T_grp)%DEV_VAR(O_x)(1,i_T_el)=cZERO
      !
      ! G/=0 terms
      !
@@ -159,7 +159,7 @@ subroutine K_exchange_collisions(iq,Xk,i_T_grp)
        !$omp end parallel do
        !
 #endif
-       if (i_s>nsym/(i_time_rev+1)) call dev_conjg(BS_T_grp(i_T_grp)%DEV_VAR(O_x)(:,i_T_el))
+       if (i_s>nsym/(i_time_rev+1)) call dev_conjg(BS_T_grp(i_T_grp)%DEV_VAR(O_x)(:,i_T_el),range1=(/2,BS_n_g_exch/) )
        !
      endif
      !
@@ -168,9 +168,9 @@ subroutine K_exchange_collisions(iq,Xk,i_T_grp)
      call DEV_SUB(scatter_Bamp)(K_EXCH_collision)
      !
      BS_T_grp(i_T_grp)%DEV_VAR(O_x)(1,i_T_el)=cZERO
-     if(trim(L_kind)=="full") i_g0=1
-     if(trim(L_kind)=="Lbar") i_g0=2
-     if(trim(L_kind)/="Lbar".and.trim(L_kind)/="full")  call error(' set Lkind = Lbar or full ')
+     !
+     if (STRING_match(BSE_L_kind,"full")) i_g0=1
+     if (STRING_match(BSE_L_kind,"bar"))  i_g0=2
      !
 #ifdef _CUDA
      call dev_memcpy(BS_T_grp(i_T_grp)%O_x_d(:,i_T_el),K_EXCH_collision%rhotw_d, range1=(/i_g0,BS_n_g_exch/))
