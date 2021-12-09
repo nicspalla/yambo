@@ -29,7 +29,6 @@ if ! test -d $CURRENT_DIR ; then
 fi
 #
 compdir=`echo "$PWD"`
-AC_SUBST(compdir)
 #
 AC_PREFIX_DEFAULT($PWD)
 if test "$prefix" = "NONE" ;      then prefix="$PWD" ; fi
@@ -293,6 +292,9 @@ AC_HAVE_CUDA
 # Prepare the REPORT file variables
 ACX_REPORT()
 # ============================================================================
+# Compilation dir
+AC_SUBST(compdir)
+# ============================================================================
 AC_CONFIG_HEADERS([include/headers/common/have_malloc.h:include/headers/common/have_malloc.h.in])
 AC_CONFIG_FILES([
  config/setup config/mk/global/defs.mk config/report config/msg_ydb
@@ -308,7 +310,7 @@ AC_OUTPUT
 #
 m4_include([config/m4/yambo_folders.m4])
 #
-cat config/report
+cat config/report 
 #
 # Messages
 #

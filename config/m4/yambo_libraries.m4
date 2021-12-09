@@ -31,9 +31,4 @@ AC_ARG_WITH(yambo-libs-branch,[AC_HELP_STRING([--with-yambo-libs-branch=<branch>
 AC_SUBST(DRIVER_INCS)
 AC_SUBST(with_yambo_libs_branch)
 #
-if [[ "$compdir" != "$srcdir" ]] && [[ "$srcdir" != "." ]] ; then
- if test ! -d "$compdir/lib/" ;      then mkdir  $compdir/lib/                   ; fi
- if test ! -d "$compdir/lib/yambo" ; then cp -r  $srcdir/lib/yambo $compdir/lib/ ; fi
-fi
-#
 ])
