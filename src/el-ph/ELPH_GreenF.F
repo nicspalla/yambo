@@ -75,12 +75,13 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  !
  ! Residues
  !
- real(SP) ::gsqF_RES_life_B,gsqF_RES_life_f,gsqF_RES_fan,gsqF_RES_DW 
+ real(SP) ::gsqF_RES_life_B,gsqF_RES_life_f,gsqF_RES_ca_corr,gsqF_RES_fan,gsqF_RES_DW 
  !
  ! Denominators
  !
  real(SP) :: gsqF_DEN_life_B(gsqF_energy_steps)
  real(SP) :: gsqF_DEN_life_f(gsqF_energy_steps)
+ real(SP) :: gsqF_DEN_ca_corr(gsqF_energy_steps)
  real(SP) :: gsqF_DEN_fan(gsqF_energy_steps)
  real(SP) :: gsqF_DEN_DW 
  !

@@ -54,7 +54,7 @@ clean: clean_all
 #
 clean_all:
 	if test ! -e keep-extlibs-stamp ; then \
-          if test -s $(tarball_Ylib)     && test "$(keep_Ylib)"      != "yes" ;  then rm -fr $(pkgname_Ylib)* ../yambo ; fi ; \
+          if test "$(keep_Ylib)"      != "yes" ;  then rm -fr $(pkgname_Ylib)* ../yambo ; fi ; \
           if test -s $(tarball_libxc)    && test "$(keep_libxc)"     != "yes" ;  then rm $(tarball_libxc)     ; fi ; \
           if test -s $(tarball_iotk)     && test "$(keep_iotk)"      != "yes" ;  then rm $(tarball_iotk)      ; fi ; \
           if test -s $(tarball_netcdf)   && test "$(keep_netcdf)"    != "yes" ;  then rm $(tarball_netcdf)    ; fi ; \
@@ -109,5 +109,5 @@ endef
 #
 define link_it
  if test -s $$LIB".tar.gz" ; then gunzip < $$LIB".tar.gz" | ../../config/missing --run tar xf - ; fi;\
- if ! test -d ../$(1); then ln -s $(PWD)/$$LIB ../$(1);fi
+ if ! test -d ../$(1); then cp -R $(PWD)/$$LIB ../$(1);fi
 endef
