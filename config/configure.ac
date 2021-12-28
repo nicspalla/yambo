@@ -67,6 +67,8 @@ AC_PROG_ECHO
 # ============================================================================
 # Current branch
 ACX_BRANCH
+#
+# Checks for library functions.
 # ============================================================================
 AC_CHECK_HEADERS([malloc.h stdlib.h unistd.h string.h sys/time.h])
 AC_FUNC_ALLOCA
@@ -310,7 +312,7 @@ AC_OUTPUT
 #
 m4_include([config/m4/yambo_folders.m4])
 #
-cat config/report 
+cat config/report
 #
 # Messages
 #

@@ -300,6 +300,10 @@ integer function io_DB1(E,k,ID)
      YAMBO_ALLOC(atom_mass,(n_atomic_species))
      YAMBO_ALLOC(atoms_map,(n_atoms_species_max,n_atomic_species))
    endif
+   if(ver_is_gt_or_eq(ID,revision=20105)) then
+     YAMBO_ALLOC(atom_mass,(n_atomic_species))
+     YAMBO_ALLOC(atoms_map,(n_atoms_species_max,n_atomic_species))
+   endif
    !
  endif
  !

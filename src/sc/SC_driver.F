@@ -203,7 +203,6 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
  enddo
 #else
  call Bare_Hamiltonian(E,Xk,k)
-#endif
  !
  call OCCUPATIONS_Fermi(E,k,"E",mode="OCCUPATIONS") 
  !
