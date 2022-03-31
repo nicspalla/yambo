@@ -34,14 +34,15 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
 &                         rho_convergence,magn_convergence,it_now,SC_nbands,          &
 &                         l_SC_cycle,SC_cycle_mixing,SC_alloc,SC_free,l_SC_nl_mix,    &
 &                         l_SC_RESTART,l_Mean_Potential,it_to_start,l_froze_density,  &
-&                         l_NSC_shot,SC_preconditioning,V_mean,SC_up_W_iters
+&                         l_NSC_shot,SC_preconditioning,V_mean,SC_up_W_iters,         &
+&                         SC_neq_kind,SC_mu
  use hamiltonian,    ONLY:rho_n,magn_n,l_sc_V_is_local,H_nl_sc,WF_G_max,WF_Go_indx,   &
 &                         V_hartree_sc,Hzero,V_xc_sc,E_reference,l_sc_XC_is_local,            &
-&                         H_QP_table_setup,H_rotation
+&                         H_QP_table_setup,H_rotation,H_rotation_ref
  use wave_func,      ONLY:WF,WAVEs,WF_copy
  use FFT_m,          ONLY:fft_size
  use linear_algebra, ONLY:DIAGO
- use interfaces,     ONLY:el_density_and_current,WF_load,WF_free, &
+ use interfaces,     ONLY:el_density_and_current,el_magnetization,WF_load,WF_free, &
 &                         LINEAR_ALGEBRA_driver,OCCUPATIONS_Fermi
  use H_interfaces,   ONLY:V_real_space_to_H
  use com,            ONLY:msg
@@ -83,12 +84,16 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
  real(SP),    allocatable :: delta_rho(:),delta_magn(:,:)
  complex(SP), allocatable :: H_nl_nm1(:,:,:,:)
  !
+ complex(SP) :: H_tmp(SC_bands(1):SC_bands(2),SC_bands(1):SC_bands(2))
+ !
+ complex(SP), allocatable :: H_rotation0(:,:,:,:)
+ !
  type(WAVEs)              :: WFo
  ! 
  ! Work Space
  !
  integer                  :: ir,i1,i2,ik,ib,ibp,ID(4),IO_ACT,io_E,io_V,io_WF,i_sp_pol,i_frag,i_io,io_X_err,io_DIP_err,nb
- real(SP)                 :: max_proj,V_xc_sc_shift(n_spin)
+ real(SP)                 :: max_proj,V_xc_sc_shift(n_spin),ELEC,HOLE,DELTA,DELTA_NEW(2)
  character(schlen)        :: dumb_ch,dumb_ch2
  integer, external        :: io_SC_components,X_dielectric_matrix
  logical, external        :: STOP_now
@@ -196,17 +201,9 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
  !
  !  Hzero (kinetic + potential)
  !=============================
-#if defined _MODELS
- Hzero=cZERO
- do ib=H_ref_bands(1),H_ref_bands(2)
-   Hzero(ib,ib,:,:) = E_reference%E(ib,:,:)  
- enddo
-#else
  call Bare_Hamiltonian(E,Xk,k)
  !
  call OCCUPATIONS_Fermi(E,k,"E",mode="OCCUPATIONS") 
- !
-#if !defined _MODELS
  !
  ! Reference wavefunctions
  !
@@ -224,8 +221,6 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    io_V=io_SC_components('V' ,E,ID(3))
  endif
  !
-#endif
- !
  if (l_SC_RESTART) then
    !
    if ((1._SP-SC_cycle_mixing)>1.E-5) call &
@@ -233,7 +228,6 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    !
    ! RESTART
    !
-#if !defined _MODELS
    do i_sp_pol=1,n_sp_pol
      do ik=1,QP_nk
        i_frag=ik+(i_sp_pol-1)*QP_nk
@@ -253,7 +247,6 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    V_xc_nm1 = V_xc_sc
    rho_nm1  = rho_n
    if(n_spin>1) magn_nm1  = magn_n
-#endif
    !
    it_to_start=it_now+1
    !
@@ -274,6 +267,33 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    !
  endif
  !
+ ! Apply shift to the chemical potential
+ !
+ if(trim(SC_neq_kind)=="matsubara") then
+   !
+   YAMBO_ALLOC(H_rotation_ref,(SC_bands(1):SC_bands(2),SC_bands(1):SC_bands(2),E%nk,n_sp_pol))
+   H_rotation_ref=H_rotation
+   !
+   do i_sp_pol=1,n_sp_pol
+     do ik=1,QP_nk
+       !
+       ! Transform H_SC into H_matsubara
+       !
+       H_tmp=cZERO
+       do ib=SC_bands(1),SC_bands(2)
+         !if(E_reference%E(ib,ik,i_sp_pol)<=SC_mu(1)) write(*,*) 'occ',ik,ib,SC_mu(2)*27.2116,E_reference%E(ib,ik,i_sp_pol)*27.2116
+         !if(E_reference%E(ib,ik,i_sp_pol)> SC_mu(1)) write(*,*) 'emp',ik,ib,SC_mu(3)*27.2116,E_reference%E(ib,ik,i_sp_pol)*27.2116
+         if(E_reference%E(ib,ik,i_sp_pol)<=SC_mu(1)) H_tmp(ib,ib) = -SC_mu(2)
+         if(E_reference%E(ib,ik,i_sp_pol)> SC_mu(1)) H_tmp(ib,ib) = -SC_mu(3)
+       enddo
+       ! The chemical potential is imposed in the EQ-SEX basis
+       call OBS_rotate(H_rotation(:,:,ik,i_sp_pol),H_tmp,SC_nbands,-1)
+       Hzero(:,:,ik,i_sp_pol)=Hzero(:,:,ik,i_sp_pol)+H_tmp
+       !
+     enddo
+   enddo
+   !
+ endif
  !
  ! Initial Polarization
  ! ====================
@@ -304,7 +324,7 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    ! Exchange & Correlation
    !========================
    !
-   if (l_SC_cycle) call SC_add_XC(X,Xw,Xk,E,k,q,it_sc,V_xc_nm1)
+   if (l_SC_cycle) call SC_add_XC(X,Xw,Xk,E,k,q,it_sc,V_xc_nm1,ELEC,HOLE,DELTA)
    !
    ! Hartree potential
    !===================
@@ -350,8 +370,6 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
      !
    endif
    ! 
-#if !defined _MODELS
-   !
    ! IO [V_xc]: this is the only DB that must be written on-fly
    !            Both WFs and Energies are written ay the end of the loop
    !===========
@@ -360,8 +378,7 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    if (.not.l_sc_V_is_local) call io_control(ACTION=OP_WR,   COM=NONE,SEC=(/1/),ID=ID(3))
    io_V=io_SC_components('V' ,E,ID(3))
    !
-#endif
-   !
+   DELTA_NEW=0.
    do i_sp_pol=1,n_sp_pol
      !
      do ik = 1, QP_nk 
@@ -386,10 +403,8 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
          ! 
          ! I/O [H_nl_sc]
          !
-#if !defined _MODELS
          call io_control(ACTION=WR_CL_IF_END,COM=NONE,SEC=(/ik+1/),ID=ID(3))
          io_V=io_SC_components('V',E,ID(3))
-#endif
          !
          ! Mixing for non-local self-energies
          !====================================
@@ -425,6 +440,22 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
        !
        H_nl_sc = H_nl_sc + Hzero(:,:,ik,i_sp_pol)
        !
+       if(trim(SC_neq_kind)=="matsubara") then
+         !
+         ! Compute DELTA_NEW
+         !
+         H_tmp=H_nl_sc
+         call OBS_rotate(H_rotation_ref(:,:,ik,1),H_tmp,SC_nbands,i_sp_pol)
+         do ib=SC_bands(1),SC_bands(2)
+           do ibp=SC_bands(1),SC_bands(2)
+             if( .not.( E_reference%E(ib,ik,i_sp_pol)>SC_mu(1) .and. E_reference%E(ibp,ik,i_sp_pol)<=SC_mu(1) ) ) cycle
+             DELTA_NEW(1)=DELTA_NEW(1)+abs(H_tmp(ib,ibp))**2*Xk%weights(ik)
+             if(ik==1) DELTA_NEW(2)=DELTA_NEW(2)+abs(H_tmp(ib,ibp))**2
+           enddo
+         enddo
+         !
+       endif
+       !
        ! Diagonalize H_nl_sc 
        !=====================
        !
@@ -437,22 +468,20 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
        ! New wave functions 
        !====================
        !
-#if !defined _MODELS
        call WF_rotate(ik,i_sp_pol,WFo,fft_size)
-#endif
        !
        if (l_NSC_shot) call live_timing(steps=1)
        ! 
        ! Mean Potential 
        !================
        !
-#if !defined _MODELS
        if (l_Mean_Potential) call V_Mean_Potential(ik,i_sp_pol,WFo)
-#endif
        !
      enddo ! ik
      !
    enddo ! i_sp_pol
+   !
+   DELTA_NEW(:)=sqrt(DELTA_NEW(:))*HA2EV 
    !
    if (l_NSC_shot) call OCCUPATIONS_Fermi(E,k,"E",mode="OCCUPATIONS") 
    !
@@ -522,9 +551,7 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
      ! Total Energy 
      !==============
      !
-#if !defined _MODELS
      call SC_Energy(E_total,E_tot_bands,E_tot_zero,E_tot_Hartree,E_tot_xc,E_Fermi,E,k,rho_n)
-#endif
      !
      ! Convergences
      !==============
@@ -539,21 +566,17 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
      enddo
      !
      rho_convergence = 0._SP
-#if !defined _MODELS
      do ir=1,fft_size
        rho_convergence = rho_convergence + abs(rho_n(ir)-rho_nm1(ir))/nel
      enddo
-#endif
      !
      magn_convergence = 0._SP
-#if !defined _MODELS
      if(n_spin>1) then
        do ir=1,fft_size
          if (n_sp_pol==2) magn_convergence = abs(magn_n(ir,3)-magn_nm1(ir,3))/nel
          if (n_spinor==2) magn_convergence = v_norm(magn_n(ir,:)-magn_nm1(ir,:))/nel
        enddo
      endif
-#endif
      !
      if(it_now==it_to_start) dumb_ch ='[SC] Iteration'
      dumb_ch2='            '//trim(intc(it_now))//' '
@@ -572,6 +595,12 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
      if (n_spin==2) then
        if(it_now==it_to_start) dumb_ch =trim(dumb_ch)//'     -  magn(%)    '
        dumb_ch2=trim(dumb_ch2)//'  - '//trim(real2ch(magn_convergence))//'%'
+     endif
+     !
+     if(trim(SC_neq_kind)=="matsubara") then
+       if(it_now==it_to_start) dumb_ch =trim(dumb_ch)//'    -  ELECS  /  HOLES  /  RHOIJ  / DELTA  '
+       dumb_ch2=trim(dumb_ch2)//' - '//trim(real2ch(ELEC))//'/'//trim(real2ch(HOLE))//'/'&
+       &                      //trim(real2ch(DELTA))//'/'//trim(real2ch(DELTA_NEW(1)))
      endif
      !
      if(l_sc_electric) then
@@ -662,6 +691,11 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
    call msg('r' ,'[SC]          on energies     ',E_convergence*HA2EV,"[eV]")
    if (     l_sc_V_is_local)  call msg('r' ,'[SC] Total Energy (no Ewald)        ',E_total*(/1._SP,2._SP/),"[Ha/Ry]")
    if (.not.l_sc_V_is_local)  call msg('r','')
+   if(trim(SC_neq_kind)=="matsubara") then
+                       call msg('r' ,'[SC] Electrons and Holes            ',(/ELEC,HOLE/))
+                       call msg('r' ,'[SC] Trace over rho_ij              ',DELTA)
+                       call msg('r' ,'[SC] Order Parameter           [eV] ',DELTA_NEW)
+   endif
    if(l_sc_electric) then
       call msg('r' ,'[SC] Polarization [Re]              ', real(Polarization,SP))
       call msg('r' ,'[SC] Polarization [Im]              ',aimag(Polarization)   )
@@ -729,6 +763,7 @@ subroutine SC_driver(X,Xw,Xk,E,k,q,Dip)
        call ELECTRIC_alloc(E)
        YAMBO_ALLOC(W_electric,(SC_bands(1):SC_bands(2),SC_bands(1):SC_bands(2),QP_nk,n_sp_pol))
      endif
+     YAMBO_ALLOC(H_rotation0,(SC_bands(1):SC_bands(2),SC_bands(1):SC_bands(2),QP_nk,n_sp_pol))
      !
    end subroutine
    !

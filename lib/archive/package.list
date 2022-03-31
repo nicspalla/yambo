@@ -1,12 +1,12 @@
 #
 # Libs list
 #
-EXT_LIBS= yaml futile iotk hdf5 netcdf netcdff pnetcdf etsf_io libxc lapack blacs scalapack petsc slepc fftw fftqe 
+EXT_LIBS= yaml futile iotk hdf5 netcdf netcdff pnetcdf etsf_io libxc lapack blacs scalapack petsc slepc fftw fftqe Ydriver
 #
 # storing options
 #
 keep_Ylib=yes
-keep_iotk=no
+keep_iotk=yes
 keep_netcdf=no
 keep_netcdff=no
 keep_pnetcdf=no
@@ -33,11 +33,11 @@ pkgname_pnetcdf=pnetcdf-1.12.1
 pkgname_hdf5=hdf5-1.12.0
 pkgname_etsf_io=etsf_io-1.0.4
 pkgname_libxc=libxc-5.1.5
-pkgname_lapack=lapack-3.9.0
+pkgname_lapack=lapack-3.9.1
 pkgname_blacs=blacs
 pkgname_scalapack=scalapack-2.1.0
-pkgname_petsc=petsc-3.13.4
-pkgname_slepc=slepc-3.13.3
+pkgname_petsc=petsc-3.14.6
+pkgname_slepc=slepc-3.14.2
 pkgname_fftw=fftw-3.3.6-pl1
 pkgname_fftqe=fftqe
 pkgname_yaml=yaml-0.2.2
@@ -65,25 +65,25 @@ tarball_futile=$(pkgname_futile).tar.gz
 #
 # External URL's
 #
+url_lapack=https://github.com/Reference-LAPACK/lapack/archive/refs/tags/$(tarball_lapack)
 url_libxc=https://www.tddft.org/programs/libxc/down/5.1.5/$(tarball_libxc)
+url_petsc=https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$(tarball_petsc)
+url_slepc=https://slepc.upv.es/download/distrib/$(tarball_slepc)
 #
-# Yambo-libraries URL's
+# Intenrnal URL's
 #
 url_base=https://github.com/yambo-code/yambo-libraries
 #
-url_Ylib=$(url_base)/archive/refs/tags/1.0.tar.gz
-url_netcdf=$(url_base)/raw/master/external/$(pkgname_netcdf).tar.gz
-url_netcdff=$(url_base)/raw/master/external/$(pkgname_netcdff).tar.gz
-url_pnetcdf=$(url_base)/raw/master/external/$(pkgname_pnetcdf).tar.gz
-url_hdf5=$(url_base)/raw/master/external/$(pkgname_hdf5).tar.gz
-url_iotk=$(url_base)/raw/master/external/$(pkgname_iotk).tar.gz
-url_etsf_io=$(url_base)/raw/master/external/$(pkgname_etsf_io).tar.gz
-url_blacs=$(url_base)/raw/master/external/$(pkgname_blacs).tar.gz
-url_lapack=$(url_base)/raw/master/external/$(pkgname_lapack).tar.gz
-url_scalapack=$(url_base)/raw/master/external/$(pkgname_scalapack).tar.gz
-url_petsc=$(url_base)/raw/master/external/$(pkgname_petsc).tar.gz
-url_slepc=$(url_base)/raw/master/external/$(pkgname_slepc).tar.gz
-url_fftw=$(url_base)/raw/master/external/$(pkgname_fftw).tar.gz
-url_fftqe=$(url_base)/raw/master/external/$(pkgname_fftqe).tar.gz
-url_yaml=$(url_base)/raw/master/external/$(pkgname_yaml).tar.gz
-url_futile=$(url_base)/raw/master/external/$(pkgname_futile).tar.gz
+url_Ylib=$(url_base)/$(tarball_driver)
+url_netcdf=$(url_base)/$(tarball_netcdf)
+url_netcdff=$(url_base)/$(tarball_netcdff)
+url_pnetcdf=$(url_base)/$(tarball_pnetcdf)
+url_hdf5=$(url_base)/$(tarball_hdf5)
+url_iotk=$(url_base)/$(tarball_iotk)
+url_etsf_io=$(url_base)/$(tarball_etsf_io)
+url_blacs=$(url_base)/$(tarball_blacs)
+url_scalapack=$(url_base)/$(tarball_scalapack)
+url_fftw=$(url_base)/$(tarball_fftw)
+url_fftqe=$(url_base)/$(tarball_fftqe)
+url_yaml=$(url_base)/$(tarball_yaml)
+url_futile=$(url_base)/$(tarball_futile)

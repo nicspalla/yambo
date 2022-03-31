@@ -57,6 +57,7 @@ m4_include([config/m4/acx_fortran_flags.m4])
 m4_include([config/m4/acx_mpi.m4])
 m4_include([config/m4/cuda.m4])
 m4_include([config/m4/acx_branch.m4])
+m4_include([config/m4/acx_IO_wrap_up.m4])
 # 
 #  Report
 #
@@ -275,6 +276,9 @@ AC_HAVE_HDF5_F90
 # ============================================================================
 # NETCDF 
 AC_HAVE_NETCDF_F90
+# ============================================================================
+# I/O wrap-up 
+ACX_IO_WRAP_UP
 # ============================================================================
 # FUTILE library 
 AC_HAVE_FUTILE

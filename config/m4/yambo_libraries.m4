@@ -22,7 +22,7 @@
 # MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 #
 AC_DEFUN([AC_YAMBO_LIBRARIES],[
-#
+
 DRIVER_INCS="-I$PWD/lib/yambo/driver/include/ -I$PWD/include/driver"
 #
 AC_ARG_WITH(yambo-libs-branch,[AC_HELP_STRING([--with-yambo-libs-branch=<branch>], [Use the <branch> of the yambo-libraries repository.],[32])],,[with_yambo_libs_branch=none])

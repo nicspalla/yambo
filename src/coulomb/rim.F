@@ -23,7 +23,7 @@
 !
 subroutine rim(mode)
  !
- use pars,          ONLY:SP,pi,DP,schlen
+ use pars,          ONLY:SP,pi,DP
  use com,           ONLY:msg
  use parallel_m,    ONLY:PP_indexes,myid,PP_indexes_reset
  use parallel_int,  ONLY:PP_redux_wait,PARALLEL_index 
@@ -86,8 +86,10 @@ subroutine rim(mode)
    if (RIM_is_diagonal) call msg('r','* Diagonal components only detected *')
    !
  else 
+  !
    call section('+','RIM-W integrals')
    if (RIM_W_is_diagonal) call msg('r','* Diagonal components only detected *')
+  !
  end if
  !
  call msg('nr','8 x (sBL volume)        ',8._SP*k_grid_uc_vol,"[a.u.]")
