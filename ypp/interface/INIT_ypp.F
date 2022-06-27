@@ -536,7 +536,7 @@ subroutine INIT_ypp(E,instr,FINALIZE)
  l_QP_DB_expand = runlevel_is_on('QPDB_expand')
  !
 #if defined _MODELS
- l_models  = runlevel_is_on('models')
+ l_models  = runlevel_is_on('models') 
  if (l_models) then
    call initactivate(1,"Kind Eg OnSiteU Overlap Kgrid")
  endif

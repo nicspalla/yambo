@@ -63,7 +63,7 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  ! 
  ! ... I/O 
  logical           :: l_flag
- integer           :: ID,i_err
+ integer           :: ID,i_err,idb1_err
  integer, external :: io_DB1,io_QINDX,io_GROT
  integer           :: i_err_DbGd
  integer, external :: io_Double_Grid
@@ -101,8 +101,9 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  !
  call io_control(ACTION=OP_RD_CL,SEC=(/1,2/),COM=NONE,MODE=DUMP,ID=ID)
  iinf=io_DB1(en,k,ID)
+ idb1_err=iinf
 #if defined _MODELS
- iinf=0
+ if (iinf/=0) iinf=0
 #endif
  if (iinf/=0) then
    call ypp_finalize("Where is the SAVE?",instr)
@@ -120,7 +121,7 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  call io_control(ACTION=OP_RD_CL,SEC=(/1/),COM=NONE,MODE=DUMP,ID=ID)
  iinf=io_WF(ID) 
 #if defined _MODELS
- iinf=0
+ if (iinf/=0) iinf=0
 #endif
  if (iinf/=0) then
    call ypp_finalize("Where is the SAVE?",instr)
@@ -132,7 +133,7 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  call io_control(ACTION=OP_RD_CL,SEC=(/1,2/),COM=NONE,MODE=DUMP,ID=ID)
  i_err=io_GROT(ID) 
 #if defined _MODELS
- i_err=0
+ if (i_err/=0) i_err=0
 #endif
  if (i_err/=0) then
    write_to_log=.TRUE.
@@ -155,6 +156,16 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  call PARALLEL_and_IO_Setup(en,k)
  !
  call section('*','Y(ambo) P(ost)/(re) P(rocessor)')
+ !
+ ! Model Hamiltonian (before anything)
+ !
+#if defined _MODELS
+ if (idb1_err/=0) then
+   call MODELS_driver( )
+   call ypp_finalize(" ",instr)
+   return
+ endif
+#endif
  !
  call section('*','Core DB')
  call msg('s',':: Electrons             :',default_nel)

@@ -28,12 +28,13 @@ subroutine MODELS_driver( )
  use electrons,        ONLY:levels,default_nel,n_spin,nel,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
-&                           Z_species, n_atoms, mag_syms
+&                           Z_species, n_atoms, mag_syms,atoms_map,atom_mass
  use R_lattice,        ONLY:ng_vec, g_vec, bz_samp,bz_samp_reset,rl_sop
  use wave_func,        ONLY:wf_ncx, wf_nc_k, wf_igk,wf_ng,wf_nb_io,wf_nb_io_groups,io_WF
  use xc_functionals,   ONLY:GS_xc_KIND,GS_xc_FUNCTIONAL,GS_exx_FRACTION,GS_exx_SCREENING
  use global_XC,        ONLY:H_SE_Hartree
- use IO_m,             ONLY:io_control,OP_WR_CL,REP,mk_dir
+ use IO_m,             ONLY:OP_WR_CL,REP,mk_dir
+ use IO_int,           ONLY:io_control
  use com,              ONLY:com_path,more_io_path,core_io_path
  use vec_operate,      ONLY:define_b_and_DL_vol,iku_v_norm
  !
@@ -66,9 +67,13 @@ subroutine MODELS_driver( )
  n_atomic_species=1
  n_atoms_species_max=1
  YAMBO_ALLOC(n_atoms_species,(n_atomic_species))
+ n_atoms_species=1
  YAMBO_ALLOC(Z_species,(n_atomic_species))
  YAMBO_ALLOC(atom_pos,(3,n_atoms_species_max,n_atomic_species))
- n_atoms_species=1
+ YAMBO_ALLOC(atoms_map,(n_atoms_species_max,n_atomic_species))
+ YAMBO_ALLOC(atom_mass,(n_atomic_species))
+ atom_mass=1
+ atoms_map=0
  atom_pos=0.
  Z_species=0.
  !
@@ -97,7 +102,7 @@ subroutine MODELS_driver( )
  !
  ! K-points
  !
- call INTERPOLATION_create_the_grid(k,'i',MODEL_k)
+ call INTERPOLATION_grid(k,'i',MODEL_k)
  !
  ! RL
  !
@@ -129,7 +134,6 @@ subroutine MODELS_driver( )
  !
  ! I/O
  !=====
- !
  call mk_dir(more_io_path)
  call mk_dir(com_path)
  call mk_dir(trim(core_io_path)//"/SAVE")
