@@ -37,11 +37,14 @@ else ifneq (,$(findstring ypp_nl,$(MAKECMDGOALS)))
  Y_EXE_LIBS=$(YPPRT_MAIN_LIBS_LD)
  YPP_SRC_LIBS=$(YPPRT_LIBS)
  YPP_EXE_LIBS=$(YPPRT_LIBS_LD)
+else ifneq (,$(findstring ypp_models,$(MAKECMDGOALS)))
+ Y_PRECMP=-D_MODELS
+ YPP_PRECMP=-D_MODELS
 endif
 #
 # Compilation
 #
-ypp ypp_ph ypp_sc ypp_rt_gpl ypp_rt ypp_nl: 
+ypp ypp_ph ypp_sc ypp_rt_gpl ypp_rt ypp_nl ypp_models: 
 	@rm -f ${compdir}/log/"compile_"$@".log"
 	@rm -f ${compdir}/config/stamps_and_lists/compilation_stop_$@.stamp
 	@touch ${compdir}/config/stamps_and_lists/compiling_$@.stamp

@@ -32,11 +32,13 @@ else ifneq (,$(findstring yambo_qed,$(MAKECMDGOALS)))
  PRECMP=-D_QED -D_RT -D_RT_SCATT -D_ELPH
  SRC_LIBS=$(PJ_RTLIBS)
  EXE_LIBS=$(PJ_RTLIBS_LD)
+else ifneq (,$(findstring yambo_models,$(MAKECMDGOALS)))
+ PRECMP=-D_MODELS
 endif
 #
 # Compilation
 #
-yambo yambo_ph yambo_sc yambo_rt yambo_rt_gpl yambo_rt_iterative yambo_nl yambo_qed: 
+yambo yambo_ph yambo_sc yambo_rt yambo_rt_gpl yambo_rt_iterative yambo_nl yambo_qed yambo_models: 
 	@rm -f ${compdir}/log/"compile_"$@".log"
 	@rm -f ${compdir}/config/stamps_and_lists/compilation_stop_$@.stamp
 	@touch ${compdir}/config/stamps_and_lists/compiling_$@.stamp

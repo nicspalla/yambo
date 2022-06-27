@@ -24,7 +24,6 @@
 subroutine INIT_activate_models()
  !
  use drivers,        ONLY:l_eval_collisions
- use it_tools,       ONLY:initactivate
  !
  call initactivate(-1,"EXXRLvcs VXCRLvcs HARRLvcs")
  !

@@ -28,6 +28,15 @@
 void options_ypp(struct options_struct options[],int *i_opt)
 {
  /* 
+  Models
+ */
+ *i_opt=*i_opt+1;
+ options[*i_opt].short_desc="Models generator";
+ options[*i_opt].long_opt="models";
+ options[*i_opt].bin="ypp_models";
+ options[*i_opt].yambo_string="models";
+ options[*i_opt].section="Model Hamiltonians";
+ /* 
   Brillouin Zone 
  */
  *i_opt=*i_opt+1;
@@ -66,6 +75,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="soc";
  options[*i_opt].short_opt='w';
  options[*i_opt].bin="ypp";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="WFs_SOC_map";
  options[*i_opt].section="SOC";
  /* 
@@ -95,6 +105,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt= "gkkp";
  options[*i_opt].short_opt='g';
  options[*i_opt].bin="ypp_ph";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="gkkp"  ;
  options[*i_opt].section="Convertions";
  options[*i_opt].long_desc[0]="<string>=(g)kkp,(d)ouble grid,(p)lot gkkp";
@@ -117,6 +128,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt= "potential";
  options[*i_opt].short_opt='v';
  options[*i_opt].bin="ypp_sc";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="MeanPot";
  options[*i_opt].section="Plots";
  *i_opt=*i_opt+1;
@@ -132,12 +144,14 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="electron";
  options[*i_opt].short_opt='s';
  options[*i_opt].bin="ypp"; 
+ options[*i_opt].no_bin="ypp_models"; 
  options[*i_opt].yambo_string="electrons";
  options[*i_opt].section="Plots";
  options[*i_opt].char_var=1;
  *i_opt=*i_opt+1;
  options[*i_opt].short_desc="Excitonic properties";
  options[*i_opt].long_opt="exciton";
+ options[*i_opt].no_bin="ypp_models"; 
  options[*i_opt].short_opt='e';
  options[*i_opt].bin="ypp ypp_ph";
 #if defined _ELPH  
@@ -153,6 +167,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].short_desc="Dipole properties";
  options[*i_opt].long_opt="dipoles";
  options[*i_opt].bin="ypp";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].long_desc[0]="<string>=(exc)itonic,(ip)independent-particle";
 #if defined _YPP_RT  
  options[*i_opt].long_desc[0]="<string>=(exc)itonic,(ip)independent-particle,(m)ask";
@@ -171,6 +186,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].short_desc="Average hole/electron wavefunction";
  options[*i_opt].long_opt="avehole";
  options[*i_opt].bin="ypp";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="avehole";
  options[*i_opt].section="Plots";
 #if !defined _YPP_RT  
@@ -180,6 +196,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt=  "phonon";
  options[*i_opt].short_opt='p';
  options[*i_opt].bin="ypp_ph";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="phonons";
  options[*i_opt].section="Plots";
  options[*i_opt].char_var=1;
@@ -192,6 +209,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="nl";
  options[*i_opt].short_opt='u';
  options[*i_opt].bin="ypp_nl";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="nonlinear";
  options[*i_opt].section="Real-Time";
  *i_opt=*i_opt+1;
@@ -200,6 +218,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt=  "rtdb";
  options[*i_opt].short_opt='c';
  options[*i_opt].bin="ypp_rt";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="RTDBs";
  options[*i_opt].section="Real-Time";
  options[*i_opt].char_var=1;
@@ -209,6 +228,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].short_opt='n';
  options[*i_opt].char_var=1;
  options[*i_opt].bin="ypp_rt";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="TDplots"; /* TDplots */
  options[*i_opt].section="Real-Time";
  options[*i_opt].long_desc[0]="<string>=(X)response,(a)bsorption,(o)ccupations,(l)ifetimes,(d)ensity,(p)olariazion,(g)reen-function";
@@ -223,6 +243,7 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt= "rtmode";
  options[*i_opt].short_opt='t';
  options[*i_opt].bin="ypp_rt";
+ options[*i_opt].no_bin="ypp_models";
  options[*i_opt].yambo_string="TDplotmode"; /* TDpol */
  options[*i_opt].section="Real-Time";
  options[*i_opt].long_desc[0]="rtplot=X/a => <string>=(t)ime";

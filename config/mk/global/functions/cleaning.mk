@@ -3,7 +3,7 @@
 #
 define clean_driver
  if [ "$(1)" = "archive"   ] ||                  [ "$(1)" = "all" ] ; then $(clean_archive); fi 
- if [ "$(1)" = "bin"       ] || [ -z "$(1)" ] || [ "$(1)" = "all" ] ; then $(clean_bin); fi;\
+ if [ "$(1)" = "bin"       ] || [ -z "$(1)" ] || [ "$(1)" = "all" ] ; then $(clean_bin_and_folders); fi;\
  if [ "$(1)" = "int-libs"  ] ||                  [ "$(1)" = "all" ] ; then \
    EXTS="\.f90 \.o \.lock \.mk \.mod \.save \.tmp_source";WDIR="$(libdir)";TARG="$(INT_LIBS)";$(clean_dir_driver); \
    WDIR="$(libdir)";TARG="$(INT_LIBS)";$(clean_lib_driver); \
@@ -21,9 +21,9 @@ define clean_driver
  if [ "$(1)" = "driver"    ] || [ -z "$(1)" ] || [ "$(1)" = "all" ] ; then \
   EXTS="\.f90 \.o \.lock \.mk \.mod \.save \.tmp_source";WDIR="$(compdir)";TARG="driver";$(clean_dir_driver);\
  fi
- if [ "$(1)" = "Ydriver"   ] ||                  [ "$(1)" = "all" ] ; then \
+ if [ "$(1)" = "Ylib"   ] ||                  [ "$(1)" = "all" ] ; then \
    EXTS="\.f90 \.o \.lock \.mk \.mod \.save \.tmp_source";WDIR="$(libdir)/yambo/driver/src";TARG="$(YLIBDRIVER)";$(clean_dir_driver);\
-   WDIR="$(libdir)";TARG="Ydriver";$(clean_lib_driver);\
+   WDIR="$(libdir)";TARG="Ylib";$(clean_lib_driver);\
    WDIR="$(libdir)/yambo/driver/src";TARG="$(YLIBDRIVER)";$(clean_mod_driver);\
  fi;\
  if                             [ -z "$(1)" ] || [ "$(1)" = "all" ] ; then \
@@ -125,14 +125,15 @@ define clean_config
  rm -fr $(prefix)/config/mk/local/static_variables.mk;\
  rm -fr $(prefix)/lib/archive/Makefile
 endef
-define clean_bin
- $(ECHO) "\t[CLEANING] bin" ;\
+define clean_bin_and_folders
+ $(ECHO) "\t[CLEANING] bin log folders" ;\
  for file in $(prefix)/bin/*; do \
   exe=`basename $$file`;\
   rm -f $(prefix)/bin/$$exe; \
   rm -f $(prefix)/config/stamps_and_lists/"$$exe.stamp"; \
  done;\
- rm -fr $(prefix)/log/*
+ rm -fr $(prefix)/log ;\
+ rm -fr $(prefix)/lib/yambo
 endef
 define clean_ext_libs_bin_and_include
  $(ECHO) "\t[CLEANING external-libraries] bin(s) and include(s)" ; \
