@@ -98,20 +98,27 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
  !
  ! real(nel)/2.0_SP*real(n_spinor) is last occupied state
  !
- ! n_b_full_guess is used to avoid spurious oscillations
- ! in the Fermi Level search for system with a gap.
- ! In general those oscillations appear when the gap is small.
- !
- n_b_full_guess= nint( real(nel)/2.0_SP*real(n_spinor)+.1)
- !
- if (n_b_full_guess+1 > nb_here ) call error(' Not enough states to accomodate all electrons. Include more states in the DFT run.')
- !
- Ef(1)=maxval(E%E(n_b_full_guess,:,:))
- Ef(2)=minval(E%E(n_b_full_guess+1,:,:))
- !
  ! n_b_full_guess not set when the system is metallic ...
+ !
+ if (nb_here>1) then
+   !
+   ! n_b_full_guess is used to avoid spurious oscillations
+   ! in the Fermi Level search for system with a gap.
+   ! In general those oscillations appear when the gap is small.
+   !
+   n_b_full_guess= nint( real(nel)/2.0_SP*real(n_spinor)+.1)
+   !
+   if (n_b_full_guess+1 > nb_here ) &
+&     call error(' Not enough states to accomodate all electrons. Include more states in the DFT run.')
+   !
+   Ef(1)=maxval(E%E(n_b_full_guess,:,:))
+   Ef(2)=minval(E%E(n_b_full_guess+1,:,:))
+   !
+ else
+   n_b_full_guess=1
+ endif
  ! 
- if (Ef(2)<Ef(1).or.Ef(1)==Ef(2)) then
+ if (Ef(2)<Ef(1).or.Ef(1)==Ef(2).or.nb_here==1) then
    Ef(1)=minval(E%E(n_b_full_guess,:,:))
    Ef(2)=maxval(E%E(n_b_full_guess,:,:))
    n_b_full_guess=0

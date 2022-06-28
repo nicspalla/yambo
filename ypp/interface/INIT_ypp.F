@@ -544,9 +544,9 @@ subroutine INIT_ypp(E,instr,FINALIZE)
 #if defined _MODELS
  l_models  = runlevel_is_on('models') 
  if (l_models) then
-   call initactivate(1,"MDL_component")
+   call initactivate(1,"MDL_component Kind")
    if(STRING_same(MODEL_component,'h')) then
-     call initactivate(1,"Kind Eg OnSiteU Overlap Kgrid") 
+     call initactivate(1,"Eg OnSiteU Overlap JelMass Kgrid") 
    endif
    if(STRING_same(MODEL_component,'el-ph')) then
      call initactivate(1,"PH_energy ELPH_alpha") 

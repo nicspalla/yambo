@@ -68,7 +68,11 @@ subroutine MODELS_gkkp(q)
    if (iq> 1) call io_control(ACTION=OP_APP_CL,SEC=(/iq+1/),ID=ID)
    GKKP%dVr(1,:,:,:,1)=0.
    if (iq==1) GKKP%dVc(1,:,:,:,1)=0.
-   if (iq> 1) GKKP%dVc(1,:,:,:,1)=1._SP/iku_v_norm(PH_qpt(iq,:))*MODEL_elph_alpha*(sqrt(2*pi*MODEL_E_ph/DL_vol))
+   if (STRING_same(MODEL_kind,"debye" )) then
+     if (iq> 1) GKKP%dVc(1,:,:,:,1)=MODEL_elph_alpha
+   else
+     if (iq> 1) GKKP%dVc(1,:,:,:,1)=1._SP/iku_v_norm(PH_qpt(iq,:))*MODEL_elph_alpha*(sqrt(2*pi*MODEL_E_ph/DL_vol))
+   endif
    io_err=io_ELPH(ID,'gkkp')
    call live_timing(steps=1)
  enddo

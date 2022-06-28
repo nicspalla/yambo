@@ -342,9 +342,6 @@ subroutine setup(en,Xen,Ken,k,Xk)
  !
  call section('=','Energies & Occupations')
  !==============================================
- !
- !call msg('rn','Energy unit   ',' [eV]')
- !
  Xen%nk=Xk%nibz
  ! 
  call E_duplicate(en,Xen)

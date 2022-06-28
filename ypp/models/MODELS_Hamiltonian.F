@@ -24,7 +24,9 @@
 subroutine MODELS_Hamiltonian( )
  !
  use pars,             ONLY:pi
- use MODELS,           ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_Eg
+ use stderr,           ONLY:STRING_same
+ use units,            ONLY:HA2EV
+ use MODELS,           ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg
  use electrons,        ONLY:levels,default_nel,n_spin,nel,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
@@ -44,7 +46,7 @@ subroutine MODELS_Hamiltonian( )
  !
  type(levels )      :: E
  type(bz_samp)      :: k
- integer            :: io_err,ID,is,i2,i3,ik
+ integer            :: io_err,ID,is,i2,i3,ik,nb
  integer, external  :: io_DB1
  !
  call section("*",trim(MODEL_kind)//" Hamiltonian")
@@ -80,7 +82,6 @@ subroutine MODELS_Hamiltonian( )
  ! GS
  !
  input_GS_Tel=0.
- default_nel=2.
  GS_xc_KIND=H_SE_Hartree
  GS_xc_FUNCTIONAL=0
  GS_exx_FRACTION=0.
@@ -120,17 +121,31 @@ subroutine MODELS_Hamiltonian( )
  !
  n_spinor=1
  n_sp_pol=1
- E%nb=2
- wf_nb_io=2
- wf_nb_io_groups=2
+ !
+ if (STRING_same(MODEL_kind,"2bands" )) nb=2
+ if (STRING_same(MODEL_kind,"jellium")) nb=1
+ E%nb=nb
+ wf_nb_io=nb
+ wf_nb_io_groups=nb
  YAMBO_ALLOC(E%E,(E%nb,k%nibz,n_sp_pol))
- YAMBO_ALLOC(E%f,(E%nb,k%nibz,n_sp_pol))
- E%f(1,:,:)=2.
- E%f(2,:,:)=0.
- do ik=1,k%nibz
-   E%E(1,ik,:)=-( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
-   E%E(2,ik,:)= ( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
- enddo
+ !
+ ! ... 2bands model
+ if (STRING_same(MODEL_kind,"2bands" )) then
+   default_nel=2.
+   do ik=1,k%nibz
+     E%E(1,ik,:)=-( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
+     E%E(2,ik,:)= ( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
+   enddo
+ endif
+ !
+ ! ... jellium
+ if (STRING_same(MODEL_kind,"jellium" )) then
+   default_nel=1.
+   do ik=1,k%nibz
+     E%E(1,ik,:)=iku_v_norm(k%pt(ik,:))**2./2.*MODEL_effective_mass/HA2EV
+   enddo
+   E%E(1,:,:)=E%E(1,:,:)-minval(E%E(1,:,:))
+ endif
  !
  ! I/O
  !=====

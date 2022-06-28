@@ -31,6 +31,7 @@ module MODELS
  character(schlen) :: MODEL_component="H"
  character(schlen) :: MODEL_kind
  real(SP)          :: MODEL_U
+ real(SP)          :: MODEL_effective_mass
  real(SP)          :: MODEL_overlap
  real(SP)          :: MODEL_Eg
  real(SP)          :: MODEL_E_ph=.1/HA2EV
