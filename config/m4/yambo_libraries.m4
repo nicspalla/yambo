@@ -27,7 +27,15 @@ DRIVER_INCS="-I$PWD/lib/yambo/driver/include/ -I$PWD/include/driver"
 #
 AC_ARG_WITH(yambo-libs-branch,[AC_HELP_STRING([--with-yambo-libs-branch=<branch>], [Use the <branch> of the yambo-libraries repository.],[32])],,[with_yambo_libs_branch=none])
 #
+if test x"$with_yambo_libs_branch" = "xnone"; then
+ Ydriver_check="D"; 
+ Ydriver_LIB="Download"
+else
+ Ydriver_check="G"; 
+ Ydriver_LIB="GIT, branch $with_yambo_libs_branch"
+fi
+AC_SUBST(Ydriver_LIB)
+AC_SUBST(Ydriver_check)
 AC_SUBST(DRIVER_INCS)
 AC_SUBST(with_yambo_libs_branch)
-#
 ])

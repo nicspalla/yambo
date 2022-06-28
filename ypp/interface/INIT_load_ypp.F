@@ -52,7 +52,7 @@ subroutine INIT_ypp_load(defs)
  use real_time,     ONLY:RT_bands
 #endif
 #if defined _MODELS
- use MODELS,        ONLY:MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg
+ use MODELS,        ONLY:MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg,MODEL_E_ph,MODEL_elph_alpha
 #endif
 #if defined _YPP_SC
  use YPPm,          ONLY:V_value
@@ -395,6 +395,8 @@ subroutine INIT_ypp_load(defs)
  call it(defs,'Eg','Elemental gap',MODEL_Eg,unit=E_unit)
  call it(defs,'Overlap','Overlap parameter',MODEL_overlap,unit=E_unit)
  call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
+ call it(defs,'PH_energy','Phonon Frequency (LO)',MODEL_E_ph,unit=E_unit)
+ call it(defs,'ELPH_alpha','Electron-Phonon coupling (\alpha)',MODEL_elph_alpha)
 #endif
  !
 end subroutine

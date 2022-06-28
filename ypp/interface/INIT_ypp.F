@@ -538,7 +538,7 @@ subroutine INIT_ypp(E,instr,FINALIZE)
 #if defined _MODELS
  l_models  = runlevel_is_on('models') 
  if (l_models) then
-   call initactivate(1,"Kind Eg OnSiteU Overlap Kgrid")
+   call initactivate(1,"Kind Eg OnSiteU Overlap Kgrid PH_energy ELPH_alpha") 
  endif
 #endif
  !

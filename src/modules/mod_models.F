@@ -32,6 +32,8 @@ module MODELS
  real(SP)          :: MODEL_U
  real(SP)          :: MODEL_overlap
  real(SP)          :: MODEL_Eg
+ real(SP)          :: MODEL_E_ph=.1/HA2EV
+ real(SP)          :: MODEL_elph_alpha=0.
  integer           :: MODEL_k(3)
  !
 end module MODELS
