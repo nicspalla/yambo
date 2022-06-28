@@ -52,7 +52,7 @@ subroutine INIT_ypp_load(defs)
  use real_time,     ONLY:RT_bands
 #endif
 #if defined _MODELS
- use MODELS,        ONLY:MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg,MODEL_E_ph,MODEL_elph_alpha
+ use MODELS,        ONLY:MODEL_overlap,MODEL_k,MODEL_kind,MODEL_Eg,MODEL_E_ph,MODEL_elph_alpha,MODEL_component
 #endif
 #if defined _YPP_SC
  use YPPm,          ONLY:V_value
@@ -98,9 +98,6 @@ subroutine INIT_ypp_load(defs)
  call it('r',defs,'gkkp_dg',    '[R] GKKP double grid')
  call it('r',defs,'gkkp_plot',  '[R] GKKP plot')
  call it('r',defs,'ph_ass_dos', '[R] Phonon-assisted DOS')
-#endif
-#if defined _MODELS
- call it('r',defs,'models',       '[R] Model Hamiltonian generator')
 #endif
 #if defined _YPP_SC
  call it('r',defs,'angular_m',    '[R] Canonical angular momentum')
@@ -391,6 +388,7 @@ subroutine INIT_ypp_load(defs)
 #endif
  !
 #if defined _MODELS
+ call it(defs,'MDL_component','Model component ("h"amiltonian,"e"l-ph)',MODEL_component)
  call it(defs,'Kind','Model Kind ("2bands")',MODEL_kind)
  call it(defs,'Eg','Elemental gap',MODEL_Eg,unit=E_unit)
  call it(defs,'Overlap','Overlap parameter',MODEL_overlap,unit=E_unit)

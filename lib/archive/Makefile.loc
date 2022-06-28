@@ -91,6 +91,7 @@ endef
 #
 define getsrc_git
  if test ! -s $$LIB".tar.gz" && test ! -d $$LIB ; then \
+  mkdir -p  ../../log;\
   if [ ! "$$GBRANCH" = "none" ] ; then \
    echo "\t[$$LIB] clone";\
    echo " via $$GIT" ; \

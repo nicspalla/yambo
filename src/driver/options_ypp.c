@@ -31,9 +31,11 @@ void options_ypp(struct options_struct options[],int *i_opt)
   Models
  */
  *i_opt=*i_opt+1;
- options[*i_opt].short_desc="Models generator";
+ options[*i_opt].short_desc="Model Hamiltonian";
  options[*i_opt].long_opt="models";
+ options[*i_opt].long_desc[0]="<string>=(h)amiltonian,(e)l-ph";
  options[*i_opt].bin="ypp_models";
+ options[*i_opt].char_var=1;
  options[*i_opt].yambo_string="models";
  options[*i_opt].section="Model Hamiltonians";
  /* 

@@ -52,7 +52,6 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="gw0";
  options[*i_opt].short_opt='p';
  options[*i_opt].bin="yambo";
- options[*i_opt].no_bin="yambo_models";
  options[*i_opt].yambo_string="gw0";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;
@@ -104,6 +103,7 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="optics";
  options[*i_opt].short_opt='o';
  options[*i_opt].bin="yambo";
+ options[*i_opt].no_bin="yambo_models";
  options[*i_opt].yambo_string="optics";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;

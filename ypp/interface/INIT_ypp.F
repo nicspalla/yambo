@@ -46,7 +46,7 @@ subroutine INIT_ypp(E,instr,FINALIZE)
  use LIVE_t,         ONLY:live_timing_is_on
  use parser_m,       ONLY:PARSER_array
 #if defined _MODELS
- use MODELS,         ONLY:l_models
+ use MODELS,         ONLY:l_models,MODEL_component
 #endif
  use IO_int,         ONLY:io_control
  use IO_m,           ONLY:OP_RD_CL,DUMP,NONE
@@ -292,6 +292,12 @@ subroutine INIT_ypp(E,instr,FINALIZE)
        l_interp          =STRING_match(rstr_piece(i1+1),'i')
        !
      endif
+#if defined _MODELS
+     if ( trim(rstr_piece(i1)) == 'models') then
+       if (STRING_match(rstr_piece(i1+1),'h') ) MODEL_component="H"
+       if (STRING_match(rstr_piece(i1+1),'e') ) MODEL_component="el-ph"
+     endif
+#endif
 #if defined _YPP_ELPH
      if ( trim(rstr_piece(i1)) == 'gkkp') then
        l_gkkp_db   =STRING_match(rstr_piece(i1+1),'g')
@@ -538,7 +544,13 @@ subroutine INIT_ypp(E,instr,FINALIZE)
 #if defined _MODELS
  l_models  = runlevel_is_on('models') 
  if (l_models) then
-   call initactivate(1,"Kind Eg OnSiteU Overlap Kgrid PH_energy ELPH_alpha") 
+   call initactivate(1,"MDL_component")
+   if(STRING_same(MODEL_component,'h')) then
+     call initactivate(1,"Kind Eg OnSiteU Overlap Kgrid") 
+   endif
+   if(STRING_same(MODEL_component,'el-ph')) then
+     call initactivate(1,"PH_energy ELPH_alpha") 
+   endif
  endif
 #endif
  !

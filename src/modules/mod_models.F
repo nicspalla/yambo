@@ -28,6 +28,7 @@ module MODELS
  !
  logical           :: l_models
  logical           :: l_MODEL_no_intraband
+ character(schlen) :: MODEL_component="H"
  character(schlen) :: MODEL_kind
  real(SP)          :: MODEL_U
  real(SP)          :: MODEL_overlap

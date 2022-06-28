@@ -21,7 +21,7 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine MODELS_driver( )
+subroutine MODELS_Hamiltonian( )
  !
  use pars,             ONLY:pi
  use MODELS,           ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_Eg
@@ -35,7 +35,7 @@ subroutine MODELS_driver( )
  use global_XC,        ONLY:H_SE_Hartree
  use IO_m,             ONLY:OP_WR_CL,REP,mk_dir
  use IO_int,           ONLY:io_control
- use com,              ONLY:com_path,more_io_path,core_io_path
+ use com,              ONLY:com_path,more_io_path,core_io_path,msg
  use vec_operate,      ONLY:define_b_and_DL_vol,iku_v_norm
  !
 #include<memory.h>
@@ -47,15 +47,15 @@ subroutine MODELS_driver( )
  integer            :: io_err,ID,is,i2,i3,ik
  integer, external  :: io_DB1
  !
- call section("*","Yambo "//trim(MODEL_kind)//" initialization")
+ call section("*",trim(MODEL_kind)//" Hamiltonian")
  !
  call E_reset(E)
  call bz_samp_reset(k)
  !
  if (n_bands>0) return
  !
- ! DB1 filling
- !=============
+ ! H and db1 filling
+ !===================
  !
  ! DL 
  !
@@ -138,9 +138,15 @@ subroutine MODELS_driver( )
  call mk_dir(com_path)
  call mk_dir(trim(core_io_path)//"/SAVE")
  call mk_dir(trim(more_io_path)//"/SAVE")
+ !
+ call msg('s','== I/O db1 ... ')
  call io_control(ACTION=OP_WR_CL,COM=REP,SEC=(/1,2/),ID=ID)
  io_err=io_DB1(E,k,ID)
+ call msg('l',' done')
+ !
+ call msg('s','== I/O WF ... ')
  call io_control(ACTION=OP_WR_CL,COM=REP,SEC=(/1/),ID=ID)
  io_err=io_WF(ID)
+ call msg('l',' done')
  !
 end subroutine

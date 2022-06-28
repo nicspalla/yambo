@@ -38,8 +38,10 @@ else ifneq (,$(findstring ypp_nl,$(MAKECMDGOALS)))
  YPP_SRC_LIBS=$(YPPRT_LIBS)
  YPP_EXE_LIBS=$(YPPRT_LIBS_LD)
 else ifneq (,$(findstring ypp_models,$(MAKECMDGOALS)))
- Y_PRECMP=-D_MODELS
- YPP_PRECMP=-D_MODELS
+ Y_PRECMP=-D_MODELS -D_ELPH
+ YPP_PRECMP=-D_MODELS -D_YPP_ELPH
+ YPP_SRC_LIBS=$(YPPMOD_LIBS)
+ YPP_EXE_LIBS=$(YPPMOD_LIBS_LD)
 endif
 #
 # Compilation

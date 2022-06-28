@@ -72,6 +72,8 @@ YPPPH_LIBS         = $(YPP_BASIC_LIBS) el-ph excitons
 YPPPH_LIBS_LD      = $(YPP_BASIC_LIBS_LD) el-ph excitons
 YPPRT_LIBS         = $(YPP_BASIC_LIBS) el-ph real_time excitons
 YPPRT_LIBS_LD      = $(YPP_BASIC_LIBS_LD) el-ph real_time excitons
+YPPMOD_LIBS        = $(YPPPH_LIBS) models
+YPPMOD_LIBS_LD     = $(YPPPH_LIBS_LD) models
 #
 # YAMBO sources needed by YPP
 #
