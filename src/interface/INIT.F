@@ -357,7 +357,7 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
 #if defined _NL
        l_nl_optics=runlevel_is_on('nloptics')
 #endif
-#if defined  _ELPH || defined _PHEL
+#if defined _ELPH || defined _PHEL
        l_elph_Hamiltonian=runlevel_is_on('ElPhHam')
        l_elph_corr=runlevel_is_on('el_ph_corr')
        l_phel_corr=runlevel_is_on('ph_el_corr')

@@ -74,8 +74,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  integer          ::io_err,ID,IO_ACT,ID_DG
  integer, external::io_ELPH,io_Double_Grid,io_gFsq
  character(schlen)::ch
- real(SP)         ::ph_E,factor,&
-&                   elph_gkkp_sq,E_random_shift
+ real(SP)         ::ph_E,factor,elph_gkkp_sq,E_random_shift
  logical          ::l_WRgFsq,l_GF_from_CA,load_gkkp_DB
  integer , allocatable :: q_each_cpu(:)
  real(SP), allocatable :: q_weight(:)

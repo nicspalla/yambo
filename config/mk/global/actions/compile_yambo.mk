@@ -33,7 +33,7 @@ else ifneq (,$(findstring yambo_qed,$(MAKECMDGOALS)))
  SRC_LIBS=$(PJ_RTLIBS)
  EXE_LIBS=$(PJ_RTLIBS_LD)
 else ifneq (,$(findstring yambo_models,$(MAKECMDGOALS)))
- PRECMP=-D_MODELS -D_ELPH
+ PRECMP=-D_MODELS -D_ELPH -D_PHEL
  SRC_LIBS=$(PJ_PHLIBS)
  EXE_LIBS=$(PJ_PHLIBS_LD)
 endif

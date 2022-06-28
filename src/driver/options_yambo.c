@@ -74,7 +74,6 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="lifetimes";
  options[*i_opt].short_opt='l';
  options[*i_opt].bin="yambo";
- options[*i_opt].no_bin="yambo_models";
  options[*i_opt].yambo_string="life";
  options[*i_opt].section=desc;
 
