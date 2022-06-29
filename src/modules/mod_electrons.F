@@ -109,7 +109,7 @@ module electrons
    !   
    ! Perturbative SOC
    !
-   integer              :: nb_SOC
+   integer                 :: nb_SOC
    integer,    allocatable :: table_SOC(:,:,:)
    real(SP),   allocatable :: E_SOC(:,:)           
    !

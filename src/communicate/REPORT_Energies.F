@@ -26,7 +26,7 @@ subroutine REPORT_Energies(E,k,Xk,n_bands_,k_range,what,l_kpoints,l_what)
  use pars,           ONLY:schlen,SP
  use units,          ONLY:HA2EV
  use R_lattice,      ONLY:bz_samp,nXkibz,MAX_kpts_to_report
- use electrons,      ONLY:n_sp_pol,nel,n_full_bands
+ use electrons,      ONLY:n_sp_pol,nel,n_full_bands,n_bands
  use stderr,         ONLY:intc
  use wave_func,      ONLY:wf_nc_k
  use com,            ONLY:msg,fat_log
@@ -92,6 +92,7 @@ subroutine REPORT_Energies(E,k,Xk,n_bands_,k_range,what,l_kpoints,l_what)
        !
        nb_to_print=n_full_bands(is_pol)+4*int(nel)
        if (.not.fat_log) nb_to_print=2*n_full_bands(is_pol)
+       if (nb_to_print==0) nb_to_print=n_bands
        !
        E_=E(:,ik,is_pol)*HA2EV
        dumb_ch2=trim(what)

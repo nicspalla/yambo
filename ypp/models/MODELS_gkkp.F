@@ -24,14 +24,15 @@
 subroutine MODELS_gkkp(q)
  !
  use pars,             ONLY:SP,pi
- use MODELS,           ONLY:MODEL_E_ph,MODEL_elph_alpha
+ use MODELS,           ONLY:MODEL_E_ph,MODEL_elph_alpha,MODEL_kind,MODEL_effective_mass
+ use stderr,           ONLY:STRING_same
  use ELPH,             ONLY:ph_modes,elph_nb,PH_freqs_sq,PH_qpt,elph_use_q_grid,&
-&                           PH_pol_vector,GKKP,GKKP,elph_nQ,elph_nk_bz
+&                           PH_pol_vector,GKKP,GKKP,elph_nQ,elph_nk_bz,PH_W_debye
  use vec_operate,      ONLY:iku_v_norm
  use interfaces,       ONLY:ELPH_alloc
  use D_lattice,        ONLY:DL_vol
  use R_lattice,        ONLY:nkbz,nqbz,bz_samp
- use electrons,        ONLY:n_bands
+ use electrons,        ONLY:n_bands,default_nel
  use IO_m,             ONLY:OP_APP_CL,REP,OP_WR_CL
  use IO_int,           ONLY:io_control
  use LIVE_t,           ONLY:live_timing
@@ -43,9 +44,10 @@ subroutine MODELS_gkkp(q)
  ! Work Space
  !
  integer            :: io_err,iq,ID
+ real(SP)           :: g_sq,one_over_q
  integer, external  :: io_ELPH
  !
- call section("*","Electron-Phonon model interaction")
+ call section("*","Electron-Phonon "//trim(MODEL_kind)//" model")
  !
  elph_nb   =n_bands
  elph_nQ   =nqbz
@@ -61,17 +63,21 @@ subroutine MODELS_gkkp(q)
  !
  call live_timing('I/O',nqbz)
  !
+ PH_W_debye=MODEL_E_ph
+ !
  do iq=1,nqbz
-   PH_freqs_sq(iq,1)=sqrt( MODEL_E_ph )
+   PH_freqs_sq(iq,1)=MODEL_E_ph**2.
    PH_pol_vector=0.
    if (iq==1) call io_control(ACTION=OP_WR_CL,COM=REP,SEC=(/1,2/),ID=ID)
    if (iq> 1) call io_control(ACTION=OP_APP_CL,SEC=(/iq+1/),ID=ID)
    GKKP%dVr(1,:,:,:,1)=0.
    if (iq==1) GKKP%dVc(1,:,:,:,1)=0.
    if (STRING_same(MODEL_kind,"debye" )) then
-     if (iq> 1) GKKP%dVc(1,:,:,:,1)=MODEL_elph_alpha
-   else
-     if (iq> 1) GKKP%dVc(1,:,:,:,1)=1._SP/iku_v_norm(PH_qpt(iq,:))*MODEL_elph_alpha*(sqrt(2*pi*MODEL_E_ph/DL_vol))
+     g_sq=2*pi**2*MODEL_E_ph*(4*pi)**(1./3.)/(3*default_nel)**1./3.*MODEL_elph_alpha
+     GKKP%dVc(1,:,:,:,1)=sqrt (g_sq)
+   else if (STRING_same(MODEL_kind,"Frholich" ).and.iq>1) then
+     one_over_q=1._SP/iku_v_norm(PH_qpt(iq,:))
+     GKKP%dVc(1,:,:,:,1)=one_over_q*2.*pi*MODEL_E_ph/DL_vol*MODEL_elph_alpha*sqrt(2*pi*MODEL_E_ph/MODEL_effective_mass)
    endif
    io_err=io_ELPH(ID,'gkkp')
    call live_timing(steps=1)

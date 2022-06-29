@@ -65,7 +65,6 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="dyson";
  options[*i_opt].short_opt='g';
  options[*i_opt].bin="yambo";
- options[*i_opt].no_bin="yambo_models";
  options[*i_opt].yambo_string="dyson";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;

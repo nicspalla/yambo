@@ -47,7 +47,6 @@ void options_ypp(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="grid";
  options[*i_opt].short_opt='k';
  options[*i_opt].bin="ypp";
- options[*i_opt].no_bin="ypp_models";
  options[*i_opt].char_var=1;
  options[*i_opt].yambo_string="bzgrids";
  options[*i_opt].section="Brillouin Zone";

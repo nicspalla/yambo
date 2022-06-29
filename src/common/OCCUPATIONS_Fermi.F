@@ -284,7 +284,6 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
 #if defined _SC
  n_carr=0.
  if (trim(SC_neq_kind)=="constrained-mu") then
-   write(*,*) "Ef= ",E%E_fermi*27.2116
    mu_zero= SC_mu(1)
    mu_hole= SC_mu(2)
    mu_el  = SC_mu(3)

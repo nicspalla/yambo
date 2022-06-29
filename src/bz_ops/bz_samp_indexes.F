@@ -741,6 +741,7 @@ subroutine bz_samp_indexes(en,k,Xk,q)
      !
      if(all(E_k_ind(:,1)==E_k_ind(:,2))) return  ! Direct gap case
      if(.not.allocated(qindx_S))         return
+     if(any(E_k_ind<=0))                 return
      !
      do i_sp_pol=1,n_sp_pol
        q_found=.false.

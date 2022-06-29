@@ -27,7 +27,7 @@ subroutine MODELS_Hamiltonian( )
  use stderr,           ONLY:STRING_same
  use units,            ONLY:HA2EV
  use MODELS,           ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg
- use electrons,        ONLY:levels,default_nel,n_spin,nel,n_sp_pol,n_spinor,E_reset,n_bands
+ use electrons,        ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
 &                           Z_species, n_atoms, mag_syms,atoms_map,atom_mass

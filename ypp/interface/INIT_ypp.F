@@ -546,10 +546,10 @@ subroutine INIT_ypp(E,instr,FINALIZE)
  if (l_models) then
    call initactivate(1,"MDL_component Kind")
    if(STRING_same(MODEL_component,'h')) then
-     call initactivate(1,"Eg OnSiteU Overlap JelMass Kgrid") 
+     call initactivate(1,"Eg OnSiteU Overlap JelMass Kgrid Nel") 
    endif
    if(STRING_same(MODEL_component,'el-ph')) then
-     call initactivate(1,"PH_energy ELPH_alpha") 
+     call initactivate(1,"PH_energy ELPH_alpha JelMass") 
    endif
  endif
 #endif

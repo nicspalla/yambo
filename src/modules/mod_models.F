@@ -33,6 +33,7 @@ module MODELS
  real(SP)          :: MODEL_U
  real(SP)          :: MODEL_effective_mass
  real(SP)          :: MODEL_overlap
+ real(SP)          :: MODEL_nel=2.
  real(SP)          :: MODEL_Eg
  real(SP)          :: MODEL_E_ph=.1/HA2EV
  real(SP)          :: MODEL_elph_alpha=0.
