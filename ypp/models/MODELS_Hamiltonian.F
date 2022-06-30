@@ -26,7 +26,7 @@ subroutine MODELS_Hamiltonian( )
  use pars,             ONLY:pi
  use stderr,           ONLY:STRING_same
  use units,            ONLY:HA2EV
- use MODELS,           ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg
+ use MODELS,           ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg,MODEL_nel
  use electrons,        ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
@@ -128,10 +128,10 @@ subroutine MODELS_Hamiltonian( )
  wf_nb_io=nb
  wf_nb_io_groups=nb
  YAMBO_ALLOC(E%E,(E%nb,k%nibz,n_sp_pol))
+ default_nel=MODEL_nel
  !
  ! ... 2bands model
  if (STRING_same(MODEL_kind,"2bands" )) then
-   default_nel=2.
    do ik=1,k%nibz
      E%E(1,ik,:)=-( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
      E%E(2,ik,:)= ( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
@@ -140,7 +140,6 @@ subroutine MODELS_Hamiltonian( )
  !
  ! ... jellium
  if (STRING_same(MODEL_kind,"jellium" )) then
-   default_nel=1.
    do ik=1,k%nibz
      E%E(1,ik,:)=iku_v_norm(k%pt(ik,:))**2./2.*MODEL_effective_mass/HA2EV
    enddo

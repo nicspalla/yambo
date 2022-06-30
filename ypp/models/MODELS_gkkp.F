@@ -27,7 +27,7 @@ subroutine MODELS_gkkp(q)
  use MODELS,           ONLY:MODEL_E_ph,MODEL_elph_alpha,MODEL_kind,MODEL_effective_mass
  use stderr,           ONLY:STRING_same
  use ELPH,             ONLY:ph_modes,elph_nb,PH_freqs_sq,PH_qpt,elph_use_q_grid,&
-&                           PH_pol_vector,GKKP,GKKP,elph_nQ,elph_nk_bz,PH_W_debye
+&                           PH_pol_vector,GKKP,elph_nQ,elph_nk_bz,PH_W_debye
  use vec_operate,      ONLY:iku_v_norm
  use interfaces,       ONLY:ELPH_alloc
  use D_lattice,        ONLY:DL_vol
@@ -44,7 +44,7 @@ subroutine MODELS_gkkp(q)
  ! Work Space
  !
  integer            :: io_err,iq,ID
- real(SP)           :: g_sq,one_over_q
+ real(SP)           :: EM_sq,EM,one_over_q
  integer, external  :: io_ELPH
  !
  call section("*","Electron-Phonon "//trim(MODEL_kind)//" model")
@@ -73,12 +73,13 @@ subroutine MODELS_gkkp(q)
    GKKP%dVr(1,:,:,:,1)=0.
    if (iq==1) GKKP%dVc(1,:,:,:,1)=0.
    if (STRING_same(MODEL_kind,"debye" )) then
-     g_sq=2*pi**2*MODEL_E_ph*(4*pi)**(1./3.)/(3*default_nel)**1./3.*MODEL_elph_alpha
-     GKKP%dVc(1,:,:,:,1)=sqrt (g_sq)
+     EM_sq=2*pi**2*MODEL_E_ph*(4*pi)**(1./3.)/(3*default_nel)**1./3.*MODEL_elph_alpha
+     EM=sqrt(EM_sq)
    else if (STRING_same(MODEL_kind,"Frholich" ).and.iq>1) then
      one_over_q=1._SP/iku_v_norm(PH_qpt(iq,:))
-     GKKP%dVc(1,:,:,:,1)=one_over_q*2.*pi*MODEL_E_ph/DL_vol*MODEL_elph_alpha*sqrt(2*pi*MODEL_E_ph/MODEL_effective_mass)
+     EM=one_over_q*2.*pi*MODEL_E_ph/DL_vol*sqrt(2*pi*MODEL_elph_alpha/MODEL_effective_mass)
    endif
+   GKKP%dVc(1,:,:,:,1)=EM*sqrt(MODEL_E_ph)
    io_err=io_ELPH(ID,'gkkp')
    call live_timing(steps=1)
  enddo
