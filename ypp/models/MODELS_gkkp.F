@@ -44,7 +44,7 @@ subroutine MODELS_gkkp(q)
  ! Work Space
  !
  integer            :: io_err,iq,ID
- real(SP)           :: EM_sq,EM,one_over_q
+ real(SP)           :: EM_sq,one_over_q
  integer, external  :: io_ELPH
  !
  call section("*","Electron-Phonon "//trim(MODEL_kind)//" model")
@@ -74,12 +74,11 @@ subroutine MODELS_gkkp(q)
    if (iq==1) GKKP%dVc(1,:,:,:,1)=0.
    if (STRING_same(MODEL_kind,"debye" )) then
      EM_sq=2*pi**2*MODEL_E_ph*(4*pi)**(1./3.)/(3*default_nel)**1./3.*MODEL_elph_alpha
-     EM=sqrt(EM_sq)
    else if (STRING_same(MODEL_kind,"Frholich" ).and.iq>1) then
      one_over_q=1._SP/iku_v_norm(PH_qpt(iq,:))
-     EM=one_over_q*2.*pi*MODEL_E_ph/DL_vol*sqrt(2*pi*MODEL_elph_alpha/MODEL_effective_mass)
+     EM_sq=one_over_q**2.*2.*pi*MODEL_E_ph/DL_vol*sqrt(2*pi*MODEL_E_ph/MODEL_effective_mass)*MODEL_elph_alpha
    endif
-   GKKP%dVc(1,:,:,:,1)=EM*sqrt(MODEL_E_ph)
+   GKKP%dVc(1,:,:,:,1)=sqrt(EM_sq*MODEL_E_ph)
    io_err=io_ELPH(ID,'gkkp')
    call live_timing(steps=1)
  enddo

@@ -68,8 +68,8 @@ subroutine PH_Grid_Check_Transitions(iq,k,q,bands,k_FG,E_FG)
  ! ... energy related quantities ...
  real(SP)              :: DELTA_E,DELTA_W
  !
- ! Loop to allocate phel_table
- !=============================
+ call section("=","Transition(s) scan")
+ !=====================================
  !
  sec_name(1)='Compatibility scan'
  sec_name(2)='Compatibility fill'

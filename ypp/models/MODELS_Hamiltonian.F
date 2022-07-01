@@ -61,10 +61,10 @@ subroutine MODELS_Hamiltonian( )
  !
  ! DL 
  !
- alat=1.
- a(1,:)=(/1.,0.,0./)
- a(2,:)=(/0.,1.,0./)
- a(3,:)=(/0.,0.,1./)
+ alat=1
+ a(1,:)=(/1.,0.,0./)*alat
+ a(2,:)=(/0.,1.,0./)*alat
+ a(3,:)=(/0.,0.,1./)*alat
  call define_b_and_DL_vol()
  n_atomic_species=1
  n_atoms_species_max=1

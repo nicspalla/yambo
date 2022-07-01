@@ -48,6 +48,10 @@ subroutine ELPH_acoustic_phonon_properties(q)
  integer             ::iq,il
  character(schlen)   ::aco_string
  !
+#if defined _MODELS
+ if (ph_modes==1) return
+#endif
+ !
  ! Acoustic Branches
  !-------------------
  aco_string=" "
