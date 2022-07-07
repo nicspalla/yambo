@@ -236,7 +236,7 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  if (l_models.and.STRING_same(MODEL_component,"el-ph")) call MODELS_gkkp(q)
 #endif
  !
- if (l_dipoles.and.trim(DIPs_kind)=="IP") call DIPOLES_driver(Xk,Xen,q)
+ if (l_dipoles.and.trim(DIPs_kind)=="IP") call DIPOLE_ypp_driver(Xk,Xen,q)
  !
  if (l_bz_grids) call k_grids(en,k,Xk,q)
  !
