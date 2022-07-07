@@ -46,5 +46,5 @@
 #endif
 #if defined _e2y
  char *tool="e2y";
- char *tool_desc="E(TSF) 2 Y(ambo) interface";
+ char *tool_desc="E(TSF) 2 Y(ambo) interface (0.6)";
 #endif
