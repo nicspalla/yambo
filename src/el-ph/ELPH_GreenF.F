@@ -172,6 +172,9 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  endif
  !
  eval_DW=(.not.abs(delta_E_at_gamma)<DW_deltaE_treshold)
+#if defined _MODELS
+ eval_DW=.FALSE.
+#endif
  !
  gsqF_RES_DW=cZERO
  !

@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2022 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -28,8 +28,8 @@ module MODELS
  !
  logical           :: l_models
  logical           :: l_MODEL_no_intraband
- character(schlen) :: MODEL_component="H"
- character(schlen) :: MODEL_kind
+ character(schlen) :: MODEL_H_kind="none"
+ character(schlen) :: MODEL_GKKP_kind="none"
  real(SP)          :: MODEL_U
  real(SP)          :: MODEL_effective_mass
  real(SP)          :: MODEL_overlap

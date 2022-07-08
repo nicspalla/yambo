@@ -135,7 +135,7 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  use openmp,      ONLY:OPENMP_initialize,OPENMP_update,master_thread,omp_is_off
  use cuda_m,      ONLY:cuda_setup,have_cuda
 #if defined _MODELS
- use MODELS,      ONLY:MODEL_U,MODEL_overlap,MODEL_effective_mass,MODEL_k,MODEL_kind,MODEL_Eg
+ use MODELS,      ONLY:MODEL_U,MODEL_overlap,MODEL_effective_mass,MODEL_k,MODEL_Eg
 #endif
  !
  implicit none
@@ -732,7 +732,6 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  MODEL_effective_mass=1.
  MODEL_Eg=1./HA2EV
  MODEL_k=(/2,2,2/)
- MODEL_kind="2bands"
 #endif
  !
 end subroutine

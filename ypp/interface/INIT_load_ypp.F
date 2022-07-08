@@ -51,8 +51,8 @@ subroutine INIT_ypp_load(defs)
  use real_time,     ONLY:RT_bands
 #endif
 #if defined _MODELS
- use MODELS,        ONLY:MODEL_overlap,MODEL_effective_mass,MODEL_k,MODEL_kind,MODEL_Eg,&
-&                        MODEL_E_ph,MODEL_elph_alpha,MODEL_component,MODEL_nel
+ use MODELS,        ONLY:MODEL_overlap,MODEL_effective_mass,MODEL_k,MODEL_H_kind,MODEL_Eg,&
+&                        MODEL_nel
 #endif
 #if defined _YPP_SC
  use YPPm,          ONLY:V_value
@@ -388,15 +388,12 @@ subroutine INIT_ypp_load(defs)
 #endif
  !
 #if defined _MODELS
- call it(defs,'MDL_component','Model component ("h"amiltonian,"e"l-ph)',MODEL_component)
- call it(defs,'Kind','Model Kind (H:"2bands","Jellium" e-p:"Debye","Frholich")',MODEL_kind)
+ call it(defs,'Kind','Model Kind ("2bands","Jellium")',MODEL_H_kind)
  call it(defs,'Nel','Number of electrons',MODEL_nel)
  call it(defs,'Eg','Elemental gap ("2bands")',MODEL_Eg,unit=E_unit)
  call it(defs,'Overlap','Overlap parameter (2bands)',MODEL_overlap,unit=E_unit)
  call it(defs,'JelMass','Effective mass (Jellium)',MODEL_effective_mass)
  call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
- call it(defs,'PH_energy','Phonon Frequency (LO)',MODEL_E_ph,unit=E_unit)
- call it(defs,'ELPH_alpha','Electron-Phonon coupling (\alpha)',MODEL_elph_alpha)
 #endif
  !
 end subroutine

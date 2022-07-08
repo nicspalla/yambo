@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2022 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM 
@@ -26,7 +26,7 @@ subroutine MODELS_Hamiltonian( )
  use pars,             ONLY:pi
  use stderr,           ONLY:STRING_same
  use units,            ONLY:HA2EV
- use MODELS,           ONLY:MODEL_k,MODEL_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg,MODEL_nel
+ use MODELS,           ONLY:MODEL_k,MODEL_H_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg,MODEL_nel
  use electrons,        ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
@@ -49,15 +49,13 @@ subroutine MODELS_Hamiltonian( )
  integer            :: io_err,ID,is,i2,i3,ik,nb
  integer, external  :: io_DB1
  !
- call section("*",trim(MODEL_kind)//" Hamiltonian")
+ call section("*",trim(MODEL_H_kind)//" Hamiltonian")
  !
  call E_reset(E)
  call bz_samp_reset(k)
  !
  if (n_bands>0) return
- !
- ! H and db1 filling
- !===================
+ if (STRING_same(MODEL_H_kind,"none")) return
  !
  ! DL 
  !
@@ -104,6 +102,9 @@ subroutine MODELS_Hamiltonian( )
  ! K-points
  !
  call INTERPOLATION_grid(k,'i',MODEL_k)
+ k%nibz=k%nbz
+ YAMBO_ALLOC(k%pt,(k%nibz,3))
+ k%pt=k%ptbz
  !
  ! RL
  !
@@ -122,8 +123,8 @@ subroutine MODELS_Hamiltonian( )
  n_spinor=1
  n_sp_pol=1
  !
- if (STRING_same(MODEL_kind,"2bands" )) nb=2
- if (STRING_same(MODEL_kind,"jellium")) nb=1
+ if (STRING_same(MODEL_H_kind,"2bands" )) nb=2
+ if (STRING_same(MODEL_H_kind,"jellium")) nb=1
  E%nb=nb
  wf_nb_io=nb
  wf_nb_io_groups=nb
@@ -131,7 +132,7 @@ subroutine MODELS_Hamiltonian( )
  default_nel=MODEL_nel
  !
  ! ... 2bands model
- if (STRING_same(MODEL_kind,"2bands" )) then
+ if (STRING_same(MODEL_H_kind,"2bands" )) then
    do ik=1,k%nibz
      E%E(1,ik,:)=-( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
      E%E(2,ik,:)= ( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
@@ -139,7 +140,7 @@ subroutine MODELS_Hamiltonian( )
  endif
  !
  ! ... jellium
- if (STRING_same(MODEL_kind,"jellium" )) then
+ if (STRING_same(MODEL_H_kind,"jellium" )) then
    do ik=1,k%nibz
      E%E(1,ik,:)=iku_v_norm(k%pt(ik,:))**2./2.*MODEL_effective_mass/HA2EV
    enddo

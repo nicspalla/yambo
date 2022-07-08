@@ -41,7 +41,7 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
 &                              alat_used_for_output,l_QP_DB_expand,coo_out,coo_in,l_dipoles,&
 &                              DIPs_kind,l_sp_wf,l_mean_potential
 #if defined _MODELS
- use MODELS,              ONLY:l_models,MODEL_component
+ use MODELS,              ONLY:l_models
 #endif
 #if defined _YPP_RT
  use YPP_real_time,       ONLY:l_RealTime,l_RT_DBs,l_NL_X,l_NL_exc,l_RT_abs
@@ -163,7 +163,7 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  ! Model Hamiltonian (before anything)
  !
 #if defined _MODELS
- if (idb1_err/=0.and.l_models.and.STRING_same(MODEL_component,"H")) then
+ if (idb1_err/=0.and.l_models) then
    call MODELS_Hamiltonian()
    call ypp_finalize(" ",instr)
    return
@@ -232,10 +232,6 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  !
  ! Specific SECTIONS
  !===================
-#if defined _MODELS
- if (l_models.and.STRING_same(MODEL_component,"el-ph")) call MODELS_gkkp(q)
-#endif
- !
  if (l_dipoles.and.trim(DIPs_kind)=="IP") call DIPOLE_ypp_driver(Xk,Xen,q)
  !
  if (l_bz_grids) call k_grids(en,k,Xk,q)

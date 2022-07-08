@@ -42,9 +42,13 @@ subroutine INTERPOLATION_grid(K,units,grid_dim)
  !
  use pars,           ONLY:SP,schlen
  use R_lattice,      ONLY:bz_samp
+#if defined _MODELS
+ use D_lattice,      ONLY:nsym
+#endif
  use com,            ONLY:msg
  use vec_operate,    ONLY:c2a
- implicit none
+ !
+#include<memory.h>
  !
  integer,       intent(in)    :: grid_dim(3)
  type(bz_samp), intent(inout) :: K
@@ -59,14 +63,11 @@ subroutine INTERPOLATION_grid(K,units,grid_dim)
  !
  write (ch,'(2a)') trim(K%description),"-ptbz"
  !
- ! Clean
- !
- if (allocated(K%ptbz)) then
-   deallocate(K%ptbz)
- endif
- !
+ ! Clean & alloc
+ ! 
+ YAMBO_FREE(k%ptbz)
  K%nbz=product(grid_dim)
- allocate(K%ptbz(K%nbz,3))
+ YAMBO_ALLOC(k%ptbz,(k%nbz,3))
  !
  ic=1
  do i1=1,grid_dim(1)
@@ -86,6 +87,12 @@ subroutine INTERPOLATION_grid(K,units,grid_dim)
   enddo
   !
   K%units='i'
+  !
+#if defined _MODELS
+  if (nsym==1) return
+  YAMBO_ALLOC(k%pt,(k%nibz,3))
+  k%pt(:k%nibz,:)=k%ptbz(:k%nibz,:)
+#endif
   !
   call k_reduce(K,.TRUE.)
   call msg('s','[GRID_INTERP] Points (IBZ)  ',K%nibz)

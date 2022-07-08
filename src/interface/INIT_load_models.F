@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2022 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -23,7 +23,7 @@
 !
 subroutine INIT_load_models(defs)
  !
- use MODELS,         ONLY:MODEL_U
+ use MODELS,         ONLY:MODEL_U,MODEL_GKKP_kind,MODEL_E_ph,MODEL_elph_alpha
  use it_m,           ONLY:initdefs,E_unit
  use it_tools,       ONLY:it
  !
@@ -33,5 +33,8 @@ subroutine INIT_load_models(defs)
  !
  call it(defs,'OnSiteU','Coloumb parameter',MODEL_U,unit=E_unit)
  call it('f',defs,'SkipIntraBand','Skip Intraband collision')
+ call it(defs,'MOD_gkkp_Kind','GKKP Kind ("Debye","Frholich")',MODEL_GKKP_kind)
+ call it(defs,'MOD_PH_energy','Phonon Frequency (LO)',MODEL_E_ph,unit=E_unit)
+ call it(defs,'MOD_ELPH_alpha','Electron-Phonon coupling (\alpha)',MODEL_elph_alpha)
  !
 end subroutine

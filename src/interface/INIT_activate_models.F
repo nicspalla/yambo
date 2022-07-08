@@ -1,5 +1,5 @@
 !
-!        Copyright (C) 2000-2020 the YAMBO team
+!        Copyright (C) 2000-2022 the YAMBO team
 !              http://www.yambo-code.org
 !
 ! Authors (see AUTHORS file for details): AM
@@ -23,12 +23,11 @@
 !
 subroutine INIT_activate_models()
  !
- use drivers,        ONLY:l_eval_collisions
+ use drivers,        ONLY:l_eval_collisions,l_elph_corr,l_gw0
  !
  call initactivate(-1,"EXXRLvcs VXCRLvcs HARRLvcs")
  !
- if (l_eval_collisions) then
-  call initactivate(1,"OnSiteU SkipIntraBand")
- endif
+ if (l_eval_collisions    ) call initactivate(1,"OnSiteU SkipIntraBand")
+ if (l_elph_corr.and.l_gw0) call initactivate(1,"MOD_gkkp_Kind MOD_PH_energy MOD_ELPH_alpha")
  !
 end subroutine

@@ -1,1 +1,1 @@
-objs = MODELS_Hamiltonian.o MODELS_gkkp.o
+objs = MODELS_Hamiltonian.o

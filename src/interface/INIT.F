@@ -60,6 +60,9 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
  use PHEL,           ONLY:PH_Q
  use ELPH,           ONLY:PH_W_debye
 #endif
+#if defined  _MODELS
+ use ELPH,           ONLY:elph_branches,QP_PH_n_G_bands,ph_modes,elph_nb
+#endif
 #if defined  _ELPH
  use ELPH,           ONLY:elph_nQ,elph_nQ_used
 #endif
@@ -196,7 +199,7 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
    return
  endif
  !
- !Runlevels variables activation (Logicals from stdin)
+ ! Runlevels variables activation (Logicals from stdin)
  call LOCAL_from_runlevels_to_logicals()
  !
  ! Given the stding vars here I fix/check the 
@@ -541,8 +544,15 @@ integer function INIT(en,q,k,X,Xw,Dip,instr,lnstr,CLOSE_Gs,FINALIZE)
      if (l_life) call initactivate(1,'el_el_corr')
 #endif
      !
+#if defined _MODELS
+     QP_PH_n_G_bands=(/1,en%nb/)
+     elph_nb        =en%nb
+     elph_branches  =1
+     ph_modes       =1
+#else
      if (io_ELPH_err(1)<0.and.io_ELPH_err(2)<0) call switch_off_runlevel('el_ph_corr ph_el_corr',on_name=' ')
      if (io_ELPH_err(2)<0                     ) call switch_off_runlevel('el_ph_scatt ph_el_scatt',on_name=' ')
+#endif
      !
    end subroutine LOCAL_scatt_and_correlation_logicals
    !

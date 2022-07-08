@@ -47,6 +47,9 @@ integer function io_DB1(E,k,ID)
  use BS,               ONLY:BS_bands
  use xc_functionals,   ONLY:GS_xc_KIND,GS_xc_FUNCTIONAL,GS_exx_FRACTION,GS_exx_SCREENING
  use global_XC,        ONLY:setup_global_XC,EXT_NONE
+#if defined _MODELS
+ use MODELS,           ONLY:MODEL_H_kind,MODEL_overlap,MODEL_effective_mass
+#endif
 #if defined _SC || defined _RT
  use collision_ext,    ONLY:COLL_bands
  use hamiltonian,      ONLY:H_ref_bands
@@ -68,12 +71,10 @@ integer function io_DB1(E,k,ID)
  !
  ! Work Space
  !
- integer :: code_version_local(3),code_revision_local,MENU
+ integer :: code_version_local(3),code_revision_local
  !
  io_DB1 =io_connect(desc="db1",type=0,ID=ID)
  if (io_DB1/=0) goto 1
- !
- MENU=1
  !
  if (any((/io_sec(ID,:)==1/))) then
    !
@@ -225,8 +226,18 @@ integer function io_DB1(E,k,ID)
      io_code_revision(ID,2)=code_GPL_revision
    endif
    !
-   call io_elemental(ID, VAR="",VAR_SZ=0,MENU=MENU)
-   MENU=0
+#if defined _MODELS
+   if (variable_exist(ID,"MODEL_H_kind").or.write_is_on(ID)) then
+     call io_elemental(ID,VAR="MODEL_H_kind",VAR_SZ=1,CH0="",MENU=0)
+     call io_elemental(ID,CH0=MODEL_H_kind,CHECK=.true.,VAR=' Model kind')
+     call io_elemental(ID,VAR="",VAR_SZ=0,MENU=0)
+     call io_elemental(ID,VAR="MODEL_parameters",VAR_SZ=2,MENU=0)
+     call io_elemental(ID,R0=MODEL_overlap,CHECK=.true.,OP=(/"=="/),VAR=' Model overlap',UNIT=HA2EV,Terminator="eV")
+     call io_elemental(ID,R0=MODEL_effective_mass,CHECK=.true.,OP=(/"=="/),VAR=' Model effective mass')
+   endif
+#endif
+   !
+   call io_elemental(ID, VAR="",VAR_SZ=0,MENU=1)
    !
    ! Exporting E%nb/k%nibz when in DUMP
    !

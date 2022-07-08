@@ -59,6 +59,8 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 &                        INTERPOLATE_is_quiet    
  use stderr,        ONLY:STRING_same
  use timing_m,      ONLY:timing
+#if defined _MODELS
+#endif
  !
 #include<memory.h>
  !
@@ -119,6 +121,12 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  !
  call QP_state_print( )
  !
+ ! Model e-p
+ ! =======================
+#if defined _MODELS
+ call ELPH_model_init(k,q)
+#endif
+ !
  ! ELPH DB
  ! =======================
  select case(trim(gkkp_db)) 
@@ -128,12 +136,14 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
      load_gkkp_DB=.true.
    case("genFroh")
      load_gkkp_DB=.false.
+#if !defined _MODELS
      call error("Generalized Frohlich model not implemented yet ")
+#endif
  end select
  !
  call msg('sr','GKKP database/model: '//gkkp_db)
  !
- if(load_gkkp_DB) then
+ if (load_gkkp_DB) then
    call io_control(ACTION=OP_RD,COM=REP,SEC=(/1/),ID=ID)
    io_err=io_ELPH(ID,gkkp_db)
    call deliver_IO_error_message(io_err,"GKKP")
@@ -375,6 +385,11 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
          ! k is in the IBZ and q is the PW_q (=-YAMBO_q)
          !
        endif
+       !
+#if defined _MODELS
+       ik_bz_gkkp=1
+       call ELPH_model_gkkp(iq_ibz,q)
+#endif
        !
        do il=elph_branches(1),elph_branches(2)
          !
