@@ -247,8 +247,6 @@ subroutine INIT_read_command_line(rstr,init_)
        l_elel_corr=.true.
 #endif
        !
-       if ( i_cycle == 2 .and. trim(Chi_mode)==' ') Chi_mode='HARTREE'
-       !
      endif
      !
      ! Lifetimes
@@ -305,6 +303,8 @@ subroutine INIT_read_command_line(rstr,init_)
          l_phel_corr=.TRUE.
 #endif
        endif
+       !
+       if ( i_cycle == 2 .and. trim(QP_solver)==' ') QP_solver='n'
        !
      endif
      !

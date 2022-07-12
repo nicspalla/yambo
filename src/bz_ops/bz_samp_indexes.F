@@ -76,9 +76,8 @@ subroutine bz_samp_indexes(en,k,Xk,q)
  ! Work Space
  !
  integer :: io_db,io_err
- integer :: i1,i2,i3,i4,iv1(3),iqibz,iqbz,ikibz,ikbz,ikbz_p,ikbz_mem,iqs,iks,id
- real(SP):: v1(3),k_b_m1(3,3),local_zero(3),q_step(3)
- real(SP):: E_empty(1,q%nibz,n_sp_pol)
+ integer :: i1,i2,i3,i4,iv1(3),iqibz,iqbz,ikibz,ikbz,ikbz_p,ikbz_mem,iqs,iks,id,k_range(2)
+ real(SP):: v1(3),k_b_m1(3,3),local_zero(3),q_step(3),E_empty(1,q%nibz,n_sp_pol)
  logical :: connected_grids,user_defined_qpts,user_grids,do_qindx_B,do_qindx_X,do_qindx_X_ik
 #if defined _ELPH
  logical :: bse_setup_scatt
@@ -372,10 +371,10 @@ subroutine bz_samp_indexes(en,k,Xk,q)
    call section('+',trim(string(2))//' indexes')
    !============================================
    !
-   if(     coll_scattering) i1=Xk%nbz
-   if(.not.coll_scattering) i1=QP_states_k(2)-QP_states_k(1)+1
+   if(     coll_scattering) k_range=(/1,Xk%nbz/)
+   if(.not.coll_scattering) k_range=QP_states_k
    !
-   call live_timing(trim(string(2))//' [eval]',max(1,i1/n_threads))
+   call live_timing(trim(string(2))//' [eval]',max(1,(k_range(2)-k_range(1)+1)/n_threads))
    !
    call k_ibz2bz(k,'a',.false.)
    !
@@ -394,7 +393,7 @@ subroutine bz_samp_indexes(en,k,Xk,q)
    call OPENMP_update(master_thread)
    !
    !$omp do
-   do ikbz=1,k%nbz
+   do ikbz=k_range(1),k_range(2)
      !
      ikibz=k%sstar(ikbz,1)
      iks  =k%sstar(ikbz,2)
@@ -470,7 +469,7 @@ subroutine bz_samp_indexes(en,k,Xk,q)
    !
    if (.not.connected_grids) call msg('rsn','[RL indx] X & Total k-grids are not connected')
    !
-   K_LOOP: do ikbz=1,k%nbz
+   K_LOOP: do ikbz=k_range(1),k_range(2)
      ikibz=k%sstar(ikbz,1)
      if (any(qindx_S(ikibz,:,:)==0)) then 
        call bz_X_only_exit('Null transition detected [qindx_S]. Gamma point only.')
@@ -536,7 +535,11 @@ subroutine bz_samp_indexes(en,k,Xk,q)
      !
      ! Grids string update
      !
+#if !defined _MODELS
      k_GRIDS_string="X"
+#else
+     k_GRIDS_string=" "
+#endif
      if (bse_scattering  ) k_GRIDS_string=trim(k_GRIDS_string)//" B"
      if (coll_scattering ) k_GRIDS_string=trim(k_GRIDS_string)//" C"
      if (sigma_scattering) k_GRIDS_string=trim(k_GRIDS_string)//" S"

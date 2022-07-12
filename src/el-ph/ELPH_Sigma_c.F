@@ -59,8 +59,6 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 &                        INTERPOLATE_is_quiet    
  use stderr,        ONLY:STRING_same
  use timing_m,      ONLY:timing
-#if defined _MODELS
-#endif
  !
 #include<memory.h>
  !
@@ -136,9 +134,6 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
      load_gkkp_DB=.true.
    case("genFroh")
      load_gkkp_DB=.false.
-#if !defined _MODELS
-     call error("Generalized Frohlich model not implemented yet ")
-#endif
  end select
  !
  call msg('sr','GKKP database/model: '//gkkp_db)
@@ -296,7 +291,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    !
    if (iq_db/=iabs(iq_db_ref)) then
      !
-     if(load_gkkp_DB) then
+     if (load_gkkp_DB) then
        !      
        if (     elph_use_q_grid.and..not.elph_grids_are_expanded) IO_ACT=manage_action(RD_CL_IF_END,iq_ibz,1,nqibz)
        if (.not.elph_use_q_grid.or.elph_grids_are_expanded)       IO_ACT=manage_action(RD_CL_IF_END,iq_db,1,nq_to_sum)

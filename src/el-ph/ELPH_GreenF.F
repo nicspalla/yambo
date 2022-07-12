@@ -49,6 +49,9 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  use QP_m,          ONLY:QP_table,QP_time_order_sign
  use R_lattice,     ONLY:bz_samp
  use functions,     ONLY:Fermi_fnc_derivative
+#if defined _MODELS
+ use MODELS,        ONLY:l_MODEL_force_jellium
+#endif
  !
 #include<memory.h>
  !
@@ -111,6 +114,10 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
    E_kpq=GKKP%E_kpq(iq_bz)%E(ob,ik_bz,1)
    f_occ=GKKP%E_kpq(iq_bz)%f(ob,ik_bz,1)/spin_occ
  endif
+ !
+#if defined _MODELS
+ if (l_MODEL_force_jellium) f_occ=0._SP
+#endif
  !
  ! Frequency Loop
  !

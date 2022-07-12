@@ -28,6 +28,7 @@ module MODELS
  !
  logical           :: l_models
  logical           :: l_MODEL_no_intraband
+ logical           :: l_MODEL_force_jellium=.FALSE.
  character(schlen) :: MODEL_H_kind="none"
  character(schlen) :: MODEL_GKKP_kind="none"
  real(SP)          :: MODEL_U

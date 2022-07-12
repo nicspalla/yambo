@@ -532,7 +532,7 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  FAN_deltaE_treshold=1.E-6_SP/HA2EV  ! This is a cutoff on phonon energies
  use_PH_DbGd=.FALSE.
  EkplusQ_mode='interp' ! E(k+q) energies (interp | dftp )
- gkkp_db='gkkp'        ! gkkp_db ( gkkp | gkkp_expanded | genFroh )
+ gkkp_db='gkkp'        ! gkkp_db ( gkkp | gkkp_expanded )
  !
 #endif
  !

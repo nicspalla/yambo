@@ -26,12 +26,16 @@ subroutine ELPH_model_init(k,q)
  use ELPH,          ONLY:GKKP,gkkp_db,elph_nQ,elph_nk_bz,elph_nQ_used,elph_use_q_grid
  use R_lattice,     ONLY:bz_samp
  use interfaces,    ONLY:ELPH_alloc
+ use MODELS,        ONLY:MODEL_gkkp_kind,l_MODEL_force_jellium
+ use parser_m,      ONLY:parser
  !
  implicit none
  !
  type(bz_samp)      :: k,q
  !
- gkkp_db="genFroh"
+ call parser('ForceJell',l_MODEL_force_jellium)
+ if (l_MODEL_force_jellium) call warning("Jellium e-p Self-Energy mode")
+ gkkp_db=MODEL_gkkp_kind
  elph_nQ=q%nbz
  elph_nk_bz=k%nbz
  elph_nQ_used=q%nbz

@@ -28,6 +28,6 @@ subroutine INIT_activate_models()
  call initactivate(-1,"EXXRLvcs VXCRLvcs HARRLvcs")
  !
  if (l_eval_collisions    ) call initactivate(1,"OnSiteU SkipIntraBand")
- if (l_elph_corr.and.l_gw0) call initactivate(1,"MOD_gkkp_Kind MOD_PH_energy MOD_ELPH_alpha")
+ if (l_elph_corr.and.l_gw0) call initactivate(1,"MOD_gkkp_Kind MOD_PH_energy MOD_ELPH_alpha ForceJell")
  !
 end subroutine

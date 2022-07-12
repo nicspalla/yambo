@@ -48,6 +48,15 @@ subroutine k_reduce(k,FORCE_BZ)
  integer :: i1,i2,i2_ref,is
  real(SP):: v1(3),k_ibz(k%nbz,3),k_bz_shifted(3)
  !
+#if defined _MODELS
+ if (nsym==1) then
+   k%nibz=k%nbz
+   YAMBO_ALLOC(k%pt,(k%nibz,3))
+   k%pt=k%ptbz
+   return
+ endif
+#endif
+ !
  call live_timing('BZ -> IBZ reduction',k%nbz)
  !
  k%nibz=0
