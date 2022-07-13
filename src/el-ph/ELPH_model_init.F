@@ -21,24 +21,22 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine ELPH_model_init(k,q)
+subroutine ELPH_model_init( )
  !
  use ELPH,          ONLY:GKKP,gkkp_db,elph_nQ,elph_nk_bz,elph_nQ_used,elph_use_q_grid
- use R_lattice,     ONLY:bz_samp
+ use R_lattice,     ONLY:nqbz,nkbz
  use interfaces,    ONLY:ELPH_alloc
  use MODELS,        ONLY:MODEL_gkkp_kind,l_MODEL_force_jellium
  use parser_m,      ONLY:parser
  !
  implicit none
  !
- type(bz_samp)      :: k,q
- !
  call parser('ForceJell',l_MODEL_force_jellium)
  if (l_MODEL_force_jellium) call warning("Jellium e-p Self-Energy mode")
  gkkp_db=MODEL_gkkp_kind
- elph_nQ=q%nbz
- elph_nk_bz=k%nbz
- elph_nQ_used=q%nbz
+ elph_nQ=nqbz
+ elph_nk_bz=nkbz
+ elph_nQ_used=nqbz
  elph_use_q_grid=.TRUE.
  call ELPH_alloc('dV PHONONS',GKKP,Nk_mem=1)
  !

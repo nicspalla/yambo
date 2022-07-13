@@ -51,8 +51,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  use ELPH,          ONLY:elph_nb,PH_freqs_sq,GKKP,ph_modes,PH_freqs,FineGd_E_kpq_components_reset,&
 &                        QP_PH_n_G_bands,PH_W_debye,use_PH_DbGd,EkplusQ_mode,gkkp_db,elph_grids_are_expanded, &
 &                        elph_nQ,elph_use_q_grid,setup_k_plus_q_levels,elph_nQ_used,&
-&                        E_kpq_sh_fact, &
-&                        gsqF_energy_steps,eval_G_using_KK,PH_qpt,ID_E_kpq,ID_E_kpq_obj, &
+&                        E_kpq_sh_fact,gsqF_energy_steps,eval_G_using_KK,PH_qpt,ID_E_kpq,ID_E_kpq_obj, &
 &                        elph_branches,QP_DW,QP_OMS_Fan,FAN_deltaE_treshold
  use interfaces,    ONLY:QP_state_print,ELPH_alloc
  use interpolate,   ONLY:INTERPOLATE_is_serial,INTERPOLATION_coefficients,INTERP_obj,INTERP_shell_factor,&
@@ -75,7 +74,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  integer, external::io_ELPH,io_Double_Grid,io_gFsq
  character(schlen)::ch
  real(SP)         ::ph_E,factor,elph_gkkp_sq,E_random_shift
- logical          ::l_WRgFsq,l_GF_from_CA,load_gkkp_DB
+ logical          ::l_WRgFsq,l_GF_from_CA,load_gkkp_DB,MULTIPLY_by_Qsquare
  integer , allocatable :: q_each_cpu(:)
  real(SP), allocatable :: q_weight(:)
  ! 
@@ -122,7 +121,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  ! Model e-p
  ! =======================
 #if defined _MODELS
- call ELPH_model_init(k,q)
+ call ELPH_model_init( )
 #endif
  !
  ! ELPH DB
@@ -203,17 +202,21 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  !              \ nqbz             elph_use_q_grid=T
  !
  factor=(3._SP*RL_vol/4._SP/pi)**(1._SP/3._SP)
+ MULTIPLY_by_Qsquare=.TRUE.
+#if defined _MODELS
+ MULTIPLY_by_Qsquare=.FALSE.
+#endif
  if (elph_use_q_grid.and..not.elph_grids_are_expanded) then
    nq_to_sum=q%nbz
    call k_ibz2bz(q,'i',.TRUE.)
    YAMBO_ALLOC(q_weight,(nq_to_sum))
    YAMBO_ALLOC(q_each_cpu,(q%nibz))
-   call rim_spherical(nq_to_sum,q%ptbz,q_weight,factor/real(nq_to_sum,SP),2,.TRUE.)
+   call rim_spherical(nq_to_sum,q%ptbz,q_weight,factor/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
    call k_ibz2bz(q,'d',.TRUE.)
  else
    nq_to_sum=elph_nQ_used
    YAMBO_ALLOC(q_weight,(nq_to_sum))
-   call rim_spherical(nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,factor/real(nq_to_sum,SP),2,.TRUE.)
+   call rim_spherical(nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,factor/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
  endif
  !
  if(elph_nQ_used/=elph_nQ) call warning(" Number of q-used different from total number of q-points")
@@ -383,7 +386,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
        !
 #if defined _MODELS
        ik_bz_gkkp=1
-       call ELPH_model_gkkp(iq_ibz,q)
+       call ELPH_model_gkkp(iq_ibz)
 #endif
        !
        do il=elph_branches(1),elph_branches(2)

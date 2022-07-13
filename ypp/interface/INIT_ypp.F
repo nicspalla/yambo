@@ -537,7 +537,7 @@ subroutine INIT_ypp(E,instr,FINALIZE)
  !
 #if defined _MODELS
  l_models  = runlevel_is_on('models') 
- if (l_models) call initactivate(1,"Kind Eg Overlap JelMass Kgrid Nel") 
+ if (l_models) call initactivate(1,"Kind Eg Overlap JelMass Kgrid Nel Lattice") 
 #endif
  !
 #if defined _YPP_SC

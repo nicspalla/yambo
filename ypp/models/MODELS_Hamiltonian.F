@@ -26,7 +26,7 @@ subroutine MODELS_Hamiltonian( )
  use pars,             ONLY:pi
  use stderr,           ONLY:STRING_same
  use units,            ONLY:HA2EV
- use MODELS,           ONLY:MODEL_k,MODEL_H_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg,MODEL_nel
+ use MODELS,           ONLY:MODEL_k,MODEL_H_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg,MODEL_nel,MODEL_alat
  use electrons,        ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
@@ -59,7 +59,7 @@ subroutine MODELS_Hamiltonian( )
  !
  ! DL 
  !
- alat=1
+ alat=MODEL_alat
  a(1,:)=(/1.,0.,0./)*alat
  a(2,:)=(/0.,1.,0./)*alat
  a(3,:)=(/0.,0.,1./)*alat

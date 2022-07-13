@@ -89,12 +89,12 @@ subroutine INTERPOLATION_grid(K,units,grid_dim)
   K%units='i'
   !
 #if defined _MODELS
-  if (nsym==1) return
+  k%nibz=k%nbz
   YAMBO_ALLOC(k%pt,(k%nibz,3))
   k%pt(:k%nibz,:)=k%ptbz(:k%nibz,:)
-#endif
-  !
+#else
   call k_reduce(K,.TRUE.)
+#endif
   call msg('s','[GRID_INTERP] Points (IBZ)  ',K%nibz)
   call k_expand(K)
   call msg('s','                      (BZ)  ',K%nbz)

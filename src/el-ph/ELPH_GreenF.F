@@ -39,7 +39,7 @@
 !
 subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_W,q_weight)
  !
- use pars,          ONLY:SP,pi,cZERO
+ use pars,          ONLY:SP,pi,cZERO,rZERO
  use electrons,     ONLY:levels,spin_occ
  use frequency,     ONLY:w_samp
  use ELPH,          ONLY:gsqF_fan,gsqF_dw,gsqF_ca_corr,gsqF_life_bose,gsqF_life_f,GKKP,&
@@ -115,11 +115,10 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
    f_occ=GKKP%E_kpq(iq_bz)%f(ob,ik_bz,1)/spin_occ
  endif
  !
-#if defined _MODELS
- if (l_MODEL_force_jellium) f_occ=0._SP
-#endif
- !
  ! Frequency Loop
+#if defined _MODELS
+ if (l_MODEL_force_jellium) f_occ=rZERO
+#endif
  !
  do iw=1,gsqF_energy_steps
     !
@@ -163,6 +162,13 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
       !                                                       |
       gsqF_RES_fan    =2._SP*elph_gkkp_sq*q_weight
       gsqF_DEN_fan(iw)=delta_E/(delta_E**2-ph_E**2)
+#if defined _MODELS
+      if (l_MODEL_force_jellium) then
+        gsqF_RES_ca_corr=cZERO
+        gsqF_RES_fan    =elph_gkkp_sq*q_weight
+        gsqF_DEN_fan(iw)=1._SP/(delta_E-ph_E)
+      endif
+#endif
       !
     endif
     !
@@ -199,8 +205,6 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  !
  ! IF double-grid is present aveages all denominators on the q-points 
  ! of the fine grid around iq_bz
- !
- DW_weight=1._SP
  !
  if(use_PH_DbGd) then
    !      

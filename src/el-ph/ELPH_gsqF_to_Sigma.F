@@ -38,6 +38,9 @@ subroutine ELPH_gsqF_to_Sigma(en,q,l_GF_from_CA,Sc_W)
  use electrons,     ONLY:levels,spin_occ
  use R_lattice,     ONLY:bz_samp
  use frequency,     ONLY:w_samp,W_reset
+#if defined _MODELS
+ use MODELS,        ONLY:l_MODEL_force_jellium
+#endif
  !
  implicit none
  !
@@ -68,6 +71,9 @@ subroutine ELPH_gsqF_to_Sigma(en,q,l_GF_from_CA,Sc_W)
  ! lifetimes-related gsqF must be real (spectral function).
  !
  coefficient=(0.,1.)
+#if defined _MODELS
+ if (l_MODEL_force_jellium) coefficient=0._SP
+#endif
  !
  ! Setup energy range for Sc/G plotting (I)
  !
@@ -126,8 +132,16 @@ subroutine ELPH_gsqF_to_Sigma(en,q,l_GF_from_CA,Sc_W)
            ! QP energies: FAN+correction
            !-----------------------------
            ! 
-           DP_FAN(iw)=DP_FAN(iw)+(gsqF_fan(i_qp,iq_mem,il,iw)*(2.*bose_f(ph_freq)/spin_occ+1.)/2.+&
-&                                 gsqF_ca_corr(i_qp,iq_mem,il,iw))/real( PAR_COM_G_b_INDEX%n_CPU)
+#if defined _MODELS
+           if (l_MODEL_force_jellium) then
+             DP_FAN(iw)=DP_FAN(iw)+gsqF_fan(i_qp,iq_mem,il,iw)/real( PAR_COM_G_b_INDEX%n_CPU)
+           else
+#endif
+             DP_FAN(iw)=DP_FAN(iw)+(gsqF_fan(i_qp,iq_mem,il,iw)*(2.*bose_f(ph_freq)/spin_occ+1.)/2.+&
+&                                   gsqF_ca_corr(i_qp,iq_mem,il,iw))/real( PAR_COM_G_b_INDEX%n_CPU)
+#if defined _MODELS
+           endif
+#endif
            !
          endif
          !

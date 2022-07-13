@@ -52,7 +52,7 @@ subroutine INIT_ypp_load(defs)
 #endif
 #if defined _MODELS
  use MODELS,        ONLY:MODEL_overlap,MODEL_effective_mass,MODEL_k,MODEL_H_kind,MODEL_Eg,&
-&                        MODEL_nel
+&                        MODEL_nel,MODEL_alat
 #endif
 #if defined _YPP_SC
  use YPPm,          ONLY:V_value
@@ -394,6 +394,7 @@ subroutine INIT_ypp_load(defs)
  call it(defs,'Overlap','Overlap parameter (2bands)',MODEL_overlap,unit=E_unit)
  call it(defs,'JelMass','Effective mass (Jellium)',MODEL_effective_mass)
  call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
+ call it(defs,'Lattice','Brillouin zone sampling',MODEL_alat)
 #endif
  !
 end subroutine
