@@ -96,8 +96,9 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
  ! Filling a larger Sphere with a random grid
  !===========================================
  !
- if (l_real_time     ) call section('=','Spherical RIM with a N='//trim(intc(power))//' power')
- if (.not.l_real_time) call section('p','Spherical RIM with a N='//trim(intc(power))//' power')
+                       ch(1)="+"
+ if (l_real_time     ) ch(1)="="
+ call section(trim(ch(1)),'Spherical RIM with a N='//trim(intc(power))//' power')
  !
  ! Random generator seed
  !

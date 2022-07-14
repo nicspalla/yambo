@@ -393,18 +393,20 @@ subroutine bz_samp_indexes(en,k,Xk,q)
    call OPENMP_update(master_thread)
    !
    !$omp do
-   do ikbz=k_range(1),k_range(2)
+   do ikbz=1,k%nbz
      !
      ikibz=k%sstar(ikbz,1)
      iks  =k%sstar(ikbz,2)
      !
-     if (iks/=1.and..not.coll_scattering) cycle
+     if (.not.coll_scattering) then
+       if (iks/=1.or.ikibz<QP_states_k(1).or.ikibz>QP_states_k(2)) cycle
+     endif
      !
      do ikbz_p=1,k%nbz
        !
        if (.not.PAR_IND_k%element_1D(ikbz_p)) cycle 
        !
-       if(Xk_grid_new_mapping) then
+       if (Xk_grid_new_mapping) then
          !
          v1=Xk%ptbz(ikbz,:)-Xk%ptbz(ikbz_p,:)
          v1=v1-nint(v1)       ! Bring in the BZ, remove the G0
@@ -437,12 +439,12 @@ subroutine bz_samp_indexes(en,k,Xk,q)
        !
        iqbz=q_map(iv1(1),iv1(2),iv1(3))
        !
-       if (iks==1) qindx_S(ikibz,iqbz,1)=ikbz_p
-       if (coll_scattering) qindx_C(ikbz,iqbz,1)=ikbz_p
+       if (         iks==1) qindx_S(ikibz,iqbz,1)=ikbz_p
+       if (coll_scattering) qindx_C(ikbz ,iqbz,1)=ikbz_p
        v1=k%ptbz(ikbz,:)-k%ptbz(ikbz_p,:)-q%ptbz(iqbz,:)
        call c2a(v_in=v1,mode='ka2i')
-       if (iks==1) qindx_S(ikibz,iqbz,2)=G_index(v1,.false.)
-       if (coll_scattering) qindx_C(ikbz,iqbz,2)=G_index(v1,.false.)
+       if (         iks==1) qindx_S(ikibz,iqbz,2)=G_index(v1,.false.)
+       if (coll_scattering) qindx_C(ikbz ,iqbz,2)=G_index(v1,.false.)
      enddo
      !
      if (master_thread) call live_timing(steps=1)

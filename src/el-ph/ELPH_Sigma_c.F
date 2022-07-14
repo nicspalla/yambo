@@ -219,6 +219,14 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    call rim_spherical(nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,factor/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
  endif
  !
+#if defined _MODELS
+ ! 
+ ! Ad-Hoc integration of the Jellium Fan SE
+ !
+ call ELPH_model_jellium(q,q_weight)
+ !
+#endif
+ !
  if(elph_nQ_used/=elph_nQ) call warning(" Number of q-used different from total number of q-points")
  !
  ! Check double-grid
@@ -271,6 +279,8 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  ! g^2F(w) residuals Allocation
  !
  call ELPH_alloc('gFsq')
+ !
+ call section('=','Momenta and branches loop')
  !
  iq_db_ref=0
  !

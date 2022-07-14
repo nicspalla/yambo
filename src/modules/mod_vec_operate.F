@@ -76,10 +76,10 @@ module vec_operate
      v_norm=sqrt(dot_product(v,v))
    end function v_norm
    !
-   pure real(SP) function v_norm2(v)
+   pure real(SP) function v_norm_square(v)
      real(SP), intent(in) :: v(3)
-     v_norm2=v(1)*v(1)+v(2)*v(2)+v(3)*v(3)
-   end function v_norm2
+     v_norm_square=v(1)*v(1)+v(2)*v(2)+v(3)*v(3)
+   end function v_norm_square
    !
    real(SP) function iku_v_norm(v,inside_bz)
      !
