@@ -28,8 +28,8 @@ subroutine rim_random_points_generator(GEO,pts,N_out)
  use LIVE_t,        ONLY:live_timing
  use vec_operate,   ONLY:v_norm_square
  use D_lattice,     ONLY:alat
- use R_lattice,     ONLY:RL_vol,k_grid_uc_vol,k_grid_b,nqbz,&
-&                        RIM_RL_vol,RIM_n_rand_pts
+ use R_lattice,     ONLY:RL_vol,k_grid_uc_vol,k_grid_b,nqbz,RIM_RL_vol,RIM_n_rand_pts
+ use stderr,        ONLY:STRING_same
  !
 #include<memory.h>
  !
@@ -40,12 +40,18 @@ subroutine rim_random_points_generator(GEO,pts,N_out)
  ! Work Space
  !
  integer   :: N_in,rep_factor,inn1,inn2,inn3,ic
- real(SP)  :: v1(3),v2(3),v1_norm(2),first_neighbour(26,3),fn_dist(26)
+ real(SP)  :: v1(3),v2(3),v1_norm,first_neighbour(26,3),fn_dist(26)
  integer   :: iseed(8)
+ logical   :: l_UC,l_sphere
  real(DP), external :: dlaran
  !
- call section('=','RIM points')
- !=============================
+ call section('=','RIM points for '//trim(GEO))
+ !=============================================
+ !  
+ ! GEO...
+ l_UC    =STRING_same(GEO,"unit-cell") 
+ l_sphere=STRING_same(GEO,"sphere") 
+ !
  call msg('r','8 x (sBL volume)        ',8._SP*k_grid_uc_vol,"[a.u.]")
  call msg('r','sBZ random points       ',RIM_n_rand_pts)
  !
@@ -89,14 +95,17 @@ subroutine rim_random_points_generator(GEO,pts,N_out)
    !
    v1=matmul(transpose(k_grid_b),v2) 
    do inn1=1,26
-     v1_norm(2)=(v1(1)* first_neighbour(inn1,1) &
-                +v1(2)* first_neighbour(inn1,2) &
-                +v1(3)* first_neighbour(inn1,3))*2._SP
-     if (fn_dist(inn1)<v1_norm(2))  cycle loop
+     v1_norm=(v1(1)* first_neighbour(inn1,1) &
+             +v1(2)* first_neighbour(inn1,2) &
+             +v1(3)* first_neighbour(inn1,3))*2._SP
+     if (fn_dist(inn1)<v1_norm)  cycle loop
    enddo
+   !
    pts(:,N_in)=v1*alat(:)/2._SP/pi
    N_in=N_in+1
+   !
    if (mod(N_in,rep_factor)==0) call live_timing(steps=1)
+   !
  enddo loop
  !
  call live_timing()

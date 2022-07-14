@@ -73,9 +73,8 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  integer          ::io_err,ID,IO_ACT,ID_DG
  integer, external::io_ELPH,io_Double_Grid,io_gFsq
  character(schlen)::ch
- real(SP)         ::ph_E,factor,elph_gkkp_sq,E_random_shift
+ real(SP)         ::ph_E,radius,elph_gkkp_sq,E_random_shift
  logical          ::l_WRgFsq,l_GF_from_CA,load_gkkp_DB,MULTIPLY_by_Qsquare
- integer , allocatable :: q_each_cpu(:)
  real(SP), allocatable :: q_weight(:)
  ! 
  call timing('GW(e-p)',OPR='start')
@@ -118,8 +117,8 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  !
  call QP_state_print( )
  !
- ! Model e-p
- ! =======================
+ ! Model e-p (init)
+ ! ================
 #if defined _MODELS
  call ELPH_model_init( )
 #endif
@@ -131,7 +130,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
      load_gkkp_DB=.true.
    case("gkkp_expanded")
      load_gkkp_DB=.true.
-   case("genFroh")
+   case("Frohlich")
      load_gkkp_DB=.false.
  end select
  !
@@ -201,30 +200,22 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  ! nq_to_sum = | 
  !              \ nqbz             elph_use_q_grid=T
  !
- factor=(3._SP*RL_vol/4._SP/pi)**(1._SP/3._SP)
+ radius=(3._SP*RL_vol/4._SP/pi)**(1._SP/3._SP)
  MULTIPLY_by_Qsquare=.TRUE.
 #if defined _MODELS
  MULTIPLY_by_Qsquare=.FALSE.
-#endif
+#else
  if (elph_use_q_grid.and..not.elph_grids_are_expanded) then
    nq_to_sum=q%nbz
    call k_ibz2bz(q,'i',.TRUE.)
    YAMBO_ALLOC(q_weight,(nq_to_sum))
-   YAMBO_ALLOC(q_each_cpu,(q%nibz))
-   call rim_spherical(nq_to_sum,q%ptbz,q_weight,factor/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
+   call rim_spherical(nq_to_sum,q%ptbz,q_weight,radius/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
    call k_ibz2bz(q,'d',.TRUE.)
  else
    nq_to_sum=elph_nQ_used
    YAMBO_ALLOC(q_weight,(nq_to_sum))
-   call rim_spherical(nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,factor/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
+   call rim_spherical(nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,radius/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
  endif
- !
-#if defined _MODELS
- ! 
- ! Ad-Hoc integration of the Jellium Fan SE
- !
- call ELPH_model_jellium(q,q_weight)
- !
 #endif
  !
  if(elph_nQ_used/=elph_nQ) call warning(" Number of q-used different from total number of q-points")
@@ -267,6 +258,17 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    call En_k_plus_q_interpolate(k,q,en,1)  ! I need them for the DW term
    !
  endif
+ !
+ ! Jellium Model
+ !---------------
+#if defined _MODELS
+ call ELPH_model_gkkp( )
+ !
+ ! Ad-Hoc integration of the Jellium Fan SE
+ call ELPH_model_jellium(q)
+ !
+ return
+#endif
  !
  ! Timing steps
  !--------------
@@ -396,7 +398,6 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
        !
 #if defined _MODELS
        ik_bz_gkkp=1
-       call ELPH_model_gkkp(iq_ibz)
 #endif
        !
        do il=elph_branches(1),elph_branches(2)
@@ -467,7 +468,6 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  ! CLEAN
  !
  call ELPH_alloc('FREE')
- YAMBO_FREE(q_each_cpu)
  YAMBO_FREE(q_weight)
  do i_qp=1,qp%n_states
    call W_reset(Sc_W(i_qp))
