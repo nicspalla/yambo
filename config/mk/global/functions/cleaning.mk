@@ -2,7 +2,6 @@
 # Drivers (top)
 #
 define clean_driver
- if                                              [ "$(1)" = "all" ] ; then $(clean_log_and_Ylib_folder); fi ;\
  if [ "$(1)" = "archive"   ] ||                  [ "$(1)" = "all" ] ; then $(clean_archive); fi ;\
  if [ "$(1)" = "bin"       ] || [ -z "$(1)" ] || [ "$(1)" = "all" ] ; then $(clean_bins); fi;\
  if [ "$(1)" = "int-libs"  ] ||                  [ "$(1)" = "all" ] ; then \
@@ -37,7 +36,8 @@ define clean_driver
  if [ "$(1)" = "src"        ] ; then $(call clean_src_driver,"src"); fi; \
  if [ "$(1)" = "interfaces" ] ; then $(call clean_src_driver,"interfaces"); fi; \
  if [ "$(1)" = "conf"      ] ||                  [ "$(1)" = "all" ] ; then $(clean_config); fi; \
- if [ "$(1)" = "dep"       ] ||                  [ "$(1)" = "all" ] ; then $(clean_dependencies); fi 
+ if [ "$(1)" = "dep"       ] ||                  [ "$(1)" = "all" ] ; then $(clean_dependencies); fi ; \
+ if                                              [ "$(1)" = "all" ] ; then $(clean_log_and_Ylib_folder); fi 
 endef
 #
 # Drivers (intermediate)
@@ -99,8 +99,9 @@ define clean_lib_driver
  for dirtoclean in $$TARG; do \
   ldir=`basename $$dirtoclean`;  \
   if test -d $$dirtoclean; then find $$dirtoclean \( -name '*'$$ldir'*.a' \) |  xargs rm -fr ; fi; \
-  if test -d $$WDIR/$$dirtoclean; then find $$WDIR/$$dirtoclean \( -name '*'$$ldir'*.a' \) |  xargs rm -fr ; fi; \
-  rm -f $(prefix)/config/stamps_and_lists/lib"$$ldir.a.stamp"; \
+  if test -d $$WDIR/$$dirtoclean; then find $$WDIR \( -name '*'$$ldir'*.a' \) |  xargs rm -fr ; fi; \
+  if [ "$$MSG" != "ypp"    ]; then rm -f $(prefix)/config/stamps_and_lists/lib"$$ldir.a.stamp"; fi; \
+  if [ "$$MSG"  = "ypp"    ]; then rm -f $(prefix)/config/stamps_and_lists/lib_ypp_"$$ldir.a.stamp"; fi; \
  done
 endef
 #
@@ -155,7 +156,7 @@ define clean_dependencies
 endef
 define clean_log_and_Ylib_folder
  $(ECHO) "\t[CLEANING] folders and log" ; \
- rm -fr $(prefix)/lib/yambo;\
+ rm -fr $(srcdir)/lib/yambo;\
  rm -fr $(prefix)/log 
 endef
 define clean_archive
