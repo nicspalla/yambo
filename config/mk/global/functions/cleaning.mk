@@ -21,10 +21,9 @@ define clean_driver
  if [ "$(1)" = "driver"    ] || [ -z "$(1)" ] || [ "$(1)" = "all" ] ; then \
   EXTS="\.f90 \.o \.lock \.mk \.mod \.save \.tmp_source";WDIR="$(compdir)";TARG="driver";$(clean_dir_driver);\
  fi
- if [ "$(1)" = "Ylib"   ] ||                  [ "$(1)" = "all" ] ; then \
+ if [ "$(1)" = "Ylib"   ] ||                  [ "$(1)" = "all" ] || [ "$(1)" = "driver" ] ; then \
    EXTS="\.f90 \.o \.lock \.mk \.mod \.save \.tmp_source";WDIR="$(libdir)/yambo/driver/src";TARG="$(YLIBDRIVER)";$(clean_dir_driver);\
-   WDIR="$(libdir)";TARG="Ylib";$(clean_lib_driver);\
-   WDIR="$(libdir)/yambo/driver/src";TARG="$(YLIBDRIVER)";$(clean_mod_driver);\
+   WDIR="$(libdir)/yambo/driver/src";MSG="Ydriver";TARG="$(YLIBDRIVER)";$(clean_mod_driver);$(clean_lib_driver);\
  fi;\
  if                             [ -z "$(1)" ] || [ "$(1)" = "all" ] ; then \
    $(clean_libs_using_stamps_driver); \
@@ -100,8 +99,9 @@ define clean_lib_driver
   ldir=`basename $$dirtoclean`;  \
   if test -d $$dirtoclean; then find $$dirtoclean \( -name '*'$$ldir'*.a' \) |  xargs rm -fr ; fi; \
   if test -d $$WDIR/$$dirtoclean; then find $$WDIR \( -name '*'$$ldir'*.a' \) |  xargs rm -fr ; fi; \
-  if [ "$$MSG" != "ypp"    ]; then rm -f $(prefix)/config/stamps_and_lists/lib"$$ldir.a.stamp"; fi; \
-  if [ "$$MSG"  = "ypp"    ]; then rm -f $(prefix)/config/stamps_and_lists/lib_ypp_"$$ldir.a.stamp"; fi; \
+  if [ "$$MSG" != "ypp"     ]; then rm -f $(prefix)/config/stamps_and_lists/lib"$$ldir.a.stamp"; fi; \
+  if [ "$$MSG"  = "ypp"     ]; then rm -f $(prefix)/config/stamps_and_lists/lib_ypp_"$$ldir.a.stamp"; fi; \
+  if [ "$$MSG"  = "Ydriver" ]; then rm -f $(prefix)/config/stamps_and_lists/lib*_Ydriver_"$$ldir.a.stamp"; fi; \
  done
 endef
 #

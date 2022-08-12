@@ -50,7 +50,7 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  use R_lattice,     ONLY:bz_samp
  use functions,     ONLY:Fermi_fnc_derivative
 #if defined _MODELS
- use MODELS,        ONLY:l_MODEL_force_jellium,model_is_running
+ use MODELS,        ONLY:l_MODEL_force_jellium
 #endif
  !
 #include<memory.h>
@@ -186,7 +186,7 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  !
  eval_DW=(.not.abs(delta_E_at_gamma)<DW_deltaE_treshold)
 #if defined _MODELS
- if (model_is_running) eval_DW=.FALSE.
+ eval_DW=.FALSE.
 #endif
  !
  gsqF_RES_DW=cZERO
@@ -205,6 +205,8 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  !
  ! IF double-grid is present aveages all denominators on the q-points 
  ! of the fine grid around iq_bz
+ !
+ DW_weight=1._SP
  !
  if(use_PH_DbGd) then
    !      

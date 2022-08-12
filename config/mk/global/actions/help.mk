@@ -13,7 +13,6 @@ help:
 	@$(ECHO)  " ypp   =  Yambo Post Processing utility "
 	@$(ECHO)  "\nOther projects: " ;
 	@$(ECHO)  "=============== " 
-	@$(ECHO)  " yambo_models =  Model Hamiltonian seed\n"
 	@$(ECHO)  " yambo_sc     =  Self-consistent (COHSEX, HF, DFT) project\n"
 	@$(ECHO)  " yambo_rt     =  Real-time dynamics project"
 	@$(ECHO)  "                 http://www.yambo-code.org/wiki/index.php?title=Linear_response_from_real_time_simulations\n"

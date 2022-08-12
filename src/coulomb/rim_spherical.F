@@ -97,7 +97,7 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
    p_weight(ip)=0.
    pt_cc=points(ip,:)*2.*pi/alat(:)
    do ir=1,RIM_n_rand_pts
-     p_weight(ip)=p_weight(ip)+1./v_norm(RIM_pt(ir,:)+pt_cc(:))**power*RIM_IC_vol/real(RIM_IC_n_pts)
+     p_weight(ip)=p_weight(ip)+1./v_norm(RIM_pt(:,ir)+pt_cc(:))**power*RIM_IC_vol/real(RIM_IC_n_pts)
    enddo
    p_weight(ip)=p_weight(ip)/RIM_UC_vol/real(Np)
    !

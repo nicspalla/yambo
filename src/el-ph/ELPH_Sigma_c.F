@@ -58,9 +58,6 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 &                        INTERPOLATE_is_quiet    
  use stderr,        ONLY:STRING_same
  use timing_m,      ONLY:timing
-#if defined _MODELS
- use models,        ONLY:model_running
-#endif
  !
 #include<memory.h>
  !
@@ -123,7 +120,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 #if defined _MODELS
  ! Model e-p (init)
  ! ================
- if (model_running) call ELPH_model_init( )
+ call ELPH_model_init( )
 #endif
  !
  ! ELPH DB
@@ -266,16 +263,14 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  !
  ! Jellium Model
  !---------------
- if (model_running) then
-   !
-   call ELPH_model_gkkp( )
-   !
-   ! Ad-Hoc integration of the Jellium Fan SE
-   call ELPH_model_jellium(q)
-   !
-   return
-   !
- endif
+ !
+ call ELPH_model_gkkp( )
+ !
+ ! Ad-Hoc integration of the Jellium Fan SE
+ call ELPH_model_jellium(q)
+ !
+ return
+ !
 #endif
  !
  ! Timing steps
@@ -405,7 +400,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
        endif
        !
 #if defined _MODELS
-       if (model_running) ik_bz_gkkp=1
+       ik_bz_gkkp=1
 #endif
        !
        do il=elph_branches(1),elph_branches(2)
