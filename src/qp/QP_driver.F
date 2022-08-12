@@ -27,7 +27,8 @@ subroutine QP_driver(X,Xen,Xk,en,k,q,Xw,Dip)
  use units,         ONLY:HA2EV
  use drivers,       ONLY:l_life,l_ppa,l_elel_corr,l_elph_corr,l_cohsex,Finite_Tel,l_elphoton_corr,l_RIM_W
  use electrons,     ONLY:levels,n_sp_pol,spin
- use R_lattice,     ONLY:bz_samp,RIM_W_is_diagonal,RIM_ng,RIM_W_ng,RIM_W_for_graph
+ use R_lattice,     ONLY:bz_samp
+ use RIM,           ONLY:RIM_W_is_diagonal,RIM_ng,RIM_W_ng,RIM_W_for_graph
  use DIPOLES,       ONLY:DIPOLE_t
  use frequency,     ONLY:w_samp
  use com,           ONLY:msg

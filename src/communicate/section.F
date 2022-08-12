@@ -159,7 +159,8 @@ subroutine section(mode,name)
  write (chs,'(3a)') trim(secnm),'] ',trim(name)
  secnm=chs
  call msg('nrs',trim(secnm))
- call msg('rn',repeat('=',len_trim(secnm)))
+ if (depth> 0) call msg('rn',repeat('=',len_trim(secnm)))
+ if (depth==0) call msg('rn',repeat('=',len_trim(ch)))
  !
 #if defined _YAML_OUTPUT
  !if(depth_yaml>0) call yaml_newline(unit=of_yaml_IDs(repfile_index))

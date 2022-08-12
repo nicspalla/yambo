@@ -33,9 +33,9 @@ subroutine cutoff_box(q,is_cut)
  use wave_func,     ONLY:wf_ng
  use vec_operate,   ONLY:iku_v_norm,v_norm
  use D_lattice,     ONLY:DL_vol,alat,sop_inv,a
- use R_lattice,     ONLY:bare_qpg,RL_vol,RIM_ng,RIM_qpg,bz_samp,&
-&                        box_length,g_vec,g_rot,ng_closed,RIM_anisotropy,&
-&                        CUTOFF_plus_RIM
+ use RIM,           ONLY:RIM_ng,RIM_qpg,RIM_anisotropy
+ use R_lattice,     ONLY:bare_qpg,RL_vol,bz_samp,&
+&                        box_length,g_vec,g_rot,ng_closed,CUTOFF_plus_RIM
  use parallel_m,    ONLY:PP_indexes,myid,PP_indexes_reset
  use parallel_int,  ONLY:PP_redux_wait,PARALLEL_index 
  use LIVE_t,        ONLY:live_timing

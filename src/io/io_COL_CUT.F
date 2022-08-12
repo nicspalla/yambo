@@ -24,9 +24,9 @@
 integer function io_COL_CUT(ID)
  !
  use wave_func,      ONLY:wf_ng
- use R_lattice,      ONLY:RIM_ng,RIM_n_rand_pts,CUTOFF_plus_RIM,&
-&                         cyl_ph_radius,box_length,cyl_length,cut_geometry,&
-&                         ng_closed,nqibz,bare_qpg,cut_description
+ use RIM,            ONLY:RIM_ng,RIM_n_rand_pts
+ use R_lattice,      ONLY:cyl_ph_radius,box_length,cyl_length,cut_geometry,&
+&                         ng_closed,nqibz,bare_qpg,cut_description,CUTOFF_plus_RIM 
  use IO_m,           ONLY:io_sec,io_status
  use IO_int,         ONLY:io_connect,io_disconnect,io_header,io_elemental,io_bulk
  use timing_m,       ONLY:timing

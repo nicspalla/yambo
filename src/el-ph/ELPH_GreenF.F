@@ -50,7 +50,7 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  use R_lattice,     ONLY:bz_samp
  use functions,     ONLY:Fermi_fnc_derivative
 #if defined _MODELS
- use MODELS,        ONLY:l_MODEL_force_jellium
+ use MODELS,        ONLY:l_MODEL_force_jellium,model_is_running
 #endif
  !
 #include<memory.h>
@@ -186,7 +186,7 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  !
  eval_DW=(.not.abs(delta_E_at_gamma)<DW_deltaE_treshold)
 #if defined _MODELS
- eval_DW=.FALSE.
+ if (model_is_running) eval_DW=.FALSE.
 #endif
  !
  gsqF_RES_DW=cZERO
@@ -223,8 +223,8 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
        ! 
        delta_E     =Sc_W%p(iw)-E_kpq                                ! E(k) - E(k+q_dg)
        !
-       gsqF_DEN_life_B(iw)=gsqF_DEN_life_B(iw)+      Fermi_fnc_derivative(real(delta_E)+ph_E,gsqF_damping)&
- &                               +QP_time_order_sign*Fermi_fnc_derivative(real(delta_E)-ph_E,gsqF_damping) 
+       gsqF_DEN_life_B(iw)=gsqF_DEN_life_B(iw)+      Fermi_fnc_derivative(real(delta_E)+ph_E,gsqF_damping)+&
+&                              QP_time_order_sign*Fermi_fnc_derivative(real(delta_E)-ph_E,gsqF_damping) 
        gsqF_DEN_life_f(iw)=gsqF_DEN_life_f(iw)+   (Fermi_fnc_derivative(real(delta_E)+ph_E,gsqF_damping) - &
 &                              QP_time_order_sign* Fermi_fnc_derivative(real(delta_E)-ph_E,gsqF_damping))*f_occ-&
 &                                                  Fermi_fnc_derivative(real(delta_E)+ph_E,gsqF_damping) 

@@ -28,7 +28,8 @@ subroutine X_Drude(iq,Xen,Xk,Xw,Wd,drude_GreenF)
  use com,           ONLY:msg
  use frequency,     ONLY:w_samp
  use electrons,     ONLY:levels,spin_occ,n_sp_pol,filled_tresh
- use R_lattice,     ONLY:bz_samp,q_norm,RIM_W_for_graph
+ use R_lattice,     ONLY:bz_samp,q_norm
+ use RIM,           ONLY:RIM_W_for_graph
  use X_m,           ONLY:use_X_DbGd,l_drude,drude_n_states
  use parser_m,      ONLY:parser
  !

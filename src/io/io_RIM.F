@@ -24,9 +24,9 @@
 integer function io_RIM(ID)
  !
  use pars,           ONLY:SP
- use R_lattice,      ONLY:RIM_ng,RIM_n_rand_pts,RIM_is_diagonal,RL_vol,RIM_RL_vol,&
-&                         RIM_id_epsm1_reference,RIM_epsm1,RIM_anisotropy,RIM_qpg,&
-&                         nqibz
+ use RIM,            ONLY:RIM_ng,RIM_n_rand_pts,RIM_is_diagonal,RIM_UC_integrated_vol,&
+&                         RIM_id_epsm1_reference,RIM_epsm1,RIM_anisotropy,RIM_qpg
+ use R_lattice,      ONLY:RL_vol,nqibz
  use IO_m,           ONLY:io_sec,read_is_on,io_status,write_is_on
  use IO_int,         ONLY:io_connect,io_disconnect,io_header,io_elemental,io_bulk,ver_is_gt_or_eq
  !
@@ -66,7 +66,7 @@ integer function io_RIM(ID)
 &       VAR=' Coulombian diagonal components  ',CHECK=.true.,OP=(/"=="/))
    call io_elemental(ID,I0=RIM_n_rand_pts,&
 &       VAR=' RIM random points               ',CHECK=.true.,OP=(/"=="/))
-   call io_elemental(ID,R0=RIM_RL_vol,&
+   call io_elemental(ID,R0=RIM_UC_integrated_vol,&
 &       VAR=' RIM  RL volume             [a.u.]')
    call io_elemental(ID,R0=RL_vol_disk,&
 &       VAR=' Real RL volume             [a.u.]')

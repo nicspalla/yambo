@@ -46,8 +46,6 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
  !  
  !  Wi = 1/vol Qi^power \int_Si d3q/q^power
  ! 
- ! and Wi stored in p_weight
- ! 
  !  a) MULTIPLY_BY_Q=.FALSE. 
  ! 
  ! In this case I want to integrate the 1/q^power straight away, i.e. F(q)=1/q^power
@@ -58,16 +56,12 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
  ! 
  !  Wi = 1/vol \int_Si d3q/q^power
  ! 
- ! and Wi stored in p_weight
- ! 
- use pars,          ONLY:SP,pi,DP
- use drivers,       ONLY:l_real_time
- use com,           ONLY:msg
- use stderr,        ONLY:intc
+ use pars,          ONLY:SP,pi
  use LIVE_t,        ONLY:live_timing
  use vec_operate,   ONLY:v_norm
  use D_lattice,     ONLY:alat
- use R_lattice,     ONLY:RIM_n_rand_pts
+ use RIM,           ONLY:RIM_n_rand_pts,RIM_UC_vol,RIM_IC_n_pts,RIM_pt,RIM_IC_vol
+ !
  implicit none
  !
  integer,  intent(in)    :: Np,power
@@ -77,12 +71,11 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
  !
  ! Work Space
  !
- integer   :: ip,ir,N_out,N_in,ic
- real(SP)  :: v_rand(3),qr(RIM_n_rand_pts,3),sphere_vol,box_vol,pt_cc(3)
- character(12)      :: ch(3)
- integer            :: iseed(8)
- real(DP), external :: dlaran
+ integer   :: ip,ir,ic
+ real(SP)  :: pt_cc(3)
  !
+ ! No RIM
+ !--------
  if (RIM_n_rand_pts==0)then
    do ip=1,Np
      p_weight(ip)=0.
@@ -94,66 +87,24 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
  endif
  !
  ! Filling a larger Sphere with a random grid
- !===========================================
+ !--------------------------------------------
+ call rim_random_points_generator("sphere",Np)
  !
-                       ch(1)="+"
- if (l_real_time     ) ch(1)="="
- call section(trim(ch(1)),'Spherical RIM with a N='//trim(intc(power))//' power')
- !
- ! Random generator seed
- !
- call date_and_time(ch(1),ch(2),ch(3),iseed)
- iseed=iabs(iseed)
- !
- ! iseed(4) must be odd
- !
- iseed(4)=2*(iseed(4)/2)+1
- !
- ! Loop setup
- !
- N_in=1
- N_out=0
- !
- call live_timing('Random points',RIM_n_rand_pts)
- loop: do while(.not.N_in==RIM_n_rand_pts+1)
-   !
-   do ic=1,3
-     v_rand(ic)=( 2.*dlaran(iseed(4:))-1. )*radius*1.2
-   enddo
-   N_out=N_out+1
-   !
-   if (v_norm(v_rand)>radius) cycle loop
-   qr(N_in,:)=v_rand
-   N_in=N_in+1
-   call live_timing(steps=1)
-   !
- enddo loop
- call live_timing()
- call msg('r','Points outside the Sphere  ',N_out)
- !  
- !Integrated Sphere VOLUME 
- !
- box_vol   =(2.*radius*1.2)**3.
- sphere_vol=4./3.*pi*radius**3.
- !
- call msg('r', 'Sphere volume       [au]',sphere_vol)
- call msg('rn','Integrated volume   [au]',box_vol*real(RIM_n_rand_pts)/real(N_out))
- !
+ ! Weights calculation
+ !--------------------
  call live_timing('Integrals',Np)
- !
  do ip=1,Np
    p_weight(ip)=0.
    pt_cc=points(ip,:)*2.*pi/alat(:)
    do ir=1,RIM_n_rand_pts
-     p_weight(ip)=p_weight(ip)+1./v_norm(qr(ir,:)+pt_cc(:))**power*box_vol/real(N_out)
+     p_weight(ip)=p_weight(ip)+1./v_norm(RIM_pt(ir,:)+pt_cc(:))**power*RIM_IC_vol/real(RIM_IC_n_pts)
    enddo
-   p_weight(ip)=p_weight(ip)/sphere_vol/real(Np)
+   p_weight(ip)=p_weight(ip)/RIM_UC_vol/real(Np)
    !
    if (MULTIPLY_BY_Q) p_weight(ip)=p_weight(ip)*v_norm(pt_cc)**power
    !
    call live_timing(steps=1)
  enddo
- !
  call live_timing()
  !
 end subroutine

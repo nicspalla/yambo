@@ -25,9 +25,9 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
  !
  use pars,          ONLY:SP,pi,zero_dfl,schlen,DP,rZERO
  use com,           ONLY:msg
- use R_lattice,     ONLY:bz_samp,RIM_W_ng,b,k_grid_b,bare_qpg,&
-&                        RIM_W_is_diagonal,RIM_W,RIM_W_d,f_coeff,idir,RIM_W_E,&
+ use RIM,           ONLY:RIM_W_ng,RIM_W_is_diagonal,RIM_W,RIM_W_d,RIM_coeff,RIM_W_E,&
 &                        RIM_id_epsm1_reference,RIM_epsm1,RIM_W_for_graph,RIM_qpg
+ use R_lattice,     ONLY:bz_samp,b,k_grid_b,bare_qpg,idir
  use vec_operate,   ONLY:c2a,v_norm
  use X_m,           ONLY:X_mat,X_t
  use frequency,     ONLY:w_samp
@@ -63,7 +63,7 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
  !
  call timing('RIM-W-coeff',OPR='start')
  !
- YAMBO_ALLOC(f_coeff,(6,RIM_W_ng,RIM_W_ng,q%nibz,Xw%n_freqs))
+ YAMBO_ALLOC(RIM_coeff,(6,RIM_W_ng,RIM_W_ng,q%nibz,Xw%n_freqs))
  !
  call section("+", "RIM-W interpolation")
  !
@@ -105,7 +105,7 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
  !
  if (io_err==0) then
    call timing('RIM-W-coeff',OPR='stop')
-   YAMBO_FREE(f_coeff)
+   YAMBO_FREE(RIM_coeff)
    if (have_cuda) then
      YAMBO_ALLOC_SOURCE(RIM_W_d,RIM_W)
    endif
@@ -227,9 +227,9 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
         if(RIM_id_epsm1_reference/=0 .and. iomega==1) then
           !vX is included in the anis_factor
           call msg('r','This is the anysotropy case')
-          f_coeff(1,igr,igc,iq1,iomega)=(4._DP*pi)/(bare_qpg(iq1,igr)*bare_qpg(iq1,igc)*(2._DP*pi*alat(idir(1)))**2)
+          RIM_coeff(1,igr,igc,iq1,iomega)=(4._DP*pi)/(bare_qpg(iq1,igr)*bare_qpg(iq1,igc)*(2._DP*pi*alat(idir(1)))**2)
         else
-          f_coeff(1,igr,igc,iq1,iomega) = vX_nn(1,iq1,igr,igc,iomega)*(4._DP*pi) / &
+          RIM_coeff(1,igr,igc,iq1,iomega) = vX_nn(1,iq1,igr,igc,iomega)*(4._DP*pi) / &
 &                                  (bare_qpg(iq1,igr)*bare_qpg(iq1,igc)*(2._DP*pi*alat(idir(1)))**2)
         end if
         !
@@ -238,11 +238,11 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
           !
           if(RIM_id_epsm1_reference/=0 .and. iomega==1) then
             anis_factor=dot_product(em1_anis,q_grid_b_cc(:,idm)**2)
-            f_coeff(nn,igr,igc,iq1,iomega)=-1._DP/q_grid_b_rlu(idm,idm)*log(f_func(nn)/ &
-&                                 (f_coeff(1,iq1,igc,iq1,iomega)*anis_factor))
+            RIM_coeff(nn,igr,igc,iq1,iomega)=-1._DP/q_grid_b_rlu(idm,idm)*log(f_func(nn)/ &
+&                                 (RIM_coeff(1,iq1,igc,iq1,iomega)*anis_factor))
           else
-            f_coeff(nn,igr,igc,iq1,iomega)=-1._DP/q_grid_b_rlu(idm,idm)*log(f_func(nn)/ &
-&                                 (v_norm(q_grid_b_cc(:,idm))**2*f_coeff(1,iq1,igc,iq1,iomega)))
+            RIM_coeff(nn,igr,igc,iq1,iomega)=-1._DP/q_grid_b_rlu(idm,idm)*log(f_func(nn)/ &
+&                                 (v_norm(q_grid_b_cc(:,idm))**2*RIM_coeff(1,iq1,igc,iq1,iomega)))
           end if
 
         enddo
@@ -258,15 +258,15 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
         !
         !Coefficients in iku
         !
-        f_coeff(1,igr,igc,iq1,iomega) =  dp_dummy(1)                                           !f   (iku)
-        f_coeff(2,igr,igc,iq1,iomega) =  dp_dummy(2)+dp_dummy(3)*a(2,1)/alat(1)                !fx  (iku)
-        f_coeff(3,igr,igc,iq1,iomega) =  dp_dummy(3)+dp_dummy(2)*a(1,2)/alat(2)                !fy  (iku)
-        f_coeff(4,igr,igc,iq1,iomega) =  dp_dummy(4)+dp_dummy(5)*(a(2,1)/alat(1))**2           !fxx (iku)
-        f_coeff(5,igr,igc,iq1,iomega) =  dp_dummy(4)*a(1,2)/alat(2)+dp_dummy(5)*a(2,1)/alat(1) !fxy (iku)
-        f_coeff(6,igr,igc,iq1,iomega) =  dp_dummy(5)+dp_dummy(4)*(a(1,2)/alat(2))**2           !fyy (iku)
+        RIM_coeff(1,igr,igc,iq1,iomega) =  dp_dummy(1)                                           !f   (iku)
+        RIM_coeff(2,igr,igc,iq1,iomega) =  dp_dummy(2)+dp_dummy(3)*a(2,1)/alat(1)                !fx  (iku)
+        RIM_coeff(3,igr,igc,iq1,iomega) =  dp_dummy(3)+dp_dummy(2)*a(1,2)/alat(2)                !fy  (iku)
+        RIM_coeff(4,igr,igc,iq1,iomega) =  dp_dummy(4)+dp_dummy(5)*(a(2,1)/alat(1))**2           !fxx (iku)
+        RIM_coeff(5,igr,igc,iq1,iomega) =  dp_dummy(4)*a(1,2)/alat(2)+dp_dummy(5)*a(2,1)/alat(1) !fxy (iku)
+        RIM_coeff(6,igr,igc,iq1,iomega) =  dp_dummy(5)+dp_dummy(4)*(a(1,2)/alat(2))**2           !fyy (iku)
       endif
       !
-      f_coeff(:,igc,igr,iq1,iomega) = f_coeff(:,igr,igc,iq1,iomega)
+      RIM_coeff(:,igc,igr,iq1,iomega) = RIM_coeff(:,igr,igc,iq1,iomega)
       !
     enddo
   enddo
@@ -278,9 +278,9 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
  !Calculation of RIM-W integrals
  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  !
- call rim('c')
+ call rim_driver('c')
  !
- YAMBO_FREE(f_coeff)
+ YAMBO_FREE(RIM_coeff)
  !
  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  !Debugging output
@@ -323,15 +323,15 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
      do ig1=1,RIM_W_ng
        !
        if(ig1==1.and.ig2==1.and.(.not. RIM_W_for_graph)) then
-         dummy(:) = f_coeff(1,1,1,1,:)
+         dummy(:) = RIM_coeff(1,1,1,1,:)
          if (RIM_id_epsm1_reference/=0) then
            dummy(1) = dummy(1)*0.5*(em1_anis(idir(2))+em1_anis(idir(3)))
          end if
          !
        else
-         dummy(:) =  f_coeff(1,ig1,ig2,1,:)+1.E-4*(f_coeff(2,ig1,ig2,1,:)+f_coeff(3,ig1,ig2,1,:)&
-&                                          +1.E-4*(f_coeff(4,ig1,ig2,1,:)+f_coeff(6,ig1,ig2,1,:)&
-                                           +2._SP*f_coeff(5,ig1,ig2,1,:)))
+         dummy(:) =  RIM_coeff(1,ig1,ig2,1,:)+1.E-4*(RIM_coeff(2,ig1,ig2,1,:)+RIM_coeff(3,ig1,ig2,1,:)&
+&                                          +1.E-4*(RIM_coeff(4,ig1,ig2,1,:)+RIM_coeff(6,ig1,ig2,1,:)&
+                                           +2._SP*RIM_coeff(5,ig1,ig2,1,:)))
          dummy(:) = dummy(:)*4._SP*pi/(bare_qpg(1,ig1)*bare_qpg(1,ig2))
          dummy(:) = dummy/(1-dummy)
        endif
@@ -362,7 +362,8 @@ end subroutine
 !
 subroutine find_q_nns(q,q_grid_b_iku,idx_q,idx_is,idx_G)
  use pars,          ONLY:SP
- use R_lattice,     ONLY:bz_samp,RIM_W_ng,g_vec,ng_vec,rl_sop
+ use RIM,           ONLY:RIM_W_ng
+ use R_lattice,     ONLY:bz_samp,g_vec,ng_vec,rl_sop
  use vec_operate,   ONLY:v_is_zero
  !
 #include<memory.h>

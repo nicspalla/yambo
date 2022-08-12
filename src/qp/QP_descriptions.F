@@ -34,7 +34,7 @@ subroutine QP_descriptions(qp,X,Xw,Update)
 &                        GW_terminator_E,l_GW_terminator,GW_terminator_Kind
  use drivers,       ONLY:l_life,l_ppa,l_elel_corr,l_cohsex,&
 &                        l_HF_and_locXC
- use R_lattice,     ONLY:RIM_qpg,RIM_n_rand_pts,RIM_ng
+ use RIM,           ONLY:RIM_qpg,RIM_n_rand_pts,RIM_ng
  use interfaces,    ONLY:QP_state_print
  use frequency,     ONLY:w_samp
  use IO_int,        ONLY:ver_is_gt_or_eq

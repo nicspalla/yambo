@@ -21,29 +21,33 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine rim_random_points_generator(GEO,pts,N_out)
+subroutine rim_random_points_generator(GEO,N_grid)
  !
  use pars,          ONLY:SP,pi,DP
- use com,           ONLY:msg
+ use com,           ONLY:msg,com_compose_msg
  use LIVE_t,        ONLY:live_timing
- use vec_operate,   ONLY:v_norm_square
+ use vec_operate,   ONLY:v_norm_square,v_norm
  use D_lattice,     ONLY:alat
- use R_lattice,     ONLY:RL_vol,k_grid_uc_vol,k_grid_b,nqbz,RIM_RL_vol,RIM_n_rand_pts
+ use RIM,           ONLY:RIM_UC_integrated_vol,RIM_n_rand_pts,RIM_pt,RIM_IC_n_pts,RIM_UC_vol,&
+&                        RIM_IC_vol,RIM_UC_integrated_vol
+ use R_lattice,     ONLY:RL_vol,k_grid_uc_vol,k_grid_b
  use stderr,        ONLY:STRING_same
  !
 #include<memory.h>
  !
  character(*)       :: GEO
- integer            :: N_out
- real(SP)           :: pts(3,RIM_n_rand_pts)
+ integer            :: N_grid
  !
  ! Work Space
  !
- integer   :: N_in,rep_factor,inn1,inn2,inn3,ic
- real(SP)  :: v1(3),v2(3),v1_norm,first_neighbour(26,3),fn_dist(26)
- integer   :: iseed(8)
+ integer   :: N_in,rep_factor,inn1,inn2,inn3,ic,iseed(8) 
+ real(SP)  :: v1(3),v2(3),v1_norm,first_neighbour(26,3),fn_dist(26),radius,scaling
  logical   :: l_UC,l_sphere
  real(DP), external :: dlaran
+ !
+ if (RIM_n_rand_pts==0) return
+ !
+ YAMBO_ALLOC(RIM_pt,(3,RIM_n_rand_pts))
  !
  call section('=','RIM points for '//trim(GEO))
  !=============================================
@@ -52,29 +56,44 @@ subroutine rim_random_points_generator(GEO,pts,N_out)
  l_UC    =STRING_same(GEO,"unit-cell") 
  l_sphere=STRING_same(GEO,"sphere") 
  !
- call msg('r','8 x (sBL volume)        ',8._SP*k_grid_uc_vol,"[a.u.]")
- call msg('r','sBZ random points       ',RIM_n_rand_pts)
+ !.. UC
+ !------
+ RIM_UC_vol=RL_vol
  !
- ! First neighbours of the gamma point in the k_grid_b units
- ic=0
- do inn1=-1,1
-   do inn2=-1,1
-     do inn3=-1,1
-       if (all((/inn1,inn2,inn3/)==0)) cycle
-       ic=ic+1
-       first_neighbour(ic,:)=matmul(transpose(k_grid_b),(/inn1,inn2,inn3/))
+ if (l_UC) then
+   !
+   RIM_IC_vol=8.*k_grid_uc_vol
+   scaling   =1._SP
+   !
+   ! First neighbours of the gamma point in the k_grid_b units
+   ic=0
+   do inn1=-1,1
+     do inn2=-1,1
+       do inn3=-1,1
+         if (all((/inn1,inn2,inn3/)==0)) cycle
+         ic=ic+1
+         first_neighbour(ic,:)=matmul(transpose(k_grid_b),(/inn1,inn2,inn3/))
+       enddo
      enddo
    enddo
- enddo
+   !
+   ! Precompute the neighbours distances
+   do inn1=1,26
+     fn_dist(inn1)=v_norm_square(first_neighbour(inn1,:))  
+   end do
+ endif
  !
- ! Precompute the neighbours distances
- do inn1=1,26
-   fn_dist(inn1)=v_norm_square(first_neighbour(inn1,:))  
- end do
+ if (l_sphere) then
+   !
+   radius    =(3._SP*RL_vol/float(N_grid)/4._SP/pi)**(1._SP/3._SP)
+   RIM_IC_vol=(2.*radius*1.2)**3.
+   scaling   =radius*1.2_SP
+   !
+ endif
  !
  ! Loop setup
  N_in=1
- N_out=0
+ RIM_IC_n_pts=0
  rep_factor=RIM_n_rand_pts/100
  if (rep_factor==0) rep_factor=1
  !
@@ -87,21 +106,31 @@ subroutine rim_random_points_generator(GEO,pts,N_out)
  loop: do while(.not.N_in==RIM_n_rand_pts+1)
    !
    do ic=1,3
-     v2(ic)=2.*dlaran(iseed(4:))-1
+     v2(ic)=(2.*dlaran(iseed(4:))-1)*scaling
    enddo
-   N_out=N_out+1
+   RIM_IC_n_pts=RIM_IC_n_pts+1
    !
-   ! From rlu in the k_grid_b units (v2) to Cartesian (v1)
+   if (l_UC) then
+     !
+     ! From rlu in the k_grid_b units (v2) to Cartesian (v1)
+     !
+     v1=matmul(transpose(k_grid_b),v2) 
+     do inn1=1,26
+       v1_norm=(v1(1)* first_neighbour(inn1,1) &
+               +v1(2)* first_neighbour(inn1,2) &
+               +v1(3)* first_neighbour(inn1,3))*2._SP
+       if (fn_dist(inn1)<v1_norm)  cycle loop
+     enddo
+     !
+   endif
    !
-   v1=matmul(transpose(k_grid_b),v2) 
-   do inn1=1,26
-     v1_norm=(v1(1)* first_neighbour(inn1,1) &
-             +v1(2)* first_neighbour(inn1,2) &
-             +v1(3)* first_neighbour(inn1,3))*2._SP
-     if (fn_dist(inn1)<v1_norm)  cycle loop
-   enddo
+   if (l_sphere) then
+     if (v_norm(v2)>radius) cycle loop
+     v1=v2
+   endif
    !
-   pts(:,N_in)=v1*alat(:)/2._SP/pi
+   ! to IKU
+   RIM_pt(:,N_in)=v1*alat(:)/2._SP/pi
    N_in=N_in+1
    !
    if (mod(N_in,rep_factor)==0) call live_timing(steps=1)
@@ -111,13 +140,10 @@ subroutine rim_random_points_generator(GEO,pts,N_out)
  call live_timing()
  !
  ! Report
- !
- call msg('r','Points outside the sBZ  ',N_out)
- !  
- ! Integrated RL VOLUME 
- !
- RIM_RL_vol=8._SP*k_grid_uc_vol*real(RIM_n_rand_pts)/real(N_out)*real(nqbz)
- call msg('r', 'RL volume               ',RL_vol,"[a.u.]")
- call msg('rn','Integrated volume       ',RIM_RL_vol,"[a.u.]")
+ call msg('r',com_compose_msg(body="Points in the IC (integration cell)"),RIM_IC_n_pts)
+ RIM_UC_integrated_vol=RIM_IC_vol*real(RIM_n_rand_pts)/real(RIM_IC_n_pts)*real(N_grid)
+ call msg('r',com_compose_msg(body="Points in the UC (unit-cell)"),RIM_n_rand_pts)
+ call msg('r',com_compose_msg(body=GEO//" UC volume",post="(reference) [a.u.]"),RIM_UC_vol)
+ call msg('r',com_compose_msg(body=GEO//" UC volume",post="(integrated) [a.u.]"),RIM_UC_integrated_vol)
  !
 end subroutine

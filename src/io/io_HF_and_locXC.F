@@ -25,7 +25,7 @@ integer function io_HF_and_locXC(ID)
  !
  use pars,           ONLY:SP,schlen
  use drivers,        ONLY:l_col_cut
- use R_lattice,      ONLY:RIM_ng,RIM_n_rand_pts
+ use RIM,            ONLY:RIM_ng,RIM_n_rand_pts
  use electrons,      ONLY:n_met_bands,n_sp_pol
  use QP_m,           ONLY:QP_Vnl_xc,QP_ng_Sx,QP_nb,QP_nk,QP_Vxc,QP_n_states,&
 &                         QP_table,QP_state

@@ -52,9 +52,8 @@ subroutine col_driver(bare_NG,q)
  use com,           ONLY:msg
  use vec_operate,   ONLY:iku_v_norm,sort
  use D_lattice,     ONLY:DL_vol
- use R_lattice,     ONLY:d3q_factor,RIM_is_diagonal,RIM_qpg,bare_qpg,&
-&                        nqibz,g_vec,q_pt,nqbz,RIM_ng,RIM_n_rand_pts,&
-&                        bz_samp,q_norm,cutoff_presets,bare_qpg_d,&
+ use RIM,           ONLY:RIM_is_diagonal,RIM_qpg,RIM_ng,RIM_n_rand_pts
+ use R_lattice,     ONLY:d3q_factor,bare_qpg,nqibz,g_vec,q_pt,nqbz,bz_samp,q_norm,cutoff_presets,bare_qpg_d,&
 &                        cut_geometry,cut_is_slab,idir
  use wave_func,     ONLY:wf_ng
  use IO_int,        ONLY:io_control
@@ -145,7 +144,7 @@ subroutine col_driver(bare_NG,q)
      if (cut_is_slab) then
        call msg('nr','Performing RIM of v_slab')
      endif
-     call rim("x")
+     call rim_driver("x")
      call io_control(ACTION=OP_WR_CL,COM=REP,SEC=(/1,2/),ID=ID)
      io_err=io_RIM(ID)
    endif

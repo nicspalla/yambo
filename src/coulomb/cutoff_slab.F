@@ -27,8 +27,8 @@
  use pars,          ONLY:SP,pi,schlen
  use wave_func,     ONLY:wf_ng
  use D_lattice,     ONLY:alat
- use R_lattice,     ONLY:bz_samp,g_vec,bare_qpg,&
-&                        d3q_factor,RIM_qpg,q0_def_norm,idir
+ use RIM,           ONLY:RIM_qpg
+ use R_lattice,     ONLY:bz_samp,g_vec,bare_qpg,d3q_factor,q0_def_norm,idir
  use parallel_m,    ONLY:PP_indexes,PP_indexes_reset
  use parallel_int,  ONLY:PARALLEL_index
  implicit none

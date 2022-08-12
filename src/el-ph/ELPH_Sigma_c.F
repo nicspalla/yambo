@@ -58,6 +58,9 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 &                        INTERPOLATE_is_quiet    
  use stderr,        ONLY:STRING_same
  use timing_m,      ONLY:timing
+#if defined _MODELS
+ use models,        ONLY:model_running
+#endif
  !
 #include<memory.h>
  !
@@ -117,10 +120,10 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  !
  call QP_state_print( )
  !
+#if defined _MODELS
  ! Model e-p (init)
  ! ================
-#if defined _MODELS
- call ELPH_model_init( )
+ if (model_running) call ELPH_model_init( )
 #endif
  !
  ! ELPH DB
@@ -202,9 +205,9 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  !
  radius=(3._SP*RL_vol/4._SP/pi)**(1._SP/3._SP)
  MULTIPLY_by_Qsquare=.TRUE.
-#if defined _MODELS
- MULTIPLY_by_Qsquare=.FALSE.
-#else
+!#if defined _MODELS
+! if (model_running) MULTIPLY_by_Qsquare=.FALSE.
+!#else
  if (elph_use_q_grid.and..not.elph_grids_are_expanded) then
    nq_to_sum=q%nbz
    call k_ibz2bz(q,'i',.TRUE.)
@@ -216,7 +219,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    YAMBO_ALLOC(q_weight,(nq_to_sum))
    call rim_spherical(nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,radius/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
  endif
-#endif
+!#endif
  !
  if(elph_nQ_used/=elph_nQ) call warning(" Number of q-used different from total number of q-points")
  !
@@ -259,15 +262,20 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    !
  endif
  !
+#if defined _MODELS
+ !
  ! Jellium Model
  !---------------
-#if defined _MODELS
- call ELPH_model_gkkp( )
- !
- ! Ad-Hoc integration of the Jellium Fan SE
- call ELPH_model_jellium(q)
- !
- return
+ if (model_running) then
+   !
+   call ELPH_model_gkkp( )
+   !
+   ! Ad-Hoc integration of the Jellium Fan SE
+   call ELPH_model_jellium(q)
+   !
+   return
+   !
+ endif
 #endif
  !
  ! Timing steps
@@ -397,7 +405,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
        endif
        !
 #if defined _MODELS
-       ik_bz_gkkp=1
+       if (model_running) ik_bz_gkkp=1
 #endif
        !
        do il=elph_branches(1),elph_branches(2)

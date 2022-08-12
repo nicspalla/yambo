@@ -24,7 +24,7 @@
 integer function io_COLLISIONS(ID,COLL,COLL_element,i_coll_,COMM)
  !
  use pars,          ONLY:schlen,IP,SP
- use R_lattice,     ONLY:RIM_ng,RIM_n_rand_pts
+ use RIM,           ONLY:RIM_ng,RIM_n_rand_pts
  use collision_ext, ONLY:COLLISIONS_cutoff,COLLISIONS_element,COLL_bands,COLLISIONS_group,COLLISIONS_CV_only
  use IO_m,          ONLY:io_sec,io_status,IO_OUTDATED_DB,read_is_on,IO_mode,&
 &                        VERIFY,io_extension,io_raw_extension

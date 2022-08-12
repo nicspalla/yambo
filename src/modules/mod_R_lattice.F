@@ -145,28 +145,6 @@ module R_lattice
  integer ,allocatable DEV_ATTR :: G_m_G_d(:,:)
  integer ,allocatable DEV_ATTR :: minus_G_d(:)
  !
- ! RIM
- !
- integer :: RIM_ng
- integer :: RIM_id_epsm1_reference
- integer :: RIM_n_rand_pts
- logical :: RIM_is_diagonal
- real(SP):: RIM_RL_vol
- real(SP):: RIM_epsm1(3)
- real(SP):: RIM_anisotropy
- real(SP),   allocatable :: RIM_qpg(:,:,:)
- real(SP),   allocatable DEV_ATTR :: RIM_qpg_d(:,:,:)
- !
- ! RIM_W
- !
- integer :: RIM_W_ng
- integer :: RIM_W_n_rand_pts
- logical :: RIM_W_is_diagonal
- logical :: RIM_W_for_graph
- real(SP),   allocatable          :: RIM_W(:,:,:),RIM_W_E(:,:)
- real(SP),   allocatable DEV_ATTR :: RIM_W_d(:,:,:)
- real(DP),   allocatable :: f_coeff(:,:,:,:,:)
- !
  ! Coulomb (including Cutoff)
  !
  real(SP)                :: cyl_ph_radius

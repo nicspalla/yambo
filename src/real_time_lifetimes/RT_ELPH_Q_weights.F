@@ -27,7 +27,7 @@ subroutine RT_ELPH_Q_weights(q)
  use R_lattice,      ONLY:RL_vol,bz_samp
  use ELPH,           ONLY:PH_freqs_sq,elph_branches,PH_acoustic_speed,PH_acoustic_branch,PH_Q_modulus
  use RT_lifetimes,   ONLY:q_weight_RT,l_RT_skip_ph_abs_lifetimes
- use R_lattice,      ONLY:RIM_n_rand_pts
+ use RIM,            ONLY:RIM_n_rand_pts
  !
 #include<memory.h>
  !
@@ -36,7 +36,7 @@ subroutine RT_ELPH_Q_weights(q)
  ! Work Space
  !
  integer             ::iq,il
- real(SP)            ::RADIUS_sphere,RIM(q%nbz,2),ph_E
+ real(SP)            ::RADIUS_sphere,RIM_weights(q%nbz,2),ph_E
  !
  ! q_weight_RT are written in section 2, thus here are not known
  ! since only section 1 of the REF DB is written
@@ -47,8 +47,8 @@ subroutine RT_ELPH_Q_weights(q)
  !
  if (RIM_n_rand_pts>0) then
    RADIUS_sphere=(3._SP*RL_vol/q%nbz/4._SP/pi)**(1._SP/3._SP)
-   call rim_spherical(q%nbz,q%ptbz,RIM(:,1),RADIUS_sphere,1,.FALSE.)
-   call rim_spherical(q%nbz,q%ptbz,RIM(:,2),RADIUS_sphere,2,.FALSE.)
+   call rim_spherical(q%nbz,q%ptbz,RIM_weights(:,1),RADIUS_sphere,1,.FALSE.)
+   call rim_spherical(q%nbz,q%ptbz,RIM_weights(:,2),RADIUS_sphere,2,.FALSE.)
  endif
  !
  do iq=1,q%nbz
@@ -64,7 +64,7 @@ subroutine RT_ELPH_Q_weights(q)
      if (PH_acoustic_branch(il).and.iq>1) q_weight_RT(iq,il,2)=1._SP/ph_E/float(q%nbz)/PH_Q_modulus(iq)
      !
      if (RIM_n_rand_pts>0.and.PH_acoustic_branch(il)) then
-       q_weight_RT(iq,il,:)=RIM(iq,:)/PH_acoustic_speed(iq,il)
+       q_weight_RT(iq,il,:)=RIM_weights(iq,:)/PH_acoustic_speed(iq,il)
      endif
      !
    enddo

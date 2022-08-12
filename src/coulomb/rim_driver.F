@@ -21,17 +21,23 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine rim(mode)
+subroutine rim_driver(mode)
+ !
+ ! It calculates various flavours of RIM_qpg. Basically the idea is to use the montercarlo receipt
+ !
+ ! \int_UC dq f(q) = V_IC/N_IC \sum_{q\in UC) f(q)
+ !
+ ! with UC the integration volume and IC a larger box that contains a total of RIM_IC_n_pts generated points
  !
  use pars,          ONLY:SP,pi
  use com,           ONLY:msg
  use parallel_m,    ONLY:PP_indexes,myid,PP_indexes_reset
  use parallel_int,  ONLY:PP_redux_wait,PARALLEL_index 
  use LIVE_t,        ONLY:live_timing
- use R_lattice,     ONLY:k_grid_uc_vol,nqibz,RIM_epsm1,RIM_is_diagonal,&
-&                        RIM_n_rand_pts,RIM_ng,RIM_W_ng,RIM_qpg,RIM_W_is_diagonal,&
-&                        RIM_id_epsm1_reference,RIM_anisotropy,RIM_W,&
-&                        cut_is_slab,idir
+ use RIM,           ONLY:RIM_epsm1,RIM_is_diagonal,&
+&                        RIM_ng,RIM_W_ng,RIM_qpg,RIM_W_is_diagonal,&
+&                        RIM_id_epsm1_reference,RIM_anisotropy,RIM_W,RIM_pt
+ use R_lattice,     ONLY:k_grid_uc_vol,nqibz,cut_is_slab,idir
  use timing_m,      ONLY:timing
  !
 #include<memory.h>
@@ -41,9 +47,8 @@ subroutine rim(mode)
  ! Work Space
  !
  type(PP_indexes)::px
- integer   :: iq,N_out,N_out_G,ic
+ integer   :: iq,N_out_G,ic
  real(SP)  :: em1_anis(3),G_radii,G_circ
- real(SP), allocatable  :: qr(:,:)
  ! 
  if (mode == "x") call timing('RIM(V)',OPR='start')
  if (mode == "c") call timing('RIM(W)',OPR='start')
@@ -74,13 +79,12 @@ subroutine rim(mode)
  !
  ! Random Points
  !---------------
- YAMBO_ALLOC(qr,(3,RIM_n_rand_pts))
- call rim_random_points_generator("Unit-Cell",qr,N_out)
+ call rim_random_points_generator("Unit-Cell",nqibz)
  !
  !Only the 2D-BZ is sampled for 2D systems
  !----------------------------------------
  if (mode=="x".or.mode=="c") then
-   if (cut_is_slab) qr(idir(1),:) = 0._SP
+   if (cut_is_slab) RIM_pt(idir(1),:) = 0._SP
  endif
  !
  call section('=','RIM integrals')
@@ -99,7 +103,7 @@ subroutine rim(mode)
  do iq=1,nqibz
    if (.not.px%element_1D(iq)) cycle
    if (mode == "x") then
-     call rim_integrate_v(iq,qr,em1_anis,N_out,N_out_G,G_radii,G_circ)
+     call rim_integrate_v(iq,em1_anis,N_out_G,G_radii,G_circ)
      if (iq==1) then
        call msg('r','Gamma point sphere radius             ',G_radii,"[a.u.]")
        call msg('r','Points outside the sphere             ',N_out_G)
@@ -110,7 +114,7 @@ subroutine rim(mode)
        endif
      endif
    else if (mode == "c") then
-     call rim_integrate_w(iq,qr,N_out,em1_anis)
+     call rim_integrate_w(iq,em1_anis)
    endif
    call live_timing(steps=1)
  enddo
@@ -125,7 +129,7 @@ subroutine rim(mode)
  ! CLEAN
  !------
  call PP_indexes_reset(px)
- YAMBO_FREE(qr)
+ YAMBO_FREE(RIM_pt)
  !
  ! Timing
  !-------

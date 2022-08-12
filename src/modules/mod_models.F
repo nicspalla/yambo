@@ -42,4 +42,12 @@ module MODELS
  real(SP)          :: MODEL_elph_alpha=0.
  integer           :: MODEL_k(3)
  !
+ contains
+   !
+   logical function model_running( )
+     use C_driver,       ONLY:code_bin
+     use stderr,         ONLY:STRING_same
+     model_running=STRING_same(code_bin,"yambo_models").or.STRING_same(code_bin,"ypp_models")
+   end function
+   !
 end module MODELS

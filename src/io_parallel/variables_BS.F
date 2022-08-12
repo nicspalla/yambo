@@ -27,7 +27,8 @@ integer function variables_BS(ID,iq,desc,CLOSE_the_menu,X)
  use units,         ONLY:HA2EV
  use drivers,       ONLY:l_td_hf
  use X_m,           ONLY:X_t
- use R_lattice,     ONLY:RIM_ng,RIM_n_rand_pts,cut_geometry
+ use RIM,           ONLY:RIM_ng,RIM_n_rand_pts
+ use R_lattice,     ONLY:cut_geometry
  use BS,            ONLY:BS_identifier,BS_K_dim,BS_bands,&
 &                        BS_K_coupling,BS_res_K_exchange,BS_res_K_corr,&
 &                        BS_n_g_exch,BS_n_g_W,BS_eh_en,BS_eh_win,BS_W_is_diagonal,&
