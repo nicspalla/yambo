@@ -24,9 +24,9 @@
 subroutine ELPH_atomic_amplitude(q)
  !
  use pars,                ONLY:SP
- use units,               ONLY:BO2ANG,pi
+ use units,               ONLY:BO2ANG
  use com,                 ONLY:msg
- use R_lattice,           ONLY:bz_samp,RL_vol
+ use R_lattice,           ONLY:bz_samp
  use RIM,                 ONLY:RIM_n_rand_pts
  use D_lattice,           ONLY:n_atoms
  use ELPH,                ONLY:ph_modes,PH_freqs_sq,elph_nQ,elph_use_q_grid,&
@@ -83,7 +83,7 @@ subroutine ELPH_atomic_amplitude(q)
    q_weight=q%weights
  else
    if (RIM_n_rand_pts>0) call msg('s','Using RIM with '//trim(intc(RIM_n_rand_pts))//' point')
-   call rim_spherical(nq_to_sum,PH_qpt(1:nq_to_sum,1:3),q_weight,(3.*RL_vol/nq_to_sum/4./pi)**(1./3.),2,.TRUE.)
+   call rim_integrate_elph("sphere",nq_to_sum,PH_qpt(1:nq_to_sum,1:3),q_weight,2,.TRUE.)
  endif
  !
  mean_ui_uj=(0.,0.)

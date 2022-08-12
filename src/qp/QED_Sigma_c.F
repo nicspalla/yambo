@@ -85,13 +85,11 @@ subroutine QED_Sigma_c(E,k,q,qp)
  ! RIM 
  !=====
  if (RIM_n_rand_pts==0) RIM_n_rand_pts=1000000
- !
  call k_ibz2bz(q,'i',.TRUE.)
- !
  YAMBO_ALLOC(q_weight_power_1,(nqbz))
  YAMBO_ALLOC(q_weight_power_2,(nqbz))
- call rim_spherical(nqbz,q%ptbz,q_weight_power_1,(3.*RL_vol/nqbz/4./pi)**(1./3.),1,.FALSE.)
- call rim_spherical(nqbz,q%ptbz,q_weight_power_2,(3.*RL_vol/nqbz/4./pi)**(1./3.),2,.FALSE.)
+ call rim_integrate_elph("unit-cell",nqbz,q%ptbz,q_weight_power_1,1,.FALSE.)
+ call rim_integrate_elph("unit-cell",nqbz,q%ptbz,q_weight_power_2,2,.FALSE.)
  !
  R0 = (3.*RL_vol/nqbz/4./pi)**(1./3.) ! the radius for the sum at Q=0
  !

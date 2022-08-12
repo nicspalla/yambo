@@ -278,7 +278,7 @@ subroutine QP_interpolate_W(X,Xw,q,mode)
  !Calculation of RIM-W integrals
  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  !
- call rim_driver('c')
+ call rim_driver('W')
  !
  YAMBO_FREE(RIM_coeff)
  !

@@ -47,7 +47,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 &                        QP_dSc_steps,QP_dSc_delta,QP_solver,QP_Sc_steps,&
 &                        On_Mass_Shell_approx,QP_time_order_sign
  use D_lattice,     ONLY:sop_inv,nsym,i_time_rev,sop_tab
- use R_lattice,     ONLY:qindx_S,bz_samp,RL_vol,nqibz
+ use R_lattice,     ONLY:qindx_S,bz_samp,nqibz
  use ELPH,          ONLY:elph_nb,PH_freqs_sq,GKKP,ph_modes,PH_freqs,FineGd_E_kpq_components_reset,&
 &                        QP_PH_n_G_bands,PH_W_debye,use_PH_DbGd,EkplusQ_mode,gkkp_db,elph_grids_are_expanded, &
 &                        elph_nQ,elph_use_q_grid,setup_k_plus_q_levels,elph_nQ_used,&
@@ -73,7 +73,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  integer          ::io_err,ID,IO_ACT,ID_DG
  integer, external::io_ELPH,io_Double_Grid,io_gFsq
  character(schlen)::ch
- real(SP)         ::ph_E,radius,elph_gkkp_sq,E_random_shift
+ real(SP)         ::ph_E,elph_gkkp_sq,E_random_shift
  logical          ::l_WRgFsq,l_GF_from_CA,load_gkkp_DB,MULTIPLY_by_Qsquare
  real(SP), allocatable :: q_weight(:)
  ! 
@@ -200,23 +200,21 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  ! nq_to_sum = | 
  !              \ nqbz             elph_use_q_grid=T
  !
- radius=(3._SP*RL_vol/4._SP/pi)**(1._SP/3._SP)
  MULTIPLY_by_Qsquare=.TRUE.
-!#if defined _MODELS
-! if (model_running) MULTIPLY_by_Qsquare=.FALSE.
-!#else
+#if defined _MODELS
+ MULTIPLY_by_Qsquare=.FALSE.
+#endif
  if (elph_use_q_grid.and..not.elph_grids_are_expanded) then
    nq_to_sum=q%nbz
    call k_ibz2bz(q,'i',.TRUE.)
    YAMBO_ALLOC(q_weight,(nq_to_sum))
-   call rim_spherical(nq_to_sum,q%ptbz,q_weight,radius/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
+   call rim_integrate_elph("unit-cell",nq_to_sum,q%ptbz,q_weight,2,MULTIPLY_by_Qsquare)
    call k_ibz2bz(q,'d',.TRUE.)
  else
    nq_to_sum=elph_nQ_used
    YAMBO_ALLOC(q_weight,(nq_to_sum))
-   call rim_spherical(nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,radius/real(nq_to_sum,SP),2,MULTIPLY_by_Qsquare)
+   call rim_integrate_elph("sphere",nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,2,MULTIPLY_by_Qsquare)
  endif
-!#endif
  !
  if(elph_nQ_used/=elph_nQ) call warning(" Number of q-used different from total number of q-points")
  !

@@ -21,7 +21,7 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
+subroutine rim_integrate_elph(GEO,Np,points,p_weight,power,MULTIPLY_BY_Q)
  !
  ! Here I want to approx the integral
  !
@@ -29,7 +29,7 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
  !                         = 1/vol \sum_{Qi} \int_Si d3q/q^power [q^power F(q)] ~
  !                         ~ 1/vol \sum_{Qi} [Qi^power F(Qi)] \int_Si d3q/q^power
  !
- ! with Si a sphere of radius "radius" and volume vol/Np. 
+ ! with Si a sphere of radius such that the sphere volume is RL_vol/Np. 
  !
  ! a) MULTIPLY_BY_Q=.TRUE. 
  !
@@ -64,10 +64,11 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
  !
  implicit none
  !
- integer,  intent(in)    :: Np,power
- real(SP), intent(in)    :: points(Np,3),radius
- real(SP), intent(inout) :: p_weight(Np)
- logical , intent(in)    :: MULTIPLY_BY_Q
+ character(*),intent(in)    :: GEO
+ integer,     intent(in)    :: Np,power
+ real(SP),    intent(in)    :: points(Np,3)
+ real(SP),    intent(inout) :: p_weight(Np)
+ logical ,    intent(in)    :: MULTIPLY_BY_Q
  !
  ! Work Space
  !
@@ -88,7 +89,7 @@ subroutine rim_spherical(Np,points,p_weight,radius,power,MULTIPLY_BY_Q)
  !
  ! Filling a larger Sphere with a random grid
  !--------------------------------------------
- call rim_random_points_generator("sphere",Np)
+ call rim_random_points_generator(GEO,Np)
  !
  ! Weights calculation
  !--------------------

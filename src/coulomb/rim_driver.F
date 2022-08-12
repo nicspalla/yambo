@@ -42,16 +42,15 @@ subroutine rim_driver(mode)
  !
 #include<memory.h>
  !
- character(1)       :: mode
+ character(*)       :: mode
  !
  ! Work Space
  !
  type(PP_indexes)::px
- integer   :: iq,N_out_G,ic
- real(SP)  :: em1_anis(3),G_radii,G_circ
+ integer         ::iq,N_out_G,ic
+ real(SP)        ::em1_anis(3),G_radii,G_circ
  ! 
- if (mode == "x") call timing('RIM(V)',OPR='start')
- if (mode == "c") call timing('RIM(W)',OPR='start')
+ call timing('RIM('//mode//')',OPR='start')
  !
  call PP_indexes_reset(px)
  !
@@ -60,19 +59,19 @@ subroutine rim_driver(mode)
  ! em1_anis refers to the X part only of epsm1 as in the self-energy
  ! the bare part is embodied in the exchange.
  !
- if (mode=="x".or.mode=="c") then
+ if (mode=="V".or.mode=="W") then
    em1_anis=RIM_epsm1(:)-1.
    if (RIM_id_epsm1_reference<0.or.RIM_id_epsm1_reference>3) RIM_id_epsm1_reference=0
    if (RIM_id_epsm1_reference==0) em1_anis=0.
-   if (RIM_id_epsm1_reference>0 .and. mode == "x") em1_anis=em1_anis/em1_anis(RIM_id_epsm1_reference)
+   if (RIM_id_epsm1_reference>0 .and. mode == "V") em1_anis=em1_anis/em1_anis(RIM_id_epsm1_reference)
  endif
  !
  ! Filling the small BZ with the random grid
  !===========================================
- if (mode=="x") then
+ if (mode=="V") then
    call section('+','RIM (bare interaction) initialization')
    if (RIM_is_diagonal) call warning('RIM Diagonal components only')
- else  if (mode=="c") then
+ else  if (mode=="W") then
    call section('=','RIM (screened interaction) initialization')
    if (RIM_W_is_diagonal) call warning('RIM Diagonal components only')
  end if
@@ -83,16 +82,16 @@ subroutine rim_driver(mode)
  !
  !Only the 2D-BZ is sampled for 2D systems
  !----------------------------------------
- if (mode=="x".or.mode=="c") then
+ if (mode=="V".or.mode=="W") then
    if (cut_is_slab) RIM_pt(idir(1),:) = 0._SP
  endif
  !
  call section('=','RIM integrals')
  !================================
- if (mode == "x") then
+ if (mode == "V") then
    YAMBO_ALLOC(RIM_qpg,(nqibz,RIM_ng,RIM_ng))
    RIM_qpg=0._SP
- else if (mode == "c") then
+ else if (mode == "W") then
    YAMBO_ALLOC(RIM_W,(nqibz,RIM_W_ng,RIM_W_ng))
    RIM_W=0._SP
  end if
@@ -102,7 +101,7 @@ subroutine rim_driver(mode)
  !
  do iq=1,nqibz
    if (.not.px%element_1D(iq)) cycle
-   if (mode == "x") then
+   if (mode == "V") then
      call rim_integrate_v(iq,em1_anis,N_out_G,G_radii,G_circ)
      if (iq==1) then
        call msg('r','Gamma point sphere radius             ',G_radii,"[a.u.]")
@@ -113,7 +112,7 @@ subroutine rim_driver(mode)
          call msg('r','Anisotropy correction            [o/o]',(RIM_anisotropy-RIM_qpg(iq,1,1))/RIM_qpg(iq,1,1)*100.)
        endif
      endif
-   else if (mode == "c") then
+   else if (mode == "W") then
      call rim_integrate_w(iq,em1_anis)
    endif
    call live_timing(steps=1)
@@ -122,8 +121,8 @@ subroutine rim_driver(mode)
  !
  ! Redux
  !------
- if (mode == "x") call PP_redux_wait(RIM_qpg)
- if (mode == "c") call PP_redux_wait(RIM_W)
+ if (mode == "V") call PP_redux_wait(RIM_qpg)
+ if (mode == "W") call PP_redux_wait(RIM_W)
  call PP_redux_wait(RIM_anisotropy)
  !
  ! CLEAN
@@ -133,7 +132,6 @@ subroutine rim_driver(mode)
  !
  ! Timing
  !-------
- if (mode == "x") call timing('RIM(V)',OPR='stop')
- if (mode == "c") call timing('RIM(W)',OPR='stop')
+ call timing('RIM('//mode//')',OPR='stop')
  !
 end subroutine

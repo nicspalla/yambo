@@ -144,7 +144,7 @@ subroutine col_driver(bare_NG,q)
      if (cut_is_slab) then
        call msg('nr','Performing RIM of v_slab')
      endif
-     call rim_driver("x")
+     call rim_driver("V")
      call io_control(ACTION=OP_WR_CL,COM=REP,SEC=(/1,2/),ID=ID)
      io_err=io_RIM(ID)
    endif
