@@ -160,7 +160,7 @@ subroutine ELPH_GreenF(I,i_qp,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_W,q_weight)
       if (l_MODEL_force_jellium) then
         gsqF_RES_ca_corr=cZERO
         gsqF_RES_fan    =elph_gkkp_sq*q_weight
-        gsqF_DEN_fan(iw)=1._SP/(delta_E-ph_E)
+        gsqF_DEN_fan(iw)=1._SP/(real(delta_E)-ph_E)
       endif
 #endif
       !

@@ -61,6 +61,9 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 &                         INTERPOLATE_is_quiet    
  use stderr,         ONLY:STRING_same
  use timing_m,       ONLY:timing
+#if defined _MODELS
+ use MODELS,        ONLY:l_MODEL_force_jellium
+#endif
  !
 #include<memory.h>
  !
@@ -168,6 +171,10 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    !
  else if (trim(QP_solver)=='n') then
    !
+#if defined _MODELS
+   if (l_MODEL_force_jellium) On_Mass_Shell_approx=.TRUE.
+#endif
+   !
    if (On_Mass_Shell_approx) QP_dSc_steps=1
    !
    do i_qp=1,qp%n_states
@@ -217,8 +224,8 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 #if defined _MODELS
  MULTIPLY_by_Qsquare=.FALSE.
 #endif
- if (     elph_use_q_grid) call rim_integrate_elph("sphere",nq_to_sum,q%ptbz,              q_weight,2,MULTIPLY_by_Qsquare)
- if (.not.elph_use_q_grid) call rim_integrate_elph("sphere",nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,2,MULTIPLY_by_Qsquare)
+ if (     elph_use_q_grid) call rim_integrate_elph("unit-cell",nq_to_sum,q%ptbz,              q_weight,2,MULTIPLY_by_Qsquare)
+ if (.not.elph_use_q_grid) call rim_integrate_elph("sphere",   nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,2,MULTIPLY_by_Qsquare)
  !
  if(elph_nQ_used/=elph_nQ) call warning(" Number of q-used different from total number of q-points")
  !

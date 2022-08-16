@@ -42,7 +42,7 @@ subroutine ELPH_model_jellium(q)
  !
  integer  :: iq,ip
  real(DP) :: OMS_dp
- real(SP) :: OMS(1),q_norm_square,q_grid_norm_square,OMS_exact,integral
+ real(SP) :: OMS(1),q_norm_square,OMS_exact,integral,E_q
  !
  call section('=','Jellium Fan Self-Energy')
  !
@@ -58,15 +58,18 @@ subroutine ELPH_model_jellium(q)
    !
    OMS_dp=0._DP
    !
-   q_grid_norm_square=iku_v_norm(q%ptbz(iq,:))**2
-   integral=1./(MODEL_E_ph+q_grid_norm_square/2./MODEL_effective_mass)
    if (RIM_n_rand_pts>0) then
      do ip=1,RIM_n_rand_pts
        q_norm_square=iku_v_norm(q%ptbz(iq,:)+RIM_pt(:,ip))**2
+       E_q=q_norm_square/2./MODEL_effective_mass/HA2EV
+       integral=1./(MODEL_E_ph+E_q)
        OMS_dp=OMS_dp-MODEL_ep_dV**2./q_norm_square*integral
      enddo
-   else
-     if (iq>1) OMS_dp=-MODEL_ep_dV**2./q_grid_norm_square*integral
+   else  if (iq>1) then
+     q_norm_square=iku_v_norm(q%ptbz(iq,:))**2
+     E_q=q_norm_square/2./MODEL_effective_mass/HA2EV
+     integral=1./(MODEL_E_ph+E_q)
+     OMS_dp=-MODEL_ep_dV**2./q_norm_square*integral
    endif
    !
    OMS=OMS+OMS_dp
@@ -83,7 +86,7 @@ subroutine ELPH_model_jellium(q)
  OMS(1)=OMS(1)/float(q%nbz)
  OMS_exact=-MODEL_elph_alpha*MODEL_E_ph
  !
- call msg('nrl','[El-Ph] Jellium Integral (calc/exact)',(/OMS(1)*HA2EV,OMS_exact*HA2EV/),"[ev]")
+ call msg('nrs','[El-Ph] Jellium Integral (calc/exact)',(/OMS(1)*HA2EV,OMS_exact*HA2EV/),"[ev]")
  !
  ! Clean
  !-------

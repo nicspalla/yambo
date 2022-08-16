@@ -23,11 +23,13 @@
 !
 subroutine INIT_activate_models()
  !
- use drivers,        ONLY:l_eval_collisions,l_elph_corr,l_gw0
+ use drivers,        ONLY:l_eval_collisions,l_elph_corr,l_gw0,l_phel_corr
  !
  call initactivate(-1,"EXXRLvcs VXCRLvcs HARRLvcs")
  !
  if (l_eval_collisions    ) call initactivate(1,"OnSiteU SkipIntraBand")
- if (l_elph_corr.and.l_gw0) call initactivate(1,"MOD_gkkp_Kind MOD_PH_energy MOD_ELPH_alpha ForceJell")
+ if ((l_elph_corr.and.l_gw0).or.l_phel_corr) call initactivate(1,"MOD_gkkp_Kind MOD_PH_energy MOD_ELPH_alpha ")
+ if (l_elph_corr.and.l_gw0) call initactivate(1,"ForceJell")
+ if (l_phel_corr.or.l_elph_corr) call initactivate(-1,"PHELQpts ElPhModes PH_SE_mode GphBRnge")
  !
 end subroutine
