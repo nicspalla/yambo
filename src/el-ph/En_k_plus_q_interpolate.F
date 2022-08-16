@@ -51,6 +51,10 @@ subroutine En_k_plus_q_interpolate(k,q,E,iqbz)
  ! ============================================
  !
  nq_around=q%FGbz%k_range(iqbz,2)-q%FGbz%k_range(iqbz,1)
+ if (nq_around==0) then
+   GKKP%E_dg_kpq(iqbz)%nq_around=0
+   return
+ endif
  n_k_plus_q=nq_around*k%nibz
  !
  ! Generate k'=k+q  vectors

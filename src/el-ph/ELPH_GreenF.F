@@ -23,13 +23,13 @@
 !
 !> @brief Calculate real and imaginary part of the electron-phonon self-energy
 !!
+!! @param[in]       I                   elemental collision
 !! @param[in]       i_qp                quasi-particle index
-!! @param[in]       iq_bz               q-index in the BZ
 !! @param[in]       iq_mem              q-index in distributed array
 !! @param[in]       il                  phonon-branch index
 !! @param[in]       en                  energy levels
 !! @param[in]       Sc_W                energy where self-energy is calculated
-!! @param[in]       elph_gkkp_sq        electron-phonon matrix elements squares <ib,k | \partial V /\partial u_il | ob, k-q>
+!! @param[in]       elph_gkkp_sq        electron-phonon matrix elements squares <I%is(1),k | \partial V /\partial u_il | I%os(1), k-q>
 !!
 !! @param[out]      gsqF_fan            Fan self-energy, real-part
 !! @param[out]      gsqF_dw             Debye-Waller sefl-energy
@@ -37,7 +37,7 @@
 !! @param[out]      gsqF_life_bose      Imaginary part Fan self-energy Bose part
 !! @param[out]      gsqF_life_f         Imaginary part Fan self-energy Fermi part
 !
-subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_W,q_weight)
+subroutine ELPH_GreenF(I,i_qp,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_W,q_weight)
  !
  use pars,          ONLY:SP,pi,cZERO,rZERO
  use electrons,     ONLY:levels,spin_occ
@@ -46,35 +46,31 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
 &                        gsqF_energy_steps,gsqF_dw,eval_G_using_KK,elph_use_q_grid,PH_freqs,&
 &                        FAN_deltaE_treshold,DW_deltaE_treshold,PH_freqs_sq,use_PH_DbGd, &
 &                        elph_grids_are_expanded
- use QP_m,          ONLY:QP_table,QP_time_order_sign
+ use QP_m,          ONLY:QP_time_order_sign
  use R_lattice,     ONLY:bz_samp
- use functions,     ONLY:Fermi_fnc_derivative
+ use functions,     ONLY:Fermi_fnc_derivative,BZ_index
+ use collision_el,  ONLY:elemental_collision
 #if defined _MODELS
  use MODELS,        ONLY:l_MODEL_force_jellium
 #endif
  !
 #include<memory.h>
  !
- integer,      intent(in) :: i_qp
- integer,      intent(in) :: ob
- integer,      intent(in) :: ok
- integer,      intent(in) :: iq_bz,iq_ibz,iq_mem
- integer,      intent(in) :: il
- real(SP),     intent(in) :: elph_gkkp_sq,q_weight
- type(levels), intent(in) :: en
- type(bz_samp),intent(in) :: k,q
- type(w_samp), intent(in) :: Sc_W
+ type(elemental_collision), intent(in) :: I
+ integer,                   intent(in) :: i_qp
+ integer,                   intent(in) :: iq_mem
+ integer,                   intent(in) :: il
+ real(SP),                  intent(in) :: elph_gkkp_sq,q_weight
+ type(levels),              intent(in) :: en
+ type(bz_samp),             intent(in) :: k,q
+ type(w_samp),              intent(in) :: Sc_W
  !
  ! Work Space
  !
- integer  :: iw
- integer  :: ik,ik_bz,ib,iE_fg,iq_fg,ic,nq_around,iq_idx
+ integer     :: iw,ik_bz,iq_bz,iE_fg,iq_fg,ic,nq_around,iq_idx
+ real(SP)    :: delta_E_at_gamma,f_occ,E_kpq,one_minus_2f_occ,gsqF_damping,ph_E,weight_dbg,DW_weight
  complex(SP) :: delta_E
- real(SP) :: delta_E_at_gamma,f_occ,E_kpq
- real(SP) :: one_minus_2f_occ,gsqF_damping,ph_E
- real(SP) :: weight_dbg,DW_weight
- !
- logical  :: eval_DW
+ logical     :: eval_DW
  !
  ! Residues
  !
@@ -88,17 +84,15 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  real(SP) :: gsqF_DEN_fan(gsqF_energy_steps)
  real(SP) :: gsqF_DEN_DW 
  !
- ! Indexes
+ ! k and q \in BZ
  !
- ib   =QP_table(i_qp,1)
- ik   =QP_table(i_qp,3)
- !
- ik_bz=ik
- if(ik>1) ik_bz=sum(k%nstar(:ik-1))+1
+ ik_bz=BZ_index(I%is(2),k)
+ if (     elph_use_q_grid.and..not.elph_grids_are_expanded) iq_bz=q%k_table(I%qs(2),I%qs(3))
+ if (.not.elph_use_q_grid     .or. elph_grids_are_expanded) iq_bz=I%qs(2)
  !
  ! Phonon frequency
  !
- ph_E=sqrt(abs(PH_freqs_sq(iq_ibz,il)))
+ ph_E=sqrt(abs(PH_freqs_sq(I%qs(2),il)))
  !
  ! Skip modes @ Gamma (1st point is always gamma, either with random
  ! or uniform grids, as it is needed to evaluate the DW factor) 
@@ -108,11 +102,11 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  ! Define outgoing energies and occupations
  !
  if (elph_use_q_grid.and..not.elph_grids_are_expanded) then
-   E_kpq=en%E(ob,ok,1)
-   f_occ=en%f(ob,ok,1)/spin_occ
+   E_kpq=en%E(I%os(1),I%os(2),1)
+   f_occ=en%f(I%os(1),I%os(2),1)/spin_occ
  else
-   E_kpq=GKKP%E_kpq(iq_bz)%E(ob,ik_bz,1)
-   f_occ=GKKP%E_kpq(iq_bz)%f(ob,ik_bz,1)/spin_occ
+   E_kpq=GKKP%E_kpq(iq_bz)%E(I%os(1),ik_bz,1)
+   f_occ=GKKP%E_kpq(iq_bz)%f(I%os(1),ik_bz,1)/spin_occ
  endif
  !
  ! Frequency Loop
@@ -179,9 +173,9 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
  ! perturbed stated and itself
  !
  if (elph_use_q_grid.and..not.elph_grids_are_expanded) then
-   delta_E_at_gamma=en%E(ib,ik,1)               -en%E(ob,ik,1)
+   delta_E_at_gamma=en%E(I%is(1),I%is(2),1)          -en%E(I%os(1),I%is(2),1)
  else
-   delta_E_at_gamma=GKKP%E_kpq(1)%E(ib,ik_bz,1) -GKKP%E_kpq(1)%E(ob,ik_bz,1)
+   delta_E_at_gamma=GKKP%E_kpq(1)%E(I%is(1),ik_bz,1) -GKKP%E_kpq(1)%E(I%os(1),ik_bz,1)
  endif
  !
  eval_DW=(.not.abs(delta_E_at_gamma)<DW_deltaE_treshold)
@@ -195,7 +189,7 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
    !
    ! (b) Debye Waller Term
    !
-   gsqF_RES_DW=-1._SP/2._SP*2._SP*GKKP%dVr(il,ib,ob,ik_bz,1)*q_weight/2._SP
+   gsqF_RES_DW=-1._SP/2._SP*2._SP*GKKP%dVr(il,I%is(1),I%os(1),ik_bz,1)*q_weight/2._SP
    !                       /\
    !                        |
    !                        this 2 is to be consistent with AC definition (see Eq. 5, PRB 31, 2163)
@@ -203,23 +197,23 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
    !
  endif
  !
- ! IF double-grid is present aveages all denominators on the q-points 
- ! of the fine grid around iq_bz
+ ! IF double-grid is present averages all denominators on the q-points of the fine grid around iq_bz
+ !===========================
  !
  DW_weight=1._SP
  !
- if(use_PH_DbGd) then
+ if (use_PH_DbGd) then
    !      
    nq_around =q%FGbz%k_range(iq_bz,2)-q%FGbz%k_range(iq_bz,1)   ! Number of fine q-points around iq_bz
-   weight_dbg=1._SP/(real(nq_around,SP)+1._SP)                             ! Total weight of the Db-grid points including the iq_bz
+   weight_dbg=1._SP/(real(nq_around,SP)+1._SP)                  ! Total weight of the Db-grid points including the iq_bz
    do iq_fg=q%FGbz%k_range(iq_bz,1)+1,q%FGbz%k_range(iq_bz,2),1
      !
      iq_idx=iq_fg-q%FGbz%k_range(iq_bz,1)
      iE_fg =q%FGbz%E_map(iq_fg)                             ! Map w(q) from BZ to IBZ
      ph_E  =PH_freqs%FG%E(il,iE_fg,1)                       ! w(q_db) phonon energy in the D-Grid
      !
-     E_kpq       =GKKP%E_dg_kpq(iq_bz)%E_kpq(ob,ik,1,iq_idx)    ! E(k+q_dg)  q_db in the D-Grid
-     f_occ       =GKKP%E_dg_kpq(iq_bz)%f_kpq(ob,ik,1,iq_idx)/spin_occ
+     E_kpq       =GKKP%E_dg_kpq(iq_bz)%E_kpq(I%os(1),I%is(2),1,iq_idx)    ! E(k+q_dg)  q_db in the D-Grid
+     f_occ       =GKKP%E_dg_kpq(iq_bz)%f_kpq(I%os(1),I%is(2),1,iq_idx)/spin_occ
      !
      do iw=1,gsqF_energy_steps
        ! 
@@ -244,11 +238,11 @@ subroutine ELPH_GreenF(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_
    !
    if (eval_DW) then  
      !      
-     ph_E=sqrt(abs(PH_freqs_sq(iq_ibz,il)))
+     ph_E=sqrt(abs(PH_freqs_sq(I%qs(2),il)))
      !
-     do iq_idx=1,GKKP%E_dg_kpq(1)%nq_around  ! Numbere of q-points around Gamma
+     do iq_idx=1,GKKP%E_dg_kpq(1)%nq_around  ! Number of q-points around Gamma
        !
-       delta_E_at_gamma=en%E(ib,ik,1) - GKKP%E_dg_kpq(1)%E_kpq(ob,ik,1,iq_idx)
+       delta_E_at_gamma=en%E(I%is(1),I%is(2),1) - GKKP%E_dg_kpq(1)%E_kpq(I%os(1),I%is(2),1,iq_idx)
        !
        if(abs(delta_E_at_gamma)>DW_deltaE_treshold) then
          gsqF_DEN_DW=gsqF_DEN_DW+1._SP/delta_E_at_gamma/ph_E

@@ -56,13 +56,12 @@ subroutine rim_integrate_elph(GEO,Np,points,p_weight,power,MULTIPLY_BY_Q)
  ! 
  !  Wi = 1/vol \int_Si d3q/q^power
  ! 
- use pars,          ONLY:SP,pi
+ use pars,          ONLY:SP
  use LIVE_t,        ONLY:live_timing
- use vec_operate,   ONLY:v_norm
- use D_lattice,     ONLY:alat
+ use vec_operate,   ONLY:v_norm,iku_v_norm
  use RIM,           ONLY:RIM_n_rand_pts,RIM_UC_vol,RIM_IC_n_pts,RIM_pt,RIM_IC_vol
  !
- implicit none
+#include<memory.h>
  !
  character(*),intent(in)    :: GEO
  integer,     intent(in)    :: Np,power
@@ -73,16 +72,14 @@ subroutine rim_integrate_elph(GEO,Np,points,p_weight,power,MULTIPLY_BY_Q)
  ! Work Space
  !
  integer   :: ip,ir,ic
- real(SP)  :: pt_cc(3)
  !
  ! No RIM
  !--------
  if (RIM_n_rand_pts==0)then
    do ip=1,Np
-     p_weight(ip)=0.
-     pt_cc=points(ip,:)*2.*pi/alat(:)
-     if(     MULTIPLY_BY_Q) p_weight(ip)=1./float(Np)
-     if(.not.MULTIPLY_BY_Q.and.v_norm(pt_cc)>0._SP) p_weight(ip)=1./float(Np)/v_norm(pt_cc)**power
+     p_weight(ip)=0._SP
+     if (     MULTIPLY_BY_Q                                   ) p_weight(ip)=1./float(Np)
+     if (.not.MULTIPLY_BY_Q.and.iku_v_norm(points(ip,:))>0._SP) p_weight(ip)=1./float(Np)/iku_v_norm(points(ip,:))**power
    enddo
    return
  endif
@@ -96,16 +93,21 @@ subroutine rim_integrate_elph(GEO,Np,points,p_weight,power,MULTIPLY_BY_Q)
  call live_timing('Integrals',Np)
  do ip=1,Np
    p_weight(ip)=0.
-   pt_cc=points(ip,:)*2.*pi/alat(:)
    do ir=1,RIM_n_rand_pts
-     p_weight(ip)=p_weight(ip)+1./v_norm(RIM_pt(:,ir)+pt_cc(:))**power*RIM_IC_vol/real(RIM_IC_n_pts)
+     p_weight(ip)=p_weight(ip)+1./iku_v_norm(RIM_pt(:,ir)+points(ip,:))**power*RIM_IC_vol/real(RIM_IC_n_pts)
    enddo
    p_weight(ip)=p_weight(ip)/RIM_UC_vol/real(Np)
    !
-   if (MULTIPLY_BY_Q) p_weight(ip)=p_weight(ip)*v_norm(pt_cc)**power
+   if (MULTIPLY_BY_Q) p_weight(ip)=p_weight(ip)*iku_v_norm(points(ip,:))**power
    !
    call live_timing(steps=1)
  enddo
  call live_timing()
+ !
+ ! Clean
+ !-------
+#if !defined _MODELS
+ YAMBO_FREE(RIM_pt)
+#endif
  !
 end subroutine

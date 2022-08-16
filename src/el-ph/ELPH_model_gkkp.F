@@ -45,6 +45,6 @@ subroutine ELPH_model_gkkp()
  endif
  MODEL_ep_dV=sqrt(EM_sq)
  !
- GKKP%dVc(1,:,:,:,1)=sqrt(EM_sq*MODEL_E_ph)
+ GKKP%dVc(1,:,:,:,1)=sqrt(EM_sq*2.*MODEL_E_ph)
  !
 end subroutine

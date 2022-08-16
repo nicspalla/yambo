@@ -148,8 +148,13 @@ subroutine QP_newton(X,Xen,Xk,en,k,q,qp,Xw,Dip)
          !
        enddo
        !
-       qp%E(i1)=Eqp(1)+Z(1)*(qp%E_bare(i1)-qp%E(i1))  ! See Eq.3 of PRB 75, 235102(2007)
-       qp%Z(i1)=Z(1)
+       if (On_Mass_Shell_approx) then
+         qp%E(i1)=qp%E_bare(i1)+QP_Sc(i1,1)
+         qp%Z(i1)=1._SP
+       else
+         qp%E(i1)=Eqp(1)+Z(1)*(qp%E_bare(i1)-qp%E(i1))  ! See Eq.3 of PRB 75, 235102(2007)
+         qp%Z(i1)=Z(1)
+       endif
        !
      else
        !

@@ -27,11 +27,9 @@ subroutine QP_of(qp,en,QPdb_read_err,what)
  use drivers,       ONLY:l_life,l_elph_corr
  use com,           ONLY:msg
  use electrons,     ONLY:levels,spin,n_sp_pol
- use QP_m,          ONLY:QP_t,QP_Vxc,QP_Sc,QP_Vnl_xc,QP_table,&
-&                        QP_solver,QP_n_states,Vxc_kind,l_extended_output,&
-&                        use_GreenF_to_eval_QP,Vnlxc_kind,report_Vxc,&
-&                        report_Vnlxc,QP_G_amplitude_integral,&
-&                        QP_states_simmetrize,QP_G_info,QP_dSc,report_Sc
+ use QP_m,          ONLY:QP_t,QP_Vxc,QP_Sc,QP_Vnl_xc,QP_table,QP_solver,QP_n_states,Vxc_kind,l_extended_output,&
+&                        use_GreenF_to_eval_QP,Vnlxc_kind,report_Vxc,report_Vnlxc,QP_G_amplitude_integral,&
+&                        QP_states_simmetrize,QP_G_info,QP_dSc,report_Sc,On_Mass_Shell_approx
  use OUTPUT,        ONLY:OUTPUT_driver
  use interfaces,    ONLY:DESC_write
  use stderr,        ONLY:intc
@@ -130,7 +128,7 @@ subroutine QP_of(qp,en,QPdb_read_err,what)
          call OUTPUT_driver(what,ORDER=(/"Eo"/))
          call OUTPUT_driver(what,ORDER=(/"E-Eo [meV","E-Eo [GHz"/))
          call OUTPUT_driver(what,ORDER=(/"Sc|Eo"/))
-         call OUTPUT_driver(what,ORDER=(/"Re(Z)"/))
+         if (.not.On_Mass_Shell_approx) call OUTPUT_driver(what,ORDER=(/"Re(Z)"/))
          call OUTPUT_driver(what,ORDER=(/"Width [me","Width [ps","Width [ns"/))
          call OUTPUT_driver(what,ORDER=(/"dV"/))
 #else
@@ -139,7 +137,7 @@ subroutine QP_of(qp,en,QPdb_read_err,what)
              call OUTPUT_driver(what,ORDER=(/"E [eV"/))
              call OUTPUT_driver(what,ORDER=(/"E-Eo [eV"/))
              call OUTPUT_driver(what,ORDER=(/"Width [me"/))
-             call OUTPUT_driver(what,ORDER=(/"Re(Z)","Im(Z)"/))
+             if (.not.On_Mass_Shell_approx) call OUTPUT_driver(what,ORDER=(/"Re(Z)","Im(Z)"/))
              call OUTPUT_driver(what,ORDER=(/"E_25(l","E_25(h"/))
              call OUTPUT_driver(what,ORDER=(/"E_50(l","E_50(h"/))
              call OUTPUT_driver(what,ORDER=(/"E_75(l","E_75(h","Integr"/))
@@ -149,16 +147,20 @@ subroutine QP_of(qp,en,QPdb_read_err,what)
              call OUTPUT_driver(what,ORDER=(/"E-Eo [eV"/))
              call OUTPUT_driver(what,ORDER=(/"Vxc  ","Vnlxc"/))
              call OUTPUT_driver(what,ORDER=(/"Sc|Eo"/))
-             call OUTPUT_driver(what,ORDER=(/"Sc|E [e"/))
-             call OUTPUT_driver(what,ORDER=(/"dSc/dw"/))
-             call OUTPUT_driver(what,ORDER=(/"Re(Z)","Im(Z)"/))
+             if (.not.On_Mass_Shell_approx) then
+               call OUTPUT_driver(what,ORDER=(/"Sc|E [e"/))
+               call OUTPUT_driver(what,ORDER=(/"dSc/dw"/))
+               call OUTPUT_driver(what,ORDER=(/"Re(Z)","Im(Z)"/))
+             endif
              call OUTPUT_driver(what,ORDER=(/"Width [me","Width [fs"/))
            else 
              call OUTPUT_driver(what,ORDER=(/"Eo"/))
              if (.not.report_Sc) call OUTPUT_driver(what,ORDER=(/"E [eV"/))
              call OUTPUT_driver(what,ORDER=(/"E-Eo [eV"/))
-             if (     report_Sc) call OUTPUT_driver(what,ORDER=(/"Sc|Eo"/))
-             if (.not.report_Sc) call OUTPUT_driver(what,ORDER=(/"Re(Z)"/))
+             !if (.not.On_Mass_Shell_approx) then
+               if (     report_Sc) call OUTPUT_driver(what,ORDER=(/"Sc|Eo"/))
+               if (.not.report_Sc) call OUTPUT_driver(what,ORDER=(/"Re(Z)"/)) 
+             !endif
              if (l_elph_corr) then
                call OUTPUT_driver(what,ORDER=(/"Width [me"/))
              endif

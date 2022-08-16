@@ -27,29 +27,28 @@ subroutine ELPH_model_jellium(q)
  use com,           ONLY:msg
  use pars,          ONLY:SP,DP,rZERO
  use vec_operate,   ONLY:iku_v_norm
- use RIM,           ONLY:RIM_n_rand_pts
+ use RIM,           ONLY:RIM_n_rand_pts,RIM_pt
  use R_lattice,     ONLY:bz_samp
  use MODELS,        ONLY:MODEL_E_ph,MODEL_effective_mass,MODEL_elph_alpha,MODEL_E_ph,MODEL_ep_dV
  use LIVE_t,        ONLY:live_timing
  use parallel_int,  ONLY:PP_redux_wait
- use QP_m,          ONLY:QP_Sc
  use parallel_m,    ONLY:PAR_IND_Q_bz_ID,PAR_IND_Q_bz,PAR_COM_Q_INDEX
  !
- implicit none
+#include<memory.h>
  !
  type(bz_samp)      :: q
  !
  ! Work Space
  !
- integer  :: iq,N_out,ip
+ integer  :: iq,ip
  real(DP) :: OMS_dp
- real(SP) :: OMS(1),q_norm_square,q_grid_norm_square,pts(3,RIM_n_rand_pts),OMS_exact,integral
+ real(SP) :: OMS(1),q_norm_square,q_grid_norm_square,OMS_exact,integral
  !
  call section('=','Jellium Fan Self-Energy')
  !
  OMS(1)=rZERO
  !
- call rim_random_points_generator('Unit-Cell',q%nbz,pts,N_out)
+ !call rim_random_points_generator('Unit-Cell',q%nbz)
  !
  call live_timing('Fan SE',PAR_IND_Q_bz%n_of_elements(PAR_IND_Q_bz_ID+1))
  !
@@ -59,15 +58,15 @@ subroutine ELPH_model_jellium(q)
    !
    OMS_dp=0._DP
    !
-   q_grid_norm_square=iku_v_norm(q%pt(iq,:))**2
+   q_grid_norm_square=iku_v_norm(q%ptbz(iq,:))**2
    integral=1./(MODEL_E_ph+q_grid_norm_square/2./MODEL_effective_mass)
    if (RIM_n_rand_pts>0) then
      do ip=1,RIM_n_rand_pts
-       q_norm_square=iku_v_norm(q%pt(iq,:)+pts(:,ip))**2
+       q_norm_square=iku_v_norm(q%ptbz(iq,:)+RIM_pt(:,ip))**2
        OMS_dp=OMS_dp-MODEL_ep_dV**2./q_norm_square*integral
      enddo
    else
-     if (iq>1) OMS_dp=-MODEL_ep_dV**2./iku_v_norm(q%pt(iq,:))**2*integral
+     if (iq>1) OMS_dp=-MODEL_ep_dV**2./q_grid_norm_square*integral
    endif
    !
    OMS=OMS+OMS_dp
@@ -84,8 +83,10 @@ subroutine ELPH_model_jellium(q)
  OMS(1)=OMS(1)/float(q%nbz)
  OMS_exact=-MODEL_elph_alpha*MODEL_E_ph
  !
- QP_Sc=OMS(1)
+ call msg('nrl','[El-Ph] Jellium Integral (calc/exact)',(/OMS(1)*HA2EV,OMS_exact*HA2EV/),"[ev]")
  !
- call msg('nr','[El-Ph] Jellium Integral (calc/exact)',(/OMS(1)*HA2EV,OMS_exact*HA2EV/),"[ev]")
+ ! Clean
+ !-------
+ YAMBO_FREE(RIM_pt)
  !
 end subroutine
