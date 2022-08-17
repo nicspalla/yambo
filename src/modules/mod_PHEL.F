@@ -124,14 +124,14 @@ module PHEL
    end subroutine
    !
    function PH_energy(q,il,iq)
-     use ELPH,      ONLY:l_GKKP_expanded_DB_exists,l_GKKP_DB_exists,PH_freqs_sq
+     use ELPH,      ONLY:l_GKKP_DB_is_expanded,PH_freqs_sq
      use R_lattice, ONLY:bz_samp
      implicit none
      integer       :: iq,il
      real(SP)      :: PH_energy
      type(bz_samp) :: q
-     if (l_GKKP_expanded_DB_exists) PH_energy=abs(sqrt(PH_freqs_sq(q%k_table(iq,1),il)))
-     if (l_GKKP_DB_exists         ) PH_energy=abs(sqrt(PH_freqs_sq(iq,il)))
+     if (     l_GKKP_DB_is_expanded) PH_energy=abs(sqrt(PH_freqs_sq(q%k_table(iq,1),il)))
+     if (.not.l_GKKP_DB_is_expanded) PH_energy=abs(sqrt(PH_freqs_sq(iq,il)))
    end function
    !
    subroutine PHEL_gimme_Ks(k,iq,ikbz,ik,ik_m_q,l_RT)

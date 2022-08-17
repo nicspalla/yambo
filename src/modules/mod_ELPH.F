@@ -29,16 +29,13 @@ module ELPH
  !
 #include<memory.h>
  !
- ! Dumensions
+ ! Dimensions
  integer   :: ph_modes=0
  integer   :: elph_nb=0
  integer   :: elph_nk_bz=0
  integer   :: elph_nQ=0
  integer   :: elph_nQ_used=0
  integer   :: elph_branches(2)=0
- !
- logical   :: elph_use_q_grid=.FALSE.
- logical   :: elph_grids_are_expanded=.FALSE.
  !
  ! QP props
  real(SP),    allocatable :: QP_OMS_Fan(:)
@@ -75,7 +72,8 @@ module ELPH
  ! GKKP Matrix Elements and derived quantities
  type GKKP_me
    !
-   character(schlen)        :: KIND="none" ! dV, dV_bare, dV_sq, DW, dV_bare_sq
+   character(schlen)        :: KIND="none"     ! dV, dV_bare, dV_sq, DW, dV_bare_sq
+   character(schlen)        :: H="DFPT"        ! Debye, Frohlich, DFPT
    !
    ! dVr/c(Nmodes,Nb,Nb,Nk,Nq)
    real(SP),    allocatable :: dVr(:,:,:,:,:)
@@ -129,8 +127,8 @@ module ELPH
  ! Databases
  logical :: l_GKKP_hosts_bare_dV=.FALSE.
  logical :: l_GKKP_DB_exists=.FALSE.
- logical :: l_GKKP_expanded_DB_exists=.FALSE.
- character(schlen) :: gkkp_db ! Database type for el-ph calculation (gkkp | expanded )
+ logical :: l_GKKP_DB_is_expanded=.FALSE.
+ logical :: elph_use_q_grid=.FALSE.
  !
  contains
    !

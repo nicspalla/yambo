@@ -33,7 +33,7 @@ subroutine ELPH_databases_load(GKKP_sq,E,k,q,n_bands,q_range,K_mode,SCATT_mode)
  use IO_int,         ONLY:io_control
  use IO_m,           ONLY:OP_RD_CL
  use ELPH,           ONLY:PH_freqs_sq,GKKP,ph_modes,MAX_gkkp,Q_io_map,GKKP_me,K_io_map,&
-&                         l_GKKP_DB_exists,l_GKKP_expanded_DB_exists,elph_nQ,GKKP_bare
+&                         l_GKKP_DB_exists,l_GKKP_DB_is_expanded,elph_nQ,GKKP_bare
  use interfaces,     ONLY:ELPH_alloc
  use parallel_int,   ONLY:PP_redux_wait
  use LIVE_t,         ONLY:live_timing
@@ -73,8 +73,8 @@ subroutine ELPH_databases_load(GKKP_sq,E,k,q,n_bands,q_range,K_mode,SCATT_mode)
  ! DB name
  !=========
  if (l_Q_IBZ) then
-   if (l_GKKP_DB_exists         ) db_name="gkkp"
-   if (l_GKKP_expanded_DB_exists) db_name="gkkp_expanded"
+   if (l_GKKP_DB_exists     ) db_name="gkkp"
+   if (l_GKKP_DB_is_expanded) db_name="gkkp_expanded"
  endif
  if (l_Q_BZ) db_name="gkkp_expanded"
  !
@@ -99,7 +99,7 @@ subroutine ELPH_databases_load(GKKP_sq,E,k,q,n_bands,q_range,K_mode,SCATT_mode)
    !
    iq_ibz=iq
    iq_s  =1
-   if (l_GKKP_expanded_DB_exists) then
+   if (l_GKKP_DB_is_expanded) then
      iq_ibz=q%sstar(iq,1)
      iq_s  =q%sstar(iq,2)
    endif
@@ -148,8 +148,8 @@ subroutine ELPH_databases_load(GKKP_sq,E,k,q,n_bands,q_range,K_mode,SCATT_mode)
          elseif (l_bare) then
            GKKP_to_sym(:,i_n,i_np)=abs(GKKP_bare%dVc(:,i_np,i_n,K_io_map(ik_bz),1))**2
          elseif (l_mixed) then
-           GKKP_to_sym(:,i_n,i_np)= &
-&          get_mixed_couplings(GKKP%dVc(:,i_np,i_n,K_io_map(ik_bz),1), GKKP_bare%dVc(:,i_np,i_n,K_io_map(ik_bz),1))
+           GKKP_to_sym(:,i_n,i_np)=get_mixed_couplings(GKKP%dVc(:,i_np,i_n,K_io_map(ik_bz),1),&
+&                                                      GKKP_bare%dVc(:,i_np,i_n,K_io_map(ik_bz),1))
          endif
          !
        enddo

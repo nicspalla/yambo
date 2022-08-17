@@ -78,6 +78,11 @@ subroutine ELPH_alloc(what,GKKP,Nb,Nm,Nk_mem,Nq_mem)
          GKKP%dVr=rZERO
        endif
        !
+#if defined _MODELS
+     case ('Debye','Frohlich')
+       GKKP%model=trim(strings(is))
+#endif
+       !
      case ('dV','dV_bare')
        if (.not.allocated(GKKP%dVc)) then
          GKKP%KIND=trim(strings(is))

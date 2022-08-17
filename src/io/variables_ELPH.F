@@ -26,12 +26,12 @@ integer function variables_ELPH(ID,what)
  use pars,           ONLY:SP
  use IO_m,           ONLY:io_status,read_is_on,write_is_on,io_mode,DUMP,IO_INCOMPATIBLE_VAR
  use IO_int,         ONLY:ver_is_gt_or_eq,io_variable_elemental,io_bulk,def_variable_elemental
- use ELPH,           ONLY:ph_modes,elph_nb,PH_freqs_sq,elph_nk_bz,ELPH_desc,elph_grids_are_expanded, &
+ use ELPH,           ONLY:ph_modes,elph_nb,elph_nk_bz,ELPH_desc,l_GKKP_DB_is_expanded,&
 &                         QP_PH_n_G_bands,PH_W_debye,elph_nQ,PH_kpt_bz,l_GKKP_hosts_bare_dV,&
 &                         elph_use_q_grid,PH_qpt,elph_nQ_used,PH_pol_vector,elph_Ham_bands,elph_branches
  use interfaces,     ONLY:ELPH_alloc
  use R_lattice,      ONLY:nkbz,nqibz,q_pt
- use QP_m,           ONLY:QP_n_states,QP_nb,QP_nk,QP_table
+ use QP_m,           ONLY:QP_n_states,QP_nb,QP_nk
  use vec_operate,    ONLY:rlu_v_is_zero,c2a
  use zeros,          ONLY:k_rlu_zero
  use descriptors,    ONLY:IO_desc_reset
@@ -49,10 +49,10 @@ integer function variables_ELPH(ID,what)
  !
  ! DB type
  !
- elph_grids_are_expanded=index(what,'gkkp_expanded')>0
- l_gFsq                 =index(what,'gFsq')>0
+ l_GKKP_DB_is_expanded=index(what,'gkkp_expanded')>0
+ l_gFsq               =index(what,'gFsq')>0
  l_gkkp=.FALSE.
- if(.not.l_gFsq.and..not.elph_grids_are_expanded)  l_gkkp=.TRUE.
+ if(.not.l_gFsq.and..not.l_GKKP_DB_is_expanded)  l_gkkp=.TRUE.
  !
  call IO_desc_reset(ELPH_desc)
  !
@@ -105,7 +105,7 @@ integer function variables_ELPH(ID,what)
    enddo
  endif
  !
- if (elph_grids_are_expanded) then
+ if (l_GKKP_DB_is_expanded) then
    !
    call io_bulk(ID,VAR="PH_K",VAR_SZ=(/nkbz,3/) )
    call io_bulk(ID,R2=PH_kpt_bz(:,:))

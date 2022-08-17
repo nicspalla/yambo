@@ -33,7 +33,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  use frequency,      ONLY:w_samp,W_reset
  use electrons,      ONLY:levels
  use LIVE_t,         ONLY:live_timing
- use com,            ONLY:msg
+ use com,            ONLY:msg,com_compose_msg
  use functions,      ONLY:BZ_index
  use collision_el,   ONLY:elemental_collision
  use COLL_interfaces,ONLY:SCATTERING_GW_kinematics
@@ -44,7 +44,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
                           PAR_COM_Q_A2A,PAR_COM_Q_INDEX,myid
  use IO_int,         ONLY:io_control,IO_and_Messaging_switch
  use IO_m,           ONLY:manage_action,OP_RD,REP,RD_CL_IF_END,OP_WR,WR,WR_CL,&
-&                         deliver_IO_error_message,OP_WR_CL,OP_APP_CL,DUMP
+&                         OP_WR_CL,OP_APP_CL,DUMP
  use QP_ctl_m,       ONLY:QP_apply
  use QP_m,           ONLY:QP_t,QP_G_damp,QP_Sc,QP_n_states,QP_table,&
 &                         QP_dSc_steps,QP_dSc_delta,QP_solver,QP_Sc_steps,&
@@ -52,10 +52,10 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  use D_lattice,      ONLY:sop_inv,nsym,i_time_rev,sop_tab
  use R_lattice,      ONLY:bz_samp
  use ELPH,           ONLY:elph_nb,PH_freqs_sq,GKKP,ph_modes,PH_freqs,FineGd_E_kpq_components_reset,&
-&                         QP_PH_n_G_bands,PH_W_debye,use_PH_DbGd,EkplusQ_mode,gkkp_db,elph_grids_are_expanded, &
+&                         QP_PH_n_G_bands,PH_W_debye,use_PH_DbGd,EkplusQ_mode, &
 &                         elph_nQ,elph_use_q_grid,setup_k_plus_q_levels,elph_nQ_used,&
 &                         E_kpq_sh_fact,gsqF_energy_steps,eval_G_using_KK,PH_qpt,ID_E_kpq,ID_E_kpq_obj, &
-&                         elph_branches,QP_DW,QP_OMS_Fan,FAN_deltaE_treshold
+&                         elph_branches,QP_DW,QP_OMS_Fan,FAN_deltaE_treshold,l_GKKP_DB_is_expanded,l_GKKP_DB_exists
  use interfaces,     ONLY:QP_state_print,ELPH_alloc
  use interpolate,    ONLY:INTERPOLATE_is_serial,INTERPOLATION_coefficients,INTERP_obj,INTERP_shell_factor,&
 &                         INTERPOLATE_is_quiet    
@@ -80,7 +80,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  integer, external::io_ELPH,io_Double_Grid,io_gFsq
  character(schlen)::ch
  real(SP)         ::ph_E,elph_gkkp_sq,E_random_shift
- logical          ::l_WRgFsq,l_GF_from_CA,load_gkkp_DB,MULTIPLY_by_Qsquare
+ logical          ::l_WRgFsq,l_GF_from_CA,MULTIPLY_by_Qsquare
  real(SP), allocatable :: q_weight(:)
  type(elemental_collision) :: I
  ! 
@@ -132,24 +132,13 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 #endif
  !
  ! ELPH DB
- ! =======================
- select case(trim(gkkp_db)) 
-   case("gkkp")
-     load_gkkp_DB=.true.
-   case("gkkp_expanded")
-     load_gkkp_DB=.true.
-   case("Frohlich")
-     load_gkkp_DB=.false.
- end select
+ ! ========
+ if (STRING_same(GKKP%H,"dfpt")) call ELPH_databases_check(-1)
  !
- call msg('sr','GKKP database/model: '//gkkp_db)
+ call msg('nr',com_compose_msg(body="El-Ph Hamiltonian"),GKKP%H)
+ call msg('rn',com_compose_msg(body="BZ expanded"),l_GKKP_DB_is_expanded)
  !
- if (load_gkkp_DB) then
-   call io_control(ACTION=OP_RD,COM=REP,SEC=(/1/),ID=ID)
-   io_err=io_ELPH(ID,gkkp_db)
-   call deliver_IO_error_message(io_err,"GKKP")
-   if (io_err/=0) call error('El-Ph database not found')
- endif
+ if (.not.l_GKKP_DB_exists.and.STRING_same(GKKP%H,"dfpt")) call error("GKKP database not found")
  !
  !Sc Energy points
  !
@@ -224,7 +213,8 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 #if defined _MODELS
  MULTIPLY_by_Qsquare=.FALSE.
 #endif
- if (     elph_use_q_grid) call rim_integrate_elph("unit-cell",nq_to_sum,q%ptbz,              q_weight,2,MULTIPLY_by_Qsquare)
+ !if (     elph_use_q_grid) call rim_integrate_elph("unit-cell",nq_to_sum,q%ptbz,              q_weight,2,MULTIPLY_by_Qsquare)
+ if (     elph_use_q_grid) call rim_integrate_elph("sphere",nq_to_sum,q%ptbz,              q_weight,2,MULTIPLY_by_Qsquare)
  if (.not.elph_use_q_grid) call rim_integrate_elph("sphere",   nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,2,MULTIPLY_by_Qsquare)
  !
  if(elph_nQ_used/=elph_nQ) call warning(" Number of q-used different from total number of q-points")
@@ -287,8 +277,6 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  !
  call ELPH_alloc('gFsq')
  !
- call section('=','Momenta and branches loop')
- !
  iq_db_ref=0
  !
  do iq_loop=1,nq_to_sum
@@ -296,8 +284,8 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    iq_db = iq_loop
    iq_bz = iq_loop
    if (elph_use_q_grid) then
-     if (     elph_grids_are_expanded) iq_db=iq_bz
-     if (.not.elph_grids_are_expanded) iq_db=q%sstar(iq_bz,1)
+     if (     l_GKKP_DB_is_expanded) iq_db=iq_bz
+     if (.not.l_GKKP_DB_is_expanded) iq_db=q%sstar(iq_bz,1)
    endif
    !
    ! DB I/O can be skipped except at the gamma point which is used to define E_k_plus_q_at_gamma array
@@ -307,14 +295,16 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    !
    if (iq_db/=iabs(iq_db_ref)) then
      !
-     if (load_gkkp_DB) then
+     if (STRING_same(GKKP%H,"DFPT")) then
        IO_ACT=manage_action(RD_CL_IF_END,iq_db,1,elph_nQ_used)
+       if (iq_db==1) IO_ACT=OP_RD
        call io_control(ACTION=IO_ACT,SEC=(/iq_db+1/),ID=ID)
-       io_err=io_ELPH(ID,gkkp_db)
+       if (     l_GKKP_DB_is_expanded) io_err=io_ELPH(ID,"gkkp_expanded")
+       if (.not.l_GKKP_DB_is_expanded) io_err=io_ELPH(ID,"gkkp")
        if (io_err<0) call error('Missing Q-database')
      endif
      !
-     if (.not.elph_use_q_grid.or.elph_grids_are_expanded) then
+     if (.not.elph_use_q_grid.or.l_GKKP_DB_is_expanded) then
        !
        if (iq_loop==1) E_random_shift=GKKP%E_kpq(iq_db)%E(en%nbf(1),1,1)-en%E(en%nbf(1),1,1)
        !
@@ -348,7 +338,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
        !
        if (elph_use_q_grid) then
          call SCATTERING_GW_kinematics(iq_bz,ob,I,k,q,QP_table(i_qp,:))
-         if (elph_grids_are_expanded) I%qs=(/1,iq_bz,1/)
+         if (l_GKKP_DB_is_expanded) I%qs=(/1,iq_bz,1/)
        else
          I%is=(/QP_table(i_qp,1),QP_table(i_qp,3),1,1/)
          I%os=(/ob,1,1,1/)
@@ -359,7 +349,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
        ib_gkkp   =I%is(1)
        ob_gkkp   =I%os(1)
        !
-       if (     elph_use_q_grid.and..not.elph_grids_are_expanded) then
+       if (     elph_use_q_grid.and..not.l_GKKP_DB_is_expanded) then
          !
          ! When using a uniform Q grid I cycle on the q symmetries 
          ! as well. To rotate the gkkp m.e. I use:

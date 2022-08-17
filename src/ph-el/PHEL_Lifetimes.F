@@ -39,7 +39,7 @@ subroutine PHEL_Lifetimes(E,k,q,k_FG,E_FG)
  use RT_lifetimes,   ONLY:l_initial_equilibrium,RT_PE_life,RT_PE_extra
  use real_time,      ONLY:l_RT_uses_E_FineGd,RT_eh_en
  use ELPH,           ONLY:PH_freqs_sq,MAX_gkkp,PH_acoustic_branch,GKKP_pe_sq,&
-&                         l_GKKP_expanded_DB_exists,l_GKKP_DB_exists
+&                         l_GKKP_DB_is_expanded
  use parallel_m,     ONLY:PARs_PH_Q_ibz
  use QP_m,           ONLY:QP_G_damp,l_extended_output
  use LIVE_t,         ONLY:live_timing
@@ -94,8 +94,8 @@ subroutine PHEL_Lifetimes(E,k,q,k_FG,E_FG)
    iq_mem =PARs_PH_Q_ibz%table(iq)
    iq_life=iq_mem
    !
-   if (l_GKKP_expanded_DB_exists) ph_freq=abs(sqrt(PH_freqs_sq(q%k_table(iq,1),il)))
-   if (l_GKKP_DB_exists         ) ph_freq=abs(sqrt(PH_freqs_sq(iq,il)))
+   if (     l_GKKP_DB_is_expanded) ph_freq=abs(sqrt(PH_freqs_sq(q%k_table(iq,1),il)))
+   if (.not.l_GKKP_DB_is_expanded) ph_freq=abs(sqrt(PH_freqs_sq(iq,il)))
    !
    if (iq==1 .and. PH_acoustic_branch(il)) cycle
    !

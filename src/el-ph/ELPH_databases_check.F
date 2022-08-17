@@ -24,8 +24,8 @@
 subroutine ELPH_databases_check(n_bands)
  ! 
  use IO_int,         ONLY:io_control
- use IO_m,           ONLY:REP,OP_RD_CL
- use ELPH,           ONLY:l_GKKP_DB_exists,l_GKKP_expanded_DB_exists,elph_nb
+ use IO_m,           ONLY:REP,OP_RD_CL,deliver_IO_error_message
+ use ELPH,           ONLY:l_GKKP_DB_exists,l_GKKP_DB_is_expanded,elph_nb
  !
  implicit none
  !
@@ -33,19 +33,29 @@ subroutine ELPH_databases_check(n_bands)
  !
  ! Work Space
  !
- integer             ::ID,io_err
+ integer             ::ID(2),io_err(2),i_db
  integer, external   ::io_ELPH
+ logical             ::l_found(2)
  !
  ! I/O check
  !===========
- call io_control(ACTION=OP_RD_CL,COM=REP,SEC=(/1/),ID=ID)
- io_err=io_ELPH(ID,'gkkp')
- if (io_err==0) l_GKKP_DB_exists=n_bands<=elph_nb
+ l_found=.FALSE.
+ call io_control(ACTION=OP_RD_CL,COM=REP,SEC=(/1/),ID=ID(1))
+ call io_control(ACTION=OP_RD_CL,COM=REP,SEC=(/1/),ID=ID(2))
+ io_err(1)=io_ELPH(ID(1),'gkkp')
+ io_err(2)=io_ELPH(ID(2),'gkkp_expanded')
  !
- call io_control(ACTION=OP_RD_CL,COM=REP,SEC=(/1/),ID=ID)
- io_err=io_ELPH(ID,'gkkp_expanded')
- if (io_err==0) l_GKKP_expanded_DB_exists=n_bands<=elph_nb
+ do i_db=1,2
+   if (io_err(i_db)==0.and.n_bands>0) l_found(i_db)=n_bands<=elph_nb
+   if (io_err(i_db)==0.and.n_bands<0) l_found(i_db)=.TRUE.
+ enddo
  !
- if (all((/l_GKKP_DB_exists,l_GKKP_expanded_DB_exists/))) call error("Both expanded and un-expandend GKKP database found")
+ if (all(l_found)) call error("Both expanded and un-expandend GKKP database found")
+ l_GKKP_DB_exists=any(l_found)
+ l_GKKP_DB_is_expanded=l_found(2)
+ if (.not.l_GKKP_DB_exists) then
+   if (io_err(1)/=0) call deliver_IO_error_message(io_err(1),"GKKP",.TRUE.) 
+   if (io_err(2)/=0) call deliver_IO_error_message(io_err(2),"GKKP_expanded",.TRUE.) 
+ endif
  !
 end subroutine ELPH_databases_check

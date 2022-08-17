@@ -28,7 +28,7 @@ subroutine RT_ELPH_initialize(E,k,q)
  use electrons,      ONLY:levels
  use drivers,        ONLY:l_elph_scatt,l_phel_scatt
  use R_lattice,      ONLY:bz_samp
- use ELPH,           ONLY:PH_freqs_sq,PH_W_debye,GKKP_ep_sq,GKKP_pe_sq,l_GKKP_expanded_DB_exists,elph_nQ
+ use ELPH,           ONLY:PH_freqs_sq,PH_W_debye,GKKP_ep_sq,GKKP_pe_sq,l_GKKP_DB_is_expanded,elph_nQ
  !
 #include<memory.h>
  !
@@ -50,7 +50,7 @@ subroutine RT_ELPH_initialize(E,k,q)
  ! El-Ph databases check
  !=======================
  call ELPH_databases_check(RT_bands(2))
- if (.not.l_GKKP_expanded_DB_exists) then
+ if (.not.l_GKKP_DB_is_expanded) then
    call warning('ELPH (expanded) database not found and/or incompatible OR QP widths not provided. E-P scattering switched off')
    l_elph_scatt   =.FALSE.
    return

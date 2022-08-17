@@ -28,7 +28,7 @@ integer function io_ELPH(ID,what)
  use IO_int,         ONLY:io_connect,io_disconnect,io_fragment,&
 &                         io_bulk,io_header
  use ELPH,           ONLY:ph_modes,elph_nb,PH_freqs_sq,l_GKKP_hosts_bare_dV,&
-&                         PH_pol_vector,GKKP,elph_grids_are_expanded,GKKP,GKKP_bare
+&                         PH_pol_vector,GKKP,l_GKKP_DB_is_expanded,GKKP_bare
  use stderr,         ONLY:intc
  use interfaces,     ONLY:ELPH_alloc
  use R_lattice,      ONLY:nkbz
@@ -63,19 +63,19 @@ integer function io_ELPH(ID,what)
    l_gkkp=.TRUE.
  endif
  !
- elph_grids_are_expanded=index(what,'gkkp_expanded')>0
+ l_GKKP_DB_is_expanded=index(what,'gkkp_expanded')>0
  l_no_matrix_elements   =index(what,'no_matrix_elements')>0
  !
  io_ELPH=io_connect(desc=trim(db_name),type=2,ID=ID,FORCE_READ_MODE=(.not.any((/io_sec(ID,:)==1/))).and.frag_ELPH)
  if (io_ELPH/=0) then
-   elph_grids_are_expanded=.FALSE.
+   l_GKKP_DB_is_expanded=.FALSE.
    goto 1
  endif
  !
  if (any((/io_sec(ID,:)==1/))) then
    !
-   if (.not.elph_grids_are_expanded) io_ELPH=io_header(ID,R_LATT=.true.,KPTS=.true.,FRAG=frag_ELPH)
-   if (     elph_grids_are_expanded) io_ELPH=io_header(ID,R_LATT=.true.,KPTS=.false.,IMPOSE_SN=.FALSE.,FRAG=frag_ELPH)
+   if (.not.l_GKKP_DB_is_expanded) io_ELPH=io_header(ID,R_LATT=.true.,KPTS=.true.,FRAG=frag_ELPH)
+   if (     l_GKKP_DB_is_expanded) io_ELPH=io_header(ID,R_LATT=.true.,KPTS=.false.,IMPOSE_SN=.FALSE.,FRAG=frag_ELPH)
    if (io_ELPH/=0) goto 1
    !
    io_ELPH=variables_ELPH(ID,what)

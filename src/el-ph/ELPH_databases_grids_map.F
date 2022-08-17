@@ -26,8 +26,7 @@ subroutine ELPH_databases_grids_map(k,q)
  use drivers,        ONLY:l_phel_corr
  use pars,           ONLY:SP
  use R_lattice,      ONLY:bz_samp
- use ELPH,           ONLY:PH_qpt,PH_kpt_bz,elph_nQ,elph_nk_bz,K_io_map,Q_io_map,&
-&                         l_GKKP_expanded_DB_exists,l_GKKP_DB_exists
+ use ELPH,           ONLY:PH_qpt,PH_kpt_bz,elph_nQ,elph_nk_bz,K_io_map,Q_io_map,l_GKKP_DB_is_expanded,l_GKKP_DB_exists
  use vec_operate,    ONLY:v_is_zero,rlu_v_is_zero,c2a
  use zeros,          ONLY:k_rlu_zero
  !
@@ -40,11 +39,11 @@ subroutine ELPH_databases_grids_map(k,q)
  integer       ::i1,i2,nQ
  real(SP)      ::v(3)
  !
- if (l_GKKP_expanded_DB_exists) then
+ if (l_GKKP_DB_is_expanded) then
    if (elph_nQ   /=q%nbz) call error('Number of q-points does not match')
    if (elph_nk_bz/=k%nbz) call error('Number of k-points does not match')
    nQ=q%nbz
- else if (l_GKKP_DB_exists) then
+ else 
    nQ=q%nibz
  endif
  !
@@ -70,8 +69,8 @@ subroutine ELPH_databases_grids_map(k,q)
  call k_ibz2bz(q,'i',.false.)
  do i1=1,nQ
    do i2=1,elph_nQ
-     if (l_GKKP_expanded_DB_exists) call c2a(v_in=q%ptbz(i1,:)+PH_qpt(i2,:),v_out=v,mode="ki2a")
-     if (l_GKKP_DB_exists)          call c2a(v_in=q%pt(i1,:)+PH_qpt(i2,:),v_out=v,mode="ki2a")
+     if (     l_GKKP_DB_is_expanded) call c2a(v_in=q%ptbz(i1,:)+PH_qpt(i2,:),v_out=v,mode="ki2a")
+     if (.not.l_GKKP_DB_is_expanded) call c2a(v_in=q%pt(i1,:)+PH_qpt(i2,:),v_out=v,mode="ki2a")
      if (rlu_v_is_zero(v,zero_=k_rlu_zero)) Q_io_map(i1)=i2
    enddo
  enddo

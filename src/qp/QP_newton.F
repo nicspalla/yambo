@@ -45,6 +45,7 @@ subroutine QP_newton(X,Xen,Xk,en,k,q,qp,Xw,Dip)
  use drivers,       ONLY:l_elphoton_corr
 #endif
  implicit none
+ !
  type(levels) ::en,Xen
  type(bz_samp)::Xk,k,q
  type(X_t)    ::X

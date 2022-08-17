@@ -23,7 +23,7 @@
 !
 subroutine ELPH_model_init( )
  !
- use ELPH,          ONLY:GKKP,gkkp_db,elph_nQ,elph_nk_bz,elph_nQ_used,elph_use_q_grid,&
+ use ELPH,          ONLY:GKKP,elph_nQ,elph_nk_bz,elph_nQ_used,elph_use_q_grid,&
 &                        PH_W_debye
  use R_lattice,     ONLY:nqbz,nkbz
  use interfaces,    ONLY:ELPH_alloc
@@ -35,11 +35,10 @@ subroutine ELPH_model_init( )
  call parser('ForceJell',l_MODEL_force_jellium)
  if (l_MODEL_force_jellium) call warning("Jellium e-p Self-Energy mode")
  PH_W_debye=MODEL_E_ph
- gkkp_db=MODEL_gkkp_kind
  elph_nQ=nqbz
  elph_nk_bz=nkbz
  elph_nQ_used=nqbz
  elph_use_q_grid=.TRUE.
- call ELPH_alloc('dV PHONONS',GKKP,Nk_mem=1)
+ call ELPH_alloc('dV PHONONS '//trim(MODEL_gkkp_kind),GKKP,Nk_mem=1)
  !
 end subroutine

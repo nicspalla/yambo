@@ -104,11 +104,13 @@ subroutine External_corrections(en,Xen,Ken,DIPen,Xk,k,X)
  ! ====================================================
  bands_to_correct=(/1,n_bands/)
  if (l_gw0)                  call QP_apply(bands_to_correct,en,k,"G",msg_fmt='rs',main_section=.TRUE.)
+ !
 #if defined _ELPH
  !
  ! Green's Function (k+q levels loaded for the _ELPH)
  !
  if (l_gw0.and.l_elph_corr) then
+   !
    elph_branches_save  =elph_branches
    QP_PH_n_G_bands_save=QP_PH_n_G_bands
    !

@@ -29,7 +29,7 @@ subroutine ELPH_double_grid(k,E,q)
  use YPP_ELPH,            ONLY:ph_modes_file,ph_freqs_file
  use stderr,              ONLY:STRING_same,intc
  use ELPH,                ONLY:PH_freqs_sq,elph_use_q_grid,ph_modes,GKKP,elph_nb,PH_freqs,elph_nQ,EkplusQ_mode, &
-&                              elph_grids_are_expanded         
+&                              l_GKKP_DB_is_expanded         
  use com,                 ONLY:msg
  use parser_m,            ONLY:parser
  use IO_int,              ONLY:io_control
@@ -103,7 +103,7 @@ subroutine ELPH_double_grid(k,E,q)
  !
  do iq_ibz=1,q%nibz
    iq_db=iq_ibz
-   if(elph_grids_are_expanded) then
+   if(l_GKKP_DB_is_expanded) then
       if(iq_db>1) iq_db=sum(q%nstar(:iq_ibz-1))+1
    endif
    call io_control(ACTION=OP_RD_CL,COM=REP,MODE=DUMP,SEC=(/1+iq_db/),ID=ID)
@@ -120,8 +120,7 @@ subroutine ELPH_double_grid(k,E,q)
  ! Since phonon in the ELPH_Sigma_c are in the BZ, I force
  ! this expantion for the PH-Double-Grid, it can be extended to the other cases
  !
- if(.not.STRING_same(BZ_FineGd_mode,"mixed")) &
-&   call warning("Phonon double-grid tested only in 'mixed' mode")
+ if(.not.STRING_same(BZ_FineGd_mode,"mixed")) call warning("Phonon double-grid tested only in 'mixed' mode")
  l_mix     =STRING_same(BZ_FineGd_mode,"mixed")
  l_expand  =STRING_same(BZ_FineGd_mode,"expanded")
  l_unexpand=STRING_same(BZ_FineGd_mode,"unexpanded")
