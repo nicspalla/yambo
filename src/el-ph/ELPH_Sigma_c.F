@@ -257,7 +257,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  ! Jellium Model
  !---------------
  !
- call ELPH_model_gkkp( )
+ call ELPH_model_gkkp(GKKP)
  !
  ! Ad-Hoc integration of the Jellium Fan SE
  call ELPH_model_jellium(q)

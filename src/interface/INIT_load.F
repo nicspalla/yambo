@@ -46,7 +46,7 @@ subroutine INIT_load(defs,en,q,k,X,Xw,Dip)
  use wave_func,     ONLY:wf_ng
  use D_lattice,     ONLY:Tel,non_periodic_directions,molecule_position,Bose_Temp
  use RIM,           ONLY:RIM_W_ng,RIM_ng,RIM_epsm1,RIM_id_epsm1_reference,RIM_n_rand_pts
- use R_lattice,     ONLY:ng_closed,QP_states_k,nXkibz,k_GRIDS_string,&
+ use R_lattice,     ONLY:ng_closed,QP_states_k,nXkibz,k_GRIDS_string,qindx_X_q_range,&
 &                        bz_samp,cyl_ph_radius,box_length,cyl_length,cut_geometry,ws_cutoff
  use BS,            ONLY:BSE_mode,BSE_prop,BSK_mode,BS_eh_en,BS_eh_win,BS_q,BS_bands,&
 &                        BS_n_g_W,BS_n_g_exch,BS_n_g_fxc,BSE_L_kind,BS_K_cutoff,BSK_IO_mode,BSE_dipole_geometry
@@ -202,6 +202,7 @@ subroutine INIT_load(defs,en,q,k,X,Xw,Dip)
  call it(defs,'K_grids', '[KPT] Select the grids (X=response, S=sigma, C=collisions, B=bse) [default X S C B]',&
 &                        k_GRIDS_string,verb_level=V_kpt)
  call it(defs,'IkSigLim','[KPT] QP K-points indices range',QP_states_k,verb_level=V_kpt)
+ call it(defs,'IqXLim',  '[KPT] X transferred momenta range',qindx_X_q_range,verb_level=V_kpt)
  call it(defs,'IkXLim',  '[KPT] X grid last k-point index',nXkibz,verb_level=V_kpt)
  call it(defs,'Nelectro','Electrons number',nel,verb_level=V_general)
  call it(defs,'ElecTemp','Electronic Temperature',Tel,T_unit,verb_level=V_general)

@@ -21,16 +21,18 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine ELPH_model_gkkp()
+subroutine ELPH_model_gkkp(GKKP)
  !
  use pars,             ONLY:SP,pi
  use MODELS,           ONLY:MODEL_E_ph,MODEL_elph_alpha,MODEL_gkkp_kind,MODEL_effective_mass,MODEL_ep_dV
  use stderr,           ONLY:STRING_same
- use ELPH,             ONLY:GKKP,PH_freqs_sq
+ use ELPH,             ONLY:PH_freqs_sq,MAX_gkkp,GKKP_me
  use electrons,        ONLY:default_nel
  use D_lattice,        ONLY:DL_vol
  !
  implicit none
+ !
+ type(GKKP_me) :: GKKP
  !
  ! Work Space
  !
@@ -42,9 +44,17 @@ subroutine ELPH_model_gkkp()
    EM_sq=2*pi**2*MODEL_E_ph*(4*pi)**(1./3.)/(3*default_nel)**1./3.*MODEL_elph_alpha
  else if (STRING_same(MODEL_gkkp_kind,"Frohlich")) then 
    EM_sq=2.*pi*MODEL_E_ph*sqrt(2*pi*MODEL_E_ph/MODEL_effective_mass)*MODEL_elph_alpha/DL_vol
+ else
+   call error("Model kind is not specified")
  endif
  MODEL_ep_dV=sqrt(EM_sq)
  !
- GKKP%dVc(1,:,:,:,1)=sqrt(EM_sq*2.*MODEL_E_ph)
+ if (allocated(GKKP%dVc)) then
+   GKKP%dVc(1,:,:,:,1)=sqrt(2.*EM_sq*MODEL_E_ph)
+ endif
+ if (allocated(GKKP%dVr)) then
+   GKKP%dVr(:,:,:,1,1)=2.*EM_sq*MODEL_E_ph
+   MAX_gkkp=GKKP%dVr(1,1,1,1,1)
+ endif
  !
 end subroutine

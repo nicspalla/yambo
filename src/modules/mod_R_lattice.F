@@ -49,6 +49,7 @@ module R_lattice
  integer  :: nkibz
  integer  :: nXkbz
  integer  :: nXkibz
+ integer  :: qindx_X_q_range(2)
  real(SP) :: RL_vol
  real(SP) :: d3k_factor
  real(SP) :: d3q_factor
@@ -208,7 +209,11 @@ module R_lattice
      integer :: nK_qindx_B
      !
      if(  (index(what,"X")/=0 .or. index(what,"ALL")/=0) .and. X_scattering) then
-       YAMBO_ALLOC(qindx_X,(nqibz,nXkbz,2))
+       if (any(qindx_X_q_range<0)) then
+         YAMBO_ALLOC(qindx_X,(nqibz,nXkbz,2))
+       else
+         YAMBO_ALLOC(qindx_X,(qindx_X_q_range(1):qindx_X_q_range(2),nXkbz,2)) 
+       endif
        qindx_X=0
      endif
      !

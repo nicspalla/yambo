@@ -31,6 +31,7 @@ subroutine PHEL_Self_Energy(iq,E,k,q,k_FG,E_FG)
  ! [DEBUG] Emit and Abs lifetimes should eventually be removed (computed only 
  !         out of eq.). We keep them here for future debugging of the RT part.
  !
+ use units
  use drivers,        ONLY:l_life
  use pars,           ONLY:SP,cI,pi,schlen
  use electrons,      ONLY:levels,spin_occ,E_fine_grid
@@ -119,10 +120,12 @@ subroutine PHEL_Self_Energy(iq,E,k,q,k_FG,E_FG)
    ! Therefore:                GKKP_NOTES[i_np,i_n] = GKKP_YAMBO[i_n,i_np],
    ! which is what must go into the pre_factor of the lifetimes
    !
+#if !defined _MODELS
    if (sqrt(GKKP_pe_sq%dVr(il,i_n,i_np,ikbz,iq_mem))<MAX_gkkp*cutoff) then
      call Live_Timing_release( )
      cycle
    endif
+#endif
    !
    ! Prefactor
    !====================================
@@ -136,7 +139,11 @@ subroutine PHEL_Self_Energy(iq,E,k,q,k_FG,E_FG)
    ! (iv ) 1/(Nk_bz*N_FG_k*N_FG_k_m_q) accounting for the double grid at each bz point.
    ! (v  ) pi since it *shouldn't* come later from the hyperbolic secant FT. In the equilibrium case 1/pi is included below
    !
+#if !defined _MODELS
    pre_factor=spin_occ*GKKP_pe_sq%dVr(il,i_n,i_np,ikbz,iq_mem)*pi/(k%nbz*k_FG%N_mapped(ik)*k_FG%N_mapped(ik_m_q)*ph_freq)
+#else
+   pre_factor=spin_occ*GKKP_pe_sq%dVr(il,i_n,i_np,1,1)*pi/(k%nbz*k_FG%N_mapped(ik)*k_FG%N_mapped(ik_m_q)*ph_freq)
+#endif
    !
    ! Double grid (no/yes)
    !====================================

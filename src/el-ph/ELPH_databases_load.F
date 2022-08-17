@@ -86,7 +86,12 @@ subroutine ELPH_databases_load(GKKP_sq,E,k,q,n_bands,q_range,K_mode,SCATT_mode)
  if (l_Q_BZ ) NQ=PAR_nQ_bz
  if (l_K_IBZ) NK=PAR_Xk_nibz
  if (l_K_BZ ) NK=k%nbz
+#if defined _MODELS
+ call ELPH_alloc("dV_sq",GKKP=GKKP_sq,Nk_mem=1,Nq_mem=1,NB=n_bands)
+ return
+#else
  call ELPH_alloc("dV_sq",GKKP=GKKP_sq,Nk_mem=NK,Nq_mem=NQ,NB=n_bands)
+#endif
  MAX_gkkp_expanded_at_kpq=rZERO
  ph_Esq_local=rZERO
  !

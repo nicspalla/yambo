@@ -52,7 +52,7 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
 &                     molecule_position
  use pseudo,     ONLY:pp_n_l_times_proj_max,pp_kbv_dim
  use R_lattice,  ONLY:n_g_shells,ng_closed,bse_scattering,coll_scattering,&
-&                     Xk_grid_is_uniform,nqibz,q0_def_norm,cutoff_presets,k_map
+&                     Xk_grid_is_uniform,nqibz,q0_def_norm,cutoff_presets,k_map,qindx_X_q_range
  use RIM,        ONLY:RIM_id_epsm1_reference,RIM_epsm1,RIM_anisotropy,RIM_ng,RIM_W_ng,RIM_n_rand_pts
  use electrons,  ONLY:n_spin,n_sp_pol,n_spinor,filled_tresh,l_spin_orbit,n_spin_den,eval_magn
  use parallel_m, ONLY:ncpu,CPU_str_reset,CREATE_hosts_COMM
@@ -279,9 +279,10 @@ subroutine SET_defaults(INSTR,IND,OD,COM_DIR)
  bse_scattering=.FALSE.
  Xk_grid_is_uniform=.TRUE.
  q0_def_norm=1.E-5_SP
- k_map%g0_idx  =-1
- k_map%q_step  =-1
- k_map%max_kdir= 0
+ k_map%g0_idx   =-1
+ k_map%q_step   =-1
+ k_map%max_kdir = 0
+ qindx_X_q_range= 0
  !
  ! RIM
  !

@@ -27,7 +27,7 @@ integer function io_QINDX(Xk,q,io_db)
  use R_lattice,      ONLY:nqibz,nqbz,qindx_X,qindx_B,qindx_S,qindx_C,&
 &                         bse_scattering,QP_states_k,nXkibz,qindx_alloc,&
 &                         Xk_grid_is_uniform,bz_samp,nXkbz,coll_scattering,q_pt,&
-&                         sigma_scattering,X_scattering,k_GRIDS_string
+&                         sigma_scattering,X_scattering,k_GRIDS_string,qindx_X_q_range
  use IO_m,           ONLY:io_sec,frag_QINDX,io_status,read_is_on,IO_OUTDATED_DB, &
 &                         write_is_on,io_extension
  use IO_int,         ONLY:io_connect,io_disconnect,&
@@ -58,32 +58,31 @@ integer function io_QINDX(Xk,q,io_db)
    ! In revision 3085 the coll indx has been ceated with two new logicals
    ! in the header
    !
-   if (.not.ver_is_gt_or_eq(io_db,revision=5545)) io_QINDX=IO_OUTDATED_DB
+   if (.not.ver_is_gt_or_eq(io_db,revision=18984)) io_QINDX=IO_OUTDATED_DB
    if (io_QINDX/=0) goto 1
    !
-   if (.not.ver_is_gt_or_eq(io_db,revision=18984)) call def_variable_elemental(io_db,"PARS",9,SP,0)
-   if (     ver_is_gt_or_eq(io_db,revision=18984)) call def_variable_elemental(io_db,"PARS",7,SP,0)
+   if (.not.ver_is_gt_or_eq(io_db,revision=21668)) call def_variable_elemental(io_db,"PARS",7,SP,0)
+   if (     ver_is_gt_or_eq(io_db,revision=21668)) call def_variable_elemental(io_db,"PARS",9,SP,0)
    !
    call io_variable_elemental(io_db,I0=nXkbz)
    call io_variable_elemental(io_db,VAR="Polarization last K",I0=nXkibz)
-   call io_variable_elemental(io_db,VAR="QP states",I1=QP_states_k,CHECK=.true.,OP=(/">=","<="/))
+   call io_variable_elemental(io_db,VAR="K points computed",I1=QP_states_k,CHECK=.true.,OP=(/">=","<="/))
+   if (ver_is_gt_or_eq(io_db,revision=21668)) then
+     call io_variable_elemental(io_db,VAR="Q points computed",I1=qindx_X_q_range,CHECK=.true.,OP=(/">=","<="/))
+   endif
    call io_variable_elemental(io_db,I0=q%nibz)
    call io_variable_elemental(io_db,I0=q%nbz)
    call io_variable_elemental(io_db,VAR="X grid is uniform",L0=Xk_grid_is_uniform)
    io_QINDX=io_status(io_db)
-   if (ver_is_gt_or_eq(io_db,revision=18984)) then
-     call def_variable_elemental(io_db,"CH_GRIDS",1,0,0)
-     call io_variable_elemental(io_db,VAR="Grids",CH0=k_GRIDS_string,CHECK=.TRUE.,OP=(/"=="/))
-     call def_variable_elemental(io_db,"GRID_LOGICALS",4,SP,0)
-   endif
+   call def_variable_elemental(io_db,"CH_GRIDS",1,0,0)
+   call io_variable_elemental(io_db,VAR="Grids",CH0=k_GRIDS_string,CHECK=.TRUE.,OP=(/"=="/))
+   call def_variable_elemental(io_db,"GRID_LOGICALS",4,SP,0)
    !
    call io_variable_elemental(io_db,VAR="BS scattering",L0=bse_scattering,CHECK=.true.,OP=(/"=="/))
    call io_variable_elemental(io_db,VAR="COLL scattering",L0=coll_scattering,CHECK=.true.,OP=(/"=="/))
    !
-   if (ver_is_gt_or_eq(io_db,revision=18984)) then
-     call io_variable_elemental(io_db,VAR="Sigma scattering",L0=sigma_scattering,CHECK=.true.,OP=(/"=="/))
-     call io_variable_elemental(io_db,VAR="X scattering",L0=X_scattering,CHECK=.true.,OP=(/"=="/))
-   endif
+   call io_variable_elemental(io_db,VAR="Sigma scattering",L0=sigma_scattering,CHECK=.true.,OP=(/"=="/))
+   call io_variable_elemental(io_db,VAR="X scattering",L0=X_scattering,CHECK=.true.,OP=(/"=="/))
    !
    call def_variable_elemental(io_db,"",0,0,1)
    ioScatt=io_status(io_db)

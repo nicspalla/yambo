@@ -28,7 +28,7 @@ subroutine PHEL_driver(E,k,q)
  use electrons,      ONLY:levels,n_sp_pol,E_fine_grid
  use R_lattice,      ONLY:bz_samp,bz_samp_FineGd_default,bz_samp_FineGd_alloc,bz_fine_grid
  use interfaces,     ONLY:ELPH_alloc
- use ELPH,           ONLY:QP_PH_n_G_bands,elph_branches,GKKP_pe_sq,l_GKKP_DB_exists,elph_nb,elph_use_q_grid
+ use ELPH,           ONLY:QP_PH_n_G_bands,elph_branches,GKKP_pe_sq,elph_nb,elph_use_q_grid
  use PHEL,           ONLY:l_PH_uses_E_FineGd,PH_Self_Energy_mode,PHEL_free,PH_Q,PH_SF_W,PHEL_alloc,PHEL_qp,&
 &                         PH_DbGd_points,PH_energy,KpQ_io_map,phel_info,PHEL_fit_Energies,&
 &                         QPH_OMS,QPH_OMS_bare_Pole,QPH_full,QPH,QPHt_alloc,QPH_DDFPT
@@ -66,12 +66,19 @@ subroutine PHEL_driver(E,k,q)
  ! ... BZ Setup
  call k_build_up_BZ_tables(q)
  !
+#if defined _MODELS
+ ! Model e-p (init)
+ ! ================
+ call ELPH_model_init( )
+ !
+#endif
+ !
  ! El-Ph databases check
  !=======================
  call section('+',"Databases I/O")
+#if !defined _MODELS
  call ELPH_databases_check(elph_nb)
- !
- if (.not.l_GKKP_DB_exists) call error("GKKP databases absent or damaged")
+#endif
  !
  ! Already calculated?
  ! =====================
@@ -85,12 +92,6 @@ subroutine PHEL_driver(E,k,q)
    return
  endif
  !
-#if defined _MODELS
- ! Model e-p (init)
- ! ================
- call ELPH_model_init( )
-#endif
- !
  ! Q ranges
  !============================
  !
@@ -102,14 +103,24 @@ subroutine PHEL_driver(E,k,q)
  !===============
  call PARALLEL_global_indexes(E,k,q,"Phonon_Self_Energy")
  !
+#if !defined _MODELS
  ! Q/K grid remapping
  !====================
  call ELPH_databases_grids_map(k,q)
+#endif
  !
  ! El-Ph databases I/O
  !=====================
  call section("=","El-Ph databases loading")
  call ELPH_databases_load(GKKP_pe_sq,E,k,q,QP_PH_n_G_bands,PH_Q,"Q-sym Q-IBZ K-BZ",PH_Self_Energy_mode)
+ !
+#if defined _MODELS
+ !
+ ! Jellium Model
+ !---------------
+ call ELPH_model_gkkp(GKKP_pe_sq)
+ !
+#else
  !
  !...acoustic branches
  call ELPH_acoustic_phonon_properties(q)
@@ -118,6 +129,8 @@ subroutine PHEL_driver(E,k,q)
  !==================================
  call PHEL_screening(E,q,l_SS_test)
  if (l_SS_test) return
+ !
+#endif
  !
  ! Maps into the RT kinds
  !========================

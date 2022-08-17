@@ -30,6 +30,6 @@ subroutine INIT_activate_models()
  if (l_eval_collisions    ) call initactivate(1,"OnSiteU SkipIntraBand")
  if ((l_elph_corr.and.l_gw0).or.l_phel_corr) call initactivate(1,"MOD_gkkp_Kind MOD_PH_energy MOD_ELPH_alpha ")
  if (l_elph_corr.and.l_gw0) call initactivate(1,"ForceJell")
- if (l_phel_corr.or.l_elph_corr) call initactivate(-1,"PHELQpts ElPhModes PH_SE_mode GphBRnge")
+ if (l_phel_corr.or.l_elph_corr) call initactivate(-1,"ElPhModes PH_SE_mode GphBRnge")
  !
 end subroutine

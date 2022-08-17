@@ -100,6 +100,8 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
  !
  ! n_b_full_guess not set when the system is metallic ...
  !
+#if defined _MODELS
+ !
  if (nb_here>1) then
    !
    ! n_b_full_guess is used to avoid spurious oscillations
@@ -117,6 +119,8 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
  else
    n_b_full_guess=1
  endif
+ !
+#endif
  ! 
  if (Ef(2)<Ef(1).or.Ef(1)==Ef(2).or.nb_here==1) then
    Ef(1)=minval(E%E(n_b_full_guess,:,:))

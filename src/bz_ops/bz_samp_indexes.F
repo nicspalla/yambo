@@ -56,7 +56,7 @@ subroutine bz_samp_indexes(en,k,Xk,q)
 &                         qindx_X,qindx_B,qindx_S,qindx_C,qindx_free,&
 &                         bse_scattering,qindx_alloc,Xk_grid_is_uniform,&
 &                         k_grid,k_grid_b,q_pt,k_pt,bz_samp,q_norm,q0_def_norm,&
-&                         q_sstar,coll_scattering,q_source,smallest_q_norm,&
+&                         q_sstar,coll_scattering,q_source,smallest_q_norm,qindx_X_q_range,&
 &                         Xk_grid_new_mapping,k_GRIDS_string,X_scattering,sigma_scattering
  use IO_int,         ONLY:io_control
  use IO_m,           ONLY:OP_RD_CL,OP_WR_CL,OP_APP_CL,VERIFY,REP
@@ -319,6 +319,9 @@ subroutine bz_samp_indexes(en,k,Xk,q)
        iqs  =q%sstar(iqbz,2)
        !
        do_qindx_X=do_qindx_X_ik .and. iqs==1
+       if (all(qindx_X_q_range>0)) then
+         if (iqibz<qindx_X_q_range(1).or.iqibz>qindx_X_q_range(2)) do_qindx_X=.FALSE.
+       endif
        !
        if ((.not.do_qindx_X).and.(.not.do_qindx_B)) cycle
        !
@@ -537,11 +540,7 @@ subroutine bz_samp_indexes(en,k,Xk,q)
      !
      ! Grids string update
      !
-#if !defined _MODELS
      k_GRIDS_string="X"
-#else
-     k_GRIDS_string=" "
-#endif
      if (bse_scattering  ) k_GRIDS_string=trim(k_GRIDS_string)//" B"
      if (coll_scattering ) k_GRIDS_string=trim(k_GRIDS_string)//" C"
      if (sigma_scattering) k_GRIDS_string=trim(k_GRIDS_string)//" S"
