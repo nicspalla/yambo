@@ -85,8 +85,7 @@ subroutine rim_random_points_generator(GEO,N_grid)
  !
  if (l_sphere) then
    !
-   radius    =(3._SP*RL_vol/4._SP/pi)**(1._SP/3._SP)/float(N_grid)
-   !radius    =(3._SP*RL_vol/float(N_grid)/4._SP/pi)**(1._SP/3._SP)
+   radius    =(3._SP*RL_vol/float(N_grid)/4._SP/pi)**(1._SP/3._SP)
    RIM_IC_vol=(2.*radius*1.2)**3.
    RIM_UC_vol=4./3.*pi*radius**3.
    scaling   =radius*1.2_SP

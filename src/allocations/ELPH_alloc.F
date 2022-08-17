@@ -80,7 +80,7 @@ subroutine ELPH_alloc(what,GKKP,Nb,Nm,Nk_mem,Nq_mem)
        !
 #if defined _MODELS
      case ('Debye','Frohlich')
-       GKKP%model=trim(strings(is))
+       GKKP%H=trim(strings(is))
 #endif
        !
      case ('dV','dV_bare')

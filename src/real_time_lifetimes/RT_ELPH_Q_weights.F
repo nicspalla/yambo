@@ -46,8 +46,8 @@ subroutine RT_ELPH_Q_weights(q)
  YAMBO_ALLOC(q_weight_RT,(q%nbz,elph_branches(1):elph_branches(2),2))
  !
  if (RIM_n_rand_pts>0) then
-   call rim_integrate_elph("unit-cell",q%nbz,q%ptbz,RIM_weights(:,1),RADIUS_sphere,1,.FALSE.)
-   call rim_integrate_elph("unit-cell",q%nbz,q%ptbz,RIM_weights(:,2),RADIUS_sphere,2,.FALSE.)
+   call rim_integrate_elph("unit-cell",q%nbz,q%ptbz,RIM_weights(:,1),1,.FALSE.)
+   call rim_integrate_elph("unit-cell",q%nbz,q%ptbz,RIM_weights(:,2),2,.FALSE.)
  endif
  !
  do iq=1,q%nbz

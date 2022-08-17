@@ -21,7 +21,7 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine En_k_plus_q_interpolate(k,q,E,iqbz)
+subroutine ELPH_interpolate_E_at_k_plus_q(k,q,E,iqbz)
  !
  use pars,                ONLY:pi,rZERO
  use electrons,           ONLY:levels,n_sp_pol,E_reset,spin_occ
@@ -41,7 +41,7 @@ subroutine En_k_plus_q_interpolate(k,q,E,iqbz)
  type(bz_samp) :: k_plus_q
  type(levels)  :: E_kpq
  !
- if (n_sp_pol==2) call error("En_k_plus_q_interpolate to be checked for n_sp_pol==2")
+ if (n_sp_pol==2) call error("ELPH_interpolate_E_at_k_plus_q to be checked for n_sp_pol==2")
  !
  ! Allocation of the Double Grids for each k+q points
  ! =====================================================

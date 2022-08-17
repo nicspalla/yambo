@@ -157,10 +157,10 @@ subroutine QP_of(qp,en,QPdb_read_err,what)
              call OUTPUT_driver(what,ORDER=(/"Eo"/))
              if (.not.report_Sc) call OUTPUT_driver(what,ORDER=(/"E [eV"/))
              call OUTPUT_driver(what,ORDER=(/"E-Eo [eV"/))
-             !if (.not.On_Mass_Shell_approx) then
+             if (.not.On_Mass_Shell_approx) then
                if (     report_Sc) call OUTPUT_driver(what,ORDER=(/"Sc|Eo"/))
                if (.not.report_Sc) call OUTPUT_driver(what,ORDER=(/"Re(Z)"/)) 
-             !endif
+             endif
              if (l_elph_corr) then
                call OUTPUT_driver(what,ORDER=(/"Width [me"/))
              endif

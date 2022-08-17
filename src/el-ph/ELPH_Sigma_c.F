@@ -213,8 +213,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
 #if defined _MODELS
  MULTIPLY_by_Qsquare=.FALSE.
 #endif
- !if (     elph_use_q_grid) call rim_integrate_elph("unit-cell",nq_to_sum,q%ptbz,              q_weight,2,MULTIPLY_by_Qsquare)
- if (     elph_use_q_grid) call rim_integrate_elph("sphere",nq_to_sum,q%ptbz,              q_weight,2,MULTIPLY_by_Qsquare)
+ if (     elph_use_q_grid) call rim_integrate_elph("unit-cell",nq_to_sum,q%ptbz,              q_weight,2,MULTIPLY_by_Qsquare)
  if (.not.elph_use_q_grid) call rim_integrate_elph("sphere",   nq_to_sum,PH_qpt(:nq_to_sum,:),q_weight,2,MULTIPLY_by_Qsquare)
  !
  if(elph_nQ_used/=elph_nQ) call warning(" Number of q-used different from total number of q-points")
@@ -250,7 +249,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    call INTERPOLATION_BZ_setup(k)
    INTERP_obj(ID_E_kpq_obj)%what="E(k+q)"
    call INTERPOLATION_coefficients(E=en,k=k,ID=ID_E_kpq,ID_obj=ID_E_kpq_obj)
-   call En_k_plus_q_interpolate(k,q,en,1)  ! I need them for the DW term
+   call ELPH_interpolate_E_at_k_plus_q(k,q,en,1)  ! I need them for the DW term
  endif
  !
 #if defined _MODELS
@@ -326,7 +325,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
    !
    if (.not.PAR_IND_Q_bz%element_1D(iq_loop)) cycle
    !
-   if (use_PH_DbGd.and.STRING_same(EkplusQ_mode,'interp').and.iq_bz/=1) call En_k_plus_q_interpolate(k,q,en,iq_bz)
+   if (use_PH_DbGd.and.STRING_same(EkplusQ_mode,'interp').and.iq_bz/=1) call ELPH_interpolate_E_at_k_plus_q(k,q,en,iq_bz)
    !
    do i_qp=1,QP_n_states
      !

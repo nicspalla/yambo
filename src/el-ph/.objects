@@ -1,6 +1,6 @@
 #if defined _ELPH && !defined _YPP_ELPH
 EQ_objs = ELPH_Sigma_c.o ELPH_Hamiltonian.o ELPH_simmetrize_and_distribute_gsqF.o \
-          ELPH_gsqF_to_Sigma.o ELPH_GreenF.o En_k_plus_q_interpolate.o
+          ELPH_gsqF_to_Sigma.o ELPH_GreenF.o ELPH_interpolate_E_at_k_plus_q.o
 #endif
 #if defined _MODELS
 MOD_objs = ELPH_model_gkkp.o ELPH_model_init.o ELPH_model_jellium.o
