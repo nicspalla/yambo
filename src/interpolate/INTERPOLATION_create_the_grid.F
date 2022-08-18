@@ -40,12 +40,11 @@ subroutine INTERPOLATION_grid(K,units,grid_dim)
  !
  ! Generate an uniform k-point grid k[grid_dim(:)] in the BZ
  !
- use pars,           ONLY:SP,schlen
+ use pars,           ONLY:SP
  use R_lattice,      ONLY:bz_samp
 #if defined _MODELS
- use D_lattice,      ONLY:nsym
 #endif
- use com,            ONLY:msg
+ use com,            ONLY:msg,com_compose_msg
  use vec_operate,    ONLY:c2a
  !
 #include<memory.h>
@@ -57,11 +56,8 @@ subroutine INTERPOLATION_grid(K,units,grid_dim)
  ! Work Space
  !
  integer  :: i1,i2,i3,ic
- character(schlen) :: ch
  !
  if(any(grid_dim(:)<1)) call error("Wrong grid dimension")
- !
- write (ch,'(2a)') trim(K%description),"-ptbz"
  !
  ! Clean & alloc
  ! 
@@ -71,38 +67,40 @@ subroutine INTERPOLATION_grid(K,units,grid_dim)
  !
  ic=1
  do i1=1,grid_dim(1)
-    do i2=1,grid_dim(2)
-      do i3=1,grid_dim(3)
-        K%ptbz(ic,1)=(i1-1._SP)/grid_dim(1)
-        K%ptbz(ic,2)=(i2-1._SP)/grid_dim(2)
-        K%ptbz(ic,3)=(i3-1._SP)/grid_dim(3)
-        K%ptbz(ic,1:3)=K%ptbz(ic,1:3)-nint(K%ptbz(ic,1:3))     
-        ic=ic+1
-      enddo
-    enddo
-  enddo
-  !
-  do ic=1,K%nbz
-    call c2a(v_in=K%ptbz(ic,:),mode="ka2i")
-  enddo
-  !
-  K%units='i'
-  !
+   do i2=1,grid_dim(2)
+     do i3=1,grid_dim(3)
+       K%ptbz(ic,1)=(i1-1._SP)/grid_dim(1)
+       K%ptbz(ic,2)=(i2-1._SP)/grid_dim(2)
+       K%ptbz(ic,3)=(i3-1._SP)/grid_dim(3)
+       K%ptbz(ic,1:3)=K%ptbz(ic,1:3)-nint(K%ptbz(ic,1:3))     
+       ic=ic+1
+     enddo
+   enddo
+ enddo
+ !
+ do ic=1,K%nbz
+   call c2a(v_in=K%ptbz(ic,:),mode="ka2i")
+ enddo
+ !
+ K%units='i'
+ !
 #if defined _MODELS
-  k%nibz=k%nbz
-  YAMBO_ALLOC(k%pt,(k%nibz,3))
-  k%pt(:k%nibz,:)=k%ptbz(:k%nibz,:)
+ k%nibz=k%nbz
+ YAMBO_ALLOC(k%pt,(k%nibz,3))
+ k%pt(:k%nibz,:)=k%ptbz(:k%nibz,:)
 #else
-  call k_reduce(K,.TRUE.)
+ call k_reduce(K,.TRUE.)
 #endif
-  call msg('s','[GRID_INTERP] Points (IBZ)  ',K%nibz)
-  call k_expand(K)
-  call msg('s','                      (BZ)  ',K%nbz)
-  call k_ibz2bz(K,'d',.TRUE.)
-  call k_ibz2bz(K,'a',.TRUE.)
-  !
-  do ic=1,K%nbz
-    call c2a(v_in=K%ptbz(ic,:),mode="ka2"//units)
-  enddo
-  !
+ call msg('s',com_compose_msg(body="[GRID_INTERP] Points"),K%nibz,after_msg="(IBZ)")
+#if !defined _MODELS
+ call k_expand(K)
+ call msg('s',com_compose_msg(body="[GRID_INTERP]"),K%nbz,after_msg="(BZ)")
+ call k_ibz2bz(K,'d',.TRUE.)
+ call k_ibz2bz(K,'a',.TRUE.)
+ !
+ do ic=1,K%nbz
+   call c2a(v_in=K%ptbz(ic,:),mode="ka2"//units)
+ enddo
+#endif
+ !
 end subroutine INTERPOLATION_grid

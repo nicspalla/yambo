@@ -29,7 +29,7 @@ subroutine rim_integrate_elph(GEO,Np,points,p_weight,power,MULTIPLY_BY_Q)
  !                         = 1/vol \sum_{Qi} \int_Si d3q/q^power [q^power F(q)] ~
  !                         ~ 1/vol \sum_{Qi} [Qi^power F(Qi)] \int_Si d3q/q^power
  !
- ! with Si a sphere of radius such that the sphere volume is RL_vol/Np. 
+ ! with Si a sphere of radius such that the sphere volume is RL_vol/Np or the RL small unit-cell depending on the value of GEO.
  !
  ! a) MULTIPLY_BY_Q=.TRUE. 
  !

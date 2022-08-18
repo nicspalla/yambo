@@ -41,5 +41,6 @@ module MODELS
  real(SP)          :: MODEL_E_ph=.1/HA2EV
  real(SP)          :: MODEL_elph_alpha=0.
  integer           :: MODEL_k(3)
+ integer           :: MODEL_E_shells=0
  !
 end module MODELS

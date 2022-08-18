@@ -52,7 +52,7 @@ subroutine INIT_ypp_load(defs)
 #endif
 #if defined _MODELS
  use MODELS,        ONLY:MODEL_overlap,MODEL_effective_mass,MODEL_k,MODEL_H_kind,MODEL_Eg,&
-&                        MODEL_nel,MODEL_alat
+&                        MODEL_nel,MODEL_alat,MODEL_E_shells
 #endif
 #if defined _YPP_SC
  use YPPm,          ONLY:V_value
@@ -388,13 +388,14 @@ subroutine INIT_ypp_load(defs)
 #endif
  !
 #if defined _MODELS
- call it(defs,'Kind','Model Kind ("2bands","Jellium")',MODEL_H_kind)
+ call it(defs,'Kind','Model Kind (2bands,Jellium)',MODEL_H_kind)
  call it(defs,'Nel','Number of electrons',MODEL_nel)
- call it(defs,'Eg','Elemental gap ("2bands")',MODEL_Eg,unit=E_unit)
+ call it(defs,'Eg','Elemental gap (2bands)',MODEL_Eg,unit=E_unit)
  call it(defs,'Overlap','Overlap parameter (2bands)',MODEL_overlap,unit=E_unit)
  call it(defs,'JelMass','Effective mass (Jellium)',MODEL_effective_mass)
  call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
- call it(defs,'Lattice','Brillouin zone sampling',MODEL_alat)
+ call it(defs,'Lattice','Unit cell lattice constant',MODEL_alat)
+ call it(defs,'E_shells','Number of unit cell shells used to fold the bands (Jellium)',MODEL_E_shells)
 #endif
  !
 end subroutine

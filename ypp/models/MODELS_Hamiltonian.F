@@ -25,8 +25,7 @@ subroutine MODELS_Hamiltonian( )
  !
  use pars,             ONLY:pi
  use stderr,           ONLY:STRING_same
- use units,            ONLY:HA2EV
- use MODELS,           ONLY:MODEL_k,MODEL_H_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg,MODEL_nel,MODEL_alat
+ use MODELS,           ONLY:MODEL_k,MODEL_H_kind,MODEL_nel,MODEL_alat
  use electrons,        ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,E_reset,n_bands
  use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
 &                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
@@ -38,7 +37,7 @@ subroutine MODELS_Hamiltonian( )
  use IO_m,             ONLY:OP_WR_CL,REP,mk_dir
  use IO_int,           ONLY:io_control
  use com,              ONLY:com_path,more_io_path,core_io_path,msg
- use vec_operate,      ONLY:define_b_and_DL_vol,iku_v_norm
+ use vec_operate,      ONLY:define_b_and_DL_vol
  !
 #include<memory.h>
  !
@@ -46,7 +45,7 @@ subroutine MODELS_Hamiltonian( )
  !
  type(levels )      :: E
  type(bz_samp)      :: k
- integer            :: io_err,ID,is,i2,i3,ik,nb
+ integer            :: io_err,ID,is,i2,i3
  integer, external  :: io_DB1
  !
  call section("*",trim(MODEL_H_kind)//" Hamiltonian")
@@ -99,12 +98,14 @@ subroutine MODELS_Hamiltonian( )
    forall (i2=1:3,i3=1:3) rl_sop(i2,i3,is)=dl_sop(i2,i3,is)*alat(i2)/alat(i3)
  enddo
  !
- ! K-points
+ ! Spin
+ !
+ n_spinor=1
+ n_sp_pol=1
+ !
+ ! K-points 
  !
  call INTERPOLATION_grid(k,'i',MODEL_k)
- k%nibz=k%nbz
- YAMBO_ALLOC(k%pt,(k%nibz,3))
- k%pt=k%ptbz
  !
  ! RL
  !
@@ -118,34 +119,18 @@ subroutine MODELS_Hamiltonian( )
  wf_nc_k=1
  wf_igk=1
  !
- ! Bands
+ ! Energy levels
  !
- n_spinor=1
- n_sp_pol=1
+ call MODELS_energy_levels(k,E)
  !
- if (STRING_same(MODEL_H_kind,"2bands" )) nb=2
- if (STRING_same(MODEL_H_kind,"jellium")) nb=1
- E%nb=nb
- wf_nb_io=nb
- wf_nb_io_groups=nb
- YAMBO_ALLOC(E%E,(E%nb,k%nibz,n_sp_pol))
+ ! Number of electrons
+ !
  default_nel=MODEL_nel
  !
- ! ... 2bands model
- if (STRING_same(MODEL_H_kind,"2bands" )) then
-   do ik=1,k%nibz
-     E%E(1,ik,:)=-( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
-     E%E(2,ik,:)= ( 2.*MODEL_overlap*(1-cos(iku_v_norm(k%pt(ik,:))))+MODEL_Eg/2. )
-   enddo
- endif
+ ! WFs
  !
- ! ... jellium
- if (STRING_same(MODEL_H_kind,"jellium" )) then
-   do ik=1,k%nibz
-     E%E(1,ik,:)=iku_v_norm(k%pt(ik,:))**2./2.*MODEL_effective_mass/HA2EV
-   enddo
-   E%E(1,:,:)=E%E(1,:,:)-minval(E%E(1,:,:))
- endif
+ wf_nb_io=E%nb
+ wf_nb_io_groups=E%nb
  !
  ! I/O
  !=====

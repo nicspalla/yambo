@@ -21,56 +21,53 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine ELPH_model_jellium(q)
+subroutine ELPH_model_jellium(q,k,E,q_weight)
  !
- use units,         ONLY:HA2EV
- use com,           ONLY:msg
- use pars,          ONLY:SP,DP,rZERO
- use vec_operate,   ONLY:iku_v_norm
- use RIM,           ONLY:RIM_n_rand_pts,RIM_pt
- use R_lattice,     ONLY:bz_samp
- use MODELS,        ONLY:MODEL_E_ph,MODEL_effective_mass,MODEL_elph_alpha,MODEL_E_ph,MODEL_ep_dV
- use LIVE_t,        ONLY:live_timing
- use parallel_int,  ONLY:PP_redux_wait
- use parallel_m,    ONLY:PAR_IND_Q_bz_ID,PAR_IND_Q_bz,PAR_COM_Q_INDEX
+ use units,          ONLY:HA2EV
+ use com,            ONLY:msg
+ use pars,           ONLY:SP,DP,rZERO
+ use electrons,      ONLY:levels
+ use R_lattice,      ONLY:bz_samp
+ use MODELS,         ONLY:MODEL_E_ph,MODEL_effective_mass,MODEL_elph_alpha,MODEL_ep_dV
+ use LIVE_t,         ONLY:live_timing
+ use parallel_int,   ONLY:PP_redux_wait
+ use parallel_m,     ONLY:PAR_IND_Q_bz_ID,PAR_IND_Q_bz,PAR_COM_Q_INDEX
  !
 #include<memory.h>
  !
- type(bz_samp)      :: q
+ type(bz_samp)      :: q,k
+ type(levels)       :: E
+ real(SP)           :: q_weight(q%nbz)
  !
  ! Work Space
  !
- integer  :: iq,ip
+ integer  :: iq,ib
  real(DP) :: OMS_dp
- real(SP) :: OMS(1),q_norm_square,OMS_exact,integral,E_q
+ real(SP) :: OMS(1),OMS_exact,integral,E_q
  !
  call section('=','Jellium Fan Self-Energy')
  !
  OMS(1)=rZERO
  !
- !call rim_random_points_generator('Unit-Cell',q%nbz)
+ call live_timing('Fan Jellium SE',PAR_IND_Q_bz%n_of_elements(PAR_IND_Q_bz_ID+1)*E%nb)
  !
- call live_timing('Fan SE',PAR_IND_Q_bz%n_of_elements(PAR_IND_Q_bz_ID+1))
- !
- do iq=1,q%nbz
-   !
-   if (.not.PAR_IND_Q_bz%element_1D(iq)) cycle
+ do ib=1,E%nb
    !
    OMS_dp=0._DP
    !
-   if (RIM_n_rand_pts>0) then
-     do ip=1,RIM_n_rand_pts
-       q_norm_square=iku_v_norm(q%ptbz(iq,:)+RIM_pt(:,ip))**2
-       E_q=q_norm_square/2./MODEL_effective_mass/HA2EV
-       integral=1./(MODEL_E_ph+E_q)
-       OMS_dp=OMS_dp-MODEL_ep_dV**2./q_norm_square*integral
-     enddo
-   else  if (iq>1) then
-     q_norm_square=iku_v_norm(q%ptbz(iq,:))**2
-     E_q=q_norm_square/2./MODEL_effective_mass/HA2EV
-     integral=1./(MODEL_E_ph+E_q)
-     OMS_dp=-MODEL_ep_dV**2./q_norm_square*integral
-   endif
+   do iq=1,q%nbz
+     !
+     if (.not.PAR_IND_Q_bz%element_1D(iq)) cycle
+     !
+     E_q=(E%E(ib,iq,1)-E%E(1,1,1))
+     if (ib==1) then
+       integral=q_weight(iq)/(MODEL_E_ph+E_q)
+     else
+       integral=1./((MODEL_E_ph+E_q)*E_q*2.*MODEL_effective_mass)/float(q%nbz)
+     endif
+     OMS_dp=OMS_dp-MODEL_ep_dV**2.*integral
+     !
+   enddo
    !
    OMS=OMS+OMS_dp
    !
@@ -82,14 +79,8 @@ subroutine ELPH_model_jellium(q)
  !
  call PP_redux_wait(OMS,COMM=PAR_COM_Q_INDEX%COMM)
  !
- if (RIM_n_rand_pts>0) OMS(1)=OMS(1)/float(RIM_n_rand_pts)
- OMS(1)=OMS(1)/float(q%nbz)
  OMS_exact=-MODEL_elph_alpha*MODEL_E_ph
  !
  call msg('nrs','[El-Ph] Jellium Integral (calc/exact)',(/OMS(1)*HA2EV,OMS_exact*HA2EV/),"[ev]")
- !
- ! Clean
- !-------
- YAMBO_FREE(RIM_pt)
  !
 end subroutine

@@ -113,6 +113,8 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  call k_build_up_BZ_tables(q)
  call k_build_up_BZ_tables(k)
  call k_expand(k)
+ call k_ibz2bz(q,'i',.TRUE.)
+ call k_ibz2bz(k,'i',.TRUE.)
  !
  if (QP_PH_n_G_bands(2)<=0.or.QP_PH_n_G_bands(2)>elph_nb) QP_PH_n_G_bands=(/1,elph_nb/)
  if (QP_PH_n_G_bands(1)<=0.or.QP_PH_n_G_bands(1)>elph_nb) QP_PH_n_G_bands=(/1,elph_nb/)
@@ -202,8 +204,6 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  ! nq_to_sum = | 
  !              \ nqbz             elph_use_q_grid=T
  !
- call k_ibz2bz(q,'i',.TRUE.)
- !
  if (     elph_use_q_grid) nq_to_sum=q%nbz
  if (.not.elph_use_q_grid) nq_to_sum=elph_nQ_used
  !
@@ -260,7 +260,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  call ELPH_model_gkkp(GKKP)
  !
  ! Ad-Hoc integration of the Jellium Fan SE
- call ELPH_model_jellium(q)
+ call ELPH_model_jellium(q,k,en,q_weight)
  !
 #endif
  !
@@ -453,6 +453,7 @@ subroutine ELPH_Sigma_c(en,k,q,qp)
  ! CLEAN
  !
  call ELPH_alloc('FREE')
+ call k_ibz2bz(k,'d',.TRUE.)
  call k_ibz2bz(q,'d',.TRUE.)
  YAMBO_FREE(q_weight)
  do i_qp=1,qp%n_states
