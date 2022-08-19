@@ -74,7 +74,9 @@ subroutine k_ibz2bz(k,units,FORCE_BZ)
    !
    ! Shift to the BZ
    !
+#if !defined _MODELS
    if (FORCE_BZ) call k2bz(k_bz)
+#endif
    !
    if (units=='a') call c2a(v_in=k_bz,v_out=k%ptbz(i1,:),mode='ki2a')
    if (units=='i') k%ptbz(i1,:)=k_bz

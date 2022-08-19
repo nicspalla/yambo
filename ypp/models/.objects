@@ -1,1 +1,1 @@
-objs = MODELS_energy_levels.o MODELS_Hamiltonian.o
+objs = MODELS_energy_levels.o MODELS_Hamiltonian.o MODELS_ep_tester.o

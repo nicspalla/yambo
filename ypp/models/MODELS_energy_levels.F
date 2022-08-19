@@ -61,8 +61,8 @@ subroutine MODELS_energy_levels(k,E)
          E%nb=E%nb+1
          do ik=1,k%nibz
            k_mod=iku_v_norm(k%pt(ik,:))
-           if (k_mod>=0._SP) E%E(E%nb,ik,1)=iku_v_norm(k%pt(ik,:)+(/i1,i2,i3/))**2./2./MODEL_effective_mass/HA2EV
-           if (k_mod< 0._SP) E%E(E%nb,ik,1)=iku_v_norm(k%pt(ik,:)-(/i1,i2,i3/))**2./2./MODEL_effective_mass/HA2EV
+           if (k_mod>=0._SP) E%E(E%nb,ik,1)=iku_v_norm(k%pt(ik,:)+(/i1,i2,i3/))**2./2./MODEL_effective_mass
+           if (k_mod< 0._SP) E%E(E%nb,ik,1)=iku_v_norm(k%pt(ik,:)-(/i1,i2,i3/))**2./2./MODEL_effective_mass
          enddo
        enddo
      enddo

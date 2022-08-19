@@ -40,6 +40,7 @@ module MODELS
  real(SP)          :: MODEL_ep_dV
  real(SP)          :: MODEL_E_ph=.1/HA2EV
  real(SP)          :: MODEL_elph_alpha=0.
+ real(SP)          :: MODEL_Nel_at_Ef=0.
  integer           :: MODEL_k(3)
  integer           :: MODEL_E_shells=0
  !

@@ -28,7 +28,7 @@ subroutine rim_random_points_generator(GEO,N_grid)
  use LIVE_t,        ONLY:live_timing
  use vec_operate,   ONLY:v_norm_square,v_norm
  use D_lattice,     ONLY:alat
- use RIM,           ONLY:RIM_UC_integrated_vol,RIM_n_rand_pts,RIM_pt,RIM_IC_n_pts,RIM_UC_vol,&
+ use RIM,           ONLY:RIM_UC_integrated_vol,RIM_n_rand_pts,RIM_pt,RIM_IC_n_pts,&
 &                        RIM_IC_vol,RIM_UC_integrated_vol
  use R_lattice,     ONLY:RL_vol,k_grid_uc_vol,k_grid_b
  use stderr,        ONLY:STRING_same
@@ -58,8 +58,6 @@ subroutine rim_random_points_generator(GEO,N_grid)
  !
  !.. UC
  !------
- RIM_UC_vol=RL_vol
- !
  if (l_UC) then
    !
    RIM_IC_vol=8.*k_grid_uc_vol
@@ -87,7 +85,6 @@ subroutine rim_random_points_generator(GEO,N_grid)
    !
    radius    =(3._SP*RL_vol/float(N_grid)/4._SP/pi)**(1._SP/3._SP)
    RIM_IC_vol=(2.*radius*1.2)**3.
-   RIM_UC_vol=4./3.*pi*radius**3.
    scaling   =radius*1.2_SP
    !
  endif
@@ -144,7 +141,7 @@ subroutine rim_random_points_generator(GEO,N_grid)
  call msg('r',com_compose_msg(body="Points in the IC (integration cell)"),RIM_IC_n_pts)
  RIM_UC_integrated_vol=RIM_IC_vol*real(RIM_n_rand_pts)/real(RIM_IC_n_pts)*real(N_grid)
  call msg('r',com_compose_msg(body="Points in the UC (unit-cell)"),RIM_n_rand_pts)
- call msg('r',com_compose_msg(body=GEO//" UC volume",post="(reference) [a.u.]"),RIM_UC_vol)
+ call msg('r',com_compose_msg(body=GEO//" UC volume",post="(reference) [a.u.]"),RL_vol)
  call msg('r',com_compose_msg(body=GEO//" UC volume",post="(integrated) [a.u.]"),RIM_UC_integrated_vol)
  !
 end subroutine

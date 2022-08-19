@@ -33,7 +33,6 @@ module RIM
  integer :: RIM_n_rand_pts
  integer :: RIM_IC_n_pts           ! Points generated in the IC
  real(SP):: RIM_IC_vol             ! Integration cell volume (larger than UC)
- real(SP):: RIM_UC_vol             ! Unit-Cell volume (can be direct UC or sphere)
  real(SP):: RIM_UC_integrated_vol
  real(SP),   allocatable          :: RIM_pt(:,:)
  !

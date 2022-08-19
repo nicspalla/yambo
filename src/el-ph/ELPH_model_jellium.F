@@ -43,7 +43,7 @@ subroutine ELPH_model_jellium(q,k,E,q_weight)
  !
  integer  :: iq,ib
  real(DP) :: OMS_dp
- real(SP) :: OMS(1),OMS_exact,integral,E_q
+ real(SP) :: OMS(1),OMS_exact,integral,E_q,q_mod_sq
  !
  call section('=','Jellium Fan Self-Energy')
  !
@@ -59,11 +59,12 @@ subroutine ELPH_model_jellium(q,k,E,q_weight)
      !
      if (.not.PAR_IND_Q_bz%element_1D(iq)) cycle
      !
-     E_q=(E%E(ib,iq,1)-E%E(1,1,1))
+     E_q     =(E%E(ib,iq,1)-E%E(1,1,1))
+     q_mod_sq=E_q*2.*MODEL_effective_mass
      if (ib==1) then
        integral=q_weight(iq)/(MODEL_E_ph+E_q)
      else
-       integral=1./((MODEL_E_ph+E_q)*E_q*2.*MODEL_effective_mass)/float(q%nbz)
+       integral=1./((MODEL_E_ph+E_q)*q_mod_sq)/float(q%nbz)
      endif
      OMS_dp=OMS_dp-MODEL_ep_dV**2.*integral
      !

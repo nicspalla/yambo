@@ -28,6 +28,7 @@ module electrons
 #include<memory.h>
  !
  real(SP) :: nel
+ real(SP) :: nel_at_Ef=0._SP
  real(SP) :: default_nel
  real(SP) :: spin_occ
  real(SP) :: filled_tresh

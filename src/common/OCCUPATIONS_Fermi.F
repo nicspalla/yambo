@@ -59,12 +59,12 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
  !
  ! Work Space
  !
- integer :: i1,is,ib,ik,i_trials(2),n_b_full_guess,i_Ef(2),i_Ef_fine(2),n_total_states,group_size,nb_here
- integer :: index(E%nk*E%nb*n_sp_pol,3),index_E_sorted(E%nk*E%nb*n_sp_pol)
- real(SP):: E_sorted(E%nk*E%nb*n_sp_pol),n_of_el_from_zero(2),Ef(2),nel_DbGd,nel_diff_zero,n_elecs,n_holes,balance
+ integer :: i1,is,ib,ik,i_trials(2),n_b_full_guess,i_Ef(2),i_Ef_fine(2),n_total_states,group_size,nb_here,&
+&           index(E%nk*E%nb*n_sp_pol,3),index_E_sorted(E%nk*E%nb*n_sp_pol)
+ real(SP):: E_sorted(E%nk*E%nb*n_sp_pol),n_of_el_from_zero(2),Ef(2),nel_DbGd,nel_diff_zero,n_elecs,n_holes,&
+&           balance,n_carr(2),mu_zero,mu_hole,mu_el,E_save
  logical :: Fermi_is_converged,impose_balance_
  real(SP),parameter :: Tel_step=0.1_SP/HA2KEL
- real(SP) :: n_carr(2),mu_zero,mu_hole,mu_el
  !
  !     n_spin n_sp_pol n_spinor  spin_occ 
  !       1        1        1         2      
@@ -100,32 +100,27 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
  !
  ! n_b_full_guess not set when the system is metallic ...
  !
-#if defined _MODELS
+ ! n_b_full_guess is used to avoid spurious oscillations
+ ! in the Fermi Level search for system with a gap.
+ ! In general those oscillations appear when the gap is small.
+ !
+ n_b_full_guess=0
  !
  if (nb_here>1) then
-   !
-   ! n_b_full_guess is used to avoid spurious oscillations
-   ! in the Fermi Level search for system with a gap.
-   ! In general those oscillations appear when the gap is small.
-   !
    n_b_full_guess= nint( real(nel)/2.0_SP*real(n_spinor)+.1)
    !
-   if (n_b_full_guess+1 > nb_here ) &
-&     call error(' Not enough states to accomodate all electrons. Include more states in the DFT run.')
+   if (n_b_full_guess+1 > nb_here ) then
+     call error(' Not enough states to accomodate all electrons. Include more states in the DFT run.')
+   endif
    !
    Ef(1)=maxval(E%E(n_b_full_guess,:,:))
    Ef(2)=minval(E%E(n_b_full_guess+1,:,:))
-   !
- else
-   n_b_full_guess=1
- endif
- !
-#endif
- ! 
- if (Ef(2)<Ef(1).or.Ef(1)==Ef(2).or.nb_here==1) then
-   Ef(1)=minval(E%E(n_b_full_guess,:,:))
-   Ef(2)=maxval(E%E(n_b_full_guess,:,:))
-   n_b_full_guess=0
+   ! 
+   if (Ef(2)<Ef(1).or.Ef(1)==Ef(2).or.nb_here==1) then
+     Ef(1)=minval(E%E(n_b_full_guess,:,:))
+     Ef(2)=maxval(E%E(n_b_full_guess,:,:))
+     n_b_full_guess=0
+   endif
  endif
  !
  ! ... or when there is a odd number of electrons (when n_sp_pol>1
@@ -137,6 +132,9 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
  ! 
  i_trials=1
  nel_diff_zero=1.E-5
+#if defined _MODELS
+ nel_diff_zero=1.E-2
+#endif
  Fermi_is_converged=.false.
  !
  ! BUG-fix [Andrea 1/6/2012]: when the system is semiconductive it may happen the
@@ -154,14 +152,19 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
    ! 1. [Rough search] by looping of group_size elements
    !
    group_size=max(1,int(n_total_states/500))
-   do i1=1,n_total_states,group_size
+   E_save=E_sorted(1)
+   LOOP1: do i1=1,n_total_states,group_size
+     if (i1>1) then
+       if (abs(E_sorted(i1)-E_save)<Tel_step) cycle LOOP1
+       if (abs(E_sorted(i1)-E_save)>Tel_step) E_save=E_sorted(i1)
+     endif
      call ef2nel(Tel,E_sorted(i1),n_of_el_from_zero(1),'both ')
      if (n_of_el_from_zero(1)<-nel_diff_zero) i_Ef(1)=i1
      if (n_of_el_from_zero(1)> nel_diff_zero) then
        i_Ef(2)=i1
        exit
      endif
-   enddo
+   enddo LOOP1
    !
    i_Ef_fine=i_Ef
    !
@@ -169,18 +172,28 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
      !
      ! 2. [Finer search] by looping of 1 element
      !
-     do i1=i_Ef(1),i_Ef(2)
+     E_save=E_sorted(i_Ef(1))
+     LOOP2: do i1=i_Ef(1),i_Ef(2)
+       if (i1>1) then
+         if (abs(E_sorted(i1)-E_save)<Tel_step) cycle LOOP2
+         if (abs(E_sorted(i1)-E_save)>Tel_step) E_save=E_sorted(i1)
+       endif
        call ef2nel(Tel,E_sorted(i1),n_of_el_from_zero(1),'both ')
        if (n_of_el_from_zero(1)<-nel_diff_zero) i_Ef_fine(1)=i1
        if (n_of_el_from_zero(1)> nel_diff_zero) then
          i_Ef_fine(2)=i1
          exit
        endif
-     enddo
+     enddo LOOP2
      !
    endif
    !
    if (i_Ef_fine(2)==n_total_states) call error('Not enough states to converge the Fermi Level')
+   !
+#if defined _MODELS
+   E%E_Fermi=(E_sorted(i_Ef_fine(1))+E_sorted(i_Ef_fine(2)))/2.
+   exit FERMI_LOOP
+#endif
    !
    ! 3. Is any level in the Ef_fine range ok?
    !
@@ -189,7 +202,7 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
      if (abs(n_of_el_from_zero(1))<nel_diff_zero.and.E_sorted(i1+1)-E_sorted(i1)>Tel_step) then
        E%E_Fermi=E_sorted(i1)
        ! To Code!
-       !E%E_Fermi=E_sorted(i1)+E_sorted(i1+1))/2.
+       !E%E_Fermi=(E_sorted(i1)+E_sorted(i1+1))/2.
        exit FERMI_LOOP
      endif
    enddo

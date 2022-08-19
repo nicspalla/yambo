@@ -59,7 +59,8 @@ subroutine rim_integrate_elph(GEO,Np,points,p_weight,power,MULTIPLY_BY_Q)
  use pars,          ONLY:SP
  use LIVE_t,        ONLY:live_timing
  use vec_operate,   ONLY:v_norm,iku_v_norm
- use RIM,           ONLY:RIM_n_rand_pts,RIM_UC_vol,RIM_IC_n_pts,RIM_pt,RIM_IC_vol
+ use R_lattice,     ONLY:RL_vol
+ use RIM,           ONLY:RIM_n_rand_pts,RIM_IC_n_pts,RIM_pt,RIM_IC_vol
  !
 #include<memory.h>
  !
@@ -87,6 +88,9 @@ subroutine rim_integrate_elph(GEO,Np,points,p_weight,power,MULTIPLY_BY_Q)
  ! Filling a larger Sphere with a random grid
  !--------------------------------------------
  call rim_random_points_generator(GEO,Np)
+   do ir=1,RIM_n_rand_pts
+   write (200,*) RIM_pt(:,ir)
+ enddo
  !
  ! Weights calculation
  !--------------------
@@ -96,7 +100,7 @@ subroutine rim_integrate_elph(GEO,Np,points,p_weight,power,MULTIPLY_BY_Q)
    do ir=1,RIM_n_rand_pts
      p_weight(ip)=p_weight(ip)+1./iku_v_norm(RIM_pt(:,ir)+points(ip,:))**power*RIM_IC_vol/real(RIM_IC_n_pts)
    enddo
-   p_weight(ip)=p_weight(ip)/RIM_UC_vol/real(Np)
+   p_weight(ip)=p_weight(ip)/RL_vol
    !
    if (MULTIPLY_BY_Q) p_weight(ip)=p_weight(ip)*iku_v_norm(points(ip,:))**power
    !

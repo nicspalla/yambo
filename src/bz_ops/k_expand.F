@@ -85,6 +85,18 @@ subroutine k_expand(k)
  YAMBO_ALLOC(k%nstar,(k%nibz))
  YAMBO_ALLOC(k%weights,(k%nibz))
  !
+#if defined _MODELS
+ k%star=1
+ k%weights=1./float(k%nibz)
+ k%nstar=1
+ k%nbz=k%nibz
+ YAMBO_ALLOC(k%sstar,(k%nbz,2))
+ do i1=1,k%nbz
+   k%sstar(i1,:)=(/i1,1/)
+ enddo
+ return
+#endif
+ !
  k%nstar=0
  k%star=0
  do i1=1,k%nibz

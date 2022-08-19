@@ -396,6 +396,9 @@ subroutine INIT_ypp_load(defs)
  call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
  call it(defs,'Lattice','Unit cell lattice constant',MODEL_alat)
  call it(defs,'E_shells','Number of unit cell shells used to fold the bands (Jellium)',MODEL_E_shells)
+ ! E-P test START
+ call INIT_load_models(defs)
+ ! E-P test END
 #endif
  !
 end subroutine

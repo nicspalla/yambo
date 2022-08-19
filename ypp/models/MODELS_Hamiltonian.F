@@ -26,12 +26,12 @@ subroutine MODELS_Hamiltonian( )
  use pars,             ONLY:pi
  use stderr,           ONLY:STRING_same
  use MODELS,           ONLY:MODEL_k,MODEL_H_kind,MODEL_nel,MODEL_alat
- use electrons,        ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,E_reset,n_bands
- use D_lattice,        ONLY:a, alat, nsym, i_time_rev, input_GS_Tel, dl_sop, &
-&                           Tel, n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
+ use electrons,        ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,E_reset,n_bands,nel
+ use D_lattice,        ONLY:a,alat,nsym,i_time_rev,input_GS_Tel,dl_sop,DL_vol,&
+&                           Tel,n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
 &                           Z_species, n_atoms, mag_syms,atoms_map,atom_mass
- use R_lattice,        ONLY:ng_vec, g_vec, bz_samp,bz_samp_reset,rl_sop
- use wave_func,        ONLY:wf_ncx, wf_nc_k, wf_igk,wf_ng,wf_nb_io,wf_nb_io_groups,io_WF
+ use R_lattice,        ONLY:ng_vec,g_vec, bz_samp,bz_samp_reset,rl_sop,RL_vol
+ use wave_func,        ONLY:wf_ncx,wf_nc_k,wf_igk,wf_ng,wf_nb_io,wf_nb_io_groups,io_WF
  use xc_functionals,   ONLY:GS_xc_KIND,GS_xc_FUNCTIONAL,GS_exx_FRACTION,GS_exx_SCREENING
  use global_XC,        ONLY:H_SE_Hartree
  use IO_m,             ONLY:OP_WR_CL,REP,mk_dir
@@ -56,6 +56,11 @@ subroutine MODELS_Hamiltonian( )
  if (n_bands>0) return
  if (STRING_same(MODEL_H_kind,"none")) return
  !
+ ! Number of electrons
+ !
+ default_nel=MODEL_nel
+ nel        =MODEL_nel
+ !
  ! DL 
  !
  alat=MODEL_alat
@@ -63,6 +68,7 @@ subroutine MODELS_Hamiltonian( )
  a(2,:)=(/0.,1.,0./)*alat
  a(3,:)=(/0.,0.,1./)*alat
  call define_b_and_DL_vol()
+ RL_vol=(2.*pi)**3/DL_vol
  n_atomic_species=1
  n_atoms_species_max=1
  YAMBO_ALLOC(n_atoms_species,(n_atomic_species))
@@ -123,17 +129,19 @@ subroutine MODELS_Hamiltonian( )
  !
  call MODELS_energy_levels(k,E)
  !
- ! Number of electrons
- !
- default_nel=MODEL_nel
- !
  ! WFs
  !
  wf_nb_io=E%nb
  wf_nb_io_groups=E%nb
  !
+ ! E-P test
+ !
+ call MODELS_ep_tester(k,E)
+ !
  ! I/O
  !=====
+ call section("=","Databases I/O")
+ !
  call mk_dir(more_io_path)
  call mk_dir(com_path)
  call mk_dir(trim(core_io_path)//"/SAVE")

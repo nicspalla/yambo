@@ -24,10 +24,9 @@
 subroutine ELPH_model_gkkp(GKKP)
  !
  use pars,             ONLY:SP,pi
- use MODELS,           ONLY:MODEL_E_ph,MODEL_elph_alpha,MODEL_gkkp_kind,MODEL_effective_mass,MODEL_ep_dV
+ use MODELS,           ONLY:MODEL_E_ph,MODEL_elph_alpha,MODEL_gkkp_kind,MODEL_effective_mass,MODEL_ep_dV,MODEL_Nel_at_Ef
  use stderr,           ONLY:STRING_same
  use ELPH,             ONLY:PH_freqs_sq,MAX_gkkp,GKKP_me
- use electrons,        ONLY:default_nel
  use D_lattice,        ONLY:DL_vol
  !
  implicit none
@@ -38,10 +37,8 @@ subroutine ELPH_model_gkkp(GKKP)
  !
  real(SP)           :: EM_sq
  !
- PH_freqs_sq(:,1)=MODEL_E_ph**2.
- !
  if (STRING_same(MODEL_gkkp_kind,"debye" )) then
-   EM_sq=2*pi**2*MODEL_E_ph*(4*pi)**(1./3.)/(3*default_nel)**1./3.*MODEL_elph_alpha
+   EM_sq=MODEL_E_ph**2*MODEL_elph_alpha/MODEL_Nel_at_Ef
  else if (STRING_same(MODEL_gkkp_kind,"Frohlich")) then 
    EM_sq=2.*pi*MODEL_E_ph*sqrt(2*pi*MODEL_E_ph/MODEL_effective_mass)*MODEL_elph_alpha/DL_vol
  else
@@ -49,6 +46,9 @@ subroutine ELPH_model_gkkp(GKKP)
  endif
  MODEL_ep_dV=sqrt(EM_sq)
  !
+ if (allocated(PH_freqs_sq)) then
+   PH_freqs_sq(:,1)=MODEL_E_ph**2.
+ endif
  if (allocated(GKKP%dVc)) then
    GKKP%dVc(1,:,:,:,1)=sqrt(2.*EM_sq*MODEL_E_ph)
  endif
