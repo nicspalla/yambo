@@ -72,8 +72,8 @@ YPPPH_LIBS         = $(YPP_BASIC_LIBS) el-ph excitons
 YPPPH_LIBS_LD      = $(YPP_BASIC_LIBS_LD) el-ph excitons
 YPPRT_LIBS         = $(YPP_BASIC_LIBS) el-ph real_time excitons
 YPPRT_LIBS_LD      = $(YPP_BASIC_LIBS_LD) el-ph real_time excitons
-YPPMOD_LIBS        = $(YPPPH_LIBS) models
-YPPMOD_LIBS_LD     = $(YPPPH_LIBS_LD) models
+YPPMOD_LIBS        = $(YPPPH_LIBS) models 
+YPPMOD_LIBS_LD     = $(YPPPH_LIBS_LD) models 
 #
 # YAMBO sources needed by YPP
 #
@@ -89,3 +89,6 @@ YPPNL_MAIN_LIBS    = $(BASIC_LIBS) real_time_control interpolate qp_control setu
                      dipoles pol_function collisions el-ph qp bse hamiltonian nloptics 
 YPPNL_MAIN_LIBS_LD = $(BASIC_LIBS_LD) real_time_control interpolate qp_control setup interface \
                      dipoles pol_function collisions el-ph qp bse hamiltonian nloptics 
+YPPMOD_MAIN_LIBS   = $(BASIC_LIBS) interpolate qp_control setup interface tddft dipoles pol_function collisions el-ph ph-el qp bse
+YPPMOD_MAIN_LIBS_LD= $(BASIC_LIBS_LD) interpolate qp_control setup interface tddft dipoles pol_function collisions el-ph ph-el qp bse
+

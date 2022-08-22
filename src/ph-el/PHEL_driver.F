@@ -23,24 +23,19 @@
 !
 subroutine PHEL_driver(E,k,q)
  !
- use pars,           ONLY:SP,cI
- use drivers,        ONLY:l_life
  use electrons,      ONLY:levels,n_sp_pol,E_fine_grid
  use R_lattice,      ONLY:bz_samp,bz_samp_FineGd_default,bz_samp_FineGd_alloc,bz_fine_grid
  use interfaces,     ONLY:ELPH_alloc
  use ELPH,           ONLY:QP_PH_n_G_bands,elph_branches,GKKP_pe_sq,elph_nb,elph_use_q_grid
- use PHEL,           ONLY:l_PH_uses_E_FineGd,PH_Self_Energy_mode,PHEL_free,PH_Q,PH_SF_W,PHEL_alloc,PHEL_qp,&
-&                         PH_DbGd_points,PH_energy,KpQ_io_map,phel_info,PHEL_fit_Energies,&
-&                         QPH_OMS,QPH_OMS_bare_Pole,QPH_full,QPH,QPHt_alloc,QPH_DDFPT
+ use PHEL,           ONLY:l_PH_uses_E_FineGd,PH_Self_Energy_mode,PHEL_free,PH_Q,PHEL_alloc,PHEL_qp,&
+&                         PH_DbGd_points,KpQ_io_map,phel_info
  use parallel_int,   ONLY:PP_redux_wait,PARALLEL_global_indexes
  use RT_lifetimes,   ONLY:RT_PE_life,RT_lifetime_alloc,Life_MEM_steps,l_initial_equilibrium,RT_ALL_lifetimes_free                        
  use RT_occupations, ONLY:RT_EL_occupations_alloc,RT_PH_occupations_alloc,RT_ALL_occupations_free
  use real_time,      ONLY:l_RT_uses_E_FineGd
- use QP_m,           ONLY:l_extended_output,QP_Sc_steps,QP_G_er,QP_G_damp,l_QP_eval_GF,QP_solver,On_Mass_Shell_approx
+ use QP_m,           ONLY:l_extended_output
  use IO_int,         ONLY:io_control
  use IO_m,           ONLY:OP_RD_CL,VERIFY,REP,OP_WR_CL
- use frequency,      ONLY:W_reset
- use stderr,         ONLY:STRING_same
  use parallel_m,     ONLY:PARs_PH_Q_ibz
  !
 #include<memory.h>
@@ -164,56 +159,8 @@ subroutine PHEL_driver(E,k,q)
  ! ... select fine grid subset
  call PHEL_double_grid_subset(k,k_FG,nk_CG)
  !
- ! ... Spectral Function energy points
- if (l_life) then
-   QP_Sc_steps=1
-   call QPHt_alloc("OMS_bare_Pole",QPH_OMS_bare_Pole,0)
- else
-   !
-   if (On_Mass_Shell_approx) call QPHt_alloc("OMS",QPH_OMS,QP_Sc_steps)
-   call QPHt_alloc("OMS_bare_Pole",QPH_OMS_bare_Pole,QP_Sc_steps)
-   call QPHt_alloc("QPH",QPH,QP_Sc_steps)
-   if (l_QP_eval_GF) then
-     call QPHt_alloc("FULL",QPH_full,QP_Sc_steps)
-   else 
-     call QPHt_alloc("DDFPT",QPH_DDFPT,0)
-   endif
-   !
-   allocate(PH_SF_W(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2)))
-   do iq=PH_Q(1),PH_Q(2)
-     do il=elph_branches(1),elph_branches(2)
-       call W_reset(PH_SF_W(il,iq))
-       PH_SF_W(il,iq)%dr=QP_G_damp
-       PH_SF_W(il,iq)%n_freqs=QP_Sc_steps 
-       PH_SF_W(il,iq)%er=QP_G_er
-       call FREQUENCIES_setup(PH_SF_W(il,iq))
-       if (On_Mass_Shell_approx) QPH_OMS%W=PH_SF_W(il,iq)%p
-       QPH_OMS_bare_Pole%W=PH_SF_W(il,iq)%p
-       QPH%W=PH_SF_W(il,iq)%p
-       if (l_QP_eval_GF) QPH_full%W=PH_SF_W(il,iq)%p
-     enddo
-   enddo
-   !
-   ! SE energy points
-   if (STRING_same(QP_solver,"n")) then
-     do iq=PH_Q(1),PH_Q(2)
-       do il=elph_branches(1),elph_branches(2)
-         call W_reset(PH_SF_W(il,iq))
-         QP_Sc_steps=4
-         PH_SF_W(il,iq)%n_freqs=4 
-         !
-         ! Fake range just to call FREQUENCIES_setup
-         PH_SF_W(il,iq)%er=(/0._SP,1._SP/)
-         call FREQUENCIES_setup(PH_SF_W(il,iq))
-         !
-         ! Manual points
-         PH_SF_W(il,iq)%p(  1)=cI*QP_G_damp
-         PH_SF_W(il,iq)%p(2:3)=PHEL_fit_Energies*PH_energy(q,il,iq)+cI*QP_G_damp
-         PH_SF_W(il,iq)%p(  4)=cI*PH_energy(q,il,iq)
-       enddo
-     enddo
-   endif
- endif
+ ! ... Spectral Function energy points and KINDS
+ call PHEL_energy_and_KINDS_setup(q)
  !
  ! ... allocs
 #if defined _RT
