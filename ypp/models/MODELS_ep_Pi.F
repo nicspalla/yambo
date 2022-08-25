@@ -29,7 +29,7 @@ subroutine MODELS_ep_Pi(k,E,px)
  use R_lattice,           ONLY:bz_samp
  use D_lattice,           ONLY:Tel
  use units,               ONLY:HA2EV
- use YPP_models,          ONLY:MODEL_kmq_table,MODEL_K_fermi,MODEL_B_shift,E_jell
+ use YPP_models,          ONLY:MODEL_kmq_table,MODEL_K_fermi,MODEL_B_shift,E_jell,PI_ph
  use MODELS,              ONLY:MODEL_gkkp_kind,MODEL_E_ph,MODEL_ep_dV,MODEL_Nel_at_Ef
  use ELPH,                ONLY:GKKP,elph_branches,PH_freqs_sq
  use PHEL,                ONLY:PH_Q,PHEL_alloc,PHEL_qp,QPH
@@ -51,8 +51,8 @@ subroutine MODELS_ep_Pi(k,E,px)
  !
  ! Work Space
  !
- integer       :: ik,ib,i_kmq,ib_kmq,is,iw,iq,iq_c(-1:1)
- complex(SP), allocatable :: OMS_ph(:),OMS_im_W(:),OMS_static(:)
+ integer       :: ik,ib,i_kmq,ib_kmq,is,iw,iq
+ type(PI_ph)   :: PI_num,PI_exact
  real(SP)      :: q_mod,E_k,E_kmq,f_k,f_kmq,OMS_single_q(2),Ef_dist,GKKP_me
  !
  ! Q and TODO
@@ -85,24 +85,22 @@ subroutine MODELS_ep_Pi(k,E,px)
  enddo
  !
  ! ... Kinds and frequencies
- ! ... BOX corner
+ ! ... SF and REPORT only at the @BOX corner
  !--------------------------
  PH_Q=Q_todo(NQ)
- YAMBO_ALLOC(OMS_ph,(1:q%nibz))
- YAMBO_ALLOC(OMS_im_W,(1:q%nibz))
- YAMBO_ALLOC(OMS_static,(1:q%nibz))
- OMS_ph=0._SP
- OMS_im_W=0._SP
- OMS_static=0._SP
  QP_Sc_steps=1000
+ call PI_alloc(PI_num)
+ call PI_alloc(PI_exact)
  elph_branches=1
  QP_G_damp=0.001/HA2EV
- QP_G_er=(/0.,MODEL_E_ph*10./)
+ QP_G_er=(/-MODEL_E_ph*10.,MODEL_E_ph*10./)
  YAMBO_ALLOC(PH_freqs_sq,(q%nibz,1))
  l_QP_eval_GF=.TRUE.
  call PHEL_energy_and_KINDS_setup(k)
  call PHEL_alloc( ) 
  !
+ ! ... GKKP
+ !---------
  MODEL_gkkp_kind="Debye"
  !MODEL_gkkp_kind="Frohlich"
  call ELPH_model_gkkp(GKKP)
@@ -111,11 +109,11 @@ subroutine MODELS_ep_Pi(k,E,px)
  !
  ! The exact solution (zero temperature)
  !--------------------------------------
- call MODELS_ep_Pi_exact(q,NQ,Q_todo,iq_c)
+ call MODELS_ep_Pi_exact(q,NQ,Q_todo,PI_exact,QPH%W)
  !
  ! ... Loop
  !---------
- call live_timing("E-P OMS (phonons)",px%n_of_elements(myid+1)*NQ)
+ call live_timing("Phonon PI (numerical)",px%n_of_elements(myid+1)*NQ)
  !
  do is=1,NQ
    iq=Q_todo(is)
@@ -146,17 +144,17 @@ subroutine MODELS_ep_Pi(k,E,px)
        f_k=Fermi_fnc(E_k,Tel)
        f_kmq=Fermi_fnc(E_kmq,Tel)
        !
-       OMS_ph(iq)=OMS_ph(iq)        +GKKP_me*f_k/k%nibz*fraction(MODEL_E_ph+cI*QP_G_damp)
+       PI_num%OMS(is)=PI_num%OMS(is)  +GKKP_me*f_k/k%nibz*fraction(MODEL_E_ph+cI*QP_G_damp)
        !
-       OMS_im_W(iq)=OMS_im_W(iq)    +GKKP_me*f_k/k%nibz*fraction(cI*MODEL_E_ph)
+       PI_num%IW(is)=PI_num%IW(is)    +GKKP_me*f_k/k%nibz*fraction(cI*MODEL_E_ph)
        !
-       OMS_static(iq)=OMS_static(iq)+GKKP_me*f_k/k%nibz*fraction(cI*QP_G_damp)
+       PI_num%ST(is)=PI_num%ST(is)    +GKKP_me*f_k/k%nibz*fraction(cI*QP_G_damp)
        !
-       if (is<NQ) cycle
-       !
-       do iw=1,QP_Sc_steps
-         PHEL_qp%PI(1,iq,iw)=PHEL_qp%PI(1,iq,iw)+GKKP_me*f_k/k%nibz*fraction(QPH%W(iw))
-       enddo
+       if (is==NQ) then
+         do iw=1,QP_Sc_steps
+           PHEL_qp%PI(1,iq,iw)=PHEL_qp%PI(1,iq,iw)+GKKP_me*f_k/k%nibz*fraction(QPH%W(iw))
+         enddo
+       endif
        !
        call live_timing(steps=1)
        !
@@ -166,39 +164,46 @@ subroutine MODELS_ep_Pi(k,E,px)
  enddo
  !
  call live_timing()
- call PP_redux_wait(OMS_static)
- call PP_redux_wait(OMS_ph)
- call PP_redux_wait(OMS_im_W)
+ call PP_redux_wait(PI_num%ST)
+ call PP_redux_wait(PI_num%OMS)
+ call PP_redux_wait(PI_num%IW)
  call PP_redux_wait(PHEL_qp%PI)
  !
  ! Report
  !-------
  ! ... all q
  ! 
- call OUTPUT_driver("q_mod_OMS",action="reset")
- call OUTPUT_driver("q_mod_OMS",action="open")
+ call OUTPUT_driver("q_mod_NUM",action="reset")
+ call OUTPUT_driver("q_mod_NUM",action="open")
  do is=1,NQ
    iq=Q_todo(is)
    q_mod=iku_v_norm(q%pt(iq,:))
-   call OUTPUT_driver("q_mod_OMS",TITLES=(/"|q|"/),R_VALUES=(/q_mod/))
-   call OUTPUT_driver("q_mod_OMS",TITLES=(/"-Im[PI(Wo)]"/),R_VALUES=(/-aimag(OMS_ph(iq))/),UNIT="meV")
-   call OUTPUT_driver("q_mod_OMS",TITLES=(/"Re[PI(Wo)]"/),R_VALUES=(/real(OMS_ph(iq)-OMS_static(iq))/),UNIT="meV")
-   call OUTPUT_driver("q_mod_OMS",TITLES=(/"Re[PI(iWo)]"/),R_VALUES=(/real(OMS_im_W(iq)-OMS_static(iq))/),UNIT="meV")
-   call OUTPUT_driver("q_mod_OMS",action="write")
+   call OUTPUT_driver("q_mod_NUM",TITLES=(/"|q|"/),R_VALUES=(/q_mod/))
+   call OUTPUT_driver("q_mod_NUM",TITLES=(/"-Im[PI(Wo)]"/),R_VALUES=(/-aimag(PI_num%OMS(is))/),UNIT="meV")
+   call OUTPUT_driver("q_mod_NUM",TITLES=(/"Re[\Delta PI(Wo)]"/),R_VALUES=(/real(PI_num%OMS(is)-PI_num%ST(is))/),UNIT="meV")
+   call OUTPUT_driver("q_mod_NUM",TITLES=(/"Re[\Delta PI(iWo)]"/),R_VALUES=(/real(PI_num%IW(is)-PI_num%ST(is))/),UNIT="meV")
+   call OUTPUT_driver("q_mod_NUM",TITLES=(/"Re[PI(0)]"/),R_VALUES=(/real(PI_num%ST(is))/),UNIT="meV")
+   call OUTPUT_driver("q_mod_NUM",action="write")
  enddo
- call OUTPUT_driver("q_mod_OMS",action="close")
+ call OUTPUT_driver("q_mod_NUM",action="close")
  !
  call PH_of(k)
  ! 
- iq=iq_c(1)
- OMS_single_q=(/real(OMS_static(iq)),aimag(OMS_static(iq))/)*HA2EV*1000.
- call msg('sr',com_compose_msg(body="[MODEL] OMS_static (ph)",post="(Re Im)"),OMS_single_q,after_msg="[meV]")
- OMS_single_q=(/real(OMS_ph(iq)),-aimag(OMS_ph(iq))/)*HA2EV*1000.
- call msg('sr',com_compose_msg(body="[MODEL] OMS@Wo (ph)",post="(Re -Im)"),OMS_single_q,after_msg="[meV]")
- OMS_single_q=(/real(OMS_ph(iq)-OMS_static(iq)),-aimag(OMS_ph(iq))/)*HA2EV*1000.
- call msg('sr',com_compose_msg(body="[MODEL] OMS@Wo-OMS_static (ph)",post="(Re -Im)"),OMS_single_q,after_msg="[meV]")
- OMS_single_q=(/real(OMS_im_W(iq)-OMS_static(iq)),aimag(OMS_im_W(iq))/)*HA2EV*1000.
- call msg('sr',com_compose_msg(body="[MODEL] OMS@iWo-OMS_static (ph)",post="(Re Im)"),OMS_single_q,after_msg="[meV]")
+ is=NQ
+ OMS_single_q=(/real(PI_num%OMS(is)-Pi_num%ST(is)),aimag(PI_num%OMS(is))/)*HA2EV*1000.
+ call msg('sr',com_compose_msg(body="[MODEL] \Delta Pi_OMS",post="(numerical)"),OMS_single_q,after_msg="[meV]")
+ OMS_single_q=(/real(PI_exact%OMS(is)-Pi_exact%ST(is)),aimag(PI_exact%OMS(is))/)*HA2EV*1000.
+ call msg('sr',com_compose_msg(body="[MODEL] \Delta Pi_OMS",post="(exact)"),OMS_single_q,after_msg="[meV]")
+ !
+ OMS_single_q=(/real(PI_num%ST(is)),aimag(PI_num%ST(is))/)*HA2EV*1000.
+ call msg('sr',com_compose_msg(body="[MODEL] PI_static",post="(numerical)"),OMS_single_q,after_msg="[meV]")
+ OMS_single_q=(/real(PI_exact%ST(is)),aimag(PI_exact%ST(is))/)*HA2EV*1000.
+ call msg('sr',com_compose_msg(body="[MODEL] PI_static",post="(exact)"),OMS_single_q,after_msg="[meV]")
+ !
+ OMS_single_q=(/real(PI_num%IW(is)-Pi_num%ST(is)),aimag(PI_num%IW(is))/)*HA2EV*1000.
+ call msg('sr',com_compose_msg(body="[MODEL] \Delta PI_iW",post="(numerical)"),OMS_single_q,after_msg="[meV]")
+ OMS_single_q=(/real(PI_exact%IW(is)-Pi_exact%ST(is)),aimag(PI_exact%IW(is))/)*HA2EV*1000.
+ call msg('sr',com_compose_msg(body="[MODEL] \Delta_Pi_iW",post="(exact)"),OMS_single_q,after_msg="[meV]")
  !
  contains
    !
@@ -207,5 +212,18 @@ subroutine MODELS_ep_Pi(k,E,px)
      complex(SP) :: fraction
      fraction=1./(E+E_k-E_kmq)-1./(E-E_k+E_kmq+cI*QP_G_damp)
    end function
+   !
+   subroutine PI_alloc(PI_in)
+     use pars, ONLY:cZERO
+     type(PI_ph) :: PI_in
+     YAMBO_ALLOC(PI_in%OMS,(NQ))
+     YAMBO_ALLOC(PI_in%ST,(NQ))
+     YAMBO_ALLOC(PI_in%IW,(NQ))
+     YAMBO_ALLOC(PI_in%SF,(NQ,QP_Sc_steps))
+     PI_in%OMS=cZERO
+     PI_in%ST=cZERO
+     PI_in%IW=cZERO
+     PI_in%SF=cZERO
+   end subroutine
    !
 end subroutine MODELS_ep_Pi

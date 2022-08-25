@@ -29,6 +29,13 @@ module YPP_models
  integer, allocatable :: MODEL_B_shift(:,:,:)
  integer, allocatable :: MODEL_kmq_table(:,:,:,:)
  !
+ type PI_ph
+   complex(SP), allocatable :: OMS(:)
+   complex(SP), allocatable :: ST(:)
+   complex(SP), allocatable :: IW(:)
+   complex(SP), allocatable :: SF(:,:)
+ end type
+ !
  contains
    !
    function E_jell(k,shift)  
