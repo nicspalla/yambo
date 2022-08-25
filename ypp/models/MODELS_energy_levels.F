@@ -25,6 +25,7 @@ subroutine MODELS_energy_levels(k,E)
  !
  use units,            ONLY:HA2EV
  use pars,             ONLY:SP
+ use YPP_models,       ONLY:MODEL_B_shift
  use MODELS,           ONLY:MODEL_H_kind,MODEL_overlap,MODEL_effective_mass,MODEL_Eg,MODEL_E_shells
  use stderr,           ONLY:STRING_same
  use R_lattice,        ONLY:bz_samp
@@ -39,8 +40,8 @@ subroutine MODELS_energy_levels(k,E)
  !
  ! Work Space
  !
- integer  :: i1,i2,i3,ik,ib
- real(SP) :: E_max,k_mod
+ integer  :: i1,i2,i3,ik,ib,shift((2*MODEL_E_shells+1)**3,3),B_index( (2*MODEL_E_shells+1)**3 )
+ real(SP) :: E_max
  !
  if (STRING_same(MODEL_H_kind,"2bands" )) then
    E%nb=2  
@@ -54,22 +55,25 @@ subroutine MODELS_energy_levels(k,E)
  if (STRING_same(MODEL_H_kind,"jellium")) then
    E%nb=(2*MODEL_E_shells+1)**3
    YAMBO_ALLOC(E%E,(E%nb,k%nibz,n_sp_pol))
+   YAMBO_ALLOC(MODEL_B_shift,(E%nb,k%nibz,3))
    E%nb=0
    do i1=-MODEL_E_shells,MODEL_E_shells
      do i2=-MODEL_E_shells,MODEL_E_shells
        do i3=-MODEL_E_shells,MODEL_E_shells
          E%nb=E%nb+1
+         shift(E%nb,:)=(/i1,i2,i3/)
          do ik=1,k%nibz
-           k_mod=iku_v_norm(k%pt(ik,:))
-           if (k_mod>=0._SP) E%E(E%nb,ik,1)=iku_v_norm(k%pt(ik,:)+(/i1,i2,i3/))**2./2./MODEL_effective_mass
-           if (k_mod< 0._SP) E%E(E%nb,ik,1)=iku_v_norm(k%pt(ik,:)-(/i1,i2,i3/))**2./2./MODEL_effective_mass
+           E%E(E%nb,ik,1)=iku_v_norm(k%pt(ik,:)+(/i1,i2,i3/))**2./2./MODEL_effective_mass
          enddo
        enddo
      enddo
    enddo
    E_max=maxval(E%E)
    do ik=1,k%nibz
-     call sort( E%E(:,ik,1) )
+     call sort( E%E(:,ik,1),indx=B_index )
+     do ib=1,E%nb
+       MODEL_B_shift(ib,ik,:)=shift( B_index(ib), :)
+     enddo
    enddo
  endif
  !

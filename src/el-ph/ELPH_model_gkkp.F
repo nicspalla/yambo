@@ -38,7 +38,7 @@ subroutine ELPH_model_gkkp(GKKP)
  real(SP)           :: EM_sq
  !
  if (STRING_same(MODEL_gkkp_kind,"debye" )) then
-   EM_sq=MODEL_E_ph**2*MODEL_elph_alpha/MODEL_Nel_at_Ef
+   EM_sq=MODEL_E_ph**2*MODEL_elph_alpha/MODEL_Nel_at_Ef/DL_vol
  else if (STRING_same(MODEL_gkkp_kind,"Frohlich")) then 
    EM_sq=2.*pi*MODEL_E_ph*sqrt(2*pi*MODEL_E_ph/MODEL_effective_mass)*MODEL_elph_alpha/DL_vol
  else

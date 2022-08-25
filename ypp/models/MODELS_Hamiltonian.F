@@ -59,11 +59,6 @@ subroutine MODELS_Hamiltonian( )
  if (n_bands>0) return
  if (STRING_same(MODEL_H_kind,"none")) return
  !
- ! Number of electrons
- !
- default_nel=MODEL_nel
- nel        =MODEL_nel
- !
  ! DL 
  !
  alat=MODEL_alat
@@ -84,7 +79,15 @@ subroutine MODELS_Hamiltonian( )
  atoms_map=0
  atom_pos=0.
  Z_species=0.
- call msg('s',com_compose_msg(body="[MODEL] RL volume"),RL_vol,after_msg='[a.u.]')
+ call msg('sr',com_compose_msg(body="[MODEL] RL volume"),RL_vol,after_msg='[a.u.]')
+ !
+ ! Number of electrons
+ !
+ default_nel=MODEL_nel*DL_vol
+ nel        =MODEL_nel*DL_vol
+ !
+ call msg('sr',com_compose_msg(body="[MODEL] DL volume"),DL_vol,after_msg='[a.u.]')
+ call msg('sr',com_compose_msg(body="[MODEL] Number of electrons"),nel)
  !
  ! GS
  !

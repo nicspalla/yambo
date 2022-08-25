@@ -133,7 +133,6 @@ subroutine X_Drude(iq,Xen,Xk,Xw,Wd,drude_GreenF)
    !The propagator is T-ordered.
    !Davide: If Drude is used at finite temperature / with fractional occupations
    !        I would need the retarded propagator ... occupations are not used here
-   !
    !  
    use pars,  ONLY:SP,pi,cI
    !

@@ -389,10 +389,10 @@ subroutine INIT_ypp_load(defs)
  !
 #if defined _MODELS
  call it(defs,'Kind','Model Kind (2bands,Jellium)',MODEL_H_kind)
- call it(defs,'Nel','Number of electrons',MODEL_nel)
+ call it(defs,'Nel','Electrons density [a.u.]^-3',MODEL_nel)
  call it(defs,'Eg','Elemental gap (2bands)',MODEL_Eg,unit=E_unit)
  call it(defs,'Overlap','Overlap parameter (2bands)',MODEL_overlap,unit=E_unit)
- call it(defs,'JelMass','Effective mass (Jellium)',MODEL_effective_mass)
+ call it(defs,'JelMass','Effective mass (Jellium). Units of the bare effective mass.',MODEL_effective_mass)
  call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
  call it(defs,'Lattice','Unit cell lattice constant',MODEL_alat)
  call it(defs,'E_shells','Number of unit cell shells used to fold the bands (Jellium)',MODEL_E_shells)
