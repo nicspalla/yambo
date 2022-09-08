@@ -31,11 +31,11 @@ subroutine INIT_load_models(defs)
  !
  type(initdefs)   ::defs
  !
- call it(defs,'OnSiteU','Coloumb parameter',MODEL_U,unit=E_unit)
+ call it(defs,'OnSiteU','[U] Coloumb parameter',MODEL_U,unit=E_unit)
  call it('f',defs,'SkipIntraBand','Skip Intraband collision')
- call it('f',defs,'ForceJell','Force the jellium N=f=0 form of the e-p SE')
- call it(defs,'MOD_gkkp_Kind','GKKP Kind ("Debye","Frohlich")',MODEL_GKKP_kind)
- call it(defs,'MOD_PH_energy','Phonon Frequency (LO)',MODEL_E_ph,unit=E_unit)
- call it(defs,'MOD_ELPH_alpha','Electron-Phonon coupling (\alpha)',MODEL_elph_alpha)
+ call it('f',defs,'ForceJell','[E-P] Force the jellium N=f=0 form of the e-p SE')
+ call it(defs,'MOD_gkkp_Kind','[E-P] GKKP Kind ("Debye","Frohlich")',MODEL_GKKP_kind)
+ call it(defs,'MOD_PH_energy','[E-P] Phonon Frequency (LO)',MODEL_E_ph,unit=E_unit)
+ call it(defs,'MOD_ELPH_alpha','[E-P] Electron-Phonon coupling (\alpha)',MODEL_elph_alpha)
  !
 end subroutine

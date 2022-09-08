@@ -44,6 +44,10 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
  use vec_operate,   ONLY:sort
  use functions,     ONLY:Fermi_fnc
  use interfaces,    ONLY:OCCUPATIONS_Gaps
+#if defined _MODELS
+ use MODELS,        ONLY:MODEL_K_fermi
+ use vec_operate,   ONLY:iku_v_norm
+#endif
 #if defined _SC
  use SC,            ONLY:SC_neq_kind,SC_mu,SC_occ
 #endif 
@@ -317,6 +321,11 @@ subroutine OCCUPATIONS_Fermi(E,K,OBJ,mode,n_bands,impose_balance)
    !
    if(E_sorted(i1)<=mu_zero) E%f(ib,ik,is)=spin_occ*Fermi_fnc(E_sorted(i1)-mu_hole,T_holes)
    if(E_sorted(i1)> mu_zero) E%f(ib,ik,is)=spin_occ*Fermi_fnc(E_sorted(i1)-mu_el,  T_elecs)
+#if defined _MODELS
+   if(i1<n_total_states) then
+     if (E_sorted(i1)<=mu_zero.and.E_sorted(i1+1)>mu_zero) MODEL_K_fermi=iku_v_norm(k%pt(ik,:))
+   endif
+#endif
    !
 #if defined _SC
    if((E%E(ib,ik,is)-mu_zero)<=0._SP) n_carr(1)=n_carr(1)+(spin_occ-E%f(ib,ik,is))*K%weights(ik)

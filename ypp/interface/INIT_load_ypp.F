@@ -53,6 +53,7 @@ subroutine INIT_ypp_load(defs)
 #if defined _MODELS
  use MODELS,        ONLY:MODEL_overlap,MODEL_effective_mass,MODEL_k,MODEL_H_kind,MODEL_Eg,&
 &                        MODEL_nel,MODEL_alat,MODEL_E_shells
+ use YPP_models,    ONLY:MODEL_masses_range,MODEL_N_masses,MODEL_N_E_steps
 #endif
 #if defined _YPP_SC
  use YPPm,          ONLY:V_value
@@ -390,12 +391,15 @@ subroutine INIT_ypp_load(defs)
 #if defined _MODELS
  call it(defs,'Kind','Model Kind (2bands,Jellium)',MODEL_H_kind)
  call it(defs,'Nel','Electrons density [a.u.]^-3',MODEL_nel)
- call it(defs,'Eg','Elemental gap (2bands)',MODEL_Eg,unit=E_unit)
- call it(defs,'Overlap','Overlap parameter (2bands)',MODEL_overlap,unit=E_unit)
- call it(defs,'JelMass','Effective mass (Jellium). Units of the bare effective mass.',MODEL_effective_mass)
- call it(defs,'Kgrid','Brillouin zone sampling',MODEL_k)
- call it(defs,'Lattice','Unit cell lattice constant',MODEL_alat)
- call it(defs,'E_shells','Number of unit cell shells used to fold the bands (Jellium)',MODEL_E_shells)
+ call it(defs,'Eg','[H] Elemental gap (2bands)',MODEL_Eg,unit=E_unit)
+ call it(defs,'Overlap','[H] Overlap parameter (2bands)',MODEL_overlap,unit=E_unit)
+ call it(defs,'Kgrid','[H] Brillouin zone sampling',MODEL_k)
+ call it(defs,'Lattice','[H] Unit cell lattice constant',MODEL_alat)
+ call it(defs,'E_shells','[H] Number of unit cell shells used to fold the bands (Jellium)',MODEL_E_shells)
+ call it(defs,'Masses','[P-E] Effective masses range (Jellium, exact solution)',MODEL_masses_range)
+ call it(defs,'JelMass','[H] Effective mass (Jellium). Units of the bare effective mass.',MODEL_effective_mass)
+ call it(defs,'N_Masses','[P-E] Number of effective masses (Jellium, exact solution)',MODEL_N_masses)
+ call it(defs,'W_Steps','[P-E] Number of frequency steps (Jellium)',MODEL_N_E_steps)
  ! E-P test START
  call INIT_load_models(defs)
  ! E-P test END

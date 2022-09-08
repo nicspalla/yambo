@@ -31,6 +31,7 @@ module MODELS
  logical           :: l_MODEL_force_jellium=.FALSE.
  character(schlen) :: MODEL_H_kind="none"
  character(schlen) :: MODEL_GKKP_kind="none"
+ real(SP)          :: MODEL_K_fermi
  real(SP)          :: MODEL_U
  real(SP)          :: MODEL_alat
  real(SP)          :: MODEL_effective_mass

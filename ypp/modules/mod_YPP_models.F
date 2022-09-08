@@ -25,15 +25,19 @@ module YPP_models
  !
  use pars,                ONLY:SP,schlen,DP
  !
- real(SP)             :: MODEL_K_fermi
  integer, allocatable :: MODEL_B_shift(:,:,:)
  integer, allocatable :: MODEL_kmq_table(:,:,:,:)
+ !
+ integer  :: MODEL_N_masses=1
+ integer  :: MODEL_N_E_steps=100
+ real(SP) :: MODEL_masses_range(2)=1.
  !
  type PI_ph
    complex(SP), allocatable :: OMS(:)
    complex(SP), allocatable :: ST(:)
    complex(SP), allocatable :: IW(:)
-   complex(SP), allocatable :: SF(:,:)
+   complex(SP), allocatable :: SF_w(:,:)
+   complex(SP), allocatable :: SF_iw(:,:)
  end type
  !
  contains

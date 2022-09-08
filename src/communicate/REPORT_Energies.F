@@ -29,8 +29,12 @@ subroutine REPORT_Energies(E,k,Xk,n_bands_,k_range,what,l_kpoints,l_what)
  use electrons,      ONLY:n_sp_pol,nel,n_full_bands,n_bands
  use stderr,         ONLY:intc
  use wave_func,      ONLY:wf_nc_k
- use com,            ONLY:msg,fat_log
+ use com,            ONLY:msg,fat_log,com_compose_msg
  use vec_operate,    ONLY:c2a
+#if defined _MODELS
+ use vec_operate,    ONLY:iku_v_norm
+ use MODELS,         ONLY:MODEL_K_fermi
+#endif
  !
  implicit none
  !
@@ -45,14 +49,23 @@ subroutine REPORT_Energies(E,k,Xk,n_bands_,k_range,what,l_kpoints,l_what)
  real(SP)          :: k_cc(3),k_al(3)
  integer           :: ik,is_pol,ib,i1,nb_to_print
  character(schlen) :: dumb_ch1,dumb_ch2
- real(SP)          :: E_(n_bands_)
+ real(SP)          :: E_(n_bands_),max_ratio
  !
- if(l_kpoints) then
-   call msg('nr','IBZ '//trim(what)//'-points ',k%nibz)
-   if (trim(what)/="Q".and.Xk%nibz/=k%nibz) then
-     call msg('r', 'IBZ K-points for X ',nXkibz)
+ if (l_kpoints) then
+   call msg('nr',com_compose_msg(body='IBZ '//trim(what)//'-points'),k%nibz)
+#if defined _MODELS
+   if (trim(what)=="Q") then
+     max_ratio=-1.
+     do ik=k_range(1),k_range(2)
+       if (iku_v_norm(k%pt(ik,:))/MODEL_K_fermi>max_ratio) max_ratio=iku_v_norm(k%pt(ik,:))/MODEL_K_fermi
+     enddo
+     call msg('r',com_compose_msg(body='Max |Q|/K_fermi'),max_ratio)
    endif
-   call msg('rn','BZ  '//trim(what)//'-points ',k%nbz)
+#endif
+   if (trim(what)/="Q".and.Xk%nibz/=k%nibz) then
+     call msg('r', com_compose_msg(body='IBZ K-points for X'),nXkibz)
+   endif
+   call msg('rn',com_compose_msg(body='BZ  '//trim(what)//'-points'),k%nbz)
    call msg('r','K/Q-points units:')
    call msg('rn','rlu = crystal or reduced units; cc = cartesian coordinates; iku = interal k-units')
  endif

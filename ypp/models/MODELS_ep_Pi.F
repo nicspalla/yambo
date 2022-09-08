@@ -23,14 +23,14 @@
 !
 subroutine MODELS_ep_Pi(k,E,px)
  !
- use pars,                ONLY:SP,cI
+ use pars,                ONLY:SP,cI,pi
  use electrons,           ONLY:levels
  use stderr,              ONLY:STRING_same
  use R_lattice,           ONLY:bz_samp
  use D_lattice,           ONLY:Tel
  use units,               ONLY:HA2EV
- use YPP_models,          ONLY:MODEL_kmq_table,MODEL_K_fermi,MODEL_B_shift,E_jell,PI_ph
- use MODELS,              ONLY:MODEL_gkkp_kind,MODEL_E_ph,MODEL_ep_dV,MODEL_Nel_at_Ef
+ use YPP_models,          ONLY:MODEL_kmq_table,MODEL_B_shift,E_jell,PI_ph,MODEL_N_E_steps
+ use MODELS,              ONLY:MODEL_gkkp_kind,MODEL_E_ph,MODEL_ep_dV,MODEL_Nel_at_Ef,MODEL_effective_mass,MODEL_K_fermi 
  use ELPH,                ONLY:GKKP,elph_branches,PH_freqs_sq
  use PHEL,                ONLY:PH_Q,PHEL_alloc,PHEL_qp,QPH
  use QP_m,                ONLY:QP_Sc_steps,l_QP_eval_GF,QP_G_damp,QP_G_er
@@ -78,22 +78,22 @@ subroutine MODELS_ep_Pi(k,E,px)
    do ik=1,k%nibz
      if (abs(E%E(ib,ik,1)-E%E_fermi)<Ef_dist.and.E%f(ib,ik,1)>0.) then
        MODEL_K_fermi=iku_v_norm(k%pt(ik,:)+MODEL_B_shift(ib,ik,:))
-       MODEL_Nel_at_Ef=E%f(ib,ik,1)
        Ef_dist=abs(E%E(ib,ik,1)-E%E_fermi)
      endif
    enddo
  enddo
+ MODEL_Nel_at_Ef=2.*pi*MODEL_effective_mass*MODEL_K_fermi
  !
  ! ... Kinds and frequencies
  ! ... SF and REPORT only at the @BOX corner
  !--------------------------
  PH_Q=Q_todo(NQ)
- QP_Sc_steps=1000
+ QP_Sc_steps=MODEL_N_E_steps
  call PI_alloc(PI_num)
  call PI_alloc(PI_exact)
  elph_branches=1
  QP_G_damp=0.001/HA2EV
- QP_G_er=(/-MODEL_E_ph*10.,MODEL_E_ph*10./)
+ QP_G_er=(/-10.,10./)*MODEL_E_ph
  YAMBO_ALLOC(PH_freqs_sq,(q%nibz,1))
  l_QP_eval_GF=.TRUE.
  call PHEL_energy_and_KINDS_setup(k)
@@ -106,6 +106,7 @@ subroutine MODELS_ep_Pi(k,E,px)
  call ELPH_model_gkkp(GKKP)
  call msg('sr',com_compose_msg(body="[MODEL] Nel@E_fermi (ph)"),MODEL_Nel_at_Ef)
  call msg('sr',com_compose_msg(body="[MODEL] dV (ph)"),MODEL_ep_dV*(HA2EV*1000.)**2,after_msg="[meV]")
+ call msg('sr',com_compose_msg(body="[MODEL] K_fermi"),MODEL_K_fermi,after_msg="[a.u.]")
  !
  ! The exact solution (zero temperature)
  !--------------------------------------
@@ -180,8 +181,8 @@ subroutine MODELS_ep_Pi(k,E,px)
    q_mod=iku_v_norm(q%pt(iq,:))
    call OUTPUT_driver("q_mod_NUM",TITLES=(/"|q|"/),R_VALUES=(/q_mod/))
    call OUTPUT_driver("q_mod_NUM",TITLES=(/"-Im[PI(Wo)]"/),R_VALUES=(/-aimag(PI_num%OMS(is))/),UNIT="meV")
-   call OUTPUT_driver("q_mod_NUM",TITLES=(/"Re[\Delta PI(Wo)]"/),R_VALUES=(/real(PI_num%OMS(is)-PI_num%ST(is))/),UNIT="meV")
-   call OUTPUT_driver("q_mod_NUM",TITLES=(/"Re[\Delta PI(iWo)]"/),R_VALUES=(/real(PI_num%IW(is)-PI_num%ST(is))/),UNIT="meV")
+   call OUTPUT_driver("q_mod_NUM",TITLES=(/"Re[PI(Wo)]"/),R_VALUES=(/real(PI_num%OMS(is))/),UNIT="meV")
+   call OUTPUT_driver("q_mod_NUM",TITLES=(/"Re[PI(iWo)]"/),R_VALUES=(/real(PI_num%IW(is))/),UNIT="meV")
    call OUTPUT_driver("q_mod_NUM",TITLES=(/"Re[PI(0)]"/),R_VALUES=(/real(PI_num%ST(is))/),UNIT="meV")
    call OUTPUT_driver("q_mod_NUM",action="write")
  enddo
@@ -219,11 +220,13 @@ subroutine MODELS_ep_Pi(k,E,px)
      YAMBO_ALLOC(PI_in%OMS,(NQ))
      YAMBO_ALLOC(PI_in%ST,(NQ))
      YAMBO_ALLOC(PI_in%IW,(NQ))
-     YAMBO_ALLOC(PI_in%SF,(NQ,QP_Sc_steps))
+     YAMBO_ALLOC(PI_in%SF_w,(NQ,QP_Sc_steps))
+     YAMBO_ALLOC(PI_in%SF_iw,(NQ,QP_Sc_steps))
      PI_in%OMS=cZERO
      PI_in%ST=cZERO
      PI_in%IW=cZERO
-     PI_in%SF=cZERO
+     PI_in%SF_w=cZERO
+     PI_in%SF_iw=cZERO
    end subroutine
    !
 end subroutine MODELS_ep_Pi
