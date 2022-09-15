@@ -142,8 +142,8 @@ subroutine MODELS_ep_Pi_exact(q,NQ,Q_todo,PI_exact,W)
        endif
        if (SF_ind(i_p,1)==i_mass) then
          PIoms(i_p,is)=PI_exact%OMS(is)
-         PIiW(i_p,is)=PI_exact%iW(is)
-         PIst(i_p,is)=PI_exact%ST(is)
+         PIiW(i_p,is) =PI_exact%iW(is)
+         PIst(i_p,is) =PI_exact%ST(is)
        endif
      enddo
      !
@@ -158,12 +158,13 @@ subroutine MODELS_ep_Pi_exact(q,NQ,Q_todo,PI_exact,W)
    do is=1,NQ
      iq=Q_todo(is)
      q_mod=iku_v_norm(q%pt(iq,:))
+     W_iWo=sqrt(MODEL_E_ph*(MODEL_E_ph+PI_exact%IW(is)-PI_exact%ST(is)))/MODEL_E_ph
+     W_oms=sqrt(MODEL_E_ph*(MODEL_E_ph+PI_exact%OMS(is)-PI_exact%ST(is)))/MODEL_E_ph
      call OUTPUT_driver(fname,TITLES=(/"Mass"/),R_VALUES=(/Mass(i_mass)/))
      call OUTPUT_driver(fname,TITLES=(/"|q|/Kf"/),R_VALUES=(/q_mod/MODEL_K_fermi/))
-     call OUTPUT_driver(fname,TITLES=(/"Re[PI(Wo)-PI(iWo)]/Wo"/),&
-&                       R_VALUES=(/real(PI_exact%OMS(is)-PI_exact%IW(is))/MODEL_E_ph/))
-     call OUTPUT_driver(fname,TITLES=(/"-Im[PI(Wo)]/Wo"/),&
-&                       R_VALUES=(/-aimag( PI_exact%OMS(is) )/MODEL_E_ph/))
+     call OUTPUT_driver(fname,TITLES=(/"Re[E_iWo-E_Wo]/Wo"/),R_VALUES=real((/W_iWo-W_oms/)))
+     call OUTPUT_driver(fname,TITLES=(/"|Im[E_Wo]/Wo|"/),R_VALUES=(/abs(aimag(W_oms))/))
+     call OUTPUT_driver(fname,TITLES=(/"Re[E_iWo]/Wo"/),R_VALUES=real((/W_iWo/)))
      call OUTPUT_driver(fname,action="write")
    enddo
    !
