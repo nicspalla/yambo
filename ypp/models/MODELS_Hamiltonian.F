@@ -39,7 +39,7 @@ subroutine MODELS_Hamiltonian( )
  use com,                 ONLY:com_path,more_io_path,core_io_path,msg,com_compose_msg
  use vec_operate,         ONLY:define_b_and_DL_vol
  use parallel_m,          ONLY:PP_indexes,PP_indexes_reset
- use parallel_int,        ONLY:PP_redux_wait,PARALLEL_index 
+ use parallel_int,        ONLY:PP_wait,PARALLEL_index 
  !
 #include<memory.h>
  !
@@ -147,7 +147,7 @@ subroutine MODELS_Hamiltonian( )
  ! Parallel indexes...
  call PP_indexes_reset(px)
  call PARALLEL_index(px,(/E%nb,k%nibz/))
- call PP_redux_wait
+ call PP_wait
  !
  !... el
  call MODELS_ep_Fan(k,E,px)

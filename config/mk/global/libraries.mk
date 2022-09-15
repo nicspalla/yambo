@@ -1,7 +1,9 @@
 #
 # EXT_LIBS imported 
 #
-include config/mk/defs.mk
+ifeq ($(wildcard config/mk/global/defs.mk),config/mk/global/defs.mk)
+  include config/mk/defs.mk
+endif
 include lib/archive/package.list
 #
 INT_LIBS      = qe_pseudo slatec math77 local
@@ -64,8 +66,8 @@ PJ_NLLIBS_LD = $(PJ_RTLIBS_LD) nloptics
 #
 # YPP
 #
-YPP_BASIC_LIBS     = modules interface qp plotting k-points symmetries bits electrons dipoles models
-YPP_BASIC_LIBS_LD  = modules interface qp plotting k-points symmetries bits electrons dipoles models
+YPP_BASIC_LIBS     = modules interface qp plotting k-points symmetries bits electrons dipoles
+YPP_BASIC_LIBS_LD  = modules interface qp plotting k-points symmetries bits electrons dipoles
 YPP_LIBS           = $(YPP_BASIC_LIBS) excitons
 YPP_LIBS_LD        = $(YPP_BASIC_LIBS_LD) excitons
 YPPPH_LIBS         = $(YPP_BASIC_LIBS) el-ph excitons

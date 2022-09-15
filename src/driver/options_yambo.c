@@ -35,7 +35,9 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="hf";
  options[*i_opt].short_opt='x';
  options[*i_opt].bin="yambo";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="HF_and_locXC";
  options[*i_opt].section=desc;
  *i_opt=*i_opt+1;
@@ -89,7 +91,9 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="coulomb";
  options[*i_opt].short_opt='r';
  options[*i_opt].bin="yambo";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="rim_cut";
  options[*i_opt].section=desc;
 
@@ -101,7 +105,9 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="optics";
  options[*i_opt].short_opt='o';
  options[*i_opt].bin="yambo";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="optics";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;
@@ -110,7 +116,9 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="X";
  options[*i_opt].short_opt='d';
  options[*i_opt].bin="yambo";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="screen";
  options[*i_opt].section=desc;
  options[*i_opt].long_desc[0]="<string>=(s)static/(p)PA/(d)ynamical dielectric matrix";
@@ -121,7 +129,9 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="dipoles";
  options[*i_opt].short_opt='q';
  options[*i_opt].bin="yambo";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="dipoles";
  options[*i_opt].section=desc;
  *i_opt=*i_opt+1;
@@ -131,7 +141,9 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="kernel";
  options[*i_opt].short_opt='k';
  options[*i_opt].bin="yambo";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="kernel";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;
@@ -144,7 +156,9 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="Ksolver";
  options[*i_opt].short_opt='y';
  options[*i_opt].bin="yambo";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="bss";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;
@@ -154,7 +168,9 @@ void options_yambo(struct options_struct options[],int *i_opt)
  options[*i_opt].short_desc="ACFDT Total Energy";
  options[*i_opt].long_opt="acfdt";
  options[*i_opt].bin="yambo";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="acfdt";
  options[*i_opt].section=desc;
 

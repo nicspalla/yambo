@@ -1,2 +1,2 @@
 def_mod
-compile.tcsh debug models
+compile.tcsh -l models -d

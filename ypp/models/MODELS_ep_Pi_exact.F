@@ -36,7 +36,7 @@ subroutine MODELS_ep_Pi_exact(q,NQ,Q_todo,PI_exact,W)
  use OUTPUT,              ONLY:OUTPUT_driver
  use LIVE_t,              ONLY:live_timing
  use parallel_m,          ONLY:PP_indexes,PP_indexes_reset,myid
- use parallel_int,        ONLY:PP_redux_wait,PARALLEL_index 
+ use parallel_int,        ONLY:PP_redux_wait,PARALLEL_index,PP_wait
  !
 #include<memory.h>
  !
@@ -65,7 +65,7 @@ subroutine MODELS_ep_Pi_exact(q,NQ,Q_todo,PI_exact,W)
  !
  call PP_indexes_reset(px)
  call PARALLEL_index(px,(/NQ/))
- call PP_redux_wait
+ call PP_wait
  !
  call parser('Print_SF',l_print_SF)
  !

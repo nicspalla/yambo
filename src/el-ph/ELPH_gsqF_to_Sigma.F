@@ -131,7 +131,7 @@ subroutine ELPH_gsqF_to_Sigma(en,q,l_GF_from_CA,Sc_W)
            !
            ! QP energies: FAN+correction
            !-----------------------------
-           ! 
+           !
 #if defined _MODELS
            if (l_MODEL_force_jellium) then
              DP_FAN(iw)=DP_FAN(iw)+gsqF_fan(i_qp,iq_mem,il,iw)/real( PAR_COM_G_b_INDEX%n_CPU)

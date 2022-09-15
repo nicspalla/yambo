@@ -57,7 +57,9 @@ void options_projects(struct options_struct options[],int *i_opt)
  options[*i_opt].long_opt="potential";
  options[*i_opt].short_opt='v';
  options[*i_opt].bin="yambo_sc yambo_rt yambo_nl";
+#if defined _MODELS
  options[*i_opt].no_bin="yambo_models";
+#endif
  options[*i_opt].yambo_string="potential";
  options[*i_opt].char_var=1;
  options[*i_opt].section=desc;

@@ -5,10 +5,11 @@ define todo_lib
  done
 endef
 define todo_precision
- $(ECHO) "\t[$@] Compilation Precision check";\
- if echo $(1) | grep -q DOUBLE ; then \
+ if echo $(1)" "$(xcpp) | grep -q DOUBLE ; then \
+  $(ECHO) "\t[$@] Compilation is in DOUBLE precison";\
   if [ ! -f  $(compdir)/config/stamps_and_lists/compilation_objects_in_DOUBLE_precision.stamp ]; then \
    if [ -f  $(compdir)/config/stamps_and_lists/compilation_objects_in_SINGLE_precision.stamp ]; then \
+     $(ECHO) "\t[$@] Cleaning SINGLE precison source";\
      $(MAKE) $(MAKEFLAGS) clean what="int-libs"; \
      $(MAKE) $(MAKEFLAGS) clean what="driver"; \
      $(MAKE) $(MAKEFLAGS) clean what="ypp"; \
@@ -18,8 +19,10 @@ define todo_precision
    touch  $(compdir)/config/stamps_and_lists/compilation_objects_in_DOUBLE_precision.stamp; \
   fi; \
  else \
+  $(ECHO) "\t[$@] Compilation is in SINGLE precison";\
   if [ ! -f  $(compdir)/config/stamps_and_lists/compilation_objects_in_SINGLE_precision.stamp ]; then \
    if [ -f  $(compdir)/config/stamps_and_lists/compilation_objects_in_DOUBLE_precision.stamp ]; then \
+    $(ECHO) "\t[$@] Cleaning DOUBLE precison source";\
     $(MAKE) $(MAKEFLAGS) clean what="int-libs"; \
     $(MAKE) $(MAKEFLAGS) clean what="driver"; \
     $(MAKE) $(MAKEFLAGS) clean what="ypp"; \
