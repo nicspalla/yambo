@@ -21,16 +21,16 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston,
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine MODELS_Hamiltonian( )
+subroutine MODELS_Hamiltonian(E,k)
  !
  use pars,                ONLY:pi
  use stderr,              ONLY:STRING_same
  use MODELS,              ONLY:MODEL_k,MODEL_H_kind,MODEL_nel,MODEL_alat
- use electrons,           ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,E_reset,n_bands,nel
+ use electrons,           ONLY:levels,default_nel,n_spin,n_sp_pol,n_spinor,n_bands,nel
  use D_lattice,           ONLY:a,alat,nsym,i_time_rev,input_GS_Tel,dl_sop,DL_vol,&
 &                              Tel,n_atoms_species_max,n_atomic_species,n_atoms_species,atom_pos, &
 &                              Z_species, n_atoms, mag_syms,atoms_map,atom_mass
- use R_lattice,           ONLY:ng_vec,g_vec, bz_samp,bz_samp_reset,rl_sop,RL_vol
+ use R_lattice,           ONLY:ng_vec,g_vec, bz_samp,rl_sop,RL_vol
  use wave_func,           ONLY:wf_ncx,wf_nc_k,wf_igk,wf_ng,wf_nb_io,wf_nb_io_groups,io_WF
  use xc_functionals,      ONLY:GS_xc_KIND,GS_xc_FUNCTIONAL,GS_exx_FRACTION,GS_exx_SCREENING
  use global_XC,           ONLY:H_SE_Hartree
@@ -38,23 +38,18 @@ subroutine MODELS_Hamiltonian( )
  use IO_int,              ONLY:io_control
  use com,                 ONLY:com_path,more_io_path,core_io_path,msg,com_compose_msg
  use vec_operate,         ONLY:define_b_and_DL_vol
- use parallel_m,          ONLY:PP_indexes,PP_indexes_reset
- use parallel_int,        ONLY:PP_wait,PARALLEL_index 
  !
 #include<memory.h>
  !
- ! Work Space
- !
  type(levels )    :: E
  type(bz_samp)    :: k
+ !
+ ! Work Space
+ !
  integer          :: io_err,ID,is,i2,i3
  integer, external:: io_DB1
- type(PP_indexes) :: px
  !
- call section("*",trim(MODEL_H_kind)//" Hamiltonian")
- !
- call E_reset(E)
- call bz_samp_reset(k)
+ call section("+","Hamiltonian")
  !
  if (n_bands>0) return
  if (STRING_same(MODEL_H_kind,"none")) return
@@ -140,20 +135,6 @@ subroutine MODELS_Hamiltonian( )
  !
  wf_nb_io=E%nb
  wf_nb_io_groups=E%nb
- !
- ! E-P 
- !=====
- !
- ! Parallel indexes...
- call PP_indexes_reset(px)
- call PARALLEL_index(px,(/E%nb,k%nibz/))
- call PP_wait
- !
- !... el
- call MODELS_ep_Fan(k,E,px)
- !
- !... ph
- call MODELS_ep_Pi(k,E,px)
  !
  ! I/O
  !=====

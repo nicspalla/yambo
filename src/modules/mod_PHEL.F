@@ -71,14 +71,14 @@ module PHEL
  !
  type(phel_scatterings)  :: phel_info
  !
- type PHEL_qp_kind
+ type PHONON_kind
    complex(SP), allocatable :: PI(:,:,:)
    real(SP),    allocatable :: interband(:,:)
    real(SP),    allocatable :: intraband(:,:)
    real(SP),    allocatable :: allen(:,:)
- end type PHEL_qp_kind
+ end type PHONON_kind
  !
- type(PHEL_qp_kind)  :: PHEL_qp
+ type(PHONON_kind)  :: PHONON
  !
  real(SP)    :: PI_ref   = rZERO
  complex(SP) :: PI_oms   = cZERO
@@ -96,7 +96,11 @@ module PHEL
    complex(SP), allocatable :: PI(:)
  end type QPHt
  !
- type (QPHt) :: QPH_OMS,QPH_OMS_bare_Pole,QPH_full,QPH_DDFPT,QPH
+ type (QPHt) :: QPH_OMS
+ type (QPHt) :: QPH_OMS_bare_Pole
+ type (QPHt) :: QPH_full
+ type (QPHt) :: QPH_DDFPT
+ type (QPHt) :: QPH
  !
  contains
    !
@@ -165,14 +169,14 @@ module PHEL
    end subroutine
    !
    subroutine PHEL_alloc( )
-     YAMBO_ALLOC(PHEL_qp%PI,(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2),QP_Sc_steps))
-     PHEL_qp%PI=cZERO
-     YAMBO_ALLOC(PHEL_qp%interband,(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2)))
-     YAMBO_ALLOC(PHEL_qp%intraband,(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2)))
-     YAMBO_ALLOC(PHEL_qp%allen,(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2)))
-     PHEL_qp%interband=rZERO
-     PHEL_qp%intraband=rZERO
-     PHEL_qp%allen=rZERO
+     YAMBO_ALLOC(PHONON%PI,(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2),QP_Sc_steps))
+     PHONON%PI=cZERO
+     YAMBO_ALLOC(PHONON%interband,(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2)))
+     YAMBO_ALLOC(PHONON%intraband,(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2)))
+     YAMBO_ALLOC(PHONON%allen,(elph_branches(1):elph_branches(2),PH_Q(1):PH_Q(2)))
+     PHONON%interband=rZERO
+     PHONON%intraband=rZERO
+     PHONON%allen=rZERO
      YAMBO_ALLOC(PHEL_nTrans_percent,(PH_Q(1):PH_Q(2)))
      YAMBO_ALLOC(PHEL_Q_Radius,(PH_Q(1):PH_Q(2)))
      allocate(PHEL_N_trans_yes(PH_Q(1):PH_Q(2)))
@@ -193,10 +197,10 @@ module PHEL
          enddo
        enddo
      endif
-     YAMBO_FREE(PHEL_qp%PI)
-     YAMBO_FREE(PHEL_qp%interband)
-     YAMBO_FREE(PHEL_qp%intraband)
-     YAMBO_FREE(PHEL_qp%allen)
+     YAMBO_FREE(PHONON%PI)
+     YAMBO_FREE(PHONON%interband)
+     YAMBO_FREE(PHONON%intraband)
+     YAMBO_FREE(PHONON%allen)
      YAMBO_FREE(PHEL_nTrans_percent)
      YAMBO_FREE(PHEL_Q_Radius)
      deallocate(PHEL_N_trans_yes)

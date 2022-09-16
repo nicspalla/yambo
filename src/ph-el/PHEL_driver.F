@@ -27,7 +27,7 @@ subroutine PHEL_driver(E,k,q)
  use R_lattice,      ONLY:bz_samp,bz_samp_FineGd_default,bz_samp_FineGd_alloc,bz_fine_grid
  use interfaces,     ONLY:ELPH_alloc
  use ELPH,           ONLY:QP_PH_n_G_bands,elph_branches,GKKP_pe_sq,elph_nb,elph_use_q_grid
- use PHEL,           ONLY:l_PH_uses_E_FineGd,PH_Self_Energy_mode,PHEL_free,PH_Q,PHEL_alloc,PHEL_qp,&
+ use PHEL,           ONLY:l_PH_uses_E_FineGd,PH_Self_Energy_mode,PHEL_free,PH_Q,PHEL_alloc,PHONON,&
 &                         PH_DbGd_points,KpQ_io_map,phel_info
  use parallel_int,   ONLY:PP_redux_wait,PARALLEL_global_indexes
  use RT_lifetimes,   ONLY:RT_PE_life,RT_lifetime_alloc,Life_MEM_steps,l_initial_equilibrium,RT_ALL_lifetimes_free                        
@@ -252,11 +252,11 @@ subroutine PHEL_driver(E,k,q)
 !     call PP_redux_wait(RT_PE_life%emit)
 !     call PP_redux_wait(RT_PE_life%abs)
 #endif
-     call PP_redux_wait(PHEL_qp%PI,COMM=COMM)
+     call PP_redux_wait(PHONON%PI,COMM=COMM)
      if (l_extended_output) then
-       call PP_redux_wait(PHEL_qp%interband,COMM=COMM)
-       call PP_redux_wait(PHEL_qp%intraband,COMM=COMM)
-       call PP_redux_wait(PHEL_qp%allen,COMM=COMM)
+       call PP_redux_wait(PHONON%interband,COMM=COMM)
+       call PP_redux_wait(PHONON%intraband,COMM=COMM)
+       call PP_redux_wait(PHONON%allen,COMM=COMM)
      endif
    end subroutine
    !

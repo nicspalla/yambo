@@ -26,7 +26,7 @@ subroutine PHEL_from_GF_to_quasiphonons(il,iq,ph_freq,QPH)
  use drivers,        ONLY:l_life
  use pars,           ONLY:SP,cI,rZERO,cZERO
  use units,          ONLY:HA2EV
- use PHEL,           ONLY:PHEL_qp,QPHt,PI_ref,PI_oms,PHEL_fit_Energies
+ use PHEL,           ONLY:PHONON,QPHt,PI_ref,PI_oms,PHEL_fit_Energies
  use stderr,         ONLY:STRING_same
  use QP_m,           ONLY:l_QP_eval_GF,QP_solver
  !
@@ -49,12 +49,12 @@ subroutine PHEL_from_GF_to_quasiphonons(il,iq,ph_freq,QPH)
  !
  ! PI_ref
  if (     l_QP_eval_GF) PI_ref=real(return_PI( 0._SP ))
- if (.not.l_QP_eval_GF) PI_ref=real(PHEL_qp%PI(il,iq,1))
+ if (.not.l_QP_eval_GF) PI_ref=real(PHONON%PI(il,iq,1))
  !
  ! OMS
- if (              l_life      ) PI_oms=PHEL_qp%PI(il,iq,1)
+ if (              l_life      ) PI_oms=PHONON%PI(il,iq,1)
  if (              l_QP_eval_GF) PI_oms=return_PI( ph_freq )
- if (STRING_same(QP_solver,"n")) PI_oms=PHEL_qp%PI(il,iq,3)
+ if (STRING_same(QP_solver,"n")) PI_oms=PHONON%PI(il,iq,3)
  !
  ! OMS+bare Pole 
  !===============
@@ -67,7 +67,7 @@ subroutine PHEL_from_GF_to_quasiphonons(il,iq,ph_freq,QPH)
  ! DDFPT
  !=======
  if (trim(QPH%what)=="DDFPT") then
-   QPH%Pole=PHEL_qp%PI(il,iq,4)-PI_ref+ph_freq
+   QPH%Pole=PHONON%PI(il,iq,4)-PI_ref+ph_freq
    return
  endif
  !
@@ -88,7 +88,7 @@ subroutine PHEL_from_GF_to_quasiphonons(il,iq,ph_freq,QPH)
      PI_fit(1)=return_PI(E_fit(1))-PI_ref
      PI_fit(2)=return_PI(E_fit(2))-PI_ref
    else
-     PI_fit(1:2)=PHEL_qp%PI(il,iq,2:3)-PI_ref
+     PI_fit(1:2)=PHONON%PI(il,iq,2:3)-PI_ref
    endif
    alpha(1)=(E_fit(2)**2.*PI_fit(1)-E_fit(1)**2.*PI_fit(2))/(E_fit(1)*E_fit(2))/(E_fit(2)-E_fit(1))
    alpha(2)=(E_fit(2)*PI_fit(1)-E_fit(1)*PI_fit(2))/(E_fit(1)*E_fit(2))/(E_fit(1)-E_fit(2))
@@ -104,7 +104,7 @@ subroutine PHEL_from_GF_to_quasiphonons(il,iq,ph_freq,QPH)
  !=======
  !... FULL
  if (trim(QPH%what)=="FULL") then
-   QPH%PI=PHEL_qp%PI(il,iq,:)-PI_ref
+   QPH%PI=PHONON%PI(il,iq,:)-PI_ref
  endif
  !
  ! D...
@@ -112,7 +112,7 @@ subroutine PHEL_from_GF_to_quasiphonons(il,iq,ph_freq,QPH)
  do iw=1,QPH%N_D_freqs
    W=real( QPH%W(iw) ) + cI*0.1_SP/1000._SP/HA2EV
    if (trim(QPH%what)=="FULL") then
-     QPH%D(iw)=D_from_PI(cmplx(ph_freq),PHEL_qp%PI(il,iq,iw)-PI_ref,W)
+     QPH%D(iw)=D_from_PI(cmplx(ph_freq),PHONON%PI(il,iq,iw)-PI_ref,W)
    else if (.not.trim(QPH%what)=="DDFPT)") then
      QPH%D(iw)=D_from_POLE_and_GAMMA(QPH%Pole,QPH%Gamma,QPH%Residual,W)
    endif
@@ -140,9 +140,9 @@ subroutine PHEL_from_GF_to_quasiphonons(il,iq,ph_freq,QPH)
      return_PI=cZERO
      do iw_p=1,QPH%N_D_freqs-1
        W=real(QPH%W(iw_p:iw_p+1))
-       if ( W(1)<freq.and. W(2) >freq)    return_PI=PHEL_qp%PI(il,iq,iw_p)
-       if ( abs(W(1)-freq)<0.00005/HA2EV) return_PI=PHEL_qp%PI(il,iq,iw_p)
-       if ( abs(W(2)-freq)<0.00005/HA2EV) return_PI=PHEL_qp%PI(il,iq,iw_p+1)
+       if ( W(1)<freq.and. W(2) >freq)    return_PI=PHONON%PI(il,iq,iw_p)
+       if ( abs(W(1)-freq)<0.00005/HA2EV) return_PI=PHONON%PI(il,iq,iw_p)
+       if ( abs(W(2)-freq)<0.00005/HA2EV) return_PI=PHONON%PI(il,iq,iw_p+1)
      enddo
    end function
    !

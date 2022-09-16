@@ -47,6 +47,7 @@ subroutine INIT_ypp(E,instr,FINALIZE)
  use parser_m,       ONLY:PARSER_array
 #if defined _MODELS
  use MODELS,         ONLY:l_models
+ use YPP_models,     ONLY:SF_Q_and_M
 #endif
  use IO_int,         ONLY:io_control
  use IO_m,           ONLY:OP_RD_CL,DUMP,NONE
@@ -768,20 +769,24 @@ subroutine INIT_ypp(E,instr,FINALIZE)
  !
  ! Check and fill all possible vectorial USER fields
  !
+#if defined _MODELS
+ if (l_models) call USER_vector_handle("SF_Q_and_M",2)
+#endif
+ !
  l_flag=l_bands
  !
 #if defined _YPP_RT
  l_flag=l_flag.or.l_RT_bands.or.l_RT_G_two_times
 #endif
  !
- if (l_flag) call USER_vector_handle("BANDS_kpts")
+ if (l_flag) call USER_vector_handle("BANDS_kpts",3)
  !
  if (l_bz_grids) then
-   if (l_k_grid)       call USER_vector_handle("GWKpts")
-   if (l_q_grid)       call USER_vector_handle("Qpts")
-   if (l_shifted_grid) call USER_vector_handle("KShift")
+   if (l_k_grid)       call USER_vector_handle("GWKpts",3)
+   if (l_q_grid)       call USER_vector_handle("Qpts",3)
+   if (l_shifted_grid) call USER_vector_handle("KShift",3)
  endif
- if (l_interp)         call USER_vector_handle("BANDS_kpts")
+ if (l_interp)         call USER_vector_handle("BANDS_kpts",3)
  !
  if (l_map_kpts) then
    call PARSER_array(mode="CH dimensions",VAR="FineGd_DB1_paths",N=n_FineGd_DBs,M=1)
@@ -841,28 +846,38 @@ subroutine INIT_ypp(E,instr,FINALIZE)
      !
    end subroutine
    !
-   subroutine USER_vector_handle(field)
+   subroutine USER_vector_handle(field,M)
      !
      use parser_m,       ONLY:PARSER_array
      !
      character(*)::field
+     integer     ::M,N,nq_s
      !
-     integer     ::nk,nq_s
-     !
-     call PARSER_array(mode="REAL dimensions",VAR=field,N=nk,M=3)
+     call PARSER_array(mode="REAL dimensions",VAR=field,N=N,M=M)
      !
      if (field=="GWKpts") then
-       if (nk> 0) n_u_k_pts=nk
-       if (nk==0) n_u_k_pts=1
+       if (N> 0) n_u_k_pts=N
+       if (N==0) n_u_k_pts=1
        YAMBO_ALLOC(U_k_pts,(n_u_k_pts,3))
-       if (nk> 0) call PARSER_array(mode="read",VAR=field,N=nk,M=3,R_v=U_k_pts)
-       if (nk==0) U_k_pts=0.
+       if (N> 0) call PARSER_array(mode="read",VAR=field,N=N,M=3,R_v=U_k_pts)
+       if (N==0) U_k_pts=0.
        call PARSER_array(mode="write",VAR=field,DESC='K points list',N=n_u_k_pts,M=3,R_v=U_k_pts)
+#if defined _MODELS
+     else if (field=="SF_Q_and_M") then
+       if (N> 0) then 
+         YAMBO_ALLOC(SF_Q_and_M,(N,2))
+         call PARSER_array(mode="read",VAR=field,N=N,M=M,R_v=SF_Q_and_M)
+         call PARSER_array(mode="write",VAR=field,DESC='Q (units of k_F) and M to calculate the SF',&
+&                          N=N,M=M,R_v=SF_Q_and_M)
+       else
+         call PARSER_array(mode="write",VAR=field,DESC='Q (units of k_F) and M to calculate the SF',N=0,M=M)
+       endif
+#endif
      else if (field=="BANDS_kpts") then
-       if (nk> 0) then 
-         n_u_interp_pts=nk
+       if (N> 0) then 
+         n_u_interp_pts=N
          YAMBO_ALLOC(U_interp_pts,(n_u_interp_pts,3))
-         call PARSER_array(mode="read",VAR=field,N=nk,M=3,R_v=U_interp_pts)
+         call PARSER_array(mode="read",VAR=field,N=N,M=3,R_v=U_interp_pts)
          call PARSER_array(mode="write",VAR=field,DESC='K points of the bands circuit',&
 &                          N=n_u_interp_pts,M=3,R_v=U_interp_pts)
        else
@@ -870,16 +885,16 @@ subroutine INIT_ypp(E,instr,FINALIZE)
          call PARSER_array(mode="write",VAR=field,DESC='K points of the bands circuit',N=0,M=3)
        endif
      else if (field=="Qpts") then
-       if (nk> 0) n_u_q_pts=nk
-       if (nk==0) n_u_q_pts=1
+       if (N> 0) n_u_q_pts=N
+       if (N==0) n_u_q_pts=1
        YAMBO_ALLOC(U_q_pts,(n_u_q_pts,3))
-       if (nk> 0) call PARSER_array(mode="read",VAR=field,N=nk,M=3,R_v=U_q_pts)
-       if (nk==0) U_q_pts=0.
+       if (N> 0) call PARSER_array(mode="read",VAR=field,N=N,M=3,R_v=U_q_pts)
+       if (N==0) U_q_pts=0.
        call PARSER_array(mode="write",VAR=field,DESC='Q points list',&
 &                        N=n_u_q_pts,M=3,R_v=U_q_pts)
      else if (field=="KShift") then
        U_q_shifts=0.
-       if (nk> 0) call PARSER_array(mode="read",VAR=field,N=min(nk,3),M=3,R_v=U_q_shifts)
+       if (N> 0) call PARSER_array(mode="read",VAR=field,N=min(N,3),M=3,R_v=U_q_shifts)
        call PARSER_array(mode="write",VAR=field,DESC='K-grid shifts (max 3)',&
 &                        N=3,M=3,R_v=U_q_shifts)
      endif

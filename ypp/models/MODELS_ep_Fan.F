@@ -46,7 +46,7 @@ subroutine MODELS_ep_Fan(k,E,px)
  integer     :: ik,ib
  real(SP)    :: OMS_el(1),k_mod
  !
- call section("+","E-P Fan (electrons)")
+ call section("=","E-P Fan (electrons)")
  !
  MODEL_gkkp_kind="Frohlich"
  call ELPH_model_gkkp(GKKP)

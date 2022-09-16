@@ -28,16 +28,26 @@ module YPP_models
  integer, allocatable :: MODEL_B_shift(:,:,:)
  integer, allocatable :: MODEL_kmq_table(:,:,:,:)
  !
+ ! Masses...
  integer  :: MODEL_N_masses=1
  integer  :: MODEL_N_E_steps=100
  real(SP) :: MODEL_masses_range(2)=1.
+ real(SP),  allocatable :: MODEL_masses(:)
  !
- type PI_ph
-   complex(SP), allocatable :: OMS(:)
-   complex(SP), allocatable :: ST(:)
-   complex(SP), allocatable :: IW(:)
-   complex(SP), allocatable :: SF_w(:,:)
-   complex(SP), allocatable :: SF_iw(:,:)
+ type TODO
+   integer  :: N
+   integer, allocatable :: indx(:)
+ end type
+ type(TODO) :: OMS_Q,SF_Q,SF_mass
+ !
+ real(SP),      allocatable :: SF_Q_and_M(:,:)
+ !
+ type MODEL_ph
+   complex(SP), allocatable :: PI_OMS_w(:)
+   complex(SP), allocatable :: PI_ST(:)
+   complex(SP), allocatable :: PI_OMS_iw(:)
+   complex(SP), allocatable :: PI_w(:,:)
+   complex(SP), allocatable :: PI_iw(:,:)
  end type
  !
  contains

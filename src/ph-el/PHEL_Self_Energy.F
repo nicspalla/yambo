@@ -42,7 +42,7 @@ subroutine PHEL_Self_Energy(iq,E,k,q,k_FG,E_FG)
  use parallel_m,     ONLY:PARs_PH_Q_ibz
  use QP_m,           ONLY:QP_G_damp,l_extended_output
  use LIVE_t,         ONLY:live_timing
- use PHEL,           ONLY:l_PH_uses_E_FineGd,phel_info,PH_SF_W,PH_Q,PHEL_qp,PHEL_gimme_Ks,PH_energy
+ use PHEL,           ONLY:l_PH_uses_E_FineGd,phel_info,PH_SF_W,PH_Q,PHONON,PHEL_gimme_Ks,PH_energy
  use timing_m,       ONLY:timing
  use stderr,         ONLY:intc
  !
@@ -181,7 +181,7 @@ subroutine PHEL_Self_Energy(iq,E,k,q,k_FG,E_FG)
      TMP_linewidth     = (f_mkq*Hole_f_nk-Hole_f_mkq*f_nk)*D_res
      !
      ! Linewidth at equilibrium
-     PHEL_qp%PI(il,iq,1)=PHEL_qp%PI(il,iq,1)+cI*TMP_linewidth*pre_factor
+     PHONON%PI(il,iq,1)=PHONON%PI(il,iq,1)+cI*TMP_linewidth*pre_factor
      !
      ! Interband and intraband (Drude) components of the lifetimes
      if (l_extended_output) call COMPOSE_extended( )
@@ -190,8 +190,8 @@ subroutine PHEL_Self_Energy(iq,E,k,q,k_FG,E_FG)
      !
      do iw=1,PH_SF_W(il,iq)%n_freqs
        iw_mem=(iq-1)*PH_Q(2)+iw
-       TMP_linewidth       =(f_mkq-f_nk)/(PH_SF_W(il,iq)%p(iw)-DELTA_E-cI*DELTA_W)/pi
-       PHEL_qp%PI(il,iq,iw)=PHEL_qp%PI(il,iq,iw)+TMP_linewidth*pre_factor
+       TMP_linewidth      =(f_mkq-f_nk)/(PH_SF_W(il,iq)%p(iw)-DELTA_E-cI*DELTA_W)/pi
+       PHONON%PI(il,iq,iw)=PHONON%PI(il,iq,iw)+TMP_linewidth*pre_factor
      enddo
      !
    endif
@@ -211,15 +211,15 @@ subroutine PHEL_Self_Energy(iq,E,k,q,k_FG,E_FG)
      !
      Allen_factor = ph_freq*1./pi*aimag(1._SP/(E_Allen-cI*QP_G_damp))
      !
-     PHEL_qp%allen(il,iq)= PHEL_qp%allen(il,iq) +Allen_factor*D_res*pre_factor
+     PHONON%allen(il,iq)= PHONON%allen(il,iq) +Allen_factor*D_res*pre_factor
      !
      if (i_np == i_n) then
        ! Intraband
-       PHEL_qp%intraband(il,iq)= PHEL_qp%intraband(il,iq) +TMP_linewidth*pre_factor
+       PHONON%intraband(il,iq)= PHONON%intraband(il,iq) +TMP_linewidth*pre_factor
        !
      else
        ! Interband
-       PHEL_qp%interband(il,iq)= PHEL_qp%interband(il,iq) +TMP_linewidth*pre_factor
+       PHONON%interband(il,iq)= PHONON%interband(il,iq) +TMP_linewidth*pre_factor
        !
      endif
      !

@@ -1,3 +1,5 @@
 #if defined _MODELS
-objs = MODELS_energy_levels.o MODELS_Hamiltonian.o MODELS_ep_Fan.o MODELS_ep_Pi.o MODELS_k_tables.o MODELS_ep_Pi_exact.o
+objs = MODELS_driver.o MODELS_energy_levels.o MODELS_Hamiltonian.o \
+       MODELS_ep_Fan.o \
+       MODELS_pe_driver.o MODELS_pe_todos.o MODELS_k_tables.o MODELS_pe_Pi_numerical.o MODELS_pe_Pi_exact.o MODELS_pe_report.o
 #endif

@@ -28,7 +28,7 @@ integer function io_PH(ID)
  use R_lattice,           ONLY:nqbz
  use QP_m,                ONLY:QP_G_damp,l_extended_output,QP_solver,On_Mass_Shell_approx
  use X_m,                 ONLY:X_DbGd_percentual
- use PHEL,                ONLY:PH_DbGd_points,l_PH_uses_E_FineGd,PH_Self_Energy_mode,PHEL_qp,&
+ use PHEL,                ONLY:PH_DbGd_points,l_PH_uses_E_FineGd,PH_Self_Energy_mode,PHONON,&
 &                              PHEL_alloc,QP_Sc_steps,PH_Q,PHEL_broad_factor
  use ELPH,                ONLY:QP_PH_n_G_bands,elph_branches,PH_freqs_sq,ph_modes,PHEL_desc
  use IO_int,              ONLY:io_connect,io_disconnect,io_header,def_variable_elemental,&
@@ -117,18 +117,18 @@ integer function io_PH(ID)
    endif
    !
    call def_variable_bulk(ID,"PH_PI",4,(/2,elph_branches(2)-elph_branches(1)+1,PH_Q(2)-PH_Q(1)+1,QP_Sc_steps/),SP)
-   call io_variable_bulk(ID,4,C3=PHEL_qp%PI(:,:,:))
+   call io_variable_bulk(ID,4,C3=PHONON%PI(:,:,:))
    !
    if (l_extended_output.and.trim(QP_solver)=="n") then
      !
      call def_variable_bulk(ID,"PH_LIFE_INTERBAND",5,(/elph_branches(2)-elph_branches(1)+1,PH_Q(2)-PH_Q(1)+1/),SP)
-     call io_variable_bulk(ID,5,R2=PHEL_qp%interband(:,:))
+     call io_variable_bulk(ID,5,R2=PHONON%interband(:,:))
      !
      call def_variable_bulk(ID,"PH_LIFE_INTRABAND",6,(/elph_branches(2)-elph_branches(1)+1,PH_Q(2)-PH_Q(1)+1/),SP)
-     call io_variable_bulk(ID,6,R2=PHEL_qp%intraband(:,:))
+     call io_variable_bulk(ID,6,R2=PHONON%intraband(:,:))
      !
      call def_variable_bulk(ID,"PH_LIFE_EQ_ALLEN",7,(/elph_branches(2)-elph_branches(1)+1,PH_Q(2)-PH_Q(1)+1/),SP)
-     call io_variable_bulk(ID,7,R2=PHEL_qp%allen(:,:))    
+     call io_variable_bulk(ID,7,R2=PHONON%allen(:,:))    
      !
    endif
    !

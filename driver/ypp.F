@@ -160,11 +160,12 @@ integer function ypp(np,pid,lnstr,iinf,iind,iod,icd,ijs,instr,inf,ind,od,com_dir
  !
  call section('*','Y(ambo) P(ost)/(re) P(rocessor)')
  !
- ! Model Hamiltonian (before anything)
- !
 #if defined _MODELS
  if (idb1_err/=0.and.l_models) then
-   call MODELS_Hamiltonian()
+   !
+   ! Models ...
+   !
+   call MODELS_driver()
    call ypp_finalize(" ",instr)
    return
  endif

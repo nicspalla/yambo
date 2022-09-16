@@ -26,7 +26,7 @@ subroutine PH_of(q)
  use pars,           ONLY:SP,schlen
  use drivers,        ONLY:l_life
  use OUTPUT,         ONLY:OUTPUT_driver
- use PHEL,           ONLY:PH_Q,PHEL_qp,PH_energy,&
+ use PHEL,           ONLY:PH_Q,PHONON,PH_energy,&
 &                         QPH_OMS,QPH_OMS_bare_Pole,QPH_full,QPH,QPH_DDFPT
  use ELPH,           ONLY:elph_branches,PHEL_desc,ELPH_desc
  use R_lattice,      ONLY:bz_samp
@@ -111,9 +111,9 @@ subroutine PH_of(q)
      if (l_life) then
        call OUTPUT_driver("ph",TITLES=(/"FWMH"/),R_VALUES=(/real(QPH_OMS_bare_Pole%GAMMA)*2./),UNIT="meV")
        if (l_extended_output) then
-         call OUTPUT_driver("ph",TITLES=(/"FWMH(interb)"/),R_VALUES=(/PHEL_qp%interband(il,iq)/),UNIT="meV")
-         call OUTPUT_driver("ph",TITLES=(/"FWMH(intrab)"/),R_VALUES=(/PHEL_qp%intraband(il,iq)/),UNIT="meV")
-         call OUTPUT_driver("ph",TITLES=(/"FWMH(Allen)"/),R_VALUES=(/PHEL_qp%allen(il,iq)/),UNIT="meV")
+         call OUTPUT_driver("ph",TITLES=(/"FWMH(interb)"/),R_VALUES=(/PHONON%interband(il,iq)/),UNIT="meV")
+         call OUTPUT_driver("ph",TITLES=(/"FWMH(intrab)"/),R_VALUES=(/PHONON%intraband(il,iq)/),UNIT="meV")
+         call OUTPUT_driver("ph",TITLES=(/"FWMH(Allen)"/),R_VALUES=(/PHONON%allen(il,iq)/),UNIT="meV")
        endif
        call OUTPUT_driver("ph",action="write")
        cycle
