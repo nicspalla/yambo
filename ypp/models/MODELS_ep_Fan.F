@@ -28,8 +28,7 @@ subroutine MODELS_ep_Fan(k,E,px)
  use electrons,           ONLY:levels
  use R_lattice,           ONLY:bz_samp
  use units,               ONLY:HA2EV
- use MODELS,              ONLY:MODEL_gkkp_kind,MODEL_elph_alpha,MODEL_E_ph,MODEL_ep_dV,MODEL_effective_mass
- use ELPH,                ONLY:GKKP
+ use MODELS,              ONLY:MODEL_elph_alpha,MODEL_E_ph,MODEL_ep_dV,MODEL_effective_mass
  use com,                 ONLY:msg,com_compose_msg
  use LIVE_t,              ONLY:live_timing
  use parallel_m,          ONLY:myid,PP_indexes
@@ -47,9 +46,6 @@ subroutine MODELS_ep_Fan(k,E,px)
  real(SP)    :: OMS_el(1),k_mod
  !
  call section("=","E-P Fan (electrons)")
- !
- MODEL_gkkp_kind="Frohlich"
- call ELPH_model_gkkp(GKKP)
  !
  ! Electrons
  !

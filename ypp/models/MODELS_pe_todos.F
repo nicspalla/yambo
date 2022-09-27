@@ -24,7 +24,7 @@
 subroutine MODELS_pe_todos(what,k,q)
  !
  use pars,           ONLY:SP
- use R_lattice,      ONLY:bz_samp,bz_samp_reset
+ use R_lattice,      ONLY:bz_samp
  use MODELS,         ONLY:MODEL_K_fermi
  use YPP_models,     ONLY:OMS_Q,SF_Q,SF_mass,MODEL_N_masses,SF_Q_and_M,MODEL_masses,&
 &                         MODEL_N_masses,MODEL_masses_range
@@ -39,14 +39,13 @@ subroutine MODELS_pe_todos(what,k,q)
  !
  ! Work Space
  !
- integer     :: iq,is,ic,Q_index(k%nibz),i_mass,i_p
+ integer     :: iq,is,ic,Q_index(k%nibz),i_mass,i_p,N_USER_q_and_M,i_found
  real(SP)    :: q_mod(k%nibz)
  !
  if (what=="Q_oms_and_Masses") then
    !
    ! q type
    !-------
-   call bz_samp_reset(q)
    q%nibz=k%nibz
    q%nbz =k%nbz
    YAMBO_ALLOC(q%pt,(q%nbz,3))
@@ -65,12 +64,13 @@ subroutine MODELS_pe_todos(what,k,q)
          OMS_Q%N=OMS_Q%N+1
          if (ic==2) then
            OMS_Q%indx(OMS_Q%N)=Q_index(is)
+           OMS_Q%val(OMS_Q%N)=q_mod(is)
          endif
        endif
      enddo
      if (ic==1) then
        YAMBO_ALLOC(OMS_Q%indx,(OMS_Q%N))
-       OMS_Q%indx=0
+       YAMBO_ALLOC(OMS_Q%val,(OMS_Q%N))
      endif
    enddo
    call msg('sr',com_compose_msg(body="[MODEL] NQ (OMS)"),OMS_Q%N)
@@ -89,43 +89,60 @@ subroutine MODELS_pe_todos(what,k,q)
    ! 
    ! Q/M todo (SF)
    !---------------
-   call PARSER_array(mode="REAL dimensions",VAR="SF_Q_and_M",N=SF_Q%N,M=2)
-   if (SF_Q%N>0) then
-     YAMBO_ALLOC(SF_Q_and_M,(SF_Q%N,2))
-     call PARSER_array(mode="read",VAR="BANDS_kpts",N=SF_Q%N,M=2,R_v=SF_Q_and_M)
-     SF_mass%N=SF_Q%N
-   else
-     SF_Q%N=1
-     SF_mass%N=1
+   YAMBO_FREE(SF_Q_and_M)
+   call PARSER_array(mode="REAL dimensions",VAR="SF_Q_and_M",N=N_USER_q_and_M,M=2)
+   if (N_USER_q_and_M>0) then
+     YAMBO_ALLOC(SF_Q_and_M,(N_USER_q_and_M,2))
+     call PARSER_array(mode="read",VAR="SF_Q_and_M",N=N_USER_q_and_M,M=2,R_v=SF_Q_and_M)
    endif
-   YAMBO_ALLOC(SF_Q%indx,(SF_Q%N))
-   YAMBO_ALLOC(SF_mass%indx,(SF_mass%N))
-   !
-   SF_Q%indx=0
-   SF_mass%indx=0
-   !
-   if (allocated(SF_Q_and_M)) then
-     do i_p=1,SF_Q%N
+   ! 
+   do ic=1,2
+     SF_Q%N=0
+     do i_p=1,N_USER_q_and_M
+       i_found=0
        do i_mass=2,MODEL_N_masses
-         if (MODEL_masses(i_mass)>=SF_Q_and_M(i_p,2).and.MODEL_masses(i_mass-1)<SF_Q_and_M(i_p,2)) SF_mass%indx(i_p)=i_mass 
+         if (MODEL_masses(i_mass)>=SF_Q_and_M(i_p,2).and.MODEL_masses(i_mass-1)<SF_Q_and_M(i_p,2)) then
+           SF_Q%N=SF_Q%N+1
+           i_found=1
+           if (ic==2) then
+             SF_mass%indx(SF_Q%N)=i_mass 
+             SF_mass%val(SF_Q%N)=MODEL_masses(i_mass) 
+           endif
+         endif
        enddo
-       do is=2,OMS_Q%N
-         if (iku_v_norm(q%pt(OMS_Q%indx(is),:))/MODEL_K_fermi>SF_Q_and_M(i_p,1).and.&
-&            iku_v_norm(q%pt(OMS_Q%indx(is-1),:))/MODEL_K_fermi<SF_Q_and_M(i_p,1) ) SF_Q%indx(i_p)=is
-       enddo
-       if (SF_mass%indx(i_p)==0) SF_Q%indx(i_p)=0
-       if (SF_Q%indx(i_p)==0   ) SF_mass%indx(i_p)=0
+       if (i_found==1) then
+         do is=2,OMS_Q%N
+           if (OMS_Q%val(is)/MODEL_K_fermi>SF_Q_and_M(i_p,1).and.&
+&              OMS_Q%val(is-1)/MODEL_K_fermi<SF_Q_and_M(i_p,1) ) then
+             i_found=2
+             if (ic==2) then
+               SF_Q%val(SF_Q%N)=iku_v_norm(q%pt(OMS_Q%indx(is),:))
+               SF_Q%indx(SF_Q%N)=OMS_Q%indx(is)
+             endif
+           endif
+         enddo
+       endif
+       if (i_found==1) SF_Q%N=SF_Q%N-1
      enddo
-   else
-     SF_Q%indx(1)=OMS_Q%indx(OMS_Q%N)
-     SF_mass%indx(1)=MODEL_N_masses
-   endif
+     !
+     SF_Q%N=SF_Q%N+1
+     !
+     if (ic==2) cycle
+     !
+     YAMBO_ALLOC(SF_Q%indx,(SF_Q%N))
+     YAMBO_ALLOC(SF_Q%val,(SF_Q%N))
+     YAMBO_ALLOC(SF_mass%indx,(SF_Q%N))
+     YAMBO_ALLOC(SF_mass%val,(SF_Q%N))
+     !
+   enddo
+   SF_mass%N=SF_Q%N
    !
-   SF_Q%N=count(SF_Q%indx>0)
-   SF_mass%N=count(SF_mass%indx>0)
+   SF_Q%indx(SF_Q%N)=OMS_Q%indx(OMS_Q%N)
+   SF_Q%val(SF_Q%N)=iku_v_norm(q%pt(OMS_Q%indx(OMS_Q%N),:))
+   SF_mass%indx(SF_mass%N)=MODEL_N_masses
+   SF_mass%val(SF_mass%N)=MODEL_masses(MODEL_N_masses)
    !
-   call msg('sr',com_compose_msg(body="[MODEL] NQ (SF)"),SF_Q%N)
-   call msg('sr',com_compose_msg(body="[MODEL] Masses (SF)"),SF_mass%N)
+   call msg('sr',com_compose_msg(body="[MODEL] NQ & Masses (SF)"),SF_Q%N)
    !
  endif
  !

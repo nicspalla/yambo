@@ -102,6 +102,16 @@ module PHEL
  type (QPHt) :: QPH_DDFPT
  type (QPHt) :: QPH
  !
+ interface
+   !
+   subroutine PH_of(q,Q_mask)
+     use R_lattice,      ONLY:bz_samp
+     type(bz_samp),     intent(in) :: q
+     logical,           optional   :: Q_mask(q%nbz)
+   end subroutine
+   !
+ end interface
+ !
  contains
    !
    subroutine QPHt_alloc(what,QPH,N)

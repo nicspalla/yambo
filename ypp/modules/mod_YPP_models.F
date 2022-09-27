@@ -36,18 +36,17 @@ module YPP_models
  !
  type TODO
    integer  :: N
-   integer, allocatable :: indx(:)
+   integer,  allocatable :: indx(:)
+   real(SP), allocatable :: val(:)
  end type
  type(TODO) :: OMS_Q,SF_Q,SF_mass
  !
  real(SP),      allocatable :: SF_Q_and_M(:,:)
  !
  type MODEL_ph
-   complex(SP), allocatable :: PI_OMS_w(:)
+   complex(SP), allocatable :: PI_OMS(:)
    complex(SP), allocatable :: PI_ST(:)
-   complex(SP), allocatable :: PI_OMS_iw(:)
    complex(SP), allocatable :: PI_w(:,:)
-   complex(SP), allocatable :: PI_iw(:,:)
  end type
  !
  contains

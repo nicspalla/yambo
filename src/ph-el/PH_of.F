@@ -21,7 +21,7 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine PH_of(q)
+subroutine PH_of(q,Q_mask)
  !
  use pars,           ONLY:SP,schlen
  use drivers,        ONLY:l_life
@@ -37,6 +37,7 @@ subroutine PH_of(q)
 #include<memory.h>
  !
  type(bz_samp),     intent(in) :: q
+ logical,           optional   :: Q_mask(PH_Q(2))
  !
  ! Work Space
  !
@@ -51,6 +52,11 @@ subroutine PH_of(q)
  call DESC_write('o ph','#',ELPH_desc)
  !
  do iq=PH_Q(1),PH_Q(2)
+   !
+   if (present(Q_mask)) then
+     if (.not.Q_mask(iq)) cycle
+   endif
+   !
    do il=elph_branches(1),elph_branches(2)
      !
      ! PH freq

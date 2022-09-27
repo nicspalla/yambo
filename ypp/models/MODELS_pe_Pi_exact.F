@@ -25,9 +25,10 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
  !
  use pars,                ONLY:SP,pi,cI,cZERO
  use YPP_models,          ONLY:E_jell,MODEL_PH,MODEL_N_masses,OMS_Q,SF_Q,SF_mass,MODEL_masses
- use MODELS,              ONLY:MODEL_E_ph,MODEL_ep_dV,MODEL_effective_mass,MODEL_K_fermi
+ use MODELS,              ONLY:MODEL_E_ph,MODEL_ep_dV,MODEL_effective_mass,MODEL_K_fermi,MODEL_gkkp_kind
  use R_lattice,           ONLY:bz_samp,RL_vol
  use vec_operate,         ONLY:iku_v_norm
+ use stderr,              ONLY:STRING_same
  use QP_m,                ONLY:QP_Sc_steps,QP_G_damp
  use LIVE_t,              ONLY:live_timing
  use parallel_m,          ONLY:PP_indexes,PP_indexes_reset,myid
@@ -50,6 +51,9 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
  call PARALLEL_index(px,(/OMS_Q%N/))
  call PP_wait
  !
+ call section("+","Exact Pi(w)")
+ !===================================
+ !
  call live_timing("Phonon PI (exact)",px%n_of_elements(myid+1)*MODEL_N_masses)
  !
  do i_mass=1,MODEL_N_masses
@@ -70,144 +74,34 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
      ! OMS
      PI_oms=cZERO
      call Kramers_Kronig(PI_A,real(W),QP_Sc_steps,PI_oms,(/MODEL_E_ph+cI*QP_G_damp/),1,cZERO) 
-     EXACT(i_mass)%PI_OMS_w(is)=real(PI_oms(1))+cI*PI_im(MODEL_E_ph,MODEL_masses(i_mass))
+     EXACT(i_mass)%PI_OMS(is)=real(PI_oms(1))+cI*PI_im(MODEL_E_ph,MODEL_masses(i_mass))
      !
      ! ST
      PI_oms=cZERO
      call Kramers_Kronig(PI_A,real(W),QP_Sc_steps,PI_oms,(/cI*QP_G_damp/),1,cZERO) 
      EXACT(i_mass)%PI_ST(is)=real(PI_oms(1))
      !
-     ! iW
-     PI_oms=cZERO
-     call Kramers_Kronig(PI_A,real(W),QP_Sc_steps,PI_oms,(/cI*MODEL_E_ph/),1,cZERO) 
-     EXACT(i_mass)%PI_OMS_iw(is)=PI_oms(1)
-     !
      ! Full GF
      do i_p=1,SF_Q%N
        if (SF_Q%indx(i_p)==iq.and.SF_mass%indx(i_p)==i_mass) then
          call Kramers_Kronig(PI_A,real(W),QP_Sc_steps,EXACT(i_mass)%PI_w(i_p,:), W,QP_Sc_steps,cZERO) 
-         call Kramers_Kronig(PI_A,real(W),QP_Sc_steps,EXACT(i_mass)%PI_iw(i_p,:),cI*real(W),QP_Sc_steps,cZERO) 
        endif
      enddo
      !
      call live_timing(steps=1)
      !
    enddo
-   !
-!   do is=1,NQ
-!     iq=Q_todo(is)
-!     q_mod=iku_v_norm(q%pt(iq,:))
-!     W_iWo=sqrt(MODEL_E_ph*(MODEL_E_ph+PI_exact%IW(is)-PI_exact%ST(is)))/MODEL_E_ph
-!     W_oms=sqrt(MODEL_E_ph*(MODEL_E_ph+PI_exact%OMS(is)-PI_exact%ST(is)))/MODEL_E_ph
-!     call OUTPUT_driver(fname,TITLES=(/"Mass"/),R_VALUES=(/Mass(i_mass)/))
-!     call OUTPUT_driver(fname,TITLES=(/"|q|/Kf"/),R_VALUES=(/q_mod/MODEL_K_fermi/))
-!     call OUTPUT_driver(fname,TITLES=(/"Re[E_iWo-E_Wo]/Wo"/),R_VALUES=real((/W_iWo-W_oms/)))
-!     call OUTPUT_driver(fname,TITLES=(/"|Im[E_Wo]/Wo|"/),R_VALUES=(/abs(aimag(W_oms))/))
-!     call OUTPUT_driver(fname,TITLES=(/"Re[E_iWo]/Wo"/),R_VALUES=real((/W_iWo/)))
-!     call OUTPUT_driver(fname,action="write")
-!   enddo
+
    !
  enddo
- !
-! call OUTPUT_driver(fname,action="close")
  !
  call live_timing( )
  !
  do i_mass=1,MODEL_N_masses
    call PP_redux_wait(EXACT(i_mass)%PI_ST)
-   call PP_redux_wait(EXACT(i_mass)%PI_OMS_w)
-   call PP_redux_wait(EXACT(i_mass)%PI_OMS_iw)
+   call PP_redux_wait(EXACT(i_mass)%PI_OMS)
    call PP_redux_wait(EXACT(i_mass)%PI_w)
-   call PP_redux_wait(EXACT(i_mass)%PI_iw)
  enddo
- !
-! if (     l_print_SF) call live_timing("Phonon PI (Output)",n_SF*(1+NQ))
-! if (.not.l_print_SF) call live_timing("Phonon PI (Output)",n_SF)
-! ! 
-! do i_p=1,n_SF
-!   !
-!   ! SF's
-!   if (any((/SF_ind(i_p,:)==0/))) cycle
-!   i_mass=SF_ind(i_p,1)
-!   is=SF_ind(i_p,2)
-!   iq=Q_todo(is)
-!   q_mod=iku_v_norm(q%pt(iq,:))
-!   fname="PI_vs_W_EXACT_"//trim(intc(i_p))
-!   call OUTPUT_driver(fname,action="reset")
-!   call OUTPUT_driver(fname,action="open")
-!   call msg('o '//fname,'# M*                ',Mass(i_mass),INDENT=0)
-!   call msg('o '//fname,'# |Q|/K_fermi       ',q_mod/MODEL_K_fermi,INDENT=0)
-!   call msg('o '//fname,'# Re[\D\PI(Wo)]  [meV]',real(PIoms(i_p,is)-PIst(i_p,is))*HA2EV*1000.,INDENT=0)
-!   call msg('o '//fname,'# Re[\D\PI(iWo)] [meV]',real(PIiW(i_p,is)-PIst(i_p,is))*HA2EV*1000.,INDENT=0)
-!   call msg('o '//fname,'# Im[\PI(Wo)]    [meV]',aimag(PIoms(i_p,is))*HA2EV*1000.,INDENT=0)
-!   do iw=1,QP_Sc_steps
-!     call OUTPUT_driver(fname,TITLES=(/"E [meV]"/),R_VALUES=(/real(W(iw))/),UNIT="meV")
-!     call OUTPUT_driver(fname,TITLES=(/"Im[\Pi(w)] [meV]"/),R_VALUES=(/aimag(PI_exact%SF_w(i_p,iw))/),UNIT="meV")
-!     call OUTPUT_driver(fname,TITLES=(/"Re[\Pi(w)] [meV]"/),R_VALUES=(/real(PI_exact%SF_w(i_p,iw))/),UNIT="meV")
-!     call OUTPUT_driver(fname,TITLES=(/"Re[\Pi(iw)] [meV]"/),R_VALUES=(/real(PI_exact%SF_iw(i_p,iw))/),UNIT="meV")
-!     call OUTPUT_driver(fname,action="write")
-!   enddo
-!   call OUTPUT_driver(fname,action="close")
-!   !
-!   ! iW's
-!   fname="W_vs_q_mod_EXACT_"//trim(intc(i_p))
-!   call OUTPUT_driver(fname,action="open")
-!   do is=1,NQ
-!     iq=Q_todo(is)
-!     q_mod=iku_v_norm(q%pt(iq,:))
-!     call OUTPUT_driver(fname,TITLES=(/"|Q|/K_fermi"/),R_VALUES=(/q_mod/MODEL_K_fermi/))
-!     W_iWo=sqrt(MODEL_E_ph*(MODEL_E_ph+PIiW(i_p,is)-PIst(i_p,is)))/MODEL_E_ph
-!     W_oms=sqrt(MODEL_E_ph*(MODEL_E_ph+PIoms(i_p,is)-PIst(i_p,is)))/MODEL_E_ph
-!     call OUTPUT_driver(fname,TITLES=(/"E_iw/Wo"/),R_VALUES=(/W_iWo/))
-!     call OUTPUT_driver(fname,TITLES=(/"Re[E_oms]/Wo"/),R_VALUES=(/real(W_oms)/))
-!     call OUTPUT_driver(fname,TITLES=(/"Im[E_oms]/Wo"/),R_VALUES=(/abs(aimag(W_oms))/))
-!     call OUTPUT_driver(fname,action="write")
-!   enddo
-!   call OUTPUT_driver(fname,action="close")
-!   !
-!   call live_timing(steps=1)
-!   !
-!   ! D's
-!   if (l_print_SF) then
-!     fname="D_vs_W_and_q_mod_EXACT_"//trim(intc(i_p))
-!     call OUTPUT_driver(fname,action="open")
-!     do is=1,NQ
-!       iq=Q_todo(is)
-!       q_mod=iku_v_norm(q%pt(iq,:))
-!       W_oms=sqrt(MODEL_E_ph*(MODEL_E_ph+PIoms(i_p,is)-PIst(i_p,is)))
-!       W_iWo=sqrt(MODEL_E_ph*(MODEL_E_ph+ PIiW(i_p,is)-PIst(i_p,is)))
-!       do iw=1,QP_Sc_steps
-!         D_w(iw)=MODEL_E_ph*(2./real(QP_Sc_steps)*iw)+cI*0.001/HA2EV
-!         D(iw)=MODEL_E_ph/(D_w(iw)**2-MODEL_E_ph**2-MODEL_E_ph*(PIoms(i_p,is)-PIst(i_p,is)))
-!       enddo
-!       Integral=CIntegrate(-D,real(D_w),QP_Sc_steps)
-!       do iw=1,QP_Sc_steps
-!         call OUTPUT_driver(fname,TITLES=(/"|Q|/K_fermi"/),R_VALUES=(/q_mod/MODEL_K_fermi/))
-!         call OUTPUT_driver(fname,TITLES=(/"E/Wo"/),R_VALUES=(/real(D_w(iw)/MODEL_E_ph)/))
-!         call OUTPUT_driver(fname,TITLES=(/"Im[D(E)]"/),R_VALUES=(/-aimag(D(iw))/aimag(Integral)/))
-!         call OUTPUT_driver(fname,action="write")
-!       enddo
-!       call live_timing(steps=1)
-!     enddo
-!     call OUTPUT_driver(fname,action="close")
-!   endif
-!   !
-! enddo
-! !
-! call live_timing()
-! !
-! call OUTPUT_driver("PI_vs_q_mod_EXACT",action="open")
-! do is=1,NQ
-!   iq=Q_todo(is)
-!   q_mod=iku_v_norm(q%pt(iq,:))
-!   call OUTPUT_driver("q_mod_EXACT",TITLES=(/"|q|"/),R_VALUES=(/q_mod/))
-!   call OUTPUT_driver("q_mod_EXACT",TITLES=(/"-Im[PI(Wo)]"/),R_VALUES=(/-aimag(PI_exact%OMS(is))/),UNIT="meV")
-!   call OUTPUT_driver("q_mod_EXACT",TITLES=(/"Re[\D\PI(Wo)]"/),R_VALUES=(/real(PI_exact%OMS(is)-PI_exact%ST(is))/),UNIT="meV")
-!   call OUTPUT_driver("q_mod_EXACT",TITLES=(/"Re[\D\PI(iWo)]"/),R_VALUES=(/real(PI_exact%iW(is)-PI_exact%ST(is))/),UNIT="meV")
-!   call OUTPUT_driver("q_mod_EXACT",TITLES=(/"Re[PI(0)]"/),R_VALUES=(/real(PI_exact%ST(is))/),UNIT="meV")
-!   call OUTPUT_driver("q_mod_EXACT",action="write")
-! enddo
-! call OUTPUT_driver("q_mod_EXACT",action="close")
  !
  contains
    !
@@ -222,7 +116,7 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
      enddo
      PI_im=PI_im*2.*MODEL_ep_dV**2/RL_vol*MODEL_effective_mass/Mass_
      !
-     !if (STRING_same(MODEL_gkkp_kind,"Frohlich" )) PI_im=PI_im/q_mod**2.
+     if (STRING_same(MODEL_gkkp_kind,"Frohlich" )) PI_im=PI_im/q_mod**2.
      !
    end function
    !
@@ -237,7 +131,7 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
      enddo
      PI_re=PI_re*2.*MODEL_ep_dV**2/RL_vol
      !
-     !if (STRING_same(MODEL_gkkp_kind,"Frohlich" )) PI_im=PI_im/q_mod**2.
+     if (STRING_same(MODEL_gkkp_kind,"Frohlich" )) PI_re=PI_re/q_mod**2.
      !
    end function
    !

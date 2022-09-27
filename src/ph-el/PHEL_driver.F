@@ -28,7 +28,7 @@ subroutine PHEL_driver(E,k,q)
  use interfaces,     ONLY:ELPH_alloc
  use ELPH,           ONLY:QP_PH_n_G_bands,elph_branches,GKKP_pe_sq,elph_nb,elph_use_q_grid
  use PHEL,           ONLY:l_PH_uses_E_FineGd,PH_Self_Energy_mode,PHEL_free,PH_Q,PHEL_alloc,PHONON,&
-&                         PH_DbGd_points,KpQ_io_map,phel_info
+&                         PH_DbGd_points,KpQ_io_map,phel_info,PH_of
  use parallel_int,   ONLY:PP_redux_wait,PARALLEL_global_indexes
  use RT_lifetimes,   ONLY:RT_PE_life,RT_lifetime_alloc,Life_MEM_steps,l_initial_equilibrium,RT_ALL_lifetimes_free                        
  use RT_occupations, ONLY:RT_EL_occupations_alloc,RT_PH_occupations_alloc,RT_ALL_occupations_free
