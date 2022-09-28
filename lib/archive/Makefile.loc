@@ -97,21 +97,19 @@ define getsrc
 endef
 #
 define getsrc_git
- if test ! -s $$LIB".tar.gz" && test ! -d $$LIB ; then \
-  mkdir -p  ../../log;\
-  if [ ! "$$GBRANCH" = "none" ] ; then \
-   echo "\t[$$LIB] clone";\
-   echo " via $$GIT" ; \
-   if [ ! -d $$LIB ]; then git clone $$GIT $$LIB >> ../../log/clone_$$LIB.log 2>&1; fi ; \
-   cd $$LIB ; git checkout $$GBRANCH >> ../../../log/clone_$$LIB.log 2>&1; cd ../ ; \
-  else \
-   echo "\t[$$LIB] download";\
-   if [ -x $(shell which wget) ] && [ "$(shell which wget)" != "" ] ; then \
-    wget $(WGETFLAGS) -O $$LIB".tar.gz" $$URL >> ../../log/download_$$LIB.log 2>&1; \
-   elif [ -x $(shell which curl) ] && [ "$(shell which curl)" != "" ] ; then \
-    curl -L --progress-bar -o $$LIB".tar.gz" $$URL >> ../../log/download_$$LIB.log 2>&1; \
-   fi \
-  fi;\
+ mkdir -p  ../../log;\
+ if [ ! "$$GBRANCH" = "none" ]  && [ ! -d $$LIB ] ; then \
+  echo "\t[$$LIB] clone";\
+  echo " via $$GIT" ; \
+  if [ ! -d $$LIB ]; then git clone $$GIT $$LIB >> ../../log/clone_$$LIB.log 2>&1; fi ; \
+  cd $$LIB ; git checkout $$GBRANCH >> ../../../log/clone_$$LIB.log 2>&1; cd ../ ; \
+ elif [ ! -s $$LIB".tar.gz" ]; then \
+  echo "\t[$$LIB] download";\
+  if [ -x $(shell which wget) ] && [ "$(shell which wget)" != "" ] ; then \
+   wget $(WGETFLAGS) -O $$LIB".tar.gz" $$URL >> ../../log/download_$$LIB.log 2>&1; \
+  elif [ -x $(shell which curl) ] && [ "$(shell which curl)" != "" ] ; then \
+   curl -L --progress-bar -o $$LIB".tar.gz" $$URL >> ../../log/download_$$LIB.log 2>&1; \
+  fi \
  fi
 endef
 #
@@ -126,14 +124,13 @@ endef
 #
 define copy_driver
  if ! test -d  $(srcdir)/lib/$(1); then mkdir $(srcdir)/lib/$(1); fi; \
- if test -s $$LIB".tar.gz" ; then \
-  cd $(srcdir)/lib/$(1); \
-  gunzip < $(compdir)/lib/archive/$$LIB".tar.gz" | ../../config/missing --run tar xf - ; \
- fi;\
  if test -d $$LIB &&  test ! -f $(srcdir)/lib/$(1)/installed.stamp ; then \
   cp -R $$LIB/* $(srcdir)/lib/$(1)/; \
   touch $(srcdir)/lib/$(1)/installed.stamp; \
- fi ;\
+ elif test -s $$LIB".tar.gz" ; then \
+  cd $(srcdir)/lib/$(1); \
+  gunzip < $(compdir)/lib/archive/$$LIB".tar.gz" | ../../config/missing --run tar xf - ; \
+ fi;\
  if [ "$(srcdir)" != "$(compdir)" ]; then \
    rm -rf $(compdir)/lib/$(1) ]; \
    cp -R $(srcdir)/lib/$(1) $(compdir)/lib/$(1); \
