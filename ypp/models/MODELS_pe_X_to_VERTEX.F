@@ -21,22 +21,30 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine INIT_load_models(defs)
+subroutine MODELS_pe_X_to_VERTEX(X,V)
  !
- use MODELS,         ONLY:MODEL_U,MODEL_GKKP_kind,MODEL_E_ph,MODEL_elph_alpha,MODEL_V
- use it_m,           ONLY:initdefs,E_unit
- use it_tools,       ONLY:it
+ use YPP_models,          ONLY:MODEL_PH,SF_Q,OMS_Q
+ use MODELS,              ONLY:MODEL_V
+ use QP_m,                ONLY:QP_Sc_steps
  !
  implicit none
  !
- type(initdefs)   ::defs
+ type(MODEL_PH)              :: X,V
  !
- call it(defs,'OnSiteU','[U] Hubbard interaction',MODEL_U,unit=E_unit)
- call it(defs,'ExchangeV','[V] Exchange interaction',MODEL_V,unit=E_unit)
- call it('f',defs,'SkipIntraBand','Skip Intraband collision')
- call it('f',defs,'ForceJell','[E-P] Force the jellium N=f=0 form of the e-p SE')
- call it(defs,'MOD_gkkp_Kind','[E-P] GKKP Kind ("Debye","Frohlich")',MODEL_GKKP_kind)
- call it(defs,'MOD_PH_energy','[E-P] Phonon Frequency (LO)',MODEL_E_ph,unit=E_unit)
- call it(defs,'MOD_ELPH_alpha','[E-P] Electron-Phonon coupling (\alpha)',MODEL_elph_alpha)
+ ! Work Space
  !
-end subroutine
+ integer :: i_sf,i_oms,iw
+ !
+ do i_oms=1,OMS_Q%N
+   V%OMS(i_oms)=1./(OMS_Q%val(i_oms)**2.-MODEL_V*X%OMS(i_oms))
+   V%STATIC(i_oms)=1./(OMS_Q%val(i_oms)**2.-MODEL_V*X%STATIC(i_oms))
+   do i_sf=1,SF_Q%N
+     if (OMS_Q%indx(i_oms)==OMS_Q%indx(i_sf)) then
+       do iw=1,QP_Sc_steps
+         V%SF(i_sf,iw)=1./(SF_Q%val(i_sf)**2.-MODEL_V*X%SF(i_sf,iw))
+       enddo
+     endif
+   enddo
+ enddo
+ !
+end subroutine MODELS_pe_X_to_VERTEX

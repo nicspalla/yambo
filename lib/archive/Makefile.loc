@@ -124,10 +124,10 @@ endef
 #
 define copy_driver
  if ! test -d  $(srcdir)/lib/$(1); then mkdir $(srcdir)/lib/$(1); fi; \
- if test -d $$LIB &&  test ! -f $(srcdir)/lib/$(1)/installed.stamp ; then \
+ if test -d $$LIB && test ! -f $(srcdir)/lib/$(1)/installed.stamp ; then \
   cp -R $$LIB/* $(srcdir)/lib/$(1)/; \
   touch $(srcdir)/lib/$(1)/installed.stamp; \
- elif test -s $$LIB".tar.gz" ; then \
+ elif test -s $$LIB".tar.gz" &&  test ! -f $(srcdir)/lib/$(1)/installed.stamp ; then \
   cd $(srcdir)/lib/$(1); \
   gunzip < $(compdir)/lib/archive/$$LIB".tar.gz" | ../../config/missing --run tar xf - ; \
  fi;\

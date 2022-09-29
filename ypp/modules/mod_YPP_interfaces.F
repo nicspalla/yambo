@@ -29,17 +29,32 @@ module YPP_interfaces
    !
 #if defined _YPP_RT
    !
-   subroutine  RT_OBSERVABLES_IO(what,J,P,IO_error,first_sec_only,G_lesser_only,COM_)
+   subroutine  RT_OBSERVABLES_IO(J,P,IO_error,first_sec_only,G_lesser_only,COM_)
      use YPP_real_time,  ONLY:OBS_el
      use electrons,      ONLY:levels
      implicit none
-     character(*)           :: what
      type(OBS_el), optional :: J,P
      logical,      optional :: IO_error,first_sec_only,G_lesser_only
      integer,      optional :: COM_
    end subroutine
    !
-#endif
+#endif  
+   !
+#if defined _MODELS
+   !
+   subroutine MODELS_pe_report(EX,NUM,N_vertex,E_vertex,obs,mode,W)
+     use pars,                ONLY:SP
+     use YPP_models,          ONLY:MODEL_N_masses,MODEL_PH
+     use QP_m,                ONLY:QP_Sc_steps
+     implicit none
+     type(MODEL_PH)              :: EX(MODEL_N_masses)
+     type(MODEL_PH)    ,optional :: NUM,N_vertex,E_vertex(MODEL_N_masses)
+     character(*)      ,optional :: obs
+     character(*)      ,optional :: mode
+     complex(SP)       ,optional :: W(QP_Sc_steps)
+   end subroutine
+   !
+#endif  
    !
    subroutine electrons_dos_elemental(k,E,bands,el_dos,dos_E,ID_spin,ID_pdos,USE_the_DbGd,QUIET,FORCE_occ)
      use pars,           ONLY:SP

@@ -33,6 +33,7 @@ module YPP_models
  integer  :: MODEL_N_E_steps=100
  real(SP) :: MODEL_masses_range(2)=1.
  real(SP),  allocatable :: MODEL_masses(:)
+ real(SP),  allocatable :: MODEL_G_bare(:)
  !
  type TODO
    integer  :: N
@@ -44,11 +45,11 @@ module YPP_models
  real(SP),      allocatable :: SF_Q_and_M(:,:)
  !
  type MODEL_ph
-   complex(SP), allocatable :: PI_OMS(:)
-   complex(SP), allocatable :: PI_ST(:)
-   complex(SP), allocatable :: PI_w(:,:)
+   complex(SP), allocatable :: OMS(:)
+   complex(SP), allocatable :: STATIC(:)
+   complex(SP), allocatable :: SF(:,:)
  end type
- !
+ ! 
  contains
    !
    function E_jell(k,shift)  

@@ -21,14 +21,14 @@
 ! Software Foundation, Inc., 59 Temple Place - Suite 330,Boston, 
 ! MA 02111-1307, USA or visit http://www.gnu.org/copyleft/gpl.txt.
 !
-subroutine MODELS_pe_Pi_exact(EXACT,q,W)
+subroutine MODELS_pe_Pi_exact(EXACT,q)
  !
  use pars,                ONLY:SP,pi,cI,cZERO
  use YPP_models,          ONLY:E_jell,MODEL_PH,MODEL_N_masses,OMS_Q,SF_Q,SF_mass,MODEL_masses
- use MODELS,              ONLY:MODEL_E_ph,MODEL_ep_dV,MODEL_effective_mass,MODEL_K_fermi,MODEL_gkkp_kind
+ use MODELS,              ONLY:MODEL_E_ph,MODEL_effective_mass,MODEL_K_fermi
  use R_lattice,           ONLY:bz_samp,RL_vol
  use vec_operate,         ONLY:iku_v_norm
- use stderr,              ONLY:STRING_same
+ use PHEL,                ONLY:QPH
  use QP_m,                ONLY:QP_Sc_steps,QP_G_damp
  use LIVE_t,              ONLY:live_timing
  use parallel_m,          ONLY:PP_indexes,PP_indexes_reset,myid
@@ -38,7 +38,6 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
  !
  type(MODEL_PH)              :: EXACT(MODEL_N_masses)
  type(bz_samp), intent(in)   :: q
- complex(SP)                 :: W(QP_Sc_steps)
  !
  ! Work Space
  !
@@ -51,10 +50,10 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
  call PARALLEL_index(px,(/OMS_Q%N/))
  call PP_wait
  !
- call section("+","Exact Pi(w)")
- !===================================
+ call section("=","Exact Xo(w)")
+ !==============================
  !
- call live_timing("Phonon PI (exact)",px%n_of_elements(myid+1)*MODEL_N_masses)
+ call live_timing("Xo (exact)",px%n_of_elements(myid+1)*MODEL_N_masses)
  !
  do i_mass=1,MODEL_N_masses
    !
@@ -68,23 +67,23 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
      !
      ! Spectral function
      do iw=1,QP_Sc_steps
-       PI_A(iw)=-1./pi*PI_im(real(W(iw)),MODEL_masses(i_mass))
+       PI_A(iw)=-1./pi*PI_im(real(QPH%W(iw)),MODEL_masses(i_mass))
      enddo
      !
      ! OMS
      PI_oms=cZERO
-     call Kramers_Kronig(PI_A,real(W),QP_Sc_steps,PI_oms,(/MODEL_E_ph+cI*QP_G_damp/),1,cZERO) 
-     EXACT(i_mass)%PI_OMS(is)=real(PI_oms(1))+cI*PI_im(MODEL_E_ph,MODEL_masses(i_mass))
+     call Kramers_Kronig(PI_A,real(QPH%W),QP_Sc_steps,PI_oms,(/MODEL_E_ph+cI*QP_G_damp/),1,cZERO) 
+     EXACT(i_mass)%OMS(is)=real(PI_oms(1))+cI*PI_im(MODEL_E_ph,MODEL_masses(i_mass))
      !
      ! ST
      PI_oms=cZERO
-     call Kramers_Kronig(PI_A,real(W),QP_Sc_steps,PI_oms,(/cI*QP_G_damp/),1,cZERO) 
-     EXACT(i_mass)%PI_ST(is)=real(PI_oms(1))
+     call Kramers_Kronig(PI_A,real(QPH%W),QP_Sc_steps,PI_oms,(/cI*QP_G_damp/),1,cZERO) 
+     EXACT(i_mass)%STATIC(is)=real(PI_oms(1))
      !
      ! Full GF
      do i_p=1,SF_Q%N
        if (SF_Q%indx(i_p)==iq.and.SF_mass%indx(i_p)==i_mass) then
-         call Kramers_Kronig(PI_A,real(W),QP_Sc_steps,EXACT(i_mass)%PI_w(i_p,:), W,QP_Sc_steps,cZERO) 
+         call Kramers_Kronig(PI_A,real(QPH%W),QP_Sc_steps,EXACT(i_mass)%SF(i_p,:), QPH%W,QP_Sc_steps,cZERO) 
        endif
      enddo
      !
@@ -98,9 +97,9 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
  call live_timing( )
  !
  do i_mass=1,MODEL_N_masses
-   call PP_redux_wait(EXACT(i_mass)%PI_ST)
-   call PP_redux_wait(EXACT(i_mass)%PI_OMS)
-   call PP_redux_wait(EXACT(i_mass)%PI_w)
+   call PP_redux_wait(EXACT(i_mass)%STATIC)
+   call PP_redux_wait(EXACT(i_mass)%OMS)
+   call PP_redux_wait(EXACT(i_mass)%SF)
  enddo
  !
  contains
@@ -114,9 +113,7 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
        if (abs(Ko)>MODEL_K_fermi) cycle
        PI_im=PI_im-i_sign*pi**2*beta*(MODEL_K_fermi**2-Ko**2)
      enddo
-     PI_im=PI_im*2.*MODEL_ep_dV**2/RL_vol*MODEL_effective_mass/Mass_
-     !
-     if (STRING_same(MODEL_gkkp_kind,"Frohlich" )) PI_im=PI_im/q_mod**2.
+     PI_im=PI_im*2./RL_vol*MODEL_effective_mass/Mass_
      !
    end function
    !
@@ -129,9 +126,7 @@ subroutine MODELS_pe_Pi_exact(EXACT,q,W)
        gamma=MODEL_K_fermi/Ko
         PI_re=PI_re+2.*pi*beta*( (gamma*2-1.)*log(abs((gamma+1.)/(gamma-1.)))+2.*gamma )*Ko/2.
      enddo
-     PI_re=PI_re*2.*MODEL_ep_dV**2/RL_vol
-     !
-     if (STRING_same(MODEL_gkkp_kind,"Frohlich" )) PI_re=PI_re/q_mod**2.
+     PI_re=PI_re*2./RL_vol
      !
    end function
    !
