@@ -48,6 +48,7 @@ module YPP_models
    complex(SP), allocatable :: OMS(:)
    complex(SP), allocatable :: STATIC(:)
    complex(SP), allocatable :: SF(:,:)
+   real(SP),    allocatable :: YUK(:)
  end type
  ! 
  contains
