@@ -49,19 +49,13 @@ subroutine REPORT_Energies(E,k,Xk,n_bands_,k_range,what,l_kpoints,l_what)
  real(SP)          :: k_cc(3),k_al(3)
  integer           :: ik,is_pol,ib,i1,nb_to_print
  character(schlen) :: dumb_ch1,dumb_ch2
- real(SP)          :: E_(n_bands_),max_ratio
+ real(SP)          :: E_(n_bands_)
+#if defined _MODELS
+ real(SP)          :: ratio(2)=-1.
+#endif
  !
  if (l_kpoints) then
    call msg('nr',com_compose_msg(body='IBZ '//trim(what)//'-points'),k%nibz)
-#if defined _MODELS
-   if (trim(what)=="Q") then
-     max_ratio=-1.
-     do ik=k_range(1),k_range(2)
-       if (iku_v_norm(k%pt(ik,:))/MODEL_K_fermi>max_ratio) max_ratio=iku_v_norm(k%pt(ik,:))/MODEL_K_fermi
-     enddo
-     call msg('r',com_compose_msg(body='Max |Q|/K_fermi'),max_ratio)
-   endif
-#endif
    if (trim(what)/="Q".and.Xk%nibz/=k%nibz) then
      call msg('r', com_compose_msg(body='IBZ K-points for X'),nXkibz)
    endif
@@ -90,13 +84,22 @@ subroutine REPORT_Energies(E,k,Xk,n_bands_,k_range,what,l_kpoints,l_what)
    if(trim(what)=="Q") dumb_ch1='Q ['//trim(dumb_ch1)
    if(trim(what)/="Q") dumb_ch1='K ['//trim(dumb_ch1)
    !
+#if defined _MODELS
+   if (trim(what)=="Q") then
+     ratio(1)=iku_v_norm(k%pt(ik,:))/MODEL_K_fermi
+     if (ratio(1)>ratio(2)) ratio(2)=ratio(1)
+   endif
+#endif
+   !
    if (l_kpoints) then
-     call msg('r',trim(dumb_ch1),k_al,'[rlu]')
-     if (fat_log) call msg('r','      :',k%pt(ik,:),'[iku]')
-     if (fat_log) call msg('r','      :',k_cc,'[cc]')
-     if (trim(what)/="Q") then
-       call msg('r','      : wf components',wf_nc_k(ik) )
-     endif
+     call msg('r',com_compose_msg(body=dumb_ch1,post="[rlu]"),k_al)
+     if (fat_log) call msg('r',com_compose_msg(body=dumb_ch1,post="[iku]"),k%pt(ik,:))
+     if (fat_log) call msg('r',com_compose_msg(body=dumb_ch1,post="[cc]"),k_cc)
+     if (trim(what)/="Q") call msg('r',com_compose_msg(body=dumb_ch1,post="Wavefunction components"),wf_nc_k(ik) )
+#if defined _MODELS
+     if (trim(what)=="Q") call msg('r',com_compose_msg(body=dumb_ch1,post="|Q|/K_Fermi"),ratio(1))
+#endif
+     call msg('r',"")
    endif
    !
    if (l_what) then

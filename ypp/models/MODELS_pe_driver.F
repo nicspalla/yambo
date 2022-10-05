@@ -28,7 +28,6 @@ subroutine MODELS_pe_driver(k,q,E,px)
  use units,               ONLY:HA2EV
  use YPP_models,          ONLY:MODEL_ph,MODEL_N_E_steps,MODEL_N_masses,OMS_Q,SF_Q
  use stderr,              ONLY:STRING_same
- use YPP_interfaces,      ONLY:MODELS_pe_report
  use MODELS,              ONLY:MODEL_E_ph,MODEL_ep_dV,MODEL_gkkp_kind
  use ELPH,                ONLY:elph_branches,PH_freqs_sq,l_GKKP_DB_is_expanded
  use PHEL,                ONLY:PH_Q,PHEL_alloc,PH_of,PHONON,QPH
@@ -45,8 +44,9 @@ subroutine MODELS_pe_driver(k,q,E,px)
  !
  type(MODEL_ph)              ::NUM,N_vertex
  type(MODEL_ph), allocatable ::EXACT(:),E_vertex(:)
- integer                     ::i_mass,i_sf,iw
+ integer                     ::i_mass,i_sf,iw,i_m
  logical       , allocatable ::Q_mask(:)
+ character(2)                ::modes(4)
  !
  call section("=","E-P Pi (phonons)")
  !===================================
@@ -67,7 +67,7 @@ subroutine MODELS_pe_driver(k,q,E,px)
  QP_Sc_steps=MODEL_N_E_steps
  elph_branches=1
  QP_G_damp=0.001/HA2EV
- QP_G_er=(/-2.,2./)*(maxval(E%E)+MODEL_E_ph)
+ QP_G_er=(/-1.,1./)*20.*MODEL_E_ph
  YAMBO_ALLOC(PH_freqs_sq,(q%nibz,1))
  PH_freqs_sq=MODEL_E_ph**2.
  l_QP_eval_GF=.TRUE.
@@ -89,30 +89,25 @@ subroutine MODELS_pe_driver(k,q,E,px)
  ! Pi numerical
  !--------------
  call MODELS_pe_Pi_numerical(NUM,k,q,E,px)
- call MODELS_pe_X_to_VERTEX(NUM,N_vertex)
+ call MODELS_pe_X_to_VERTEX("num",-1,NUM,N_vertex,QPH%W)
  !
  ! Pi exact
  !----------
  call MODELS_pe_Pi_exact(EXACT,q)
  do i_mass=1,MODEL_N_masses
-   call MODELS_pe_X_to_VERTEX(EXACT(i_mass),E_vertex(i_mass))
+   call MODELS_pe_X_to_VERTEX("exact",i_mass,EXACT(i_mass),E_vertex(i_mass),QPH%W)
  enddo
  !
- ! Report
+ ! Output
  !--------
- ! Exact...
- call MODELS_pe_report(EXACT,obs="Eph",mode="bb")
- call MODELS_pe_report(EXACT,obs="Eph",mode="ss")
- call MODELS_pe_report(EXACT,obs="Eph",mode="bs")
- call MODELS_pe_report(EXACT,obs="Eph",mode="bd")
- call MODELS_pe_report(EXACT,obs="D",mode="bb",W=QPH%W)
- call MODELS_pe_report(EXACT,obs="PI",mode="bb",W=QPH%W)
- call MODELS_pe_report(EXACT,obs="PI",mode="ss",W=QPH%W,E_vertex=E_vertex)
- call MODELS_pe_report(EXACT,obs="PI",mode="bs",W=QPH%W,E_vertex=E_vertex)
- call MODELS_pe_report(EXACT,obs="PI",mode="bd",W=QPH%W,E_vertex=E_vertex)
  !
- ! Exact vs NUM
- call MODELS_pe_report(EXACT,NUM=NUM,obs="PI",mode="bb")
+ modes=(/"bb","ss","bs","bd"/)
+ do i_m=1,4
+   call MODELS_pe_report("V",modes(i_m),EXACT,NUM,N_vertex,E_vertex,QPH%W)
+   call MODELS_pe_report("Eph",modes(i_m),EXACT,NUM,N_vertex,E_vertex,QPH%W)
+   call MODELS_pe_report("PI",modes(i_m),EXACT,NUM,N_vertex,E_vertex,QPH%W)
+   call MODELS_pe_report("D",modes(i_m),EXACT,NUM,N_vertex,E_vertex,QPH%W)
+ enddo
  !          
  do i_sf=1,SF_Q%N
    Q_mask(SF_Q%indx(i_sf))=.TRUE.
@@ -128,7 +123,7 @@ subroutine MODELS_pe_driver(k,q,E,px)
  contains
    !
    subroutine PH_alloc(PH)
-     use pars, ONLY:cZERO
+     use pars, ONLY:cZERO,rZERO
      type(MODEL_PH) :: PH
      YAMBO_ALLOC(PH%OMS,(OMS_Q%N))
      YAMBO_ALLOC(PH%STATIC,(OMS_Q%N))

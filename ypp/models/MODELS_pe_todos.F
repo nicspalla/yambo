@@ -23,12 +23,13 @@
 !
 subroutine MODELS_pe_todos(what,k,q)
  !
- use pars,           ONLY:SP
+ use pars,           ONLY:SP,schlen
  use R_lattice,      ONLY:bz_samp
- use MODELS,         ONLY:MODEL_K_fermi
+ use MODELS,         ONLY:MODEL_K_fermi,MODEL_effective_mass
  use YPP_models,     ONLY:OMS_Q,SF_Q,SF_mass,MODEL_N_masses,SF_Q_and_M,MODEL_masses,&
 &                         MODEL_N_masses,MODEL_masses_range
  use com,            ONLY:msg,com_compose_msg
+ use stderr,         ONLY:intc
  use vec_operate,    ONLY:iku_v_norm,sort
  use parser_m,       ONLY:PARSER_array
  !
@@ -41,6 +42,9 @@ subroutine MODELS_pe_todos(what,k,q)
  !
  integer     :: iq,is,ic,Q_index(k%nibz),i_mass,i_p,N_USER_q_and_M,i_found
  real(SP)    :: q_mod(k%nibz)
+ character(schlen) :: list(2)
+ !
+ list=' '
  !
  if (what=="Q_oms_and_Masses") then
    !
@@ -76,10 +80,11 @@ subroutine MODELS_pe_todos(what,k,q)
    call msg('sr',com_compose_msg(body="[MODEL] NQ (OMS)"),OMS_Q%N)
    !
    YAMBO_ALLOC(MODEL_masses,(MODEL_N_masses))
-   do i_mass=1,MODEL_N_masses-1
-     MODEL_masses(i_mass)=MODEL_masses_range(1)+(i_mass-1)*(MODEL_masses_range(2)-MODEL_masses_range(1))/float(MODEL_N_masses-1)
+   MODEL_masses(1)=MODEL_masses_range(1)
+   do i_mass=2,MODEL_N_masses-1
+     MODEL_masses(i_mass)=MODEL_masses_range(1)+(i_mass-1)*(MODEL_masses_range(2)-MODEL_masses_range(1))/float(MODEL_N_masses-2)
    enddo
-   MODEl_masses(MODEL_N_masses)=MODEL_masses_range(2)
+   MODEL_masses(MODEL_N_masses)=MODEL_effective_mass
    !
    call msg('sr',com_compose_msg(body="[MODEL] Masses (OMS)"),MODEL_N_masses)
    !
@@ -100,16 +105,25 @@ subroutine MODELS_pe_todos(what,k,q)
      SF_Q%N=0
      do i_p=1,N_USER_q_and_M
        i_found=0
-       do i_mass=2,MODEL_N_masses
-         if (MODEL_masses(i_mass)>=SF_Q_and_M(i_p,2).and.MODEL_masses(i_mass-1)<SF_Q_and_M(i_p,2)) then
-           SF_Q%N=SF_Q%N+1
-           i_found=1
-           if (ic==2) then
-             SF_mass%indx(SF_Q%N)=i_mass 
-             SF_mass%val(SF_Q%N)=MODEL_masses(i_mass) 
-           endif
+       if (MODEL_N_masses==1) then
+         SF_Q%N=SF_Q%N+1
+         if (ic==2) then
+           SF_mass%indx(SF_Q%N)=1 
+           SF_mass%val(SF_Q%N)=MODEL_masses(1) 
          endif
-       enddo
+         i_found=1
+       else
+         do i_mass=2,MODEL_N_masses
+           if (MODEL_masses(i_mass)>=SF_Q_and_M(i_p,2).and.MODEL_masses(i_mass-1)<SF_Q_and_M(i_p,2)) then
+             SF_Q%N=SF_Q%N+1
+             i_found=1
+             if (ic==2) then
+               SF_mass%indx(SF_Q%N)=i_mass 
+               SF_mass%val(SF_Q%N)=MODEL_masses(i_mass) 
+             endif
+           endif
+         enddo
+       endif
        if (i_found==1) then
          do is=2,OMS_Q%N
            if (OMS_Q%val(is)/MODEL_K_fermi>SF_Q_and_M(i_p,1).and.&
@@ -123,6 +137,10 @@ subroutine MODELS_pe_todos(what,k,q)
          enddo
        endif
        if (i_found==1) SF_Q%N=SF_Q%N-1
+       if (i_found==2.and.ic==2) then
+         list(1)=trim(list(1))//" "//trim(intc(SF_Q%indx(SF_Q%N)))
+         list(2)=trim(list(2))//' "'//trim(intc(int(SF_Q%val(SF_Q%N)/MODEL_K_fermi/0.057+1)))//'"' 
+       endif
      enddo
      !
      SF_Q%N=SF_Q%N+1
@@ -143,6 +161,8 @@ subroutine MODELS_pe_todos(what,k,q)
    SF_mass%val(SF_mass%N)=MODEL_masses(MODEL_N_masses)
    !
    call msg('sr',com_compose_msg(body="[MODEL] NQ & Masses (SF)"),SF_Q%N)
+   call msg('sr',com_compose_msg(body="[MODEL] Q/M-list"),list(1))
+   call msg('sr',com_compose_msg(body="[MODEL]         "),list(2))
    !
  endif
  !
