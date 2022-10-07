@@ -26,7 +26,7 @@ subroutine MODELS_driver( )
  use pars,                ONLY:SP,pi
  use units,               ONLY:HA2EV
  use MODELS,              ONLY:MODEL_H_kind,MODEL_gkkp_kind,MODEL_Nel_at_Ef,MODEL_K_fermi,&
-&                              MODEL_effective_mass,MODEL_ep_dV
+&                              MODEL_effective_mass,MODEL_ep_dV,MODEL_E_ph
  use YPP_models,          ONLY:MODEL_B_shift
  use vec_operate,         ONLY:iku_v_norm
  use electrons,           ONLY:levels,E_reset
@@ -94,6 +94,7 @@ subroutine MODELS_driver( )
  call msg('sr',com_compose_msg(body="[MODEL] Nel@E_fermi (ph)"),MODEL_Nel_at_Ef)
  call msg('sr',com_compose_msg(body="[MODEL] dV (ph)"),MODEL_ep_dV*(HA2EV*1000.)**2,after_msg="[meV]")
  call msg('sr',com_compose_msg(body="[MODEL] K_fermi"),MODEL_K_fermi,after_msg="[a.u.]")
+ call msg('sr',com_compose_msg(body="[MODEL] Qc/K_fermi"),MODEL_E_ph/MODEL_effective_mass)
  !
  !... el
  if (STRING_same(MODEL_gkkp_kind,"frohlich")) call MODELS_ep_Fan(k,E,px)

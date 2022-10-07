@@ -41,7 +41,7 @@ subroutine MODELS_pe_report(obs,mode,EXACT,NUM,N_vertex,E_vertex,W)
  ! Work Space
  !
  type(MODEL_PH)    :: DUM(MODEL_N_masses+1)
- integer           :: i_oms,i_mass,i_mass_,ic,i_sf,iw
+ integer           :: i_oms,i_mass,i_mass_,ic,i_sf,iw,nf
  complex(SP)       :: PI_oms
  character(schlen) :: string(4)
  !
@@ -63,6 +63,9 @@ subroutine MODELS_pe_report(obs,mode,EXACT,NUM,N_vertex,E_vertex,W)
  !
  if (.not.obs=="D") then
    !
+   nf=3
+   if (MODEL_N_masses==1) nf=2
+   !
    string(1)=obs//"_"//mode//"_JellMass_EXACT"
    string(2)=obs//"_"//mode//"_JellMass_NUM"
    string(3)=obs//"_"//mode//"_ALLMasses_EXACT"
@@ -72,7 +75,7 @@ subroutine MODELS_pe_report(obs,mode,EXACT,NUM,N_vertex,E_vertex,W)
      string(3)=obs//"_ALLMasses_EXACT"
    endif
    !
-   do ic=1,3
+   do ic=1,nf
      call OUTPUT_driver(string(ic),action="open")
    enddo
    !
@@ -87,7 +90,8 @@ subroutine MODELS_pe_report(obs,mode,EXACT,NUM,N_vertex,E_vertex,W)
        i_mass_=MODEL_N_masses+1
      endif
      do i_oms=1,OMS_Q%N
-       if (i_mass<=MODEL_N_masses) call OUTPUT_driver(string(4),TITLES=(/"Mass"/),R_VALUES=(/MODEL_masses(i_mass)/))
+       if (i_mass<=MODEL_N_masses.and.MODEL_N_masses>1) call OUTPUT_driver(string(4),&
+&                                                            TITLES=(/"Mass"/),R_VALUES=(/MODEL_masses(i_mass)/))
        call OUTPUT_driver(string(4),TITLES=(/"|q|/Kf"/),R_VALUES=(/OMS_Q%val(i_oms)/MODEL_K_fermi/))
        if (STRING_same(obs,"V")) then
          call OUTPUT_driver(string(4),TITLES=(/"Re["//obs//"]"/),R_VALUES=(/real(DUM(i_mass_)%OMS(i_oms))/))
