@@ -280,6 +280,11 @@ aarch*linux* | arm*linux* )
     NETCDFFLAGS="-DgFortran"
     DEBUG_FLAGS="-Og -g -Wall -pedantic -fbounds-check -ffpe-trap=invalid,zero,overflow"
     ;;
+  *frt*)
+    SYSFLAGS="-O3 -Kfast"
+    FUFLAGS="-O0"
+    OMPFLAGS="-Kopenmp"
+    ;;
   *)
     SYSFLAGS="-g -O"
     FUFLAGS="-O0"

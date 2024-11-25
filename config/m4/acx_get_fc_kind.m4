@@ -31,6 +31,10 @@ case "${FC}" in
     *g95*)
       FCKIND="g95"
       ;;
+    *frt*)
+      FCKIND="fujitsu"
+      FCVERSION=`$FC --version`
+      ;;
     *ifc*)
       FCKIND="intel"
       FCVERSION=`$FC -v 2>&1`
