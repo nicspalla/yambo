@@ -30,7 +30,7 @@ sources = [
 ]
 patches = ['Yambo-fix-timing.patch']
 checksums = [
-    None,
+    {'yambo-devel.tar.gz': None},
     {'iotk-y1.2.2.tar.gz': '64af6a4b98f3b62fcec603e4e1b00ef994f95a0efa53ab6593ebcfe6de1739ef'},
     {'Yambo-fix-timing.patch': 'e12b0da1038b7542222856c50dd483015b010678158d4f60eb0e2f5c0df60f13'},
 ]
