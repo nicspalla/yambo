@@ -1,0 +1,22 @@
+name: Build with EESSI
+on: [push, pull_request]
+
+jobs:
+  ubuntu-minimal:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-24.04-arm
+          - ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - uses: eessi/github-action-eessi@v3
+    - name: Test via EESSI-extend
+      run: |
+        module load EESSI-extend
+        unset EASYBUILD_DEBUG
+	cd easybuild
+	eb --logtostdout DeviceXlib-0.9.0-GCC-12.3.0-fb.eb
+        eb --logtostdout --software-commit=$GITHUB_SHA Yambo-dev-foss-2023a.eb
+      shell: bash
