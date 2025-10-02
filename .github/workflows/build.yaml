@@ -16,5 +16,5 @@ jobs:
         unset EASYBUILD_DEBUG
         cd easybuild
         eb --logtostdout -r DeviceXlib-0.9.0-GCC-12.3.0-fb.eb
-        eb --logtostdout -r --software-commit=$GITHUB_SHA Yambo-dev-foss-2023a.eb
+        eb --logtostdout -r --software-commit=$GITHUB_SHA Yambo-devel-foss-2023a.eb
       shell: bash
