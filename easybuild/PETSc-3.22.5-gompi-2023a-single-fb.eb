@@ -23,7 +23,7 @@ source_urls = [
     'https://web.cels.anl.gov/projects/petsc/download/release-snapshots',
 ]
 sources = [SOURCELOWER_TAR_GZ]
-checksums = ['69ee2bb9e17867b4f7a3875023708891b66cd811d967b0612acbe7391018dca7']
+checksums = ['984dba48bd26e7b17d42c078fc4f74d59e9cbc437ee25a8635865eeca9f5dd28']
 
 builddependencies = [('CMake', '3.26.3')]
 
