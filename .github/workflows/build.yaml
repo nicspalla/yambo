@@ -21,8 +21,8 @@ jobs:
         module load EESSI-extend
         unset EASYBUILD_DEBUG
         cd easybuild
-        eb --logtostdout -r PETSc-3.20.3-gompi-2023a-single-fb.eb
-        eb --logtostdout -r SLEPc-3.20.1-gompi-2023a-single-fb.eb
+        eb --logtostdout -r PETSc-3.22.5-gompi-2023a-single-fb.eb
+        eb --logtostdout -r SLEPc-3.22.2-gompi-2023a-single-fb.eb
         eb --logtostdout -r DeviceXlib-0.9.0-GCC-12.3.0-fb.eb
     - name: Build Yambo via EESSI-extend
       run: |

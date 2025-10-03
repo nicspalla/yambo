@@ -9,7 +9,7 @@
 easyblock = 'ConfigureMake'
 
 name = 'PETSc'
-version = '3.20.3'
+version = '3.22.5'
 versionsuffix = '-single-fb'
 
 homepage = 'https://www.mcs.anl.gov/petsc'
@@ -23,7 +23,7 @@ source_urls = [
     'https://web.cels.anl.gov/projects/petsc/download/release-snapshots',
 ]
 sources = [SOURCELOWER_TAR_GZ]
-checksums = ['75a94fb44df0512f51ad093fa784e56b61f51b7ead5956fbe49185c203f8c245']
+checksums = ['69ee2bb9e17867b4f7a3875023708891b66cd811d967b0612acbe7391018dca7']
 
 builddependencies = [('CMake', '3.26.3')]
 
