@@ -35,14 +35,13 @@ checksums = [
     {'Yambo-fix-timing.patch': 'e12b0da1038b7542222856c50dd483015b010678158d4f60eb0e2f5c0df60f13'},
 ]
 dependencies = [
-    #('FFTW.MPI', '3.3.10'),
     ('HDF5', '1.14.0'),
     ('netCDF', '4.9.2'),
     ('netCDF-Fortran', '4.6.1'),
-    #('FlexiBLAS', '3.3.1'),
-    #('ScaLAPACK', '2.2.0', '-fb'),
     ('libxc', '6.2.2'),
     ('DeviceXlib', '0.9.0', '-fb'),
+    ('PETSc', '3.20.3', '-single-fb'),
+    ('SLEPc', '3.20.1', '-single-fb'),
 ]
 
 with_configure = True
@@ -70,7 +69,9 @@ configopts += '--with-netcdff-path="$EBROOTNETCDFMINFORTRAN" '
 configopts += '--with-hdf5-path="$EBROOTHDF5" '
 configopts += '--with-libxc-path="$EBROOTLIBXC" '
 configopts += '--with-devxlib-path="$EBROOTDEVICEXLIB" '
-configopts += '--enable-par-linalg '
+configopts += '--with-petsc-path="$EBROOTPETSC" '
+configopts += '--with-slepc-path="$EBROOTSLEPC" '
+configopts += '--enable-par-linalg --enable-slepc-linalg '
 
 prebuildopts = 'unset LIBS && '
 prebuildopts += "export SHELL='sh -x' && "
