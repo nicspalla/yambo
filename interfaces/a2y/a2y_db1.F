@@ -392,7 +392,7 @@ contains
     do ig=1,npw
       igv = reduced_coordinates_of_plane_waves(:,ig,1)
       if(igv(1)==nf90_fill_int) cycle
-      g_vec_tmp1 = matmul(b_transpose,real(igv,SP))+k_shift !*alat(:)/2.0_SP/pi
+      g_vec_tmp1 = matmul(b_transpose,real(igv,SP))+k_shift ! *alat(:)/2.0_SP/pi
       norm_2 = (g_vec_tmp1(1)**2 + g_vec_tmp1(2)**2 + g_vec_tmp1(3)**2)/2._SP
       ecut_low=max(ecut_low,norm_2)
     end do

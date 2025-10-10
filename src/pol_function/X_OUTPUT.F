@@ -100,7 +100,7 @@ subroutine X_OUTPUT(iq,Xen,Xk,wv,X,spectra)
    !
    ! Epsilon. Procedure to get epsilon from Lfull
    if (X_do_obs("eps")) then 
-     Epsilon_ii(:,2)=1._SP-spectra(:,2)/(spectra(:,2)+1._SP)!*fac
+     Epsilon_ii(:,2)=1._SP-spectra(:,2)/(spectra(:,2)+1._SP) ! *fac
    endif
    !
    ! Alpha

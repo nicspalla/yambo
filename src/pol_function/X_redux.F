@@ -8,6 +8,40 @@
 #include<dev_defs.h>
 !
 subroutine X_redux(iq,what,X_par,Xw,X)
+!! author: The YAMBO team (2000–2020), contributors AM AF
+!!
+!! This subroutine implements the Dyson equation for the polarizability (X) 
+!! within the Yambo code, handling parallel/serial/SLEPc-like (SLK) 
+!! environments and managing GPU/CPU resources where available.
+!! 
+!! ## Description
+!! 
+!! The routine:
+!! 1. Accepts the independent-particle polarizability **Xo** in 
+!!    parallel/serial form.
+!! 2. Solves the Dyson equation in serial/SLK space using the chosen 
+!!    kernel approximation (BS, ALDA, LRC).
+!! 3. Redistributes the computed interacting polarizability **X** back 
+!!    to parallel/serial form for later use.
+!! 
+!! Interfaces between PAR/SER → SER/SLK, performs the solver step, 
+!! and then transforms back SER/SLK → PAR/SER.
+!! 
+!! GPU offloading is used if available (with CUDA), except when 
+!! incompatibilities with SLK parallelization occur.
+!! 
+!! ## Notes
+!! - Kernel types supported:
+!!   - BS (Bethe-Salpeter kernel)
+!!   - ALDA (adiabatic local-density approximation)
+!!   - LRC (long-range correction).
+!! - Uses GPU acceleration when possible.
+!! - Performs collective communications across MPI pools.
+!! 
+!! ## Parallelization
+!! - Interfaces between PAR/SER and SLK pools with `MATRIX_transfer`.
+!! - Frequency distribution handled via `PARALLEL_FREQS_setup`.
+!! - Collective synchronization via `PP_redux_wait` and `PP_bcast`.
  !
  ! Here we solve the Dyson equation using a combination of Serial(SER)/Parallel(PAR)/SLK environments.
  !
@@ -44,11 +78,15 @@ subroutine X_redux(iq,what,X_par,Xw,X)
  !
 #include<y_memory.h>
  !
- type(PAR_matrix) :: X_par
- type(X_t)        :: X
- type(w_samp)     :: Xw
  integer          :: iq
+   !! Index of the transferred momentum (q-point).
  character(*)     :: what
+ type(PAR_matrix) :: X_par
+   !! Parallel representation of the polarizability matrix.
+ type(w_samp)     :: Xw
+   !! Frequency sampling structure.
+ type(X_t)        :: X
+   !! Final polarizability object in serial/parallel form.
  !
  ! Work Space
  !

@@ -5,11 +5,11 @@
 !
 ! Authors (see AUTHORS file for details): CA
 !
-!> @brief Calculate oscillators  <\psi_k | exp[i*(q+G)] |\psi_{k+q} > for few G-vectors
+! > @brief Calculate oscillators  <\psi_k | exp[i*(q+G)] |\psi_{k+q} > for few G-vectors
 !
-!! @param[out]      OSCLL_k	              Oscillators for each k-point
+! ! @param[out]      OSCLL_k	              Oscillators for each k-point
 !
-subroutine OSCLL_eval(q,k,en) 
+subroutine OSCLL_eval(q,k,en)
  !
  ! Evaluate oscillators for the Local-SEX
  !
