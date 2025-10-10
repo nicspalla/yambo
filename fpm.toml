@@ -18,7 +18,7 @@ extensions = ["f90", "F"]
 fixed_extensions = ["f"]
 fpp_extensions = ["F"]
 
-extra_filetypes = [ { extension = "c", comment = "//" }, ]
+extra_filetypes = [ { extension = "c", comment = "//" }, { extension = "h", comment = "//" }, ]
 
 src_dir = ["./src", "./driver", "./lib", "./include", "./ypp", "./interfaces"]
 

@@ -36,5 +36,5 @@ jobs:
       with:
         publish_branch: tech-doc
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/
+        publish_dir: ./
         force_orphan: true
