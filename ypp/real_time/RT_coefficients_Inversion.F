@@ -3,18 +3,9 @@
 !
 ! Copyright (C) 2016 The Yambo Team
 !
-! Authors (see AUTHORS file for details): AM MG
-!
-!> @brief Polarization coefficient inversion see Sec. III in PRB 88, 235113 (2013) 
-!!
-!! @param[in]       NW          order of the response functions 
-!! @param[in]       NX          numer of coefficents required
-!! @param[in]       P           real-time polarization 
-!! @param[in]       W           multiples of the laser frequency
-!! @param[in]       T_prediod   shorted cicle period
-!! @param[out]      X           coefficents of the response functions X1,X2,X3... 
-!
 subroutine RT_coefficients_Inversion(NW,NX,P,X,W,T_period)
+ !! author: AM MG
+ !! Polarization coefficient inversion see Sec. III in PRB 88, 235113 (2013) 
  !
  use pars,            ONLY:SP,cI,cONE,cZERO,rZERO
  use YPP_real_time,   ONLY:X_order,RT_conf
@@ -24,9 +15,18 @@ subroutine RT_coefficients_Inversion(NW,NX,P,X,W,T_period)
  use linear_algebra,  ONLY:INV
 #include<y_memory.h>
  !
- integer,     intent(in)   :: NW,NX
- real(SP),    intent(in)   :: P(NE_steps),W(NW),T_period
+ integer,     intent(in)   :: NW
+   !! order of the response functions
+ integer,     intent(in)   :: NX
+   !! numer of coefficents required
+ real(SP),    intent(in)   :: P(NE_steps)
+   !! real-time polarization
+ real(SP),    intent(in)   :: W(NW)
+   !! multiples of the laser frequency
+ real(SP),    intent(in)   :: T_period
+   !! shorted cicle period
  complex(SP), intent(out)  :: X(NX)
+   !! coefficents of the response functions X1,X2,X3...
  !
  ! Work space
  !

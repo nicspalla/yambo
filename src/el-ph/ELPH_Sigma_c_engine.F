@@ -3,10 +3,8 @@
 !
 ! Copyright (C) 2006 The Yambo Team
 !
-! Authors (see AUTHORS file for details): AM CA
-!
 subroutine ELPH_Sigma_c_engine(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_W,q_weight)
- !
+ !! author: AM CA
  !! Calculate real and imaginary part of the electron-phonon self-energy 
  !
  use pars,          ONLY:SP,pi,cZERO
