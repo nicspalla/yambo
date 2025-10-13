@@ -36,7 +36,7 @@ jobs:
     - name: Render the doc
       run: |
         ford --output_dir docs docs.md
-	cp doc/*.png docs/media/.
+        cp doc/*.png docs/media/.
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
