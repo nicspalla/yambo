@@ -20,7 +20,7 @@ fpp_extensions = ["F"]
 
 extra_filetypes = [ { extension = "c", comment = "//" }, { extension = "h", comment = "//" }, ]
 
-src_dir = ["./src", "./driver", "./lib", "./include", "./ypp", "./interfaces"]
+src_dir = ["./src", "./driver", "./lib", "./include", "./include/headers", "./include/version", "./include/driver", "./ypp", "./interfaces"]
 
 exclude = [
     "src/wf_and_fft/scatter_Bamp_incl.F",
