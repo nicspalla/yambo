@@ -3,24 +3,8 @@
 !
 ! Copyright (C) 2010 The Yambo Team
 !
-! Authors (see AUTHORS file for details): MG AM
-!
-! > @brief Calculate exchange-correlation energy and its derivatives
-! !
-! ! @param[in]       en                  electronic levels
-! ! @param[in]       Xk                  k-point sampling
-! ! @param[in]       KIND                
-! ! @param[in]       FUNCTIONAL          exchange-correlation functional
-! ! @param[in]       ORDER               0 = E_xc, 1 = V_xc, 2 = F_xc 
-! ! @param[in]       EXX_FRACTION        exchange fraction (optional)
-! ! @param[in]       EXX_SCREENING       screened exchange fraction (optional)
-! !
-! ! @param[out]      E_xc                exchange correlation energy    (if ORDER=0)
-! ! @param[out]      V_xc                exchange correlation potential (if ORDER=1)
-! ! @param[out]      F_xc                exchange correlation kernel    (if ORDER=2)
-!
 subroutine XC_potential_driver(en,Xk,KIND,FUNCTIONAL,ORDER,EXX_FRACTION,EXX_SCREENING)
- !
+ !! author: MG AM 
  !! Wrapper for calculation of the XC potential. If available libxc,
  !! will be used instead of internal routines
  !

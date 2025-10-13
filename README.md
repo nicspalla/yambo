@@ -4,8 +4,10 @@ Yambo doesn't stand for anything like "Yet Another Many-Body cOde", for instance
 
 ## Installation
 Quick installation instructions for the impatient:
-`./configure [options]`
-` make all`
+```bash
+./configure [options]
+make all
+```
 "make" alone prints a list of acceptable targets. Binaries go in bin/.
 
 ## Want to know more?
