@@ -28,4 +28,4 @@ macro: DEV_SUB(x)=x
        DEV_ATTR= 
 ---
 
-{!README.md!}[extra.ford]
+{!README.md!}

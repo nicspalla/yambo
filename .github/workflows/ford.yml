@@ -1,9 +1,10 @@
 name: "FORD Documentation"
 
 on:
-  push:
-    branches:
-      - tech-doc
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - tech-doc
 
 jobs:
   build:
