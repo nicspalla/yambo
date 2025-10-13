@@ -15,7 +15,14 @@ jobs:
       with:
         persist-credentials: false
 
-    - name: Set up Python
+    - name: Setup fortran
+      uses: fortran-lang/setup-fortran@v1
+      id: setup-fortran
+      with:
+        compiler: "gcc"
+        version: 13
+
+    - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
