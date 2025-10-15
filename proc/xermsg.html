@@ -1,0 +1,473 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+    <meta name="author" content="Yambo Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>XERMSG &ndash; Yambo</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">Yambo </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">index</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>XERMSG
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.1% of total for procedures.">95 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/xermsg.f"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/xermsg.f.html'>xermsg.f</a></li>
+            <li class="breadcrumb-item active" aria-current="page">XERMSG</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2> subroutine XERMSG(LIBRAR, SUBROU, MESSG, NERR, LEVEL)  
+</h2>
+    
+
+    <p><strong>BEGIN PROLOGUE  XERMSG
+</strong>PURPOSE  Process error messages for SLATEC and other libraries.
+<strong>LIBRARY   SLATEC (XERROR)
+</strong>CATEGORY  R3C
+<strong>TYPE      ALL (XERMSG-A)
+</strong>KEYWORDS  ERROR MESSAGE, XERROR
+<strong>AUTHOR  Fong, Kirby, (NMFECC at LLNL)
+</strong>DESCRIPTION</p>
+<p>XERMSG processes a diagnostic message in a manner determined by the
+   value of LEVEL and the current value of the library error control
+   flag, KONTRL.  See subroutine XSETF for details.</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">LIBRAR</span><span class="w">   </span><span class="nx">A</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">constant</span><span class="w"> </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">variable</span><span class="p">)</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">name</span>
+<span class="w">         </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="kn">library</span><span class="p">.</span><span class="w">  </span><span class="nx">This</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">SLATEC</span><span class="err">&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">SLATEC</span>
+<span class="w">         </span><span class="nx">Common</span><span class="w"> </span><span class="nx">Math</span><span class="w"> </span><span class="nx">Library</span><span class="p">.</span><span class="w">  </span><span class="nx">The</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">handling</span><span class="w"> </span><span class="kn">package</span><span class="w"> </span><span class="k">is</span>
+<span class="w">         </span><span class="nx">general</span><span class="w"> </span><span class="nx">enough</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">many</span><span class="w"> </span><span class="nx">libraries</span>
+<span class="w">         </span><span class="nx">simultaneously</span><span class="p">,</span><span class="w"> </span><span class="nx">so</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">desirable</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">that</span>
+<span class="w">         </span><span class="nx">detects</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">reports</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">identify</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="kn">library</span><span class="w"> </span><span class="nx">name</span>
+<span class="w">         </span><span class="k">as</span><span class="w"> </span><span class="nx">well</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">name</span><span class="p">.</span>
+
+<span class="nx">SUBROU</span><span class="w">   </span><span class="nx">A</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">constant</span><span class="w"> </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">variable</span><span class="p">)</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">name</span>
+<span class="w">         </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">detected</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="w">  </span><span class="nx">Usually</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">         </span><span class="nx">name</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">calling</span><span class="w"> </span><span class="nx">XERMSG</span><span class="p">.</span><span class="w">  </span><span class="nx">There</span><span class="w"> </span><span class="nx">are</span>
+<span class="w">         </span><span class="nx">some</span><span class="w"> </span><span class="nx">instances</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="nx">callable</span><span class="w"> </span><span class="kn">library</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">calls</span>
+<span class="w">         </span><span class="nx">lower</span><span class="w"> </span><span class="nx">level</span><span class="w"> </span><span class="nx">subsidiary</span><span class="w"> </span><span class="nx">routines</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="k">is</span>
+<span class="w">         </span><span class="nx">detected</span><span class="p">.</span><span class="w">  </span><span class="nx">In</span><span class="w"> </span><span class="nx">such</span><span class="w"> </span><span class="nx">cases</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="nx">may</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">more</span><span class="w"> </span><span class="nx">informative</span><span class="w"> </span><span class="nx">to</span>
+<span class="w">         </span><span class="nx">supply</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">name</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="nx">called</span><span class="w"> </span><span class="nx">rather</span><span class="w"> </span><span class="nx">than</span>
+<span class="w">         </span><span class="nx">the</span><span class="w"> </span><span class="nx">name</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">subsidiary</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">detected</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">         </span><span class="nx">error</span><span class="p">.</span>
+
+<span class="nx">MESSG</span><span class="w">    </span><span class="nx">A</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">constant</span><span class="w"> </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">variable</span><span class="p">)</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">text</span>
+<span class="w">         </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="nx">warning</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span><span class="w">  </span><span class="nx">In</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">example</span><span class="w"> </span><span class="nx">below</span><span class="p">,</span>
+<span class="w">         </span><span class="nx">the</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">constant</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">contains</span><span class="w"> </span><span class="nx">a</span>
+<span class="w">         </span><span class="nx">generic</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span>
+
+<span class="w">               </span><span class="nx">CALL</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="p">(</span><span class="err">&#39;</span><span class="nx">SLATEC</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">MMPY</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">              </span><span class="o">*</span><span class="err">&#39;</span><span class="nx">THE</span><span class="w"> </span><span class="nx">ORDER</span><span class="w"> </span><span class="nx">OF</span><span class="w"> </span><span class="nx">THE</span><span class="w"> </span><span class="nx">MATRIX</span><span class="w"> </span><span class="nx">EXCEEDS</span><span class="w"> </span><span class="nx">THE</span><span class="w"> </span><span class="nx">ROW</span><span class="w"> </span><span class="nx">DIMENSION</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">              </span><span class="o">*</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+
+<span class="w">         </span><span class="nx">It</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">possible</span><span class="w"> </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">sometimes</span><span class="w"> </span><span class="nx">desirable</span><span class="p">)</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">generate</span><span class="w"> </span><span class="nx">a</span>
+<span class="w">         </span><span class="nx">specific</span><span class="w"> </span><span class="nx">message</span><span class="o">--</span><span class="nx">e</span><span class="p">.</span><span class="nx">g</span><span class="p">.,</span><span class="w"> </span><span class="nx">one</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">contains</span><span class="w"> </span><span class="nx">actual</span><span class="w"> </span><span class="nx">numeric</span>
+<span class="w">         </span><span class="nx">values</span><span class="p">.</span><span class="w">  </span><span class="nx">Specific</span><span class="w"> </span><span class="nx">numeric</span><span class="w"> </span><span class="nx">values</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">converted</span><span class="w"> </span><span class="nx">into</span>
+<span class="w">         </span><span class="nx">character</span><span class="w"> </span><span class="nx">strings</span><span class="w"> </span><span class="nx">using</span><span class="w"> </span><span class="nx">formatted</span><span class="w"> </span><span class="nx">WRITE</span><span class="w"> </span><span class="nx">statements</span><span class="w"> </span><span class="nx">into</span>
+<span class="w">         </span><span class="nx">character</span><span class="w"> </span><span class="nx">variables</span><span class="p">.</span><span class="w">  </span><span class="nx">This</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">called</span><span class="w"> </span><span class="nx">standard</span><span class="w"> </span><span class="nx">Fortran</span>
+<span class="w">         </span><span class="nx">internal</span><span class="w"> </span><span class="nx">file</span><span class="w"> </span><span class="nx">I</span><span class="o">/</span><span class="nx">O</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">exemplified</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">first</span><span class="w"> </span><span class="nx">three</span>
+<span class="w">         </span><span class="nx">lines</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">following</span><span class="w"> </span><span class="nx">example</span><span class="p">.</span><span class="w">  </span><span class="nx">You</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">also</span><span class="w"> </span><span class="nx">catenate</span>
+<span class="w">         </span><span class="nx">substrings</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">characters</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">construct</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span>
+<span class="w">         </span><span class="nx">Here</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">example</span><span class="w"> </span><span class="nx">showing</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">use</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">both</span><span class="w"> </span><span class="nx">writing</span><span class="w"> </span><span class="nx">to</span>
+<span class="w">         </span><span class="nx">an</span><span class="w"> </span><span class="nx">internal</span><span class="w"> </span><span class="nx">file</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">catenating</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">strings</span><span class="p">.</span>
+
+<span class="w">               </span><span class="nx">CHARACTER</span><span class="o">*</span><span class="mi">5</span><span class="w"> </span><span class="nx">CHARN</span><span class="p">,</span><span class="w"> </span><span class="nx">CHARL</span>
+<span class="w">               </span><span class="nx">WRITE</span><span class="w"> </span><span class="p">(</span><span class="nx">CHARN</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="nx">N</span>
+<span class="w">               </span><span class="nx">WRITE</span><span class="w"> </span><span class="p">(</span><span class="nx">CHARL</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="nx">LDA</span>
+<span class="w">            </span><span class="mi">10</span><span class="w"> </span><span class="nx">FORMAT</span><span class="p">(</span><span class="nx">I5</span><span class="p">)</span>
+<span class="w">               </span><span class="nx">CALL</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="p">(</span><span class="err">&#39;</span><span class="nx">SLATEC</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">MMPY</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">THE</span><span class="w"> </span><span class="nx">ORDER</span><span class="err">&#39;</span><span class="c1">//CHARN//</span>
+<span class="w">              </span><span class="o">*</span><span class="w">   </span><span class="err">&#39;</span><span class="w"> </span><span class="nx">OF</span><span class="w"> </span><span class="nx">THE</span><span class="w"> </span><span class="nx">MATRIX</span><span class="w"> </span><span class="nx">EXCEEDS</span><span class="w"> </span><span class="nx">ITS</span><span class="w"> </span><span class="nx">ROW</span><span class="w"> </span><span class="nx">DIMENSION</span><span class="w"> </span><span class="nx">OF</span><span class="err">&#39;</span><span class="c1">//</span>
+<span class="w">              </span><span class="o">*</span><span class="w">   </span><span class="nx">CHARL</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+
+<span class="w">         </span><span class="nx">There</span><span class="w"> </span><span class="nx">are</span><span class="w"> </span><span class="nx">two</span><span class="w"> </span><span class="nx">subtleties</span><span class="w"> </span><span class="nx">worth</span><span class="w"> </span><span class="nx">mentioning</span><span class="p">.</span><span class="w">  </span><span class="nx">One</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">that</span>
+<span class="w">         </span><span class="nx">the</span><span class="w"> </span><span class="c1">// for character catenation is used to construct the</span>
+<span class="w">         </span><span class="nx">error</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="nx">so</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">no</span><span class="w"> </span><span class="nx">single</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">constant</span><span class="w"> </span><span class="k">is</span>
+<span class="w">         </span><span class="nx">continued</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="nx">line</span><span class="p">.</span><span class="w">  </span><span class="nx">This</span><span class="w"> </span><span class="nx">avoids</span><span class="w"> </span><span class="nx">confusion</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nx">to</span>
+<span class="w">         </span><span class="nx">whether</span><span class="w"> </span><span class="nx">there</span><span class="w"> </span><span class="nx">are</span><span class="w"> </span><span class="nx">trailing</span><span class="w"> </span><span class="nx">blanks</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">line</span><span class="p">.</span>
+<span class="w">         </span><span class="nx">The</span><span class="w"> </span><span class="nx">second</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">catenating</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">parts</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">message</span>
+<span class="w">         </span><span class="k">as</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">actual</span><span class="w"> </span><span class="nx">argument</span><span class="w"> </span><span class="nx">rather</span><span class="w"> </span><span class="nx">than</span><span class="w"> </span><span class="nx">encoding</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">entire</span>
+<span class="w">         </span><span class="nx">message</span><span class="w"> </span><span class="nx">into</span><span class="w"> </span><span class="nx">one</span><span class="w"> </span><span class="nx">large</span><span class="w"> </span><span class="nx">character</span><span class="w"> </span><span class="nx">variable</span><span class="p">,</span><span class="w"> </span><span class="nx">we</span><span class="w"> </span><span class="nx">avoid</span>
+<span class="w">         </span><span class="nx">having</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">know</span><span class="w"> </span><span class="nx">how</span><span class="w"> </span><span class="nx">long</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="nx">to</span>
+<span class="w">         </span><span class="nx">declare</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">adequate</span><span class="w"> </span><span class="nx">length</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">large</span><span class="w"> </span><span class="nx">character</span>
+<span class="w">         </span><span class="nx">variable</span><span class="p">.</span><span class="w">  </span><span class="nx">XERMSG</span><span class="w"> </span><span class="nx">calls</span><span class="w"> </span><span class="nx">XERPRN</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">print</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="nx">using</span>
+<span class="w">         </span><span class="nx">multiple</span><span class="w"> </span><span class="nx">lines</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">necessary</span><span class="p">.</span><span class="w">  </span><span class="nx">If</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">very</span><span class="w"> </span><span class="nx">long</span><span class="p">,</span>
+<span class="w">         </span><span class="nx">XERPRN</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="k">break</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="nx">into</span><span class="w"> </span><span class="nx">pieces</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="mi">72</span><span class="w"> </span><span class="nx">characters</span><span class="w"> </span><span class="p">(</span><span class="k">as</span>
+<span class="w">         </span><span class="nx">requested</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">XERMSG</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">printing</span><span class="w"> </span><span class="nx">on</span><span class="w"> </span><span class="nx">multiple</span><span class="w"> </span><span class="nx">lines</span><span class="p">.</span>
+<span class="w">         </span><span class="nx">Also</span><span class="p">,</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="nx">asks</span><span class="w"> </span><span class="nx">XERPRN</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">prefix</span><span class="w"> </span><span class="nx">each</span><span class="w"> </span><span class="nx">line</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="err">&#39;</span><span class="w"> </span><span class="o">*</span><span class="w">  </span><span class="err">&#39;</span>
+<span class="w">         </span><span class="nx">so</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">total</span><span class="w"> </span><span class="nx">line</span><span class="w"> </span><span class="nx">length</span><span class="w"> </span><span class="nx">could</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="mi">76</span><span class="w"> </span><span class="nx">characters</span><span class="p">.</span>
+<span class="w">         </span><span class="nx">Note</span><span class="w"> </span><span class="nx">also</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">XERPRN</span><span class="w"> </span><span class="nx">scans</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="nx">backwards</span>
+<span class="w">         </span><span class="nx">to</span><span class="w"> </span><span class="nx">ignore</span><span class="w"> </span><span class="nx">trailing</span><span class="w"> </span><span class="nx">blanks</span><span class="p">.</span><span class="w">  </span><span class="nx">Another</span><span class="w"> </span><span class="nx">feature</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">that</span>
+<span class="w">         </span><span class="nx">the</span><span class="w"> </span><span class="nx">substring</span><span class="w"> </span><span class="err">&#39;$$&#39;</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">treated</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">new</span><span class="w"> </span><span class="nx">line</span><span class="w"> </span><span class="nx">sentinel</span>
+<span class="w">         </span><span class="nx">by</span><span class="w"> </span><span class="nx">XERPRN</span><span class="p">.</span><span class="w">  </span><span class="nx">If</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">want</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">construct</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">multiline</span>
+<span class="w">         </span><span class="nx">message</span><span class="w"> </span><span class="nx">without</span><span class="w"> </span><span class="nx">having</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="nx">out</span><span class="w"> </span><span class="nx">multiples</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="mi">72</span>
+<span class="w">         </span><span class="nx">characters</span><span class="p">,</span><span class="w"> </span><span class="nx">just</span><span class="w"> </span><span class="nx">use</span><span class="w"> </span><span class="err">&#39;$$&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">separator</span><span class="p">.</span><span class="w">  </span><span class="err">&#39;$$&#39;</span>
+<span class="w">         </span><span class="nx">obviously</span><span class="w"> </span><span class="nx">must</span><span class="w"> </span><span class="nx">occur</span><span class="w"> </span><span class="nx">within</span><span class="w"> </span><span class="mi">72</span><span class="w"> </span><span class="nx">characters</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">         </span><span class="nx">start</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">each</span><span class="w"> </span><span class="nx">line</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">have</span><span class="w"> </span><span class="nx">its</span><span class="w"> </span><span class="nx">intended</span><span class="w"> </span><span class="nx">effect</span><span class="w"> </span><span class="nx">since</span>
+<span class="w">         </span><span class="nx">XERPRN</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">asked</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">wrap</span><span class="w"> </span><span class="nx">around</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="mi">72</span><span class="w"> </span><span class="nx">characters</span><span class="w"> </span><span class="k">in</span>
+<span class="w">         </span><span class="nx">addition</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">looking</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="err">&#39;$$&#39;</span><span class="p">.</span>
+
+<span class="nx">NERR</span><span class="w">     </span><span class="nx">An</span><span class="w"> </span><span class="nx">integer</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">chosen</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="kn">library</span><span class="w"> </span><span class="nx">routine</span><span class="err">&#39;</span><span class="nx">s</span>
+<span class="w">         </span><span class="nx">author</span><span class="p">.</span><span class="w">  </span><span class="nx">It</span><span class="w"> </span><span class="nx">must</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">range</span><span class="w"> </span><span class="o">-</span><span class="mi">99</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="mi">999</span><span class="w"> </span><span class="p">(</span><span class="nx">three</span>
+<span class="w">         </span><span class="nx">printable</span><span class="w"> </span><span class="nx">digits</span><span class="p">).</span><span class="w">  </span><span class="nx">Each</span><span class="w"> </span><span class="nx">distinct</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">should</span><span class="w"> </span><span class="nx">have</span><span class="w"> </span><span class="nx">its</span>
+<span class="w">         </span><span class="nx">own</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">number</span><span class="p">.</span><span class="w">  </span><span class="nx">These</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">numbers</span><span class="w"> </span><span class="nx">should</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">described</span>
+<span class="w">         </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">machine</span><span class="w"> </span><span class="nx">readable</span><span class="w"> </span><span class="nx">documentation</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="p">.</span>
+<span class="w">         </span><span class="nx">The</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">numbers</span><span class="w"> </span><span class="nx">need</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">unique</span><span class="w"> </span><span class="nx">only</span><span class="w"> </span><span class="nx">within</span><span class="w"> </span><span class="nx">each</span><span class="w"> </span><span class="nx">routine</span><span class="p">,</span>
+<span class="w">         </span><span class="nx">so</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">reasonable</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">each</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">start</span><span class="w"> </span><span class="nx">enumerating</span>
+<span class="w">         </span><span class="nx">errors</span><span class="w"> </span><span class="nx">from</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">proceeding</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="nx">integer</span><span class="p">.</span>
+
+<span class="nx">LEVEL</span><span class="w">    </span><span class="nx">An</span><span class="w"> </span><span class="nx">integer</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">range</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">indicates</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">         </span><span class="nx">level</span><span class="w"> </span><span class="p">(</span><span class="nx">severity</span><span class="p">)</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="w">  </span><span class="nx">Their</span><span class="w"> </span><span class="nx">meanings</span><span class="w"> </span><span class="nx">are</span>
+
+<span class="w">        </span><span class="o">-</span><span class="mi">1</span><span class="w">  </span><span class="nx">A</span><span class="w"> </span><span class="nx">warning</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span><span class="w">  </span><span class="nx">This</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">clear</span>
+<span class="w">            </span><span class="nx">that</span><span class="w"> </span><span class="nx">there</span><span class="w"> </span><span class="nx">really</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">error</span><span class="p">,</span><span class="w"> </span><span class="nx">but</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">user</span><span class="err">&#39;</span><span class="nx">s</span><span class="w"> </span><span class="nx">attention</span>
+<span class="w">            </span><span class="nx">may</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">needed</span><span class="p">.</span><span class="w">  </span><span class="nx">An</span><span class="w"> </span><span class="nx">attempt</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">made</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">only</span><span class="w"> </span><span class="nx">print</span><span class="w"> </span><span class="nx">this</span>
+<span class="w">            </span><span class="nx">message</span><span class="w"> </span><span class="nx">once</span><span class="p">.</span>
+
+<span class="w">         </span><span class="mi">0</span><span class="w">  </span><span class="nx">A</span><span class="w"> </span><span class="nx">warning</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span><span class="w">  </span><span class="nx">This</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">clear</span>
+<span class="w">            </span><span class="nx">that</span><span class="w"> </span><span class="nx">there</span><span class="w"> </span><span class="nx">really</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">error</span><span class="p">,</span><span class="w"> </span><span class="nx">but</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">user</span><span class="err">&#39;</span><span class="nx">s</span><span class="w"> </span><span class="nx">attention</span>
+<span class="w">            </span><span class="nx">may</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">needed</span><span class="p">.</span>
+
+<span class="w">         </span><span class="mi">1</span><span class="w">  </span><span class="nx">A</span><span class="w"> </span><span class="nx">recoverable</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="w">  </span><span class="nx">This</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="nx">even</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="k">is</span>
+<span class="w">            </span><span class="nx">so</span><span class="w"> </span><span class="nx">serious</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">cannot</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">any</span><span class="w"> </span><span class="nx">useful</span>
+<span class="w">            </span><span class="nx">answer</span><span class="p">.</span><span class="w">  </span><span class="nx">If</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="nx">has</span><span class="w"> </span><span class="nx">told</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="kn">package</span><span class="w"> </span><span class="nx">to</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">after</span><span class="w"> </span><span class="nx">recoverable</span><span class="w"> </span><span class="nx">errors</span><span class="p">,</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="nx">will</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">Library</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">which</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">to</span>
+<span class="w">            </span><span class="nx">the</span><span class="w"> </span><span class="nx">user</span><span class="err">&#39;</span><span class="nx">s</span><span class="w"> </span><span class="nx">routine</span><span class="p">.</span><span class="w">  </span><span class="nx">The</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="nx">may</span><span class="w"> </span><span class="nx">also</span><span class="w"> </span><span class="nx">permit</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span>
+<span class="w">            </span><span class="kn">package</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">terminate</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">program</span><span class="w"> </span><span class="nx">upon</span><span class="w"> </span><span class="nx">encountering</span><span class="w"> </span><span class="nx">a</span>
+<span class="w">            </span><span class="nx">recoverable</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span>
+
+<span class="w">         </span><span class="mi">2</span><span class="w">  </span><span class="nx">A</span><span class="w"> </span><span class="nx">fatal</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="w">  </span><span class="nx">XERMSG</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">its</span><span class="w"> </span><span class="nx">caller</span>
+<span class="w">            </span><span class="nx">after</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="nx">receives</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">fatal</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="w">  </span><span class="nx">This</span><span class="w"> </span><span class="nx">level</span><span class="w"> </span><span class="nx">should</span>
+<span class="w">            </span><span class="nx">hardly</span><span class="w"> </span><span class="nx">ever</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">used</span><span class="p">;</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">much</span><span class="w"> </span><span class="nx">better</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">allow</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">            </span><span class="nx">user</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">chance</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">recover</span><span class="p">.</span><span class="w">  </span><span class="nx">An</span><span class="w"> </span><span class="nx">example</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">one</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">few</span>
+<span class="w">            </span><span class="nx">cases</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">which</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">permissible</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">declare</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">level</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="nx">error</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">reverse</span><span class="w"> </span><span class="nx">communication</span><span class="w"> </span><span class="nx">Library</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">that</span>
+<span class="w">            </span><span class="k">is</span><span class="w"> </span><span class="nx">likely</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">called</span><span class="w"> </span><span class="nx">repeatedly</span><span class="w"> </span><span class="nx">until</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="nx">integrates</span>
+<span class="w">            </span><span class="nx">across</span><span class="w"> </span><span class="nx">some</span><span class="w"> </span><span class="nx">interval</span><span class="p">.</span><span class="w">  </span><span class="nx">If</span><span class="w"> </span><span class="nx">there</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">serious</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="k">in</span>
+<span class="w">            </span><span class="nx">the</span><span class="w"> </span><span class="nx">input</span><span class="w"> </span><span class="nx">such</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">another</span><span class="w"> </span><span class="nx">step</span><span class="w"> </span><span class="nx">cannot</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">taken</span><span class="w"> </span><span class="k">and</span>
+<span class="w">            </span><span class="nx">the</span><span class="w"> </span><span class="nx">Library</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">called</span><span class="w"> </span><span class="nx">again</span><span class="w"> </span><span class="nx">without</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">input</span>
+<span class="w">            </span><span class="nx">error</span><span class="w"> </span><span class="nx">having</span><span class="w"> </span><span class="nx">been</span><span class="w"> </span><span class="nx">corrected</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">caller</span><span class="p">,</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">Library</span>
+<span class="w">            </span><span class="nx">routine</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">probably</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">called</span><span class="w"> </span><span class="nx">forever</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">improper</span>
+<span class="w">            </span><span class="nx">input</span><span class="p">.</span><span class="w">  </span><span class="nx">In</span><span class="w"> </span><span class="nx">this</span><span class="w"> </span><span class="k">case</span><span class="p">,</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">reasonable</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">declare</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">            </span><span class="nx">error</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">fatal</span><span class="p">.</span>
+
+<span class="nx">Each</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">arguments</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">input</span><span class="p">;</span><span class="w"> </span><span class="nx">none</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">modified</span><span class="w"> </span><span class="nx">by</span>
+<span class="nx">XERMSG</span><span class="p">.</span><span class="w">  </span><span class="nx">A</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">may</span><span class="w"> </span><span class="nx">make</span><span class="w"> </span><span class="nx">multiple</span><span class="w"> </span><span class="nx">calls</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">warning</span>
+<span class="nx">level</span><span class="w"> </span><span class="nx">messages</span><span class="p">;</span><span class="w"> </span><span class="nx">however</span><span class="p">,</span><span class="w"> </span><span class="nx">after</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">call</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">recoverable</span>
+<span class="nx">error</span><span class="p">,</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">should</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="w">  </span><span class="nx">Do</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">try</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">call</span>
+<span class="nx">XERMSG</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">second</span><span class="w"> </span><span class="nx">recoverable</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">after</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">first</span><span class="w"> </span><span class="nx">recoverable</span>
+<span class="nx">error</span><span class="w"> </span><span class="nx">because</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="kn">package</span><span class="w"> </span><span class="nx">saves</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">number</span><span class="p">.</span><span class="w">  </span><span class="nx">The</span><span class="w"> </span><span class="nx">user</span>
+<span class="nx">can</span><span class="w"> </span><span class="nx">retrieve</span><span class="w"> </span><span class="nx">this</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">calling</span><span class="w"> </span><span class="nx">another</span><span class="w"> </span><span class="nx">entry</span><span class="w"> </span><span class="nx">point</span><span class="w"> </span><span class="k">in</span>
+<span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">handling</span><span class="w"> </span><span class="kn">package</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">clear</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="nx">when</span>
+<span class="nx">recovering</span><span class="w"> </span><span class="nx">from</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="w">  </span><span class="nx">Calling</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">succession</span><span class="w"> </span><span class="nx">causes</span><span class="w"> </span><span class="nx">the</span>
+<span class="nx">old</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">overwritten</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">latest</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">number</span><span class="p">.</span>
+<span class="nx">This</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">considered</span><span class="w"> </span><span class="nx">harmless</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">numbers</span><span class="w"> </span><span class="nx">associated</span><span class="w"> </span><span class="nx">with</span>
+<span class="nx">warning</span><span class="w"> </span><span class="nx">messages</span><span class="w"> </span><span class="nx">but</span><span class="w"> </span><span class="nx">must</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">done</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">numbers</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">serious</span>
+<span class="nx">errors</span><span class="p">.</span><span class="w">  </span><span class="nx">After</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">call</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">XERMSG</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">recoverable</span><span class="w"> </span><span class="nx">error</span><span class="p">,</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">user</span>
+<span class="nx">must</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">given</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">chance</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">call</span><span class="w"> </span><span class="nx">NUMXER</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="nx">XERCLR</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">retrieve</span><span class="w"> </span><span class="k">or</span>
+<span class="nx">clear</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">number</span><span class="p">.</span>
+</code></pre></div>
+
+<p><strong>REFERENCES  R. E. Jones and D. K. Kahaner, XERROR, the SLATEC
+                 Error-handling Package, SAND82-0800, Sandia
+                 Laboratories, 1982.
+</strong>ROUTINES CALLED  FDUMP, J4SAVE, XERCNT, XERHLT, XERPRN, XERSVE
+<strong>REVISION HISTORY  (YYMMDD)
+   880101  DATE WRITTEN
+   880621  REVISED AS DIRECTED AT SLATEC CML MEETING OF FEBRUARY 1988.
+           THERE ARE TWO BASIC CHANGES.
+           1.  A NEW ROUTINE, XERPRN, IS USED INSTEAD OF XERPRT TO
+               PRINT MESSAGES.  THIS ROUTINE WILL BREAK LONG MESSAGES
+               INTO PIECES FOR PRINTING ON MULTIPLE LINES.  '<script type="math/tex; mode=display">' IS
+               ACCEPTED AS A NEW LINE SENTINEL.  A PREFIX CAN BE
+               ADDED TO EACH LINE TO BE PRINTED.  XERMSG USES EITHER
+               ' ***' OR ' *  ' AND LONG MESSAGES ARE BROKEN EVERY
+               72 CHARACTERS (AT MOST) SO THAT THE MAXIMUM LINE
+               LENGTH OUTPUT CAN NOW BE AS GREAT AS 76.
+           2.  THE TEXT OF ALL MESSAGES IS NOW IN UPPER CASE SINCE THE
+               FORTRAN STANDARD DOCUMENT DOES NOT ADMIT THE EXISTENCE
+               OF LOWER CASE.
+   880708  REVISED AFTER THE SLATEC CML MEETING OF JUNE 29 AND 30.
+           THE PRINCIPAL CHANGES ARE
+           1.  CLARIFY COMMENTS IN THE PROLOGUES
+           2.  RENAME XRPRNT TO XERPRN
+           3.  REWORK HANDLING OF '</script>' IN XERPRN TO HANDLE BLANK LINES
+               SIMILAR TO THE WAY FORMAT STATEMENTS HANDLE THE /
+               CHARACTER FOR NEW RECORDS.
+   890706  REVISED WITH THE HELP OF FRED FRITSCH AND REG CLEMENS TO
+           CLEAN UP THE CODING.
+   890721  REVISED TO USE NEW FEATURE IN XERPRN TO COUNT CHARACTERS IN
+           PREFIX.
+   891013  REVISED TO CORRECT COMMENTS.
+   891214  Prologue converted to Version 4.0 format.  (WRB)
+   900510  Changed test on NERR to be -9999999 &lt; NERR &lt; 99999999, but
+           NERR .ne. 0, and on LEVEL to be -2 &lt; LEVEL &lt; 3.  Added
+           LEVEL=-1 logic, changed calls to XERSAV to XERSVE, and
+           XERCTL to XERCNT.  (RWC)
+   920501  Reformatted the REFERENCES section.  (WRB)
+</strong>END PROLOGUE  XERMSG</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-librar~3"></span>
+              character(len=*)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>LIBRAR</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-subrou~3"></span>
+              character(len=*)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>SUBROU</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-messg~4"></span>
+              character(len=*)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>MESSG</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nerr~3"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>NERR</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-level~3"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>LEVEL</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              Yambo
+ was developed by Yambo Team<br>              &copy; 2025 <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+<br>&copy; <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

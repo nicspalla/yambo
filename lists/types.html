@@ -1,0 +1,549 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+    <meta name="author" content="Yambo Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>All Types &ndash; Yambo
+</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">Yambo </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">index</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12" id='text'>
+			 <h1>Derived Types</h1>
+			 <table class="table table-striped nostretched">
+			 <thead>
+			 <tr><th>Type</th><th>Location</th><th>Extends</th><th>Description</th></tr>
+			 </thead><tbody>
+			   <tr>
+                 <td><a href='../type/bec_type.html'>bec_type</a></td>
+                 <td><a href='../module/becmod.html'>becmod</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/bs_block.html'>BS_block</a></td>
+                 <td><a href='../module/bs.html'>BS</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/bs_t_group.html'>BS_T_group</a></td>
+                 <td><a href='../module/bs.html'>BS</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/bz_fine_grid.html'>bz_fine_grid</a></td>
+                 <td><a href='../module/r_lattice.html'>R_lattice</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/bz_map.html'>bz_map</a></td>
+                 <td><a href='../module/r_lattice.html'>R_lattice</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/bz_samp.html'>bz_samp</a></td>
+                 <td><a href='../module/r_lattice.html'>R_lattice</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/clock.html'>clock</a></td>
+                 <td><a href='../module/timing_m.html'>timing_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/clock_list.html'>clock_list</a></td>
+                 <td><a href='../module/timing_m.html'>timing_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/collisions_element.html'>COLLISIONS_element</a></td>
+                 <td><a href='../module/collision_ext.html'>collision_ext</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/collisions_group.html'>COLLISIONS_group</a></td>
+                 <td><a href='../module/collision_ext.html'>collision_ext</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/colt.html'>COLt</a></td>
+                 <td><a href='../module/output.html'>OUTPUT</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/cpu_stru.html'>CPU_stru</a></td>
+                 <td><a href='../module/parallel_m.html'>parallel_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/data_t.html'>data_t</a></td>
+                 <td><a href='../module/data_m.html'>data_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/dipole_t.html'>DIPOLE_t</a></td>
+                 <td><a href='../module/dipoles.html'>DIPOLES</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/e_fine_grid.html'>E_fine_grid</a></td>
+                 <td><a href='../module/electrons.html'>electrons</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/e_kpq_fine_grid.html'>E_kpq_fine_grid</a></td>
+                 <td><a href='../module/elph.html'>ELPH</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/elemental_collision.html'>elemental_collision</a></td>
+                 <td><a href='../module/collision_el.html'>collision_el</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/exciton_kin.html'>EXCITON_kin</a></td>
+                 <td><a href='../module/yppm.html'>YPPm</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/exciton_spin.html'>EXCITON_spin</a></td>
+                 <td><a href='../module/yppm.html'>YPPm</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/ext_field.html'>ext_field</a></td>
+                 <td><a href='../module/fields.html'>fields</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/gauge_field.html'>gauge_field</a></td>
+                 <td><a href='../module/fields.html'>fields</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/gkkp_me.html'>GKKP_me</a></td>
+                 <td><a href='../module/elph.html'>ELPH</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/haydock_vector.html'>Haydock_vector</a></td>
+                 <td><a href='../module/bs_solvers.html'>BS_solvers</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/initdefs.html'>initdefs</a></td>
+                 <td><a href='../module/it_m.html'>it_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/interp_coeff.html'>INTERP_coeff</a></td>
+                 <td><a href='../module/interpolate.html'>interpolate</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/interp_element.html'>INTERP_element</a></td>
+                 <td><a href='../module/interpolate.html'>interpolate</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/io_desc.html'>IO_desc</a></td>
+                 <td><a href='../module/descriptors.html'>descriptors</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/k_inversion_data.html'>K_Inversion_data</a></td>
+                 <td><a href='../module/bs_solvers.html'>BS_solvers</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/lalgebra_ws.html'>LALGEBRA_WS</a></td>
+                 <td><a href='../module/linear_algebra.html'>linear_algebra</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/levels.html'>levels</a></td>
+                 <td><a href='../module/electrons.html'>electrons</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/mem_element.html'>MEM_element</a></td>
+                 <td><a href='../module/y_memory.html'>y_memory</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/mem_lib_element.html'>MEM_lib_element</a></td>
+                 <td><a href='../module/y_memory.html'>y_memory</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/num_interpolation.html'>num_interpolation</a></td>
+                 <td><a href='../module/num_interpolation_module.html'>num_interpolation_module</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/obs_el.html'>OBS_el</a></td>
+                 <td><a href='../module/ypp_real_time.html'>YPP_real_time</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/ortho_group.html'>ORTHO_group</a></td>
+                 <td><a href='../module/slk_m.html'>SLK_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/outt.html'>OUTt</a></td>
+                 <td><a href='../module/output.html'>OUTPUT</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/par_matrix.html'>PAR_matrix</a></td>
+                 <td><a href='../module/matrix.html'>matrix</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/par_scheme.html'>PAR_scheme</a></td>
+                 <td><a href='../module/parallel_m.html'>parallel_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/park_str.html'>PARk_str</a></td>
+                 <td><a href='../module/parallel_m.html'>parallel_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/paw_in_upf.html'>paw_in_upf</a></td>
+                 <td><a href='../module/pseudo_types.html'>pseudo_types</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/plasma_gas.html'>plasma_gas</a></td>
+                 <td><a href='../module/plasma.html'>plasma</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pool_group.html'>POOL_group</a></td>
+                 <td><a href='../module/slk_m.html'>SLK_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pp_indexes.html'>PP_indexes</a></td>
+                 <td><a href='../module/parallel_m.html'>parallel_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pseudo_config.html'>pseudo_config</a></td>
+                 <td><a href='../module/pseudo_types.html'>pseudo_types</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pseudo_upf.html'>pseudo_upf</a></td>
+                 <td><a href='../module/pseudo_types.html'>pseudo_types</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pw_atoms.html'>pw_atoms</a></td>
+                 <td><a href='../module/pw_atoms_module.html'>pw_atoms_module</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pw_basis.html'>pw_basis</a></td>
+                 <td><a href='../module/pw_basis_module.html'>pw_basis_module</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pw_pseudo.html'>pw_pseudo</a></td>
+                 <td><a href='../module/pw_pseudo_module.html'>pw_pseudo_module</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pw_struct.html'>pw_struct</a></td>
+                 <td><a href='../module/pw_struct_module.html'>pw_struct_module</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/pw_wfc.html'>pw_wfc</a></td>
+                 <td><a href='../module/pw_wfc_module.html'>pw_wfc_module</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/qp_action_t.html'>QP_action_t</a></td>
+                 <td><a href='../module/qp_ctl_m.html'>QP_CTL_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/qp_ctl_db_input_file.html'>QP_ctl_DB_input_file</a></td>
+                 <td><a href='../module/qp_ctl_m.html'>QP_CTL_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/qp_ctl_input_file.html'>QP_ctl_input_file</a></td>
+                 <td><a href='../module/qp_ctl_m.html'>QP_CTL_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/qp_ctl_t.html'>QP_ctl_t</a></td>
+                 <td><a href='../module/qp_ctl_m.html'>QP_CTL_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/qp_t.html'>QP_t</a></td>
+                 <td><a href='../module/qp_m.html'>QP_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/radial_grid_type.html'>radial_grid_type</a></td>
+                 <td><a href='../module/radial_grids.html'>radial_grids</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/rt_ctl.html'>RT_ctl</a></td>
+                 <td><a href='../module/ypp_real_time.html'>YPP_real_time</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/rt_io_t.html'>RT_IO_t</a></td>
+                 <td><a href='../module/rt_control.html'>RT_control</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/rt_lifetime.html'>RT_lifetime</a></td>
+                 <td><a href='../module/rt_lifetimes.html'>RT_lifetimes</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/rt_obj_lifetime.html'>RT_obj_lifetime</a></td>
+                 <td><a href='../module/rt_lifetimes.html'>RT_lifetimes</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/rt_obj_occupation.html'>RT_obj_occupation</a></td>
+                 <td><a href='../module/rt_occupations.html'>RT_occupations</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/rt_occupation.html'>RT_occupation</a></td>
+                 <td><a href='../module/rt_occupations.html'>RT_occupations</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/rt_t.html'>RT_t</a></td>
+                 <td><a href='../module/real_time.html'>real_time</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/snd_rcv_geometry.html'>SND_RCV_geometry</a></td>
+                 <td><a href='../module/parallel_m.html'>parallel_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/tddft_wf_t.html'>tddft_wf_t</a></td>
+                 <td><a href='../module/tddft.html'>TDDFT</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/vcut_type.html'>vcut_type</a></td>
+                 <td><a href='../module/cutoff_ws_m.html'>cutoff_ws_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/w_samp.html'>w_samp</a></td>
+                 <td><a href='../module/frequency.html'>frequency</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/waves.html'>WAVEs</a></td>
+                 <td><a href='../module/wave_func.html'>wave_func</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/x_obs_t.html'>X_obs_t</a></td>
+                 <td><a href='../module/x_m.html'>X_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/x_t.html'>X_t</a></td>
+                 <td><a href='../module/x_m.html'>X_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/xc_fnctl_t.html'>xc_fnctl_t</a></td>
+                 <td><a href='../module/xc_functionals.html'>xc_functionals</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			   <tr>
+                 <td><a href='../type/ympi_comm.html'>yMPI_comm</a></td>
+                 <td><a href='../module/parallel_m.html'>parallel_m</a></td>
+                 <td>None</td>
+                 <td></td>
+               </tr>
+			 </tbody></table>
+             
+        </div>
+      </div>
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              Yambo
+ was developed by Yambo Team<br>              &copy; 2025 <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+<br>&copy; <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,893 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+    <meta name="author" content="Yambo Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>etsf_data &ndash; Yambo</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">Yambo </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">index</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>etsf_data
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.4% of total for modules and submodules.">90 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/etsf_data.F"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/etsf_data.f.html'>etsf_data.F</a></li>
+            <li class="breadcrumb-item active" aria-current="page">etsf_data</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/etsf_data.html#variable-dims~7">dims</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-etsf_kind">ETSF_kind</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-primitive_vectors_">primitive_vectors_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-reduced_symmetry_matrices_">reduced_symmetry_matrices_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-atom_species_~2">atom_species_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-reduced_atom_positions_~2">reduced_atom_positions_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-valence_charges_">valence_charges_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-atomic_numbers_">atomic_numbers_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-chemical_symbols_">chemical_symbols_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-number_of_electrons_">number_of_electrons_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-exchange_functional_">exchange_functional_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-correlation_functional_">correlation_functional_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-number_of_states_">number_of_states_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-eigenvalues_~2">eigenvalues_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-reduced_coordinates_of_kpoints_">reduced_coordinates_of_kpoints_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-basis_set_">basis_set_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-number_of_coefficients_">number_of_coefficients_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-reduced_coordinates_of_plane_waves_kss_">reduced_coordinates_of_plane_waves_KSS_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-reduced_coordinates_of_plane_waves_wfk_">reduced_coordinates_of_plane_waves_WFK_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-coefficients_of_wavefunctions_">coefficients_of_wavefunctions_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-max_number_of_projectors_">max_number_of_projectors_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-max_number_of_angular_momenta_">max_number_of_angular_momenta_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-kb_formfactor_derivative_">kb_formfactor_derivative_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-kb_formfactors_">kb_formfactors_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-kb_formfactor_sign_">kb_formfactor_sign_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-temperature_">temperature_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-ixc_~2">ixc_</a>
+            <a class="list-group-item" href="../module/etsf_data.html#variable-spin_orbit_atom_">spin_orbit_atom_</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/etsf_data.html#proc-allocate_kpoints_group">allocate_kpoints_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-deallocate_kpoints_group">deallocate_kpoints_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-allocate_geometry_group">allocate_geometry_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-deallocate_geometry_group">deallocate_geometry_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-allocate_electrons_group">allocate_electrons_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-deallocate_electrons_group">deallocate_electrons_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-allocate_gwdata_group">allocate_gwdata_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-deallocate_gwdata_group">deallocate_gwdata_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-allocate_basisdata_group">allocate_basisdata_group</a>
+            <a class="list-group-item" href="../module/etsf_data.html#proc-deallocate_basisdata_group">deallocate_basisdata_group</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item">etsf_io</li>
+              </ul>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dims~7"></span>
+              type(etsf_dims),
+            </td>
+              <td>public,</td>
+            <td>
+              save
+            </td>
+            <td>::</td>
+            <td><strong>dims</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-etsf_kind"></span>
+              character(len=3),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ETSF_kind</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-primitive_vectors_"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>primitive_vectors_</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-reduced_symmetry_matrices_"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>reduced_symmetry_matrices_</strong>(:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atom_species_~2"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>atom_species_</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-reduced_atom_positions_~2"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>reduced_atom_positions_</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-valence_charges_"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>valence_charges_</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atomic_numbers_"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>atomic_numbers_</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-chemical_symbols_"></span>
+              character(len=etsf_chemlen),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>chemical_symbols_</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-number_of_electrons_"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>number_of_electrons_</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-exchange_functional_"></span>
+              character(len=etsf_charlen),
+            </td>
+              <td>public,</td>
+            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>exchange_functional_</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-correlation_functional_"></span>
+              character(len=etsf_charlen),
+            </td>
+              <td>public,</td>
+            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>correlation_functional_</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-number_of_states_"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>number_of_states_</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eigenvalues_~2"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>eigenvalues_</strong>(:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-reduced_coordinates_of_kpoints_"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>reduced_coordinates_of_kpoints_</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-basis_set_"></span>
+              character(len=etsf_charlen),
+            </td>
+              <td>public,</td>
+            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>basis_set_</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-number_of_coefficients_"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>number_of_coefficients_</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-reduced_coordinates_of_plane_waves_kss_"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>reduced_coordinates_of_plane_waves_KSS_</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-reduced_coordinates_of_plane_waves_wfk_"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>reduced_coordinates_of_plane_waves_WFK_</strong>(:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-coefficients_of_wavefunctions_"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>coefficients_of_wavefunctions_</strong>(:,:,:,:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_number_of_projectors_"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_number_of_projectors_</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_number_of_angular_momenta_"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_number_of_angular_momenta_</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-kb_formfactor_derivative_"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>kb_formfactor_derivative_</strong>(:,:,:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-kb_formfactors_"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>kb_formfactors_</strong>(:,:,:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-kb_formfactor_sign_"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>kb_formfactor_sign_</strong>(:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-temperature_"></span>
+              double precision,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>temperature_</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ixc_~2"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ixc_</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-spin_orbit_atom_"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>spin_orbit_atom_</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-allocate_kpoints_group"></span> <h3>public  subroutine <a href='../proc/allocate_kpoints_group.html'>allocate_kpoints_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-deallocate_kpoints_group"></span> <h3>public  subroutine <a href='../proc/deallocate_kpoints_group.html'>deallocate_kpoints_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-allocate_geometry_group"></span> <h3>public  subroutine <a href='../proc/allocate_geometry_group.html'>allocate_geometry_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-deallocate_geometry_group"></span> <h3>public  subroutine <a href='../proc/deallocate_geometry_group.html'>deallocate_geometry_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-allocate_electrons_group"></span> <h3>public  subroutine <a href='../proc/allocate_electrons_group.html'>allocate_electrons_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-deallocate_electrons_group"></span> <h3>public  subroutine <a href='../proc/deallocate_electrons_group.html'>deallocate_electrons_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-allocate_gwdata_group"></span> <h3>public  subroutine <a href='../proc/allocate_gwdata_group.html'>allocate_gwdata_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-deallocate_gwdata_group"></span> <h3>public  subroutine <a href='../proc/deallocate_gwdata_group.html'>deallocate_gwdata_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-allocate_basisdata_group"></span> <h3>public  subroutine <a href='../proc/allocate_basisdata_group.html'>allocate_basisdata_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-deallocate_basisdata_group"></span> <h3>public  subroutine <a href='../proc/deallocate_basisdata_group.html'>deallocate_basisdata_group</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              Yambo
+ was developed by Yambo Team<br>              &copy; 2025 <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+<br>&copy; <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

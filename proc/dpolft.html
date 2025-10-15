@@ -1,0 +1,488 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+    <meta name="author" content="Yambo Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>DPOLFT &ndash; Yambo</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">Yambo </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">index</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>DPOLFT
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.1% of total for procedures.">154 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/dpolft.f"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/dpolft.f.html'>dpolft.f</a></li>
+            <li class="breadcrumb-item active" aria-current="page">DPOLFT</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2> subroutine DPOLFT(N, X, Y, W, MAXDEG, NDEG, EPS, R, IERR, A)  
+</h2>
+    
+
+    <p><strong>BEGIN PROLOGUE  DPOLFT
+</strong>PURPOSE  Fit discrete data in a least squares sense by polynomials
+            in one variable.
+<strong>LIBRARY   SLATEC
+</strong>CATEGORY  K1A1A2
+<strong>TYPE      DOUBLE PRECISION (POLFIT-S, DPOLFT-D)
+</strong>KEYWORDS  CURVE FITTING, DATA FITTING, LEAST SQUARES, POLYNOMIAL FIT
+<strong>AUTHOR  Shampine, L. F., (SNLA)
+           Davenport, S. M., (SNLA)
+           Huddleston, R. E., (SNLL)
+</strong>DESCRIPTION</p>
+<div class="codehilite"><pre><span></span><code><span class="w"> </span><span class="n">Abstract</span>
+
+<span class="w"> </span><span class="n">Given</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">collection</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="n">X</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="n">Y</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="w"> </span><span class="n">which</span>
+<span class="w"> </span><span class="n">correspond</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">some</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">measurement</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">X</span><span class="p">(</span><span class="n">I</span><span class="p">),</span>
+<span class="w"> </span><span class="n">subroutine</span><span class="w">  </span><span class="n">DPOLFT</span><span class="w">  </span><span class="n">computes</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">weighted</span><span class="w"> </span><span class="n">least</span><span class="o">-</span><span class="n">squares</span><span class="w"> </span><span class="n">polynomial</span>
+<span class="w"> </span><span class="n">fits</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">degrees</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">some</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="n">either</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">user</span>
+<span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">determined</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">routine</span><span class="o">.</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">fits</span><span class="w"> </span><span class="n">thus</span><span class="w"> </span><span class="n">obtained</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="ow">in</span>
+<span class="w"> </span><span class="n">orthogonal</span><span class="w"> </span><span class="n">polynomial</span><span class="w"> </span><span class="n">form</span><span class="o">.</span><span class="w">  </span><span class="n">Subroutine</span><span class="w">  </span><span class="n">DP1VLU</span><span class="w">  </span><span class="n">may</span><span class="w"> </span><span class="n">then</span><span class="w"> </span><span class="n">be</span>
+<span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">evaluate</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">fitted</span><span class="w"> </span><span class="n">polynomials</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">their</span>
+<span class="w"> </span><span class="n">derivatives</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">point</span><span class="o">.</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">subroutine</span><span class="w">  </span><span class="n">DPCOEF</span><span class="w">  </span><span class="n">may</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">to</span>
+<span class="w"> </span><span class="n">express</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">polynomial</span><span class="w"> </span><span class="n">fits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">powers</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="o">-</span><span class="n">C</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">specified</span>
+<span class="w"> </span><span class="n">point</span><span class="w"> </span><span class="n">C</span><span class="o">.</span>
+
+<span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">parameters</span><span class="w"> </span><span class="k">for</span><span class="w">  </span><span class="n">DPOLFT</span><span class="w">  </span><span class="n">are</span>
+
+<span class="w"> </span><span class="n">Input</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">All</span><span class="w"> </span><span class="n">TYPE</span><span class="w"> </span><span class="n">REAL</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="n">PRECISION</span>
+<span class="w">     </span><span class="n">N</span><span class="w"> </span><span class="o">-</span><span class="w">      </span><span class="n">the</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">points</span><span class="o">.</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">arrays</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">W</span>
+<span class="w">              </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">dimensioned</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">least</span><span class="w">  </span><span class="n">N</span><span class="w">  </span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">.</span><span class="n">GE</span><span class="o">.</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">.</span>
+<span class="w">     </span><span class="n">X</span><span class="w"> </span><span class="o">-</span><span class="w">      </span><span class="n">array</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">independent</span><span class="w"> </span><span class="n">variable</span><span class="o">.</span><span class="w">  </span><span class="n">These</span>
+<span class="w">              </span><span class="n">values</span><span class="w"> </span><span class="n">may</span><span class="w"> </span><span class="n">appear</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">be</span>
+<span class="w">              </span><span class="n">distinct</span><span class="o">.</span>
+<span class="w">     </span><span class="n">Y</span><span class="w"> </span><span class="o">-</span><span class="w">      </span><span class="n">array</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">corresponding</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">values</span><span class="o">.</span>
+<span class="w">     </span><span class="n">W</span><span class="w"> </span><span class="o">-</span><span class="w">      </span><span class="n">array</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">positive</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">weights</span><span class="o">.</span><span class="w">  </span><span class="n">If</span>
+<span class="w">              </span><span class="n">W</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">negative</span><span class="p">,</span><span class="w">  </span><span class="n">DPOLFT</span><span class="w">  </span><span class="n">will</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">weights</span>
+<span class="w">              </span><span class="n">to</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">means</span><span class="w"> </span><span class="n">unweighted</span><span class="w"> </span><span class="n">least</span><span class="w"> </span><span class="n">squares</span><span class="w"> </span><span class="n">error</span>
+<span class="w">              </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">minimized</span><span class="o">.</span><span class="w">  </span><span class="n">To</span><span class="w"> </span><span class="n">minimize</span><span class="w"> </span><span class="n">relative</span><span class="w"> </span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">the</span>
+<span class="w">              </span><span class="n">user</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">weights</span><span class="w"> </span><span class="n">to</span><span class="p">:</span><span class="w">  </span><span class="n">W</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="o">/</span><span class="n">Y</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+<span class="w">              </span><span class="n">I</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="n">N</span><span class="w"> </span><span class="o">.</span>
+<span class="w">     </span><span class="n">MAXDEG</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">polynomial</span><span class="w"> </span><span class="n">fit</span><span class="o">.</span>
+<span class="w">              </span><span class="n">MAXDEG</span><span class="w">  </span><span class="n">may</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="n">negative</span><span class="w"> </span><span class="n">integer</span><span class="w"> </span><span class="n">less</span><span class="w"> </span><span class="n">than</span><span class="w">  </span><span class="n">N</span><span class="o">.</span>
+<span class="w">              </span><span class="n">Note</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">MAXDEG</span><span class="w">  </span><span class="n">cannot</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">equal</span><span class="w"> </span><span class="n">to</span><span class="w">  </span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="w">  </span><span class="n">when</span><span class="w"> </span><span class="n">a</span>
+<span class="w">              </span><span class="n">statistical</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="n">selection</span><span class="p">,</span>
+<span class="w">              </span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="p">,</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="k">is</span><span class="w"> </span><span class="n">negative</span><span class="o">.</span>
+<span class="w">     </span><span class="n">EPS</span><span class="w"> </span><span class="o">-</span><span class="w">    </span><span class="n">specifies</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">criterion</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">determining</span>
+<span class="w">              </span><span class="n">the</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">computed</span><span class="o">.</span>
+<span class="w">              </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w">  </span><span class="n">If</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="k">is</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">negative</span><span class="p">,</span><span class="w">  </span><span class="n">DPOLFT</span><span class="w">  </span><span class="n">chooses</span><span class="w"> </span><span class="n">the</span>
+<span class="w">                   </span><span class="n">degree</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">statistical</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">of</span>
+<span class="w">                   </span><span class="n">significance</span><span class="o">.</span><span class="w">  </span><span class="n">One</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">three</span><span class="w"> </span><span class="n">possible</span>
+<span class="w">                   </span><span class="n">significance</span><span class="w"> </span><span class="n">levels</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="p">:</span><span class="w">  </span><span class="o">.</span><span class="mi">01</span><span class="p">,</span><span class="w"> </span><span class="o">.</span><span class="mi">05</span><span class="w"> </span><span class="ow">or</span>
+<span class="w">                   </span><span class="o">.</span><span class="mf">10.</span><span class="w">  </span><span class="n">If</span><span class="w">  </span><span class="n">EPS</span><span class="o">=-</span><span class="mf">1.0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">routine</span><span class="w"> </span><span class="n">will</span>
+<span class="w">                   </span><span class="n">automatically</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">these</span><span class="w"> </span><span class="n">levels</span><span class="w"> </span><span class="n">based</span>
+<span class="w">                   </span><span class="n">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">maximum</span>
+<span class="w">                   </span><span class="n">degree</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">considered</span><span class="o">.</span><span class="w">  </span><span class="n">If</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="k">is</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="k">as</span>
+<span class="w">                   </span><span class="o">-.</span><span class="mi">01</span><span class="p">,</span><span class="w"> </span><span class="o">-.</span><span class="mi">05</span><span class="p">,</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="o">-.</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">significance</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="n">of</span>
+<span class="w">                   </span><span class="o">.</span><span class="mi">01</span><span class="p">,</span><span class="w"> </span><span class="o">.</span><span class="mi">05</span><span class="p">,</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="o">.</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">respectively</span><span class="p">,</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="o">.</span>
+<span class="w">              </span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">  </span><span class="n">If</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="k">is</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w">  </span><span class="n">DPOLFT</span><span class="w">  </span><span class="n">computes</span><span class="w"> </span><span class="n">the</span>
+<span class="w">                   </span><span class="n">polynomials</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">degrees</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">through</span><span class="w">  </span><span class="n">MAXDEG</span><span class="w"> </span><span class="o">.</span>
+<span class="w">              </span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w">  </span><span class="n">If</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="k">is</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">positive</span><span class="p">,</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">RMS</span>
+<span class="w">                   </span><span class="n">error</span><span class="w"> </span><span class="n">tolerance</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">satisfied</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">the</span>
+<span class="w">                   </span><span class="n">fitted</span><span class="w"> </span><span class="n">polynomial</span><span class="o">.</span><span class="w">  </span><span class="n">DPOLFT</span><span class="w">  </span><span class="n">will</span><span class="w"> </span><span class="n">increase</span><span class="w"> </span><span class="n">the</span>
+<span class="w">                   </span><span class="n">degree</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="n">until</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">criterion</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">met</span><span class="w"> </span><span class="ow">or</span>
+<span class="w">                   </span><span class="n">until</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">reached</span><span class="o">.</span>
+
+<span class="w"> </span><span class="n">Output</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">All</span><span class="w"> </span><span class="n">TYPE</span><span class="w"> </span><span class="n">REAL</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="n">PRECISION</span>
+<span class="w">     </span><span class="n">NDEG</span><span class="w"> </span><span class="o">-</span><span class="w">   </span><span class="n">degree</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">highest</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="n">computed</span><span class="o">.</span>
+<span class="w">     </span><span class="n">EPS</span><span class="w"> </span><span class="o">-</span><span class="w">    </span><span class="n">RMS</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">polynomial</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">degree</span><span class="w">  </span><span class="n">NDEG</span><span class="w"> </span><span class="o">.</span>
+<span class="w">     </span><span class="n">R</span><span class="w"> </span><span class="o">-</span><span class="w">      </span><span class="n">vector</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">dimension</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">least</span><span class="w"> </span><span class="n">NDEG</span><span class="w"> </span><span class="n">containing</span><span class="w"> </span><span class="n">values</span>
+<span class="w">              </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">degree</span><span class="w">  </span><span class="n">NDEG</span><span class="w">  </span><span class="n">at</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w">  </span><span class="n">X</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="w"> </span><span class="o">.</span>
+<span class="w">              </span><span class="n">Except</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">statistical</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">these</span>
+<span class="w">              </span><span class="n">values</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">accurate</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">subroutine</span>
+<span class="w">              </span><span class="n">DP1VLU</span><span class="w">  </span><span class="n">normally</span><span class="w"> </span><span class="n">are</span><span class="o">.</span>
+<span class="w">     </span><span class="n">IERR</span><span class="w"> </span><span class="o">-</span><span class="w">   </span><span class="n">error</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">following</span><span class="w"> </span><span class="n">possible</span><span class="w"> </span><span class="n">values</span><span class="o">.</span>
+<span class="w">         </span><span class="mi">1</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">indicates</span><span class="w"> </span><span class="n">normal</span><span class="w"> </span><span class="n">execution</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="p">,</span><span class="w"> </span><span class="n">either</span>
+<span class="w">              </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w">  </span><span class="n">the</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="n">was</span><span class="w"> </span><span class="n">negative</span><span class="p">,</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">the</span>
+<span class="w">                   </span><span class="n">computed</span><span class="w"> </span><span class="n">polynomial</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">degree</span><span class="w">  </span><span class="n">NDEG</span>
+<span class="w">                   </span><span class="n">satisfies</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="ow">or</span>
+<span class="w">              </span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">  </span><span class="n">the</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="n">was</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">fits</span><span class="w"> </span><span class="n">of</span>
+<span class="w">                   </span><span class="n">all</span><span class="w"> </span><span class="n">degrees</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">to</span><span class="w">  </span><span class="n">MAXDEG</span><span class="w">  </span><span class="n">are</span><span class="w"> </span><span class="n">complete</span><span class="p">,</span><span class="w"> </span><span class="ow">or</span>
+<span class="w">              </span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w">  </span><span class="n">the</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w">  </span><span class="n">EPS</span><span class="w">  </span><span class="n">was</span><span class="w"> </span><span class="n">positive</span><span class="p">,</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">the</span>
+<span class="w">                   </span><span class="n">polynomial</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">degree</span><span class="w">  </span><span class="n">NDEG</span><span class="w">  </span><span class="n">satisfies</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">RMS</span>
+<span class="w">                   </span><span class="n">error</span><span class="w"> </span><span class="n">requirement</span><span class="o">.</span>
+<span class="w">         </span><span class="mi">2</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">invalid</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">parameter</span><span class="o">.</span><span class="w">  </span><span class="n">At</span><span class="w"> </span><span class="n">least</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">input</span>
+<span class="w">              </span><span class="n">parameters</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">illegal</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">corrected</span>
+<span class="w">              </span><span class="n">before</span><span class="w">  </span><span class="n">DPOLFT</span><span class="w">  </span><span class="n">can</span><span class="w"> </span><span class="n">proceed</span><span class="o">.</span><span class="w">  </span><span class="n">Valid</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">results</span>
+<span class="w">              </span><span class="n">when</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">following</span><span class="w"> </span><span class="n">restrictions</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">observed</span>
+<span class="w">                   </span><span class="n">N</span><span class="w"> </span><span class="o">.</span><span class="n">GE</span><span class="o">.</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                   </span><span class="mi">0</span><span class="w"> </span><span class="o">.</span><span class="n">LE</span><span class="o">.</span><span class="w"> </span><span class="n">MAXDEG</span><span class="w"> </span><span class="o">.</span><span class="n">LE</span><span class="o">.</span><span class="w"> </span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="w">  </span><span class="k">for</span><span class="w">  </span><span class="n">EPS</span><span class="w"> </span><span class="o">.</span><span class="n">GE</span><span class="o">.</span><span class="w"> </span><span class="mf">0.</span>
+<span class="w">                   </span><span class="mi">0</span><span class="w"> </span><span class="o">.</span><span class="n">LE</span><span class="o">.</span><span class="w"> </span><span class="n">MAXDEG</span><span class="w"> </span><span class="o">.</span><span class="n">LE</span><span class="o">.</span><span class="w"> </span><span class="n">N</span><span class="o">-</span><span class="mi">2</span><span class="w">  </span><span class="k">for</span><span class="w">  </span><span class="n">EPS</span><span class="w"> </span><span class="o">.</span><span class="n">LT</span><span class="o">.</span><span class="w"> </span><span class="mf">0.</span>
+<span class="w">                   </span><span class="n">W</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">=-</span><span class="mf">1.0</span><span class="w">  </span><span class="ow">or</span><span class="w">  </span><span class="n">W</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="n">GT</span><span class="o">.</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">I</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="n">N</span><span class="w"> </span><span class="o">.</span>
+<span class="w">         </span><span class="mi">3</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">cannot</span><span class="w"> </span><span class="n">satisfy</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">RMS</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">requirement</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">a</span>
+<span class="w">              </span><span class="n">polynomial</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">greater</span><span class="w"> </span><span class="n">than</span><span class="w">  </span><span class="n">MAXDEG</span><span class="w"> </span><span class="o">.</span><span class="w">  </span><span class="n">Best</span>
+<span class="w">              </span><span class="n">fit</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">degree</span><span class="w">  </span><span class="n">MAXDEG</span><span class="w"> </span><span class="o">.</span>
+<span class="w">         </span><span class="mi">4</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">cannot</span><span class="w"> </span><span class="n">satisfy</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">significance</span><span class="w"> </span><span class="n">using</span>
+<span class="w">              </span><span class="n">current</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w">  </span><span class="n">MAXDEG</span><span class="w"> </span><span class="o">.</span><span class="w">  </span><span class="n">Statistically</span><span class="p">,</span><span class="w"> </span><span class="n">the</span>
+<span class="w">              </span><span class="n">best</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">order</span><span class="w">  </span><span class="n">NORD</span><span class="w"> </span><span class="o">.</span><span class="w">  </span><span class="p">(</span><span class="n">In</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">case</span><span class="p">,</span>
+<span class="w">              </span><span class="n">NDEG</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">values</span><span class="p">:</span><span class="w">  </span><span class="n">MAXDEG</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+<span class="w">              </span><span class="n">MAXDEG</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">MAXDEG</span><span class="p">)</span><span class="o">.</span><span class="w">  </span><span class="n">Using</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">higher</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span>
+<span class="w">              </span><span class="n">MAXDEG</span><span class="w">  </span><span class="n">may</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">passing</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">test</span><span class="o">.</span>
+<span class="w">     </span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w">      </span><span class="n">work</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="n">having</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">least</span><span class="w"> </span><span class="mi">3</span><span class="n">N</span><span class="o">+</span><span class="mi">3</span><span class="n">MAXDEG</span><span class="o">+</span><span class="mi">3</span>
+<span class="w">              </span><span class="n">locations</span>
+
+<span class="w"> </span><span class="n">Note</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">DPOLFT</span><span class="w">  </span><span class="n">calculates</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">fits</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">degrees</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">including</span>
+<span class="w">        </span><span class="n">NDEG</span><span class="w"> </span><span class="o">.</span><span class="w">  </span><span class="n">Any</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">these</span><span class="w"> </span><span class="n">fits</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">evaluated</span><span class="w"> </span><span class="ow">or</span>
+<span class="w">        </span><span class="n">expressed</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">powers</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="o">-</span><span class="n">C</span><span class="p">)</span><span class="w"> </span><span class="n">using</span><span class="w">  </span><span class="n">DP1VLU</span><span class="w">  </span><span class="ow">and</span><span class="w">  </span><span class="n">DPCOEF</span>
+<span class="w">        </span><span class="n">after</span><span class="w"> </span><span class="n">just</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">call</span><span class="w"> </span><span class="n">to</span><span class="w">  </span><span class="n">DPOLFT</span><span class="w"> </span><span class="o">.</span>
+</code></pre></div>
+
+<p><strong>REFERENCES  L. F. Shampine, S. M. Davenport and R. E. Huddleston,
+                 Curve fitting by polynomials in one variable, Report
+                 SLA-74-0270, Sandia Laboratories, June 1974.
+</strong>ROUTINES CALLED  DP1VLU, XERMSG
+<strong>REVISION HISTORY  (YYMMDD)
+   740601  DATE WRITTEN
+   890531  Changed all specific intrinsics to generic.  (WRB)
+   891006  Cosmetic changes to prologue.  (WRB)
+   891006  REVISION DATE from Version 3.2
+   891214  Prologue converted to Version 4.0 format.  (BAB)
+   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
+   900911  Added variable YP to DOUBLE PRECISION declaration.  (WRB)
+   920501  Reformatted the REFERENCES section.  (WRB)
+   920527  Corrected erroneous statements in DESCRIPTION.  (WRB)
+</strong>END PROLOGUE  DPOLFT
+**FIRST EXECUTABLE STATEMENT  DPOLFT</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~33"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>N</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~46"></span>
+              double precision
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>X</strong>(*)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-y~10"></span>
+              double precision
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Y</strong>(*)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~21"></span>
+              double precision
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>W</strong>(*)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-maxdeg"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>MAXDEG</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ndeg~2"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>NDEG</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps~3"></span>
+              double precision
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>EPS</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-r~3"></span>
+              double precision
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>R</strong>(*)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~4"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IERR</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~22"></span>
+              double precision
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>A</strong>(*)</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              Yambo
+ was developed by Yambo Team<br>              &copy; 2025 <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+<br>&copy; <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

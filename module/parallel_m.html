@@ -1,0 +1,5472 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+    <meta name="author" content="Yambo Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>parallel_m &ndash; Yambo</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">Yambo </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">index</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>parallel_m
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.9% of total for modules and submodules.">420 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_parallel.F"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mod_parallel.f.html'>mod_parallel.F</a></li>
+            <li class="breadcrumb-item active" aria-current="page">parallel_m</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/parallel_m.html#variable-mpi_comm_world">mpi_comm_world</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-mpi_info_null">mpi_info_null</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-mpi_comm_null">mpi_comm_null</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-myid">myid</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-mygpu_dev">mygpu_dev</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-ncpu">ncpu</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-n_nodes">n_nodes</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-n_io_nodes">n_IO_nodes</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-n_mpi">n_MPI</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-host_name">host_name</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-host_name_length">host_name_length</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-comm_default_value">comm_default_value</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_x_t">l_par_X_T</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_x_g">l_par_X_G</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_x_g_finite_q">l_par_X_G_finite_q</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_dip">l_par_DIP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_bzindx">l_par_BZINDX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_se">l_par_SE</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_sx">l_par_SX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_rt">l_par_RT</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_sc">l_par_SC</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_nl">l_par_NL</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_par_oscll">l_par_OSCLL</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-head_qp_cpu">HEAD_QP_cpu</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-head_k_cpu">HEAD_k_cpu</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-head_q_cpu">HEAD_q_cpu</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-head_b_cpu">HEAD_b_cpu</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-n_groups">n_groups</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-nchains_group">nchains_group</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-ncpu_chain">ncpu_chain</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-intra_chain">INTRA_CHAIN</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-inter_chain">INTER_CHAIN</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-child_chain">CHILD_CHAIN</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-cpu_string_save">CPU_string_save</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-role_string_save">ROLE_string_save</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-cpu_structure">CPU_structure</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-i_par_structure">i_PAR_structure</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-parallel_cpu_used">PARALLEL_CPU_used</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-parallel_cpu_role">PARALLEL_CPU_role</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-parallel_n_structures_active">PARALLEL_n_structures_active</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-parallel_env_uses_default">PARALLEL_ENV_uses_default</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-linear_algebra_is_parallel">linear_algebra_is_parallel</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-parallel_default_mode">PARALLEL_default_mode</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-n_log_cpus">n_log_CPUs</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-p_sum">p_sum</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-p_prod">p_prod</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-io_write_default">IO_write_default</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-master_cpu">master_cpu</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-l_open_mp">l_open_MP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-pars_ph_q_ibz">PARs_PH_Q_ibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-pars_ph_k_bz">PARs_PH_K_bz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-pars_ph_eh_bands">PARs_PH_eh_bands</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_k_scheme">PAR_K_scheme</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-n_snd_rcv_operations">N_SND_RCV_operations</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-snd_rcv_op">SND_RCV_op</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-n_wf_bands_to_load">n_WF_bands_to_load</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-n_parallel_x_types">n_parallel_X_types</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_slk">PAR_IND_SLK</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_q_ibz">PAR_IND_Q_ibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_q_bz">PAR_IND_Q_bz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_kk_ibz">PAR_IND_Kk_ibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_xk_ibz">PAR_IND_Xk_ibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_xk_bz">PAR_IND_Xk_bz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_g_k">PAR_IND_G_k</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_bzindxk_ibz">PAR_IND_BZINDXk_ibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_bzindxk_bz">PAR_IND_BZINDXk_bz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_dipk_ibz">PAR_IND_DIPk_ibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_dipk_bz">PAR_IND_DIPk_bz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_val_bands_dip">PAR_IND_VAL_BANDS_DIP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_con_bands_dip">PAR_IND_CON_BANDS_DIP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_ovlpk_ibz">PAR_IND_OVLPk_ibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_val_bands_ovlp">PAR_IND_VAL_BANDS_OVLP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_con_bands_ovlp">PAR_IND_CON_BANDS_OVLP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_val_bands_x">PAR_IND_VAL_BANDS_X</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_con_bands_x">PAR_IND_CON_BANDS_X</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_qp">PAR_IND_QP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_plasma">PAR_IND_Plasma</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_g_b">PAR_IND_G_b</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_b_mat">PAR_IND_B_mat</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_bp_mat">PAR_IND_Bp_mat</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_b_mat_ordered">PAR_IND_B_mat_ordered</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_wf_b">PAR_IND_WF_b</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_wf_k">PAR_IND_WF_k</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_wf_b_and_k">PAR_IND_WF_b_and_k</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_wf_linear">PAR_IND_WF_linear</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_rl">PAR_IND_RL</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_eh">PAR_IND_eh</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_t_groups">PAR_IND_T_groups</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_t_haydock">PAR_IND_T_Haydock</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_t_ordered">PAR_IND_T_ordered</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_freqs">PAR_IND_freqs</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_qp_id">PAR_IND_QP_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_plasma_id">PAR_IND_PLASMA_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_g_b_id">PAR_IND_G_b_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_wf_b_id">PAR_IND_WF_b_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_wf_k_id">PAR_IND_WF_k_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_q_ibz_id">PAR_IND_Q_ibz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_q_bz_id">PAR_IND_Q_bz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_kk_ibz_id">PAR_IND_Kk_ibz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_xk_ibz_id">PAR_IND_Xk_ibz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_xk_bz_id">PAR_IND_Xk_bz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_g_k_id">PAR_IND_G_k_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_bzindxk_bz_id">PAR_IND_BZINDXk_bz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_bzindxk_ibz_id">PAR_IND_BZINDXk_ibz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_dipk_bz_id">PAR_IND_DIPk_bz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_dipk_ibz_id">PAR_IND_DIPk_ibz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_val_bands_dip_id">PAR_IND_VAL_BANDS_DIP_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_con_bands_dip_id">PAR_IND_CON_BANDS_DIP_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_ovlpk_ibz_id">PAR_IND_OVLPk_ibz_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_val_bands_ovlp_id">PAR_IND_VAL_BANDS_OVLP_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_con_bands_ovlp_id">PAR_IND_CON_BANDS_OVLP_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_val_bands_x_id">PAR_IND_VAL_BANDS_X_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_con_bands_x_id">PAR_IND_CON_BANDS_X_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_eh_id">PAR_IND_eh_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_rl_id">PAR_IND_RL_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_freqs_id">PAR_IND_freqs_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ind_freq_id">PAR_IND_FREQ_ID</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_world">PAR_COM_WORLD</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_null">PAR_COM_NULL</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_host">PAR_COM_HOST</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_slk">PAR_COM_SLK</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_slk_index_global">PAR_COM_SLK_INDEX_global</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_slk_index_local">PAR_COM_SLK_INDEX_local</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_rl_index">PAR_COM_RL_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_rl_a2a">PAR_COM_RL_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_qp_index">PAR_COM_QP_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_qp_a2a">PAR_COM_QP_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_plasma_index">PAR_COM_PLASMA_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_g_b_index">PAR_COM_G_b_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_g_b_a2a">PAR_COM_G_b_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_g_b_index_global">PAR_COM_G_b_INDEX_global</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_wf_k_a2a">PAR_COM_WF_k_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_wf_k_index">PAR_COM_WF_k_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_wf_b_index">PAR_COM_WF_b_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_q_index">PAR_COM_Q_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_q_a2a">PAR_COM_Q_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_xk_ibz_index">PAR_COM_Xk_ibz_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_xk_ibz_a2a">PAR_COM_Xk_ibz_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_xk_bz_index">PAR_COM_Xk_bz_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_xk_bz_a2a">PAR_COM_Xk_bz_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_bzindxk_ibz_index">PAR_COM_BZINDXk_ibz_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_bzindxk_ibz_a2a">PAR_COM_BZINDXk_ibz_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_bzindxk_bz_index">PAR_COM_BZINDXk_bz_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_dipk_ibz_index">PAR_COM_DIPk_ibz_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_dipk_ibz_a2a">PAR_COM_DIPk_ibz_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_dipk_bz_index">PAR_COM_DIPk_bz_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_dipk_bz_a2a">PAR_COM_DIPk_bz_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_val_index_dip">PAR_COM_VAL_INDEX_DIP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_con_index_dip">PAR_COM_CON_INDEX_DIP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_val_index_ovlp">PAR_COM_VAL_INDEX_OVLP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_con_index_ovlp">PAR_COM_CON_INDEX_OVLP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_val_index_x">PAR_COM_VAL_INDEX_X</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_con_index_x">PAR_COM_CON_INDEX_X</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_x_world_rl_resolved">PAR_COM_X_WORLD_RL_resolved</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_x_world">PAR_COM_X_WORLD</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_eh_index">PAR_COM_eh_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_eh_a2a">PAR_COM_eh_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_t_index">PAR_COM_T_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_t_haydock">PAR_COM_T_Haydock</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_density">PAR_COM_density</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_freqs">PAR_COM_freqs</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_freqs_a2a">PAR_COM_freqs_A2A</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_freqs_index">PAR_COM_freqs_INDEX</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_se_world_rl_resolved">PAR_COM_SE_WORLD_RL_resolved</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_com_se_world">PAR_COM_SE_WORLD</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_k_range">PAR_K_range</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_eh_range">PAR_EH_range</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_qp_range">PAR_QP_range</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_q_ibz_range">PAR_Q_ibz_range</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_q_bz_range">PAR_Q_bz_range</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_dip_ib">PAR_Dip_ib</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_dip_ib_lim">PAR_Dip_ib_lim</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_x_ib">PAR_X_ib</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_x_iq">PAR_X_iq</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_n_bands">PAR_n_bands</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_n_c_bands">PAR_n_c_bands</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_n_v_bands">PAR_n_v_bands</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_n_g_vectors">PAR_n_G_vectors</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_g_k_range">PAR_G_k_range</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_nrl">PAR_nRL</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_rl_index">PAR_RL_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_nplasma">PAR_nPlasma</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_plasma_index">PAR_PLASMA_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_nqp">PAR_nQP</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_qp_index">PAR_QP_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_nq_ibz">PAR_nQ_ibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_q_ibz_index">PAR_Q_ibz_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_nq_bz">PAR_nQ_bz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_q_bz_index">PAR_Q_bz_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_kk_nibz">PAR_Kk_nibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_xk_nibz">PAR_Xk_nibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_xk_ibz_index">PAR_Xk_ibz_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_xk_nbz">PAR_Xk_nbz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_xk_bz_index">PAR_Xk_bz_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_bzindxk_nibz">PAR_BZINDXk_nibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_bzindxk_ibz_index">PAR_BZINDXk_ibz_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_bzindxk_nbz">PAR_BZINDXk_nbz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_bzindxk_bz_index">PAR_BZINDXk_bz_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_dipk_nibz">PAR_DIPk_nibz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_dipk_ibz_index">PAR_DIPk_ibz_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_dipk_nbz">PAR_DIPk_nbz</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_dipk_bz_index">PAR_DIPk_bz_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_bs_nt_col_grps">PAR_BS_nT_col_grps</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_bs_t_grps_index">PAR_BS_T_grps_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_ng_bands">PAR_nG_bands</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_g_bands_index">PAR_G_bands_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_n_freqs">PAR_n_freqs</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_freqs_index">PAR_FREQS_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#variable-par_n_bp_mat_elements">PAR_n_Bp_mat_elements</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/parallel_m.html#type-ympi_comm">yMPI_comm</a>
+            <a class="list-group-item" href="../module/parallel_m.html#type-cpu_stru">CPU_stru</a>
+            <a class="list-group-item" href="../module/parallel_m.html#type-pp_indexes">PP_indexes</a>
+            <a class="list-group-item" href="../module/parallel_m.html#type-par_scheme">PAR_scheme</a>
+            <a class="list-group-item" href="../module/parallel_m.html#type-park_str">PARk_str</a>
+            <a class="list-group-item" href="../module/parallel_m.html#type-snd_rcv_geometry">SND_RCV_geometry</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/parallel_m.html#proc-i_inter_chain">i_INTER_CHAIN</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-parallel_message">PARALLEL_message</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/parallel_m.html#proc-par_build_index">PAR_build_index</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-create_the_comm">CREATE_the_COMM</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-cpu_and_role_strings_save">CPU_and_ROLE_strings_save</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-cpu_and_role_strings_restore">CPU_and_ROLE_strings_restore</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-cpu_str_reset">CPU_str_reset</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-comm_reset">COMM_reset</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-par_scheme_reset">PAR_scheme_reset</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-comm_copy">COMM_copy</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-par_index_copy">PAR_INDEX_copy</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-pp_indexes_reset">PP_indexes_reset</a>
+            <a class="list-group-item" href="../module/parallel_m.html#proc-create_hosts_comm">CREATE_hosts_COMM</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='pars.html'>pars</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mpi_comm_world"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mpi_comm_world</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mpi_info_null"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>mpi_info_null</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mpi_comm_null"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>mpi_comm_null</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-myid"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>myid</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mygpu_dev"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mygpu_dev</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ncpu"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ncpu</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_nodes"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_nodes</strong>(1)</td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_io_nodes"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_IO_nodes</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_mpi"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_MPI</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-host_name"></span>
+              character(len=lchlen),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>host_name</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-host_name_length"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>host_name_length</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm_default_value"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>comm_default_value</strong></td>
+<td> =</td>
+                <td>mpi_comm_null</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_x_t"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_X_T</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_x_g"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_X_G</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_x_g_finite_q"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_X_G_finite_q</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_dip"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_DIP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_bzindx"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_BZINDX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_se"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_SE</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_sx"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_SX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_rt"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_RT</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_sc"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_SC</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_nl"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_NL</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_par_oscll"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_par_OSCLL</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-head_qp_cpu"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>HEAD_QP_cpu</strong></td>
+<td> =</td>
+                <td>.TRUE.</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-head_k_cpu"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>HEAD_k_cpu</strong></td>
+<td> =</td>
+                <td>.TRUE.</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-head_q_cpu"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>HEAD_q_cpu</strong></td>
+<td> =</td>
+                <td>.TRUE.</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-head_b_cpu"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>HEAD_b_cpu</strong></td>
+<td> =</td>
+                <td>.TRUE.</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_groups"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_groups</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nchains_group"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nchains_group</strong>(2*MAX_N_GROUPS)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ncpu_chain"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ncpu_chain</strong>(MAX_N_OF_CHAINS)</td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-intra_chain"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>INTRA_CHAIN</strong>(MAX_N_OF_CHAINS)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-inter_chain"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>INTER_CHAIN</strong>(MAX_N_OF_CHAINS)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-child_chain"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>CHILD_CHAIN</strong>(MAX_N_OF_CHAINS)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cpu_string_save"></span>
+              character(len=schlen),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>CPU_string_save</strong>(n_CPU_str_max)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-role_string_save"></span>
+              character(len=schlen),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ROLE_string_save</strong>(n_CPU_str_max)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cpu_structure"></span>
+              type(<a href='../type/cpu_stru.html'>CPU_stru</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>CPU_structure</strong>(n_CPU_str_max)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i_par_structure"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i_PAR_structure</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-parallel_cpu_used"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PARALLEL_CPU_used</strong>(MAX_N_OF_CHAINS)</td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-parallel_cpu_role"></span>
+              character(len=4),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PARALLEL_CPU_role</strong>(MAX_N_OF_CHAINS)</td>
+<td> =</td>
+                <td>&#34; &#34;</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-parallel_n_structures_active"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PARALLEL_n_structures_active</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-parallel_env_uses_default"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PARALLEL_ENV_uses_default</strong>(n_CPU_str_max)</td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-linear_algebra_is_parallel"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>linear_algebra_is_parallel</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-parallel_default_mode"></span>
+              character(len=schlen),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PARALLEL_default_mode</strong></td>
+<td> =</td>
+                <td>&#34;balanced&#34;</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_log_cpus"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_log_CPUs</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-p_sum"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>p_sum</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-p_prod"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>p_prod</strong></td>
+<td> =</td>
+                <td>2</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-io_write_default"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IO_write_default</strong>(max_n_of_cpus)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-master_cpu"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>master_cpu</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l_open_mp"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>l_open_MP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-pars_ph_q_ibz"></span>
+              type(<a href='../type/par_scheme.html'>PAR_scheme</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PARs_PH_Q_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-pars_ph_k_bz"></span>
+              type(<a href='../type/par_scheme.html'>PAR_scheme</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PARs_PH_K_bz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-pars_ph_eh_bands"></span>
+              type(<a href='../type/par_scheme.html'>PAR_scheme</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PARs_PH_eh_bands</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_k_scheme"></span>
+              type(<a href='../type/park_str.html'>PARk_str</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_K_scheme</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_snd_rcv_operations"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>N_SND_RCV_operations</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-snd_rcv_op"></span>
+              type(<a href='../type/snd_rcv_geometry.html'>SND_RCV_geometry</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>SND_RCV_op</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_wf_bands_to_load"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_WF_bands_to_load</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_parallel_x_types"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>n_parallel_X_types</strong></td>
+<td> =</td>
+                <td>5</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_slk"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_SLK</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_q_ibz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Q_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_q_bz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Q_bz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_kk_ibz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Kk_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_xk_ibz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Xk_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_xk_bz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Xk_bz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_g_k"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_G_k</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_bzindxk_ibz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_BZINDXk_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_bzindxk_bz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_BZINDXk_bz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_dipk_ibz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_DIPk_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_dipk_bz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_DIPk_bz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_val_bands_dip"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_VAL_BANDS_DIP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_con_bands_dip"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_CON_BANDS_DIP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_ovlpk_ibz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_OVLPk_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_val_bands_ovlp"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_VAL_BANDS_OVLP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_con_bands_ovlp"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_CON_BANDS_OVLP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_val_bands_x"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_VAL_BANDS_X</strong>(n_parallel_X_types)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_con_bands_x"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_CON_BANDS_X</strong>(n_parallel_X_types)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_qp"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_QP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_plasma"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Plasma</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_g_b"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_G_b</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_b_mat"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_B_mat</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_bp_mat"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Bp_mat</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_b_mat_ordered"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_B_mat_ordered</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_wf_b"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_WF_b</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_wf_k"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_WF_k</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_wf_b_and_k"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_WF_b_and_k</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_wf_linear"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_WF_linear</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_rl"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_RL</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_eh"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_eh</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_t_groups"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_T_groups</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_t_haydock"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_T_Haydock</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_t_ordered"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_T_ordered</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_freqs"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_freqs</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_qp_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_QP_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_plasma_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_PLASMA_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_g_b_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_G_b_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_wf_b_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_WF_b_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_wf_k_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_WF_k_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_q_ibz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Q_ibz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_q_bz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Q_bz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_kk_ibz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Kk_ibz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_xk_ibz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Xk_ibz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_xk_bz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_Xk_bz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_g_k_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_G_k_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_bzindxk_bz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_BZINDXk_bz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_bzindxk_ibz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_BZINDXk_ibz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_dipk_bz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_DIPk_bz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_dipk_ibz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_DIPk_ibz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_val_bands_dip_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_VAL_BANDS_DIP_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_con_bands_dip_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_CON_BANDS_DIP_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_ovlpk_ibz_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_OVLPk_ibz_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_val_bands_ovlp_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_VAL_BANDS_OVLP_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_con_bands_ovlp_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_CON_BANDS_OVLP_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_val_bands_x_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_VAL_BANDS_X_ID</strong>(n_parallel_X_types)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_con_bands_x_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_CON_BANDS_X_ID</strong>(n_parallel_X_types)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_eh_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_eh_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_rl_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_RL_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_freqs_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_freqs_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind_freq_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_IND_FREQ_ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_world"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_WORLD</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_null"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_NULL</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_host"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_HOST</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_slk"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_SLK</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_slk_index_global"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_SLK_INDEX_global</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_slk_index_local"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_SLK_INDEX_local</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_rl_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_RL_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_rl_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_RL_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_qp_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_QP_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_qp_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_QP_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_plasma_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_PLASMA_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_g_b_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_G_b_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_g_b_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_G_b_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_g_b_index_global"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_G_b_INDEX_global</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_wf_k_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_WF_k_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_wf_k_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_WF_k_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_wf_b_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_WF_b_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_q_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_Q_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_q_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_Q_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_xk_ibz_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_Xk_ibz_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_xk_ibz_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_Xk_ibz_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_xk_bz_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_Xk_bz_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_xk_bz_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_Xk_bz_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_bzindxk_ibz_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_BZINDXk_ibz_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_bzindxk_ibz_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_BZINDXk_ibz_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_bzindxk_bz_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_BZINDXk_bz_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_dipk_ibz_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_DIPk_ibz_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_dipk_ibz_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_DIPk_ibz_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_dipk_bz_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_DIPk_bz_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_dipk_bz_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_DIPk_bz_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_val_index_dip"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_VAL_INDEX_DIP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_con_index_dip"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_CON_INDEX_DIP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_val_index_ovlp"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_VAL_INDEX_OVLP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_con_index_ovlp"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_CON_INDEX_OVLP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_val_index_x"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_VAL_INDEX_X</strong>(n_parallel_X_types)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_con_index_x"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_CON_INDEX_X</strong>(n_parallel_X_types)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_x_world_rl_resolved"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_X_WORLD_RL_resolved</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_x_world"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_X_WORLD</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_eh_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_eh_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_eh_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_eh_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_t_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_T_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_t_haydock"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_T_Haydock</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_density"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_density</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_freqs"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_freqs</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_freqs_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_freqs_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_freqs_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_freqs_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_se_world_rl_resolved"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_SE_WORLD_RL_resolved</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_com_se_world"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              SAVE
+            </td>
+            <td>::</td>
+            <td><strong>PAR_COM_SE_WORLD</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_k_range"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_K_range</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_eh_range"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_EH_range</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_qp_range"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_QP_range</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_q_ibz_range"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Q_ibz_range</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_q_bz_range"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Q_bz_range</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_dip_ib"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Dip_ib</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_dip_ib_lim"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Dip_ib_lim</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_x_ib"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_X_ib</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_x_iq"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_X_iq</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_n_bands"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_n_bands</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_n_c_bands"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_n_c_bands</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_n_v_bands"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_n_v_bands</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_n_g_vectors"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_n_G_vectors</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_g_k_range"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_G_k_range</strong>(2)</td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_nrl"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_nRL</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_rl_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_RL_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_nplasma"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_nPlasma</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_plasma_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_PLASMA_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_nqp"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_nQP</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_qp_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_QP_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_nq_ibz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_nQ_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_q_ibz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Q_ibz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_nq_bz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_nQ_bz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_q_bz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Q_bz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_kk_nibz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Kk_nibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_xk_nibz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Xk_nibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_xk_ibz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Xk_ibz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_xk_nbz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Xk_nbz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_xk_bz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_Xk_bz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_bzindxk_nibz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_BZINDXk_nibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_bzindxk_ibz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_BZINDXk_ibz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_bzindxk_nbz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_BZINDXk_nbz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_bzindxk_bz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_BZINDXk_bz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_dipk_nibz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_DIPk_nibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_dipk_ibz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_DIPk_ibz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_dipk_nbz"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_DIPk_nbz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_dipk_bz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_DIPk_bz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_bs_nt_col_grps"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_BS_nT_col_grps</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_bs_t_grps_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_BS_T_grps_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ng_bands"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_nG_bands</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_g_bands_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_G_bands_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_n_freqs"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_n_freqs</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_freqs_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>PAR_FREQS_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_n_bp_mat_elements"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_n_Bp_mat_elements</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-ympi_comm"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/ympi_comm.html'>yMPI_comm</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COMM</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cpu_id"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>CPU_id</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-my_chain"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>my_CHAIN</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-chain_order"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>chain_order</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_cpu"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_CPU</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-cpu_stru"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/cpu_stru.html'>CPU_stru</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_chains"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>N_chains</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cpu"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>CPU</strong>(MAX_N_OF_CHAINS)</td>
+<td> =</td>
+                <td>1</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-role"></span>
+              character(len=4),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ROLE</strong>(MAX_N_OF_CHAINS)</td>
+<td> =</td>
+                <td>&#34; &#34;</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cpu_string"></span>
+              character(len=schlen),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>CPU_string</strong></td>
+<td> =</td>
+                <td>&#34; &#34;</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-role_string"></span>
+              character(len=schlen),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ROLE_string</strong></td>
+<td> =</td>
+                <td>&#34; &#34;</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-long_description"></span>
+              character(len=schlen),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Long_Description</strong></td>
+<td> =</td>
+                <td>&#34; &#34;</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-short_description"></span>
+              character(len=schlen),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>Short_Description</strong></td>
+<td> =</td>
+                <td>&#34; &#34;</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ncpu_lin_algebra_inv"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nCPU_lin_algebra_INV</strong></td>
+<td> =</td>
+                <td>-1</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ncpu_lin_algebra_diago"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nCPU_lin_algebra_DIAGO</strong></td>
+<td> =</td>
+                <td>-1</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-pp_indexes"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/pp_indexes.html'>PP_indexes</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-element_1d"></span>
+              logical,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>element_1D</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-element_2d"></span>
+              logical,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>element_2D</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_of_elements"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>n_of_elements</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-weight_1d"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>weight_1D</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-first_of_1d"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>first_of_1D</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-last_of_1d"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>last_of_1D</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-par_scheme"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/par_scheme.html'>PAR_scheme</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm_i"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COMM_i</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COMM_a2a</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IND</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-id~10"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ID</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~2"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>D</strong>(2)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_ser"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>N_ser</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_par"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>N_par</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-consecutive"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>consecutive</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-table"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>table</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-park_str"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/park_str.html'>PARk_str</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-com_ibz_index"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COM_ibz_INDEX</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-com_ibz_a2a"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COM_ibz_A2A</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind_ibz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IND_ibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind_bz"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IND_bz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ibz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>ibz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bz_index"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>bz_index</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nibz~2"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nibz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nbz~2"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nbz</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm_world"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>comm_world</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-snd_rcv_geometry"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/snd_rcv_geometry.html'>SND_RCV_geometry</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-snd_to_id"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>SND_to_id</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rcv_from_id"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>RCV_from_id</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-i_inter_chain"></span> <h3>public  function <a href='../proc/i_inter_chain.html'>i_INTER_CHAIN</a>(N_father, N_child)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_father"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>N_father</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_child"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>N_child</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-parallel_message"></span> <h3>public  function <a href='../proc/parallel_message.html'>PARALLEL_message</a>(i_s)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i_s~2"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i_s</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=lchlen)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-par_build_index"></span> <h3>public  subroutine <a href='../proc/par_build_index.html'>PAR_build_index</a>(PAR_ind, N_elements, V_ind, n_V_ind)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-par_ind"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PAR_ind</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_elements"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>N_elements</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-v_ind"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>V_ind</strong>(N_elements)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_v_ind"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_V_ind</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-create_the_comm"></span> <h3>public  subroutine <a href='../proc/create_the_comm.html'>CREATE_the_COMM</a>(WORLD, COMM, ID)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-world"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>WORLD</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm~2"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COMM</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-id~11"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ID</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-cpu_and_role_strings_save"></span> <h3>public  subroutine <a href='../proc/cpu_and_role_strings_save.html'>CPU_and_ROLE_strings_save</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-cpu_and_role_strings_restore"></span> <h3>public  subroutine <a href='../proc/cpu_and_role_strings_restore.html'>CPU_and_ROLE_strings_restore</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-cpu_str_reset"></span> <h3>public  subroutine <a href='../proc/cpu_str_reset.html'>CPU_str_reset</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-comm_reset"></span> <h3>public  subroutine <a href='../proc/comm_reset.html'>COMM_reset</a>(COMM)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm~3"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COMM</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-par_scheme_reset"></span> <h3>public  subroutine <a href='../proc/par_scheme_reset.html'>PAR_scheme_reset</a>(PARs)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-pars"></span>
+              type(<a href='../type/par_scheme.html'>PAR_scheme</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>PARs</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-comm_copy"></span> <h3>public  subroutine <a href='../proc/comm_copy.html'>COMM_copy</a>(COMM_in, COMM_out)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm_in"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COMM_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-comm_out"></span>
+              type(<a href='../type/ympi_comm.html'>yMPI_comm</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>COMM_out</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-par_index_copy"></span> <h3>public  subroutine <a href='../proc/par_index_copy.html'>PAR_INDEX_copy</a>(IND_in, IND_out)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind_in"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IND_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind_out"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IND_out</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-pp_indexes_reset"></span> <h3>public  subroutine <a href='../proc/pp_indexes_reset.html'>PP_indexes_reset</a>(IND_out)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind_out~2"></span>
+              type(<a href='../type/pp_indexes.html'>PP_indexes</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IND_out</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-create_hosts_comm"></span> <h3>public  subroutine <a href='../proc/create_hosts_comm.html'>CREATE_hosts_COMM</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              Yambo
+ was developed by Yambo Team<br>              &copy; 2025 <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+<br>&copy; <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

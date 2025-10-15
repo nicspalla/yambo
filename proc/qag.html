@@ -1,0 +1,597 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+    <meta name="author" content="Yambo Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>QAG &ndash; Yambo</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">Yambo </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">index</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>QAG
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">21 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/qag.f"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/qag.f.html'>qag.f</a></li>
+            <li class="breadcrumb-item active" aria-current="page">QAG</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2> subroutine QAG(F, A, B, EPSABS, EPSREL, KEY, RESULT, ABSERR, NEVAL, IER, LIMIT, LENW, LAST, IWORK, WORK)  
+</h2>
+    
+
+    <p><strong>BEGIN PROLOGUE  QAG
+</strong>PURPOSE  The routine calculates an approximation result to a given
+            definite integral I = integral of F over (A,B),
+            hopefully satisfying following claim for accuracy
+            ABS(I-RESULT)LE.MAX(EPSABS,EPSREL<em>ABS(I)).
+</em><em>LIBRARY   SLATEC (QUADPACK)
+</em><em>CATEGORY  H2A1A1
+</em><em>TYPE      SINGLE PRECISION (QAG-S, DQAG-D)
+</em><em>KEYWORDS  AUTOMATIC INTEGRATOR, GAUSS-KRONROD RULES,
+             GENERAL-PURPOSE, GLOBALLY ADAPTIVE, INTEGRAND EXAMINATOR,
+             QUADPACK, QUADRATURE
+</em><em>AUTHOR  Piessens, Robert
+             Applied Mathematics and Programming Division
+             K. U. Leuven
+           de Doncker, Elise
+             Applied Mathematics and Programming Division
+             K. U. Leuven
+</em>*DESCRIPTION</p>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="nx">Computation</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">definite</span><span class="w"> </span><span class="nx">integral</span>
+<span class="w">    </span><span class="nx">Standard</span><span class="w"> </span><span class="nx">fortran</span><span class="w"> </span><span class="nx">subroutine</span>
+<span class="w">    </span><span class="nx">Real</span><span class="w"> </span><span class="nx">version</span>
+
+<span class="w">        </span><span class="nx">F</span><span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="nx">Real</span>
+<span class="w">                 </span><span class="nx">Function</span><span class="w"> </span><span class="nx">subprogram</span><span class="w"> </span><span class="nx">defining</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">integrand</span>
+<span class="w">                 </span><span class="nx">Function</span><span class="w"> </span><span class="nx">F</span><span class="p">(</span><span class="nx">X</span><span class="p">).</span><span class="w"> </span><span class="nx">The</span><span class="w"> </span><span class="nx">actual</span><span class="w"> </span><span class="nx">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">F</span><span class="w"> </span><span class="nx">needs</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">be</span>
+<span class="w">                 </span><span class="nx">Declared</span><span class="w"> </span><span class="nx">E</span><span class="w"> </span><span class="nx">X</span><span class="w"> </span><span class="nx">T</span><span class="w"> </span><span class="nx">E</span><span class="w"> </span><span class="nx">R</span><span class="w"> </span><span class="nx">N</span><span class="w"> </span><span class="nx">A</span><span class="w"> </span><span class="nx">L</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">driver</span><span class="w"> </span><span class="nx">program</span><span class="p">.</span>
+
+<span class="w">        </span><span class="nx">A</span><span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="nx">Real</span>
+<span class="w">                 </span><span class="nx">Lower</span><span class="w"> </span><span class="nx">limit</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">integration</span>
+
+<span class="w">        </span><span class="nx">B</span><span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="nx">Real</span>
+<span class="w">                 </span><span class="nx">Upper</span><span class="w"> </span><span class="nx">limit</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">integration</span>
+
+<span class="w">        </span><span class="nx">EPSABS</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Real</span>
+<span class="w">                 </span><span class="nx">Absolute</span><span class="w"> </span><span class="nx">accuracy</span><span class="w"> </span><span class="nx">requested</span>
+<span class="w">        </span><span class="nx">EPSREL</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Real</span>
+<span class="w">                 </span><span class="nx">Relative</span><span class="w"> </span><span class="nx">accuracy</span><span class="w"> </span><span class="nx">requested</span>
+<span class="w">                 </span><span class="nx">If</span><span class="w">  </span><span class="nx">EPSABS</span><span class="p">.</span><span class="nx">LE</span><span class="m m-Double">.0</span>
+<span class="w">                 </span><span class="nx">And</span><span class="w"> </span><span class="nx">EPSREL</span><span class="p">.</span><span class="nx">LT</span><span class="p">.</span><span class="nx">MAX</span><span class="p">(</span><span class="mi">50</span><span class="o">*</span><span class="nx">REL</span><span class="p">.</span><span class="nx">MACH</span><span class="p">.</span><span class="nx">ACC</span><span class="p">.,</span><span class="m m-Double">0.5</span><span class="nx">D</span><span class="o">-</span><span class="mi">28</span><span class="p">),</span>
+<span class="w">                 </span><span class="nx">The</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">IER</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">6</span><span class="p">.</span>
+
+<span class="w">        </span><span class="nx">KEY</span><span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="nx">Integer</span>
+<span class="w">                 </span><span class="nx">Key</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="kd">choice</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">local</span><span class="w"> </span><span class="nx">integration</span><span class="w"> </span><span class="nx">rule</span>
+<span class="w">                 </span><span class="nx">A</span><span class="w"> </span><span class="nx">GAUSS</span><span class="o">-</span><span class="nx">KRONROD</span><span class="w"> </span><span class="nx">PAIR</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="nx">with</span>
+<span class="w">                   </span><span class="mi">7</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="nx">POINTS</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">KEY</span><span class="p">.</span><span class="nx">LT</span><span class="m m-Double">.2</span><span class="p">,</span>
+<span class="w">                  </span><span class="mi">10</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">21</span><span class="w"> </span><span class="nx">POINTS</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">KEY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">                  </span><span class="mi">15</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">31</span><span class="w"> </span><span class="nx">POINTS</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">KEY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">                  </span><span class="mi">20</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">41</span><span class="w"> </span><span class="nx">POINTS</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">KEY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">                  </span><span class="mi">25</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">51</span><span class="w"> </span><span class="nx">POINTS</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">KEY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">                  </span><span class="mi">30</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">61</span><span class="w"> </span><span class="nx">POINTS</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">KEY</span><span class="p">.</span><span class="nx">GT</span><span class="m m-Double">.5</span><span class="p">.</span>
+
+<span class="w">     </span><span class="nx">ON</span><span class="w"> </span><span class="nx">RETURN</span>
+<span class="w">        </span><span class="nx">RESULT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Real</span>
+<span class="w">                 </span><span class="nx">Approximation</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">integral</span>
+
+<span class="w">        </span><span class="nx">ABSERR</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Real</span>
+<span class="w">                 </span><span class="nx">Estimate</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">modulus</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">absolute</span><span class="w"> </span><span class="nx">error</span><span class="p">,</span>
+<span class="w">                 </span><span class="nx">Which</span><span class="w"> </span><span class="nx">should</span><span class="w"> </span><span class="nx">EQUAL</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="nx">EXCEED</span><span class="w"> </span><span class="nx">ABS</span><span class="p">(</span><span class="nx">I</span><span class="o">-</span><span class="nx">RESULT</span><span class="p">)</span>
+
+<span class="w">        </span><span class="nx">NEVAL</span><span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="nx">Integer</span>
+<span class="w">                 </span><span class="nx">Number</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">integrand</span><span class="w"> </span><span class="nx">evaluations</span>
+
+<span class="w">        </span><span class="nx">IER</span><span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="nx">Integer</span>
+<span class="w">                 </span><span class="nx">IER</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nx">Normal</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">reliable</span><span class="w"> </span><span class="nx">termination</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">                         </span><span class="nx">routine</span><span class="p">.</span><span class="w"> </span><span class="nx">It</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">assumed</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">requested</span>
+<span class="w">                         </span><span class="nx">accuracy</span><span class="w"> </span><span class="nx">has</span><span class="w"> </span><span class="nx">been</span><span class="w"> </span><span class="nx">achieved</span><span class="p">.</span>
+<span class="w">                 </span><span class="nx">IER</span><span class="p">.</span><span class="nx">GT</span><span class="m m-Double">.0</span><span class="w"> </span><span class="nx">Abnormal</span><span class="w"> </span><span class="nx">termination</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span>
+<span class="w">                         </span><span class="nx">The</span><span class="w"> </span><span class="nx">estimates</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">RESULT</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">ERROR</span><span class="w"> </span><span class="nx">are</span>
+<span class="w">                         </span><span class="nx">Less</span><span class="w"> </span><span class="nx">reliable</span><span class="p">.</span><span class="w"> </span><span class="nx">It</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">assumed</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">                         </span><span class="nx">requested</span><span class="w"> </span><span class="nx">accuracy</span><span class="w"> </span><span class="nx">has</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">been</span><span class="w"> </span><span class="nx">achieved</span><span class="p">.</span>
+<span class="w">                  </span><span class="nx">ERROR</span><span class="w"> </span><span class="nx">MESSAGES</span>
+<span class="w">                 </span><span class="nx">IER</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nx">Maximum</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">subdivisions</span><span class="w"> </span><span class="nx">allowed</span>
+<span class="w">                         </span><span class="nx">has</span><span class="w"> </span><span class="nx">been</span><span class="w"> </span><span class="nx">achieved</span><span class="p">.</span><span class="w"> </span><span class="nx">One</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">allow</span><span class="w"> </span><span class="nx">more</span>
+<span class="w">                         </span><span class="nx">subdivisions</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">increasing</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="nx">of</span>
+<span class="w">                         </span><span class="nx">LIMIT</span><span class="w"> </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="nx">taking</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">according</span><span class="w"> </span><span class="nx">dimension</span>
+<span class="w">                         </span><span class="nx">adjustments</span><span class="w"> </span><span class="nx">into</span><span class="w"> </span><span class="nx">account</span><span class="p">).</span><span class="w"> </span><span class="nx">HOWEVER</span><span class="p">,</span><span class="w"> </span><span class="nx">If</span>
+<span class="w">                         </span><span class="nx">this</span><span class="w"> </span><span class="nx">yield</span><span class="w"> </span><span class="nx">no</span><span class="w"> </span><span class="nx">improvement</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">advised</span>
+<span class="w">                         </span><span class="nx">to</span><span class="w"> </span><span class="nx">analyze</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">integrand</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="nx">to</span>
+<span class="w">                         </span><span class="nx">determine</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">integration</span><span class="w"> </span><span class="nx">difficulties</span><span class="p">.</span>
+<span class="w">                         </span><span class="nx">If</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">position</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">local</span><span class="w"> </span><span class="nx">difficulty</span><span class="w"> </span><span class="nx">can</span>
+<span class="w">                         </span><span class="nx">be</span><span class="w"> </span><span class="nx">determined</span><span class="w"> </span><span class="p">(</span><span class="nx">I</span><span class="p">.</span><span class="nx">E</span><span class="p">.</span><span class="w"> </span><span class="nx">SINGULARITY</span><span class="p">,</span>
+<span class="w">                         </span><span class="nx">DISCONTINUITY</span><span class="w"> </span><span class="nx">WITHIN</span><span class="w"> </span><span class="nx">THE</span><span class="w"> </span><span class="nx">INTERVAL</span><span class="p">)</span><span class="w"> </span><span class="nx">One</span>
+<span class="w">                         </span><span class="nx">will</span><span class="w"> </span><span class="nx">probably</span><span class="w"> </span><span class="nx">gain</span><span class="w"> </span><span class="nx">from</span><span class="w"> </span><span class="nx">splitting</span><span class="w"> </span><span class="nx">up</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">                         </span><span class="nx">interval</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">this</span><span class="w"> </span><span class="nx">point</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">calling</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">                         </span><span class="nx">INTEGRATOR</span><span class="w"> </span><span class="nx">on</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">SUBRANGES</span><span class="p">.</span><span class="w"> </span><span class="nx">If</span><span class="w"> </span><span class="nx">possible</span><span class="p">,</span>
+<span class="w">                         </span><span class="nx">AN</span><span class="w"> </span><span class="nx">APPROPRIATE</span><span class="w"> </span><span class="nx">SPECIAL</span><span class="o">-</span><span class="nx">PURPOSE</span><span class="w"> </span><span class="nx">INTEGRATOR</span>
+<span class="w">                         </span><span class="nx">should</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">used</span><span class="w"> </span><span class="nx">which</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">designed</span><span class="w"> </span><span class="k">for</span>
+<span class="w">                         </span><span class="nx">handling</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">difficulty</span><span class="w"> </span><span class="nx">involved</span><span class="p">.</span>
+<span class="w">                     </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="nx">The</span><span class="w"> </span><span class="nx">occurrence</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">roundoff</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="k">is</span>
+<span class="w">                         </span><span class="nx">detected</span><span class="p">,</span><span class="w"> </span><span class="nx">which</span><span class="w"> </span><span class="nx">prevents</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">requested</span>
+<span class="w">                         </span><span class="nx">tolerance</span><span class="w"> </span><span class="nx">from</span><span class="w"> </span><span class="nx">being</span><span class="w"> </span><span class="nx">achieved</span><span class="p">.</span>
+<span class="w">                     </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="nx">Extremely</span><span class="w"> </span><span class="nx">bad</span><span class="w"> </span><span class="nx">integrand</span><span class="w"> </span><span class="nx">behaviour</span><span class="w"> </span><span class="nx">occurs</span>
+<span class="w">                         </span><span class="nx">at</span><span class="w"> </span><span class="nx">some</span><span class="w"> </span><span class="nx">points</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">integration</span>
+<span class="w">                         </span><span class="nx">interval</span><span class="p">.</span>
+<span class="w">                     </span><span class="p">=</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="nx">The</span><span class="w"> </span><span class="nx">input</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">invalid</span><span class="p">,</span><span class="w"> </span><span class="nx">because</span>
+<span class="w">                         </span><span class="p">(</span><span class="nx">EPSABS</span><span class="p">.</span><span class="nx">LE</span><span class="m m-Double">.0</span><span class="w"> </span><span class="nx">AND</span>
+<span class="w">                          </span><span class="nx">EPSREL</span><span class="p">.</span><span class="nx">LT</span><span class="p">.</span><span class="nx">MAX</span><span class="p">(</span><span class="mi">50</span><span class="o">*</span><span class="nx">REL</span><span class="p">.</span><span class="nx">MACH</span><span class="p">.</span><span class="nx">ACC</span><span class="p">.,</span><span class="m m-Double">0.5</span><span class="nx">D</span><span class="o">-</span><span class="mi">28</span><span class="p">))</span>
+<span class="w">                         </span><span class="nx">OR</span><span class="w"> </span><span class="nx">LIMIT</span><span class="p">.</span><span class="nx">LT</span><span class="m m-Double">.1</span><span class="w"> </span><span class="nx">OR</span><span class="w"> </span><span class="nx">LENW</span><span class="p">.</span><span class="nx">LT</span><span class="p">.</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">4</span><span class="p">.</span>
+<span class="w">                         </span><span class="nx">RESULT</span><span class="p">,</span><span class="w"> </span><span class="nx">ABSERR</span><span class="p">,</span><span class="w"> </span><span class="nx">NEVAL</span><span class="p">,</span><span class="w"> </span><span class="nx">LAST</span><span class="w"> </span><span class="nx">are</span><span class="w"> </span><span class="nx">set</span>
+<span class="w">                         </span><span class="nx">to</span><span class="w"> </span><span class="nx">zero</span><span class="p">.</span>
+<span class="w">                         </span><span class="nx">EXCEPT</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">LENW</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">invalid</span><span class="p">,</span><span class="w"> </span><span class="nx">IWORK</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="w">                         </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nx">are</span>
+<span class="w">                         </span><span class="nx">set</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">zero</span><span class="p">,</span><span class="w"> </span><span class="nx">WORK</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">set</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">A</span><span class="w"> </span><span class="k">and</span>
+<span class="w">                         </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">B</span><span class="p">.</span>
+
+<span class="w">     </span><span class="nx">DIMENSIONING</span><span class="w"> </span><span class="nx">PARAMETERS</span>
+<span class="w">        </span><span class="nx">LIMIT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Integer</span>
+<span class="w">                </span><span class="nx">Dimensioning</span><span class="w"> </span><span class="nx">parameter</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">IWORK</span>
+<span class="w">                </span><span class="nx">Limit</span><span class="w"> </span><span class="nx">determines</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">maximum</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">subintervals</span>
+<span class="w">                </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">partition</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">given</span><span class="w"> </span><span class="nx">integration</span><span class="w"> </span><span class="nx">interval</span>
+<span class="w">                </span><span class="p">(</span><span class="nx">A</span><span class="p">,</span><span class="nx">B</span><span class="p">),</span><span class="w"> </span><span class="nx">LIMIT</span><span class="p">.</span><span class="nx">GE</span><span class="m m-Double">.1</span><span class="p">.</span>
+<span class="w">                </span><span class="nx">If</span><span class="w"> </span><span class="nx">LIMIT</span><span class="p">.</span><span class="nx">LT</span><span class="m m-Double">.1</span><span class="p">,</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">IER</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">6</span><span class="p">.</span>
+
+<span class="w">        </span><span class="nx">LENW</span><span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="nx">Integer</span>
+<span class="w">                </span><span class="nx">Dimensioning</span><span class="w"> </span><span class="nx">parameter</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">work</span>
+<span class="w">                </span><span class="nx">LENW</span><span class="w"> </span><span class="nx">must</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">least</span><span class="w"> </span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">4</span><span class="p">.</span>
+<span class="w">                </span><span class="nx">IF</span><span class="w"> </span><span class="nx">LENW</span><span class="p">.</span><span class="nx">LT</span><span class="p">.</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">routine</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="nx">with</span>
+<span class="w">                </span><span class="nx">IER</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">6</span><span class="p">.</span>
+
+<span class="w">        </span><span class="nx">LAST</span><span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="nx">Integer</span>
+<span class="w">                </span><span class="nx">On</span><span class="w"> </span><span class="k">return</span><span class="p">,</span><span class="w"> </span><span class="nx">LAST</span><span class="w"> </span><span class="nx">equals</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">subintervals</span>
+<span class="w">                </span><span class="nx">produced</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">subdivision</span><span class="w"> </span><span class="nx">process</span><span class="p">,</span><span class="w"> </span><span class="nx">which</span>
+<span class="w">                </span><span class="nx">determines</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">significant</span><span class="w"> </span><span class="nx">elements</span>
+<span class="w">                </span><span class="nx">actually</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">WORK</span><span class="w"> </span><span class="nx">ARRAYS</span><span class="p">.</span>
+
+<span class="w">     </span><span class="nx">WORK</span><span class="w"> </span><span class="nx">ARRAYS</span>
+<span class="w">        </span><span class="nx">IWORK</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Integer</span>
+<span class="w">                </span><span class="nx">Vector</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">dimension</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">least</span><span class="w"> </span><span class="nx">limit</span><span class="p">,</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">first</span><span class="w"> </span><span class="nx">K</span>
+<span class="w">                </span><span class="nx">elements</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">which</span><span class="w"> </span><span class="nx">contain</span><span class="w"> </span><span class="nx">pointers</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span>
+<span class="w">                </span><span class="nx">estimates</span><span class="w"> </span><span class="nx">over</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">subintervals</span><span class="p">,</span><span class="w"> </span><span class="nx">such</span><span class="w"> </span><span class="nx">that</span>
+<span class="w">                </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="nx">IWORK</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span><span class="o">...</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="nx">IWORK</span><span class="p">(</span><span class="nx">K</span><span class="p">))</span>
+<span class="w">                </span><span class="nx">form</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">decreasing</span><span class="w"> </span><span class="nx">sequence</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">K</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">LAST</span><span class="w"> </span><span class="nx">If</span>
+<span class="w">                </span><span class="nx">LAST</span><span class="p">.</span><span class="nx">LE</span><span class="p">.(</span><span class="nx">LIMIT</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">K</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">LIMIT</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="nx">LAST</span><span class="w"> </span><span class="nx">otherwise</span>
+
+<span class="w">        </span><span class="nx">WORK</span><span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="nx">Real</span>
+<span class="w">                </span><span class="nx">Vector</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">dimension</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">least</span><span class="w"> </span><span class="nx">LENW</span>
+<span class="w">                </span><span class="nx">on</span><span class="w"> </span><span class="k">return</span>
+<span class="w">                </span><span class="nx">WORK</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LAST</span><span class="p">)</span><span class="w"> </span><span class="nx">contain</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">left</span><span class="w"> </span><span class="nx">end</span>
+<span class="w">                </span><span class="nx">points</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">subintervals</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">partition</span><span class="w"> </span><span class="nx">of</span>
+<span class="w">                 </span><span class="p">(</span><span class="nx">A</span><span class="p">,</span><span class="nx">B</span><span class="p">),</span>
+<span class="w">                </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">+</span><span class="nx">LAST</span><span class="p">)</span><span class="w"> </span><span class="nx">contain</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">                 </span><span class="nx">right</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="nx">points</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="nx">LAST</span><span class="p">)</span><span class="w"> </span><span class="nx">contain</span>
+<span class="w">                 </span><span class="nx">the</span><span class="w"> </span><span class="nx">integral</span><span class="w"> </span><span class="nx">approximations</span><span class="w"> </span><span class="nx">over</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">subintervals</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="nx">WORK</span><span class="p">(</span><span class="nx">LIMIT</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="nx">LAST</span><span class="p">)</span><span class="w"> </span><span class="nx">contain</span>
+<span class="w">                 </span><span class="nx">the</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="nx">estimates</span><span class="p">.</span>
+</code></pre></div>
+
+<p><strong>REFERENCES  (NONE)
+</strong>ROUTINES CALLED  QAGE, XERMSG
+<strong>REVISION HISTORY  (YYMMDD)
+   800101  DATE WRITTEN
+   890831  Modified array declarations.  (WRB)
+   890831  REVISION DATE from Version 3.2
+   891214  Prologue converted to Version 4.0 format.  (BAB)
+   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
+</strong>END PROLOGUE  QAG
+**FIRST EXECUTABLE STATEMENT  QAG</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~8"></span>
+              real
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>F</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~11"></span>
+              real
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>A</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-b~7"></span>
+              real
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>B</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-epsabs~2"></span>
+              real
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>EPSABS</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-epsrel~2"></span>
+              real
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>EPSREL</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-key~2"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>KEY</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-result~3"></span>
+              real
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>RESULT</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-abserr~3"></span>
+              real
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ABSERR</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-neval~2"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>NEVAL</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ier~2"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>IER</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-limit~3"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>LIMIT</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-lenw"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>LENW</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-last~4"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>LAST</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iwork"></span>
+              integer,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>IWORK</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-work"></span>
+              real,
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>WORK</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              Yambo
+ was developed by Yambo Team<br>              &copy; 2025 <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+<br>&copy; <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

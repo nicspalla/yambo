@@ -1,0 +1,1189 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+    <meta name="author" content="Yambo Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>UNITS &ndash; Yambo</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">Yambo </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">index</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>UNITS
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.3% of total for modules and submodules.">57 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_units.F"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mod_units.f.html'>mod_units.F</a></li>
+            <li class="breadcrumb-item active" aria-current="page">UNITS</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/units.html#variable-atto">ATTO</a>
+            <a class="list-group-item" href="../module/units.html#variable-femto">FEMTO</a>
+            <a class="list-group-item" href="../module/units.html#variable-pico">PICO</a>
+            <a class="list-group-item" href="../module/units.html#variable-nano">NANO</a>
+            <a class="list-group-item" href="../module/units.html#variable-micro">MICRO</a>
+            <a class="list-group-item" href="../module/units.html#variable-milli">MILLI</a>
+            <a class="list-group-item" href="../module/units.html#variable-kilo">KILO</a>
+            <a class="list-group-item" href="../module/units.html#variable-mega">MEGA</a>
+            <a class="list-group-item" href="../module/units.html#variable-giga">GIGA</a>
+            <a class="list-group-item" href="../module/units.html#variable-tera">TERA</a>
+            <a class="list-group-item" href="../module/units.html#variable-peta">PETA</a>
+            <a class="list-group-item" href="../module/units.html#variable-bo2ang">BO2ANG</a>
+            <a class="list-group-item" href="../module/units.html#variable-deg2rad">DEG2RAD</a>
+            <a class="list-group-item" href="../module/units.html#variable-ha2ev">HA2EV</a>
+            <a class="list-group-item" href="../module/units.html#variable-ha2kel">HA2KEL</a>
+            <a class="list-group-item" href="../module/units.html#variable-core_cnst">CORE_CNST</a>
+            <a class="list-group-item" href="../module/units.html#variable-ha2ghz">HA2GHZ</a>
+            <a class="list-group-item" href="../module/units.html#variable-ha2thz">HA2THZ</a>
+            <a class="list-group-item" href="../module/units.html#variable-ha2cmm1">HA2CMm1</a>
+            <a class="list-group-item" href="../module/units.html#variable-ha2psm1">HA2PSm1</a>
+            <a class="list-group-item" href="../module/units.html#variable-ha2fsm1">HA2FSm1</a>
+            <a class="list-group-item" href="../module/units.html#variable-aut2fs">AUT2FS</a>
+            <a class="list-group-item" href="../module/units.html#variable-fs2aut">FS2AUT</a>
+            <a class="list-group-item" href="../module/units.html#variable-as2aut">AS2AUT</a>
+            <a class="list-group-item" href="../module/units.html#variable-ps2aut">PS2AUT</a>
+            <a class="list-group-item" href="../module/units.html#variable-hbar_evfs">HBAR_eVfs</a>
+            <a class="list-group-item" href="../module/units.html#variable-hbar_si">HBAR_SI</a>
+            <a class="list-group-item" href="../module/units.html#variable-e_si">e_SI</a>
+            <a class="list-group-item" href="../module/units.html#variable-au2tesla">AU2Tesla</a>
+            <a class="list-group-item" href="../module/units.html#variable-tesla2au">Tesla2AU</a>
+            <a class="list-group-item" href="../module/units.html#variable-bohr_magneton">Bohr_magneton</a>
+            <a class="list-group-item" href="../module/units.html#variable-svcmm12vmm1">SVCMm12VMm1</a>
+            <a class="list-group-item" href="../module/units.html#variable-vmm12svcmm1">VMm12SVCMm1</a>
+            <a class="list-group-item" href="../module/units.html#variable-au2nampere">AU2nAmpere</a>
+            <a class="list-group-item" href="../module/units.html#variable-wmm22kwcmm2">WMm22kWCMm2</a>
+            <a class="list-group-item" href="../module/units.html#variable-wmm22ergcmm2secm1">WMm22ERGCMm2SECm1</a>
+            <a class="list-group-item" href="../module/units.html#variable-au2j">AU2J</a>
+            <a class="list-group-item" href="../module/units.html#variable-j2au">J2AU</a>
+            <a class="list-group-item" href="../module/units.html#variable-au2m">AU2M</a>
+            <a class="list-group-item" href="../module/units.html#variable-m2au">M2AU</a>
+            <a class="list-group-item" href="../module/units.html#variable-au2sec">AU2SEC</a>
+            <a class="list-group-item" href="../module/units.html#variable-sec2au">SEC2AU</a>
+            <a class="list-group-item" href="../module/units.html#variable-au2vmm1">AU2VMm1</a>
+            <a class="list-group-item" href="../module/units.html#variable-vmm12au">VMm12AU</a>
+            <a class="list-group-item" href="../module/units.html#variable-speed_of_light_si">SPEED_OF_LIGHT_SI</a>
+            <a class="list-group-item" href="../module/units.html#variable-speed_of_light">SPEED_OF_LIGHT</a>
+            <a class="list-group-item" href="../module/units.html#variable-free_space_perm">FREE_SPACE_PERM</a>
+            <a class="list-group-item" href="../module/units.html#variable-kwcmm22au">kWCMm22AU</a>
+            <a class="list-group-item" href="../module/units.html#variable-au2kwcmm2">AU2KWCMm2</a>
+            <a class="list-group-item" href="../module/units.html#variable-da2au">Da2AU</a>
+            <a class="list-group-item" href="../module/units.html#variable-kilobyte">Kilobyte</a>
+            <a class="list-group-item" href="../module/units.html#variable-megabyte">Megabyte</a>
+            <a class="list-group-item" href="../module/units.html#variable-gigabyte">Gigabyte</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='pars.html'>pars</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atto"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>ATTO</strong></td>
+<td> =</td>
+                <td>1E-18_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-femto"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>FEMTO</strong></td>
+<td> =</td>
+                <td>1E-15_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-pico"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>PICO</strong></td>
+<td> =</td>
+                <td>1E-12_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nano"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>NANO</strong></td>
+<td> =</td>
+                <td>1E-9_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-micro"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>MICRO</strong></td>
+<td> =</td>
+                <td>1E-6_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-milli"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>MILLI</strong></td>
+<td> =</td>
+                <td>1E-3_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-kilo"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>KILO</strong></td>
+<td> =</td>
+                <td>1E3_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mega"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>MEGA</strong></td>
+<td> =</td>
+                <td>1E6_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-giga"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>GIGA</strong></td>
+<td> =</td>
+                <td>1E9_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tera"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>TERA</strong></td>
+<td> =</td>
+                <td>1E12_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-peta"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>PETA</strong></td>
+<td> =</td>
+                <td>1E15_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bo2ang"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>BO2ANG</strong></td>
+<td> =</td>
+                <td>0.52917721_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-deg2rad"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>DEG2RAD</strong></td>
+<td> =</td>
+                <td>pi/180.0_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ha2ev"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HA2EV</strong></td>
+<td> =</td>
+                <td>27.2113834_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ha2kel"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HA2KEL</strong></td>
+<td> =</td>
+                <td>11604.5077_SP*HA2EV</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-core_cnst"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>CORE_CNST</strong></td>
+<td> =</td>
+                <td>2.418884326505_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ha2ghz"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HA2GHZ</strong></td>
+<td> =</td>
+                <td>HA2EV*CORE_CNST*10._SP**5</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ha2thz"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HA2THZ</strong></td>
+<td> =</td>
+                <td>HA2GHZ/1000._SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ha2cmm1"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HA2CMm1</strong></td>
+<td> =</td>
+                <td>HA2EV*8065.5_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ha2psm1"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HA2PSm1</strong></td>
+<td> =</td>
+                <td>HA2THZ</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ha2fsm1"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HA2FSm1</strong></td>
+<td> =</td>
+                <td>HA2THZ/1000._SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-aut2fs"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AUT2FS</strong></td>
+<td> =</td>
+                <td>CORE_CNST/1.E2_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fs2aut"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>FS2AUT</strong></td>
+<td> =</td>
+                <td>1.E2_SP/CORE_CNST</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-as2aut"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AS2AUT</strong></td>
+<td> =</td>
+                <td>1.E-1_SP/CORE_CNST</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ps2aut"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>PS2AUT</strong></td>
+<td> =</td>
+                <td>1.E5_SP/CORE_CNST</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hbar_evfs"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HBAR_eVfs</strong></td>
+<td> =</td>
+                <td>6.58211899E-1_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hbar_si"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HBAR_SI</strong></td>
+<td> =</td>
+                <td>1.054571726E-34_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-e_si"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>e_SI</strong></td>
+<td> =</td>
+                <td>1.602176565E-19_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au2tesla"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU2Tesla</strong></td>
+<td> =</td>
+                <td>1.7152551E3_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tesla2au"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>Tesla2AU</strong></td>
+<td> =</td>
+                <td>1._SP/AU2Tesla</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bohr_magneton"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>Bohr_magneton</strong></td>
+<td> =</td>
+                <td>9.24700915E-24_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-svcmm12vmm1"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>SVCMm12VMm1</strong></td>
+<td> =</td>
+                <td>29.98E3_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vmm12svcmm1"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>VMm12SVCMm1</strong></td>
+<td> =</td>
+                <td>1._SP/SVCMm12VMm1</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au2nampere"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU2nAmpere</strong></td>
+<td> =</td>
+                <td>6.62361782E6_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-wmm22kwcmm2"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>WMm22kWCMm2</strong></td>
+<td> =</td>
+                <td>1E-7_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-wmm22ergcmm2secm1"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>WMm22ERGCMm2SECm1</strong></td>
+<td> =</td>
+                <td>1E-3_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au2j"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU2J</strong></td>
+<td> =</td>
+                <td>4.3597482E-18_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-j2au"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>J2AU</strong></td>
+<td> =</td>
+                <td>1._SP/AU2J</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au2m"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU2M</strong></td>
+<td> =</td>
+                <td>5.2917720859E-11</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-m2au"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>M2AU</strong></td>
+<td> =</td>
+                <td>1._SP/AU2M</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au2sec"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU2SEC</strong></td>
+<td> =</td>
+                <td>2.418884326505E-17_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sec2au"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>SEC2AU</strong></td>
+<td> =</td>
+                <td>1._SP/AU2SEC</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au2vmm1"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU2VMm1</strong></td>
+<td> =</td>
+                <td>5.14220632E11_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vmm12au"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>VMm12AU</strong></td>
+<td> =</td>
+                <td>1._SP/AU2VMm1</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-speed_of_light_si"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>SPEED_OF_LIGHT_SI</strong></td>
+<td> =</td>
+                <td>2.99792458E8_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-speed_of_light"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>SPEED_OF_LIGHT</strong></td>
+<td> =</td>
+                <td>137.03599911_SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-free_space_perm"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>FREE_SPACE_PERM</strong></td>
+<td> =</td>
+                <td>1E7_SP/4._SP/pi/SPEED_OF_LIGHT_SI**2</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-kwcmm22au"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>kWCMm22AU</strong></td>
+<td> =</td>
+                <td>1E7_SP*J2AU/(M2AU**2*SEC2AU)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au2kwcmm2"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU2KWCMm2</strong></td>
+<td> =</td>
+                <td>1._SP/kWCMm22AU</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-da2au"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>Da2AU</strong></td>
+<td> =</td>
+                <td>1822.888486209</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-kilobyte"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>Kilobyte</strong></td>
+<td> =</td>
+                <td>1024._SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-megabyte"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>Megabyte</strong></td>
+<td> =</td>
+                <td>1048576._SP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-gigabyte"></span>
+              real(kind=SP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>Gigabyte</strong></td>
+<td> =</td>
+                <td>1073741824._SP</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              Yambo
+ was developed by Yambo Team<br>              &copy; 2025 <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+<br>&copy; <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,1243 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+    <meta name="author" content="Yambo Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>constants &ndash; Yambo</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">Yambo </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">index</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>constants
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.3% of total for modules and submodules.">61 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/constants.F"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/constants.f.html'>constants.F</a></li>
+            <li class="breadcrumb-item active" aria-current="page">constants</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/constants.html#variable-pi">pi</a>
+            <a class="list-group-item" href="../module/constants.html#variable-tpi">tpi</a>
+            <a class="list-group-item" href="../module/constants.html#variable-fpi">fpi</a>
+            <a class="list-group-item" href="../module/constants.html#variable-sqrtpi">sqrtpi</a>
+            <a class="list-group-item" href="../module/constants.html#variable-sqrtpm1">sqrtpm1</a>
+            <a class="list-group-item" href="../module/constants.html#variable-sqrt2">sqrt2</a>
+            <a class="list-group-item" href="../module/constants.html#variable-h_planck_si">H_PLANCK_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-k_boltzmann_si">K_BOLTZMANN_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-electron_si">ELECTRON_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-electronvolt_si">ELECTRONVOLT_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-electronmass_si">ELECTRONMASS_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-hartree_si">HARTREE_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-rydberg_si">RYDBERG_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-bohr_radius_si">BOHR_RADIUS_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-amu_si">AMU_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-c_si">C_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-munought_si">MUNOUGHT_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-epsnought_si">EPSNOUGHT_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-k_boltzmann_au">K_BOLTZMANN_AU</a>
+            <a class="list-group-item" href="../module/constants.html#variable-k_boltzmann_ry">K_BOLTZMANN_RY</a>
+            <a class="list-group-item" href="../module/constants.html#variable-autoev">AUTOEV</a>
+            <a class="list-group-item" href="../module/constants.html#variable-rytoev">RYTOEV</a>
+            <a class="list-group-item" href="../module/constants.html#variable-amu_au">AMU_AU</a>
+            <a class="list-group-item" href="../module/constants.html#variable-amu_ry">AMU_RY</a>
+            <a class="list-group-item" href="../module/constants.html#variable-au_sec">AU_SEC</a>
+            <a class="list-group-item" href="../module/constants.html#variable-au_ps">AU_PS</a>
+            <a class="list-group-item" href="../module/constants.html#variable-au_gpa">AU_GPA</a>
+            <a class="list-group-item" href="../module/constants.html#variable-ry_kbar">RY_KBAR</a>
+            <a class="list-group-item" href="../module/constants.html#variable-debye_si">DEBYE_SI</a>
+            <a class="list-group-item" href="../module/constants.html#variable-au_debye">AU_DEBYE</a>
+            <a class="list-group-item" href="../module/constants.html#variable-ev_to_kelvin">eV_to_kelvin</a>
+            <a class="list-group-item" href="../module/constants.html#variable-ry_to_kelvin">ry_to_kelvin</a>
+            <a class="list-group-item" href="../module/constants.html#variable-evtonm">EVTONM</a>
+            <a class="list-group-item" href="../module/constants.html#variable-rytonm">RYTONM</a>
+            <a class="list-group-item" href="../module/constants.html#variable-c_au">C_AU</a>
+            <a class="list-group-item" href="../module/constants.html#variable-eps4">eps4</a>
+            <a class="list-group-item" href="../module/constants.html#variable-eps6">eps6</a>
+            <a class="list-group-item" href="../module/constants.html#variable-eps8">eps8</a>
+            <a class="list-group-item" href="../module/constants.html#variable-eps12">eps12</a>
+            <a class="list-group-item" href="../module/constants.html#variable-eps14">eps14</a>
+            <a class="list-group-item" href="../module/constants.html#variable-eps16">eps16</a>
+            <a class="list-group-item" href="../module/constants.html#variable-eps24">eps24</a>
+            <a class="list-group-item" href="../module/constants.html#variable-eps32">eps32</a>
+            <a class="list-group-item" href="../module/constants.html#variable-gsmall">gsmall</a>
+            <a class="list-group-item" href="../module/constants.html#variable-e2~2">e2</a>
+            <a class="list-group-item" href="../module/constants.html#variable-degspin">degspin</a>
+            <a class="list-group-item" href="../module/constants.html#variable-bohr_radius_cm">BOHR_RADIUS_CM</a>
+            <a class="list-group-item" href="../module/constants.html#variable-bohr_radius_angs">BOHR_RADIUS_ANGS</a>
+            <a class="list-group-item" href="../module/constants.html#variable-angstrom_au">ANGSTROM_AU</a>
+            <a class="list-group-item" href="../module/constants.html#variable-dip_debye">DIP_DEBYE</a>
+            <a class="list-group-item" href="../module/constants.html#variable-au_terahertz">AU_TERAHERTZ</a>
+            <a class="list-group-item" href="../module/constants.html#variable-au_to_ohmcmm1">AU_TO_OHMCMM1</a>
+            <a class="list-group-item" href="../module/constants.html#variable-ry_to_thz">RY_TO_THZ</a>
+            <a class="list-group-item" href="../module/constants.html#variable-ry_to_ghz">RY_TO_GHZ</a>
+            <a class="list-group-item" href="../module/constants.html#variable-ry_to_cmm1">RY_TO_CMM1</a>
+            <a class="list-group-item" href="../module/constants.html#variable-avogadro">AVOGADRO</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='kinds.html'>kinds</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-pi"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>pi</strong></td>
+<td> =</td>
+                <td>3.14159265358979323846_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tpi"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>tpi</strong></td>
+<td> =</td>
+                <td>2.0_DP*pi</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fpi"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>fpi</strong></td>
+<td> =</td>
+                <td>4.0_DP*pi</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sqrtpi"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>sqrtpi</strong></td>
+<td> =</td>
+                <td>1.77245385090551602729_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sqrtpm1"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>sqrtpm1</strong></td>
+<td> =</td>
+                <td>1.0_DP/sqrtpi</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sqrt2"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>sqrt2</strong></td>
+<td> =</td>
+                <td>1.41421356237309504880_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h_planck_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>H_PLANCK_SI</strong></td>
+<td> =</td>
+                <td>6.62606896E-34_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-k_boltzmann_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>K_BOLTZMANN_SI</strong></td>
+<td> =</td>
+                <td>1.3806504E-23_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-electron_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>ELECTRON_SI</strong></td>
+<td> =</td>
+                <td>1.602176487E-19_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-electronvolt_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>ELECTRONVOLT_SI</strong></td>
+<td> =</td>
+                <td>1.602176487E-19_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-electronmass_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>ELECTRONMASS_SI</strong></td>
+<td> =</td>
+                <td>9.10938215E-31_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hartree_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>HARTREE_SI</strong></td>
+<td> =</td>
+                <td>4.35974394E-18_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rydberg_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RYDBERG_SI</strong></td>
+<td> =</td>
+                <td>HARTREE_SI/2.0_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bohr_radius_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>BOHR_RADIUS_SI</strong></td>
+<td> =</td>
+                <td>0.52917720859E-10_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-amu_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AMU_SI</strong></td>
+<td> =</td>
+                <td>1.660538782E-27_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>C_SI</strong></td>
+<td> =</td>
+                <td>2.99792458E+8_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-munought_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>MUNOUGHT_SI</strong></td>
+<td> =</td>
+                <td>fpi*1.0E-7_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-epsnought_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>EPSNOUGHT_SI</strong></td>
+<td> =</td>
+                <td>1.0_DP/(MUNOUGHT_SI*C_SI**2)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-k_boltzmann_au"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>K_BOLTZMANN_AU</strong></td>
+<td> =</td>
+                <td>K_BOLTZMANN_SI/HARTREE_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-k_boltzmann_ry"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>K_BOLTZMANN_RY</strong></td>
+<td> =</td>
+                <td>K_BOLTZMANN_SI/RYDBERG_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-autoev"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AUTOEV</strong></td>
+<td> =</td>
+                <td>HARTREE_SI/ELECTRONVOLT_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rytoev"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RYTOEV</strong></td>
+<td> =</td>
+                <td>AUTOEV/2.0_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-amu_au"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AMU_AU</strong></td>
+<td> =</td>
+                <td>AMU_SI/ELECTRONMASS_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-amu_ry"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AMU_RY</strong></td>
+<td> =</td>
+                <td>AMU_AU/2.0_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au_sec"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU_SEC</strong></td>
+<td> =</td>
+                <td>H_PLANCK_SI/tpi/HARTREE_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au_ps"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU_PS</strong></td>
+<td> =</td>
+                <td>AU_SEC*1.0E+12_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au_gpa"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU_GPA</strong></td>
+<td> =</td>
+                <td>HARTREE_SI/BOHR_RADIUS_SI**3/1.0E+9_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ry_kbar"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RY_KBAR</strong></td>
+<td> =</td>
+                <td>10.0_DP*AU_GPA/2.0_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-debye_si"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>DEBYE_SI</strong></td>
+<td> =</td>
+                <td>3.3356409519_DP*1.0E-30_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au_debye"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU_DEBYE</strong></td>
+<td> =</td>
+                <td>ELECTRON_SI*BOHR_RADIUS_SI/DEBYE_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ev_to_kelvin"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eV_to_kelvin</strong></td>
+<td> =</td>
+                <td>ELECTRONVOLT_SI/K_BOLTZMANN_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ry_to_kelvin"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>ry_to_kelvin</strong></td>
+<td> =</td>
+                <td>RYDBERG_SI/K_BOLTZMANN_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-evtonm"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>EVTONM</strong></td>
+<td> =</td>
+                <td>1E+9_DP*H_PLANCK_SI*C_SI/ELECTRONVOLT_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rytonm"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RYTONM</strong></td>
+<td> =</td>
+                <td>1E+9_DP*H_PLANCK_SI*C_SI/RYDBERG_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c_au"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>C_AU</strong></td>
+<td> =</td>
+                <td>C_SI/BOHR_RADIUS_SI*AU_SEC</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps4"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eps4</strong></td>
+<td> =</td>
+                <td>1.0E-4_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps6"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eps6</strong></td>
+<td> =</td>
+                <td>1.0E-6_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps8"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eps8</strong></td>
+<td> =</td>
+                <td>1.0E-8_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps12"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eps12</strong></td>
+<td> =</td>
+                <td>1.0E-12_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps14"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eps14</strong></td>
+<td> =</td>
+                <td>1.0E-14_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps16"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eps16</strong></td>
+<td> =</td>
+                <td>1.0E-16_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps24"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eps24</strong></td>
+<td> =</td>
+                <td>1.0E-24_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eps32"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>eps32</strong></td>
+<td> =</td>
+                <td>1.0E-32_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-gsmall"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>gsmall</strong></td>
+<td> =</td>
+                <td>1.0E-12_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-e2~2"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>e2</strong></td>
+<td> =</td>
+                <td>2.0_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-degspin"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>degspin</strong></td>
+<td> =</td>
+                <td>2.0_DP</td>
+            <td>
+                <p>!!!! COMPATIBIILITY</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bohr_radius_cm"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>BOHR_RADIUS_CM</strong></td>
+<td> =</td>
+                <td>BOHR_RADIUS_SI*100.0_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bohr_radius_angs"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>BOHR_RADIUS_ANGS</strong></td>
+<td> =</td>
+                <td>BOHR_RADIUS_CM*1.0E8_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-angstrom_au"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>ANGSTROM_AU</strong></td>
+<td> =</td>
+                <td>1.0_DP/BOHR_RADIUS_ANGS</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dip_debye"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>DIP_DEBYE</strong></td>
+<td> =</td>
+                <td>AU_DEBYE</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au_terahertz"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU_TERAHERTZ</strong></td>
+<td> =</td>
+                <td>AU_PS</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-au_to_ohmcmm1"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AU_TO_OHMCMM1</strong></td>
+<td> =</td>
+                <td>46000.0_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ry_to_thz"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RY_TO_THZ</strong></td>
+<td> =</td>
+                <td>1.0_DP/AU_TERAHERTZ/FPI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ry_to_ghz"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RY_TO_GHZ</strong></td>
+<td> =</td>
+                <td>RY_TO_THZ*1000.0_DP</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ry_to_cmm1"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RY_TO_CMM1</strong></td>
+<td> =</td>
+                <td>1.E+10_DP*RY_TO_THZ/C_SI</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-avogadro"></span>
+              real(kind=DP),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>AVOGADRO</strong></td>
+<td> =</td>
+                <td>6.02214129D+23</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              Yambo
+ was developed by Yambo Team<br>              &copy; 2025 <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+<br>&copy; <a rel="license" href="http://www.gnu.org/licenses/gpl"><img alt="GNU General Public License" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-88x31.png" /></a>             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
