@@ -1,4 +1,4 @@
-<p align="center"><img src="|media|/yambo_logo.png" width="50%" alt="logo"/></p>
+<p align="center"><img src="doc/media/yambo_logo.png" width="50%" alt="logo"/></p>
 
 ## Yambo
 This is the distribution of the Yambo code.
