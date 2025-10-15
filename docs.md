@@ -30,6 +30,6 @@ macro: DEV_SUB(x)=x
 ---
 
 <p align="center">
-![](media/yambo_logo.png)
+<img alt="logo" src="media/yambo_logo.png">
 </p>
 {!README.md!}
