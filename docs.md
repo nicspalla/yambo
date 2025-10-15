@@ -32,4 +32,3 @@ macro: DEV_SUB(x)=x
 <p align="center">
 <img alt="logo" src="media/yambo_logo.png">
 </p>
-{!README.md!}
