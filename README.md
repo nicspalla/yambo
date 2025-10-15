@@ -1,5 +1,3 @@
-<p align="center"><img src="doc/media/yambo_logo.png" width="50%" alt="logo"/></p>
-
 ## Yambo
 This is the distribution of the Yambo code.
 Yambo doesn't stand for anything like "Yet Another Many-Body cOde", for instance.  Unless you really want it to. 
