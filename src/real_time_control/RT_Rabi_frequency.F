@@ -102,7 +102,7 @@ function RT_Rabi_frequency(En,i_field,l_print_rabi)
    enddo
  enddo
  !
- RT_Rabi_frequency=RT_Rabi_frequency*real(PS2AUT,SP) !*2._SP
+ RT_Rabi_frequency=RT_Rabi_frequency*real(PS2AUT,SP) ! *2._SP
  !
  if (l_print_rabi) then
    call of_open_close("rabi_frequencies","ot")

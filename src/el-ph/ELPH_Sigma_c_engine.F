@@ -3,25 +3,9 @@
 !
 ! Copyright (C) 2006 The Yambo Team
 !
-! Authors (see AUTHORS file for details): AM CA
-!
-!> @brief Calculate real and imaginary part of the electron-phonon self-energy
-!!
-!! @param[in]       i_qp                quasi-particle index
-!! @param[in]       iq_bz               q-index in the BZ
-!! @param[in]       iq_mem              q-index in distributed array
-!! @param[in]       il                  phonon-branch index
-!! @param[in]       en                  energy levels
-!! @param[in]       Sc_W                energy where self-energy is calculated
-!! @param[in]       elph_gkkp_sq        electron-phonon matrix elements squares <ib,k | \partial V /\partial u_il | ob, k-q>
-!!
-!! @param[out]      gsqF_fan            Fan self-energy, real-part
-!! @param[out]      gsqF_dw             Debye-Waller self-energy
-!! @param[out]      gsqF_ca_corr        Additional term in Fan self-energy for metals [A. Marini]
-!! @param[out]      gsqF_life_bose      Imaginary part Fan self-energy Bose part
-!! @param[out]      gsqF_life_f         Imaginary part Fan self-energy Fermi part
-!
 subroutine ELPH_Sigma_c_engine(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en,k,q,Sc_W,q_weight)
+ !! author: AM CA
+ !! Calculate real and imaginary part of the electron-phonon self-energy 
  !
  use pars,          ONLY:SP,pi,cZERO
  use electrons,     ONLY:levels,spin_occ
@@ -38,14 +22,25 @@ subroutine ELPH_Sigma_c_engine(i_qp,ob,ok,iq_bz,iq_ibz,iq_mem,il,elph_gkkp_sq,en
 #include<y_memory.h>
  !
  integer,      intent(in) :: i_qp
+   !! quasi-particle index
  integer,      intent(in) :: ob
  integer,      intent(in) :: ok
- integer,      intent(in) :: iq_bz,iq_ibz,iq_mem
+ integer,      intent(in) :: iq_bz
+   !! q-index in the BZ
+ integer,      intent(in) :: iq_ibz
+ integer,      intent(in) :: iq_mem
+   !! q-index in distributed array
  integer,      intent(in) :: il
- real(SP),     intent(in) :: elph_gkkp_sq,q_weight
+   !! phonon-branch index
+ real(SP),     intent(in) :: elph_gkkp_sq
+   !! electron-phonon matrix elements squares <ib,k | \partial V /\partial u_il | ob, k-q>
  type(levels), intent(in) :: en
- type(bz_samp),intent(in) :: k,q
+   !! energy levels
+ type(bz_samp),intent(in) :: k
+ type(bz_samp),intent(in) :: q
  type(w_samp), intent(in) :: Sc_W
+   !! energy where self-energy is calculated
+ real(SP),     intent(in) :: q_weight
  !
  ! Work Space
  !

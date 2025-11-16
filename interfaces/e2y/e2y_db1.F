@@ -70,13 +70,13 @@ subroutine e2y_db1(en,k,ncid)
  nkibz   = k%nibz
  n_bands = en%nb
  call msg("l","done")
- !>>>DEBUG
+ ! >>>DEBUG
  ! call msg('s',' K-points              ',k%nibz)
  ! call msg('s',' Bands                 ',en%nb)
  ! call msg('s',' Spin  [components/pol]',(/n_spinor,n_sp_pol/))
  ! call msg('s',' Max WF components     ',wf_ncx) 
  ! call msg('s',' Atomic species        ',n_atom_species)
- !<<<DEBUG
+ ! <<<DEBUG
  !
  ! Geometry (must appear first, in order to define alat)
  !

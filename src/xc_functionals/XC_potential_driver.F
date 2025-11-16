@@ -3,26 +3,10 @@
 !
 ! Copyright (C) 2010 The Yambo Team
 !
-! Authors (see AUTHORS file for details): MG AM
-!
-!> @brief Calculate exchange-correlation energy and its derivatives
-!!
-!! @param[in]       en                  electronic levels
-!! @param[in]       Xk                  k-point sampling
-!! @param[in]       KIND                
-!! @param[in]       FUNCTIONAL          exchange-correlation functional
-!! @param[in]       ORDER               0 = E_xc, 1 = V_xc, 2 = F_xc 
-!! @param[in]       EXX_FRACTION        exchange fraction (optional)
-!! @param[in]       EXX_SCREENING       screened exchange fraction (optional)
-!!
-!! @param[out]      E_xc                exchange correlation energy    (if ORDER=0)
-!! @param[out]      V_xc                exchange correlation potential (if ORDER=1)
-!! @param[out]      F_xc                exchange correlation kernel    (if ORDER=2)
-!
 subroutine XC_potential_driver(en,Xk,KIND,FUNCTIONAL,ORDER,EXX_FRACTION,EXX_SCREENING)
- !
- ! Wrapper for calculation of the XC potential. If available libxc,
- ! will be used instead of internal routines
+ !! author: MG AM 
+ !! Wrapper for calculation of the XC potential. If available libxc,
+ !! will be used instead of internal routines
  !
  use pars,           ONLY:SP,rZERO
  use R_lattice,      ONLY:bz_samp
@@ -46,10 +30,19 @@ subroutine XC_potential_driver(en,Xk,KIND,FUNCTIONAL,ORDER,EXX_FRACTION,EXX_SCRE
  implicit none
  !
  type(levels),  intent(in)       ::en
+   !! electronic levels
  type(bz_samp), intent(in)       ::Xk
- integer,       intent(inout)    :: KIND,FUNCTIONAL
+   !! k-point sampling
+ integer,       intent(inout)    :: KIND
+   !! KIND
+ integer,       intent(inout)    :: FUNCTIONAL
+   !! exchange-correlation functional
  integer,       intent(in)       :: ORDER
- real(SP),      intent(inout),optional :: EXX_FRACTION, EXX_SCREENING
+   !! 0 = E_xc, 1 = V_xc, 2 = F_xc
+ real(SP),      intent(inout),optional :: EXX_FRACTION
+   !! exchange fraction (optional)
+ real(SP),      intent(inout),optional :: EXX_SCREENING
+   !! screened exchange fraction (optional)
  !
  ! Work space
  !

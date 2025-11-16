@@ -7,9 +7,9 @@
 ! in the root directory of the present distribution,
 ! or http://www.gnu.org/copyleft/gpl.txt .
 !
-!*********************************************
+! *********************************************
 MODULE atmproj_tools_module
-!*********************************************
+! *********************************************
    !
    USE parameters,          ONLY : nstrx
    !
@@ -49,10 +49,10 @@ MODULE atmproj_tools_module
    PUBLIC :: atmproj_read_ext
 
 CONTAINS
-!*************************************************
+! *************************************************
 SUBROUTINE atmproj_read_ext ( filein, nbnd, nkpt, nspin, natomwfc, nelec, &
                               efermi, energy_units, vkpt, wk, eig, proj, kovp, ierr )
-!*************************************************
+! *************************************************
    !
    USE iotk_module
    !
@@ -129,10 +129,10 @@ SUBROUTINE atmproj_read_ext ( filein, nbnd, nkpt, nspin, natomwfc, nelec, &
 END SUBROUTINE atmproj_read_ext
 
 
-!*************************************************
+! *************************************************
 SUBROUTINE atmproj_read_ext_new ( filein, nbnd, nkpt, nspin, natomwfc, nelec, &
                               efermi, energy_units, vkpt, wk, eig, proj, kovp, ierr, iunit, attr )
-!*************************************************
+! *************************************************
    !
    USE iotk_module
    !
@@ -236,10 +236,10 @@ SUBROUTINE atmproj_read_ext_new ( filein, nbnd, nkpt, nspin, natomwfc, nelec, &
 END SUBROUTINE atmproj_read_ext_new
 
 
-!*************************************************
+! *************************************************
 SUBROUTINE atmproj_read_ext_old ( filein, nbnd, nkpt, nspin, natomwfc, nelec, &
                               efermi, energy_units, vkpt, wk, eig, proj, kovp, ierr, iunit )
-!*************************************************
+! *************************************************
    !
    USE iotk_module
    !

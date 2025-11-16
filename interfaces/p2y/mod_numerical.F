@@ -62,10 +62,10 @@ complex(SP), parameter :: num_pi_i    = num_pi * (0.0,1.0)
   contains
 
 !subroutine num_interpolation_init(interpolation,xmin,xmax,delta,parity)
-!! Initialise the table.
-!! delta is an excess approximation to the interpoint distance
-!! (the point are equally spaced and span the interval [xmin,xmax]).
-!! If parity/=0, then xmin should be 0.0 and xmax should be positive.
+! ! Initialise the table.
+! ! delta is an excess approximation to the interpoint distance
+! ! (the point are equally spaced and span the interval [xmin,xmax]).
+! ! If parity/=0, then xmin should be 0.0 and xmax should be positive.
 !  type (num_interpolation), intent(out) :: interpolation
 !  real,                     intent(in)  :: xmin,xmax,delta
 !  integer, optional,        intent(in)  :: parity
@@ -85,13 +85,13 @@ complex(SP), parameter :: num_pi_i    = num_pi * (0.0,1.0)
 !    interpolation%parity = 0
 !  end if
 !  if(interpolation%parity /= 0 .and. (xmin /= 0.0 .or. xmax<0.0)) then
-!!   WARNING("")
+! !   WARNING("")
 !    interpolation%parity = 0
 !  end if
 !end subroutine num_interpolation_init
 !
 !subroutine num_interpolation_destroy(interpolation)
-!! Destroys the table
+! ! Destroys the table
 !  type (num_interpolation), intent(inout) :: interpolation
 !  deallocate(interpolation%x)
 !  deallocate(interpolation%y)
