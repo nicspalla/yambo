@@ -1,0 +1,22 @@
+name: CI with EESSI
+on:
+  push:
+    branches:
+      - tech-ci
+
+jobs:
+  ubuntu-minimal:
+    runs-on: self-hosted
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Build full stack via EESSI-extend
+        shell: bash -l {0}
+        run: |
+          module load EESSI-extend
+          unset EASYBUILD_DEBUG
+          cd easybuild
+
+          # Build Yambo
+          eb --logtostdout -r --software-commit=$GITHUB_SHA Yambo-devel-foss-2023a.eb
