@@ -27,7 +27,7 @@ jobs:
         run: |
           ${{ env.EESSI_ENV }}
           cd easybuild
-          eb --logtostdout -r --software-commit=$GITHUB_SHA Yambo-devel-foss-2023a.eb
+          eb --logtostdout --software-commit=$GITHUB_SHA Yambo-devel-foss-2023a.eb
 
       - name: Run Yambo-tester
         shell: bash -l {0}
