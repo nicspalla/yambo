@@ -6,8 +6,8 @@ on:
 
 jobs:
   ubuntu-minimal:
+    if: contains(toLower(github.event.head_commit.message), '[mini-ci')
     runs-on: ${{ matrix.os }}
-    #runs-on: ubuntu-24.04
     strategy:
       matrix:
         os:
