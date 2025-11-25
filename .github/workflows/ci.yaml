@@ -4,33 +4,38 @@ on:
     branches:
       - tech-ci
 
+
+env:
+  EESSI_ENV: |
+    source /cvmfs/software.eessi.io/versions/2023.06/init/lmod/bash
+    module load EESSI-extend
+    module load EasyBuild
+    unset EASYBUILD_DEBUG
+
+
 jobs:
 
   piazzagrande:
     if: contains(join(toJson(github.event.commits.*.message)), '[ci]')
     runs-on: self-hosted
     steps:
-
       - uses: actions/checkout@v4
 
       - name: Build Yambo via EESSI-extend
         shell: bash -l {0}
         run: |
-          module load EESSI-extend
-          module load EasyBuild
-          unset EASYBUILD_DEBUG
+          ${{ env.EESSI_ENV }}
           cd easybuild
           eb --logtostdout -r --software-commit=$GITHUB_SHA Yambo-devel-foss-2023a.eb
 
       - name: Run Yambo-tester
         shell: bash -l {0}
         run: |
-          module load EESSI-extend
-          module load EasyBuild
+          ${{ env.EESSI_ENV }}
           module load Yambo/devel-foss-2023a-$GITHUB_SHA
           cd /scratch/nspallan
           source yambo-tester/.venv/bin/activate
-          yambo-tester -scratch ci_runs -label foss-2023a-$GITHUB_SHA
+          yambo-tester -scratch ci_runs -label devel-foss-2023a-$GITHUB_SHA
 
 
   ubuntu-minimal:
@@ -41,13 +46,15 @@ jobs:
         os:
           - ubuntu-24.04-arm
           - ubuntu-24.04
-
     steps:
-
     - uses: actions/checkout@v4
-
     - uses: eessi/github-action-eessi@v3
 
+    - name: Install wget
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget
+    
     - name: Build Yambo (and some dependencies) via EESSI-extend
       shell: bash -l {0}
       run: |
@@ -63,8 +70,7 @@ jobs:
       shell: bash -l {0}
       run: |
         module load EESSI-extend
-        module load EasyBuild
         module load Yambo/devel-foss-2023a-$GITHUB_SHA
         git clone https://github.com/yambo-code/yambo-tester.git
         python3 -m pip install yambo-tester/.
-        yambo-tester -label foss-2023a-$GITHUB_SHA
+        yambo-tester -label devel-foss-2023a-$GITHUB_SHA
