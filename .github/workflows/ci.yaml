@@ -27,6 +27,6 @@ jobs:
           module load EESSI-extend
           module load EasyBuild
           module load Yambo/devel-foss-2023a-$GITHUB_SHA
-          cd ${SCRATCH}
+          cd /scratch/nspallan
           source yambo-tester/.venv/bin/activate
           yambo-tester -scratch ci_runs -label foss-2023a-$GITHUB_SHA
