@@ -15,6 +15,7 @@ jobs:
         shell: bash -l {0}
         run: |
           module load EESSI-extend
+          module load EasyBuild
           unset EASYBUILD_DEBUG
           cd easybuild
 
