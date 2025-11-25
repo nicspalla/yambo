@@ -3,10 +3,12 @@ on:
   push:
     branches:
       - tech-ci
+    paths-ignore:
+      - '**'
 
 jobs:
   ubuntu-minimal:
-    if: contains(toLower(github.event.head_commit.message), '[ci')
+    if: contains(join(toJson(github.event.commits.*.message)), '[ci]')
     runs-on: self-hosted
     steps:
 
