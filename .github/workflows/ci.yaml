@@ -8,6 +8,7 @@ on:
 env:
   EESSI_ENV: |
     source /cvmfs/software.eessi.io/versions/2023.06/init/lmod/bash
+    export EESSI_USER_INSTALL=/scratch/nspallan/eessi
     module load EESSI-extend
     module load EasyBuild
     unset EASYBUILD_DEBUG
@@ -35,7 +36,7 @@ jobs:
           module load Yambo/devel-foss-2023a-$GITHUB_SHA
           cd /scratch/nspallan
           source yambo-tester/.venv/bin/activate
-          yambo-tester -scratch ci_runs -label devel-foss-2023a-$GITHUB_SHA
+          yambo-tester --scratch ci_runs --label devel-foss-2023a-$GITHUB_SHA
 
 
   ubuntu-minimal:
@@ -73,4 +74,4 @@ jobs:
         module load Yambo/devel-foss-2023a-$GITHUB_SHA
         git clone https://github.com/yambo-code/yambo-tester.git
         python3 -m pip install yambo-tester/.
-        yambo-tester -label devel-foss-2023a-$GITHUB_SHA
+        yambo-tester --label devel-foss-2023a-$GITHUB_SHA
