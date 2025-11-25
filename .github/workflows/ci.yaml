@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - tech-ci
-    paths-ignore:
-      - '**'
 
 jobs:
   ubuntu-minimal:
