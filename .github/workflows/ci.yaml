@@ -36,7 +36,7 @@ jobs:
           module load Yambo/devel-foss-2023a-$GITHUB_SHA
           cd /scratch/nspallan
           source yambo-tester/.venv/bin/activate
-          yambo-tester --scratch ci_runs --label devel-foss-2023a-$GITHUB_SHA
+          yambo-tester --scratch ci_runs --label devel-foss-2023a-$GITHUB_SHA --logger ci_runs/devel-foss-2023a-${GITHUB_SHA}.log
 
 
   ubuntu-minimal:
@@ -74,4 +74,4 @@ jobs:
         module load Yambo/devel-foss-2023a-$GITHUB_SHA
         git clone https://github.com/yambo-code/yambo-tester.git
         python3 -m pip install yambo-tester/.
-        yambo-tester --label devel-foss-2023a-$GITHUB_SHA
+        yambo-tester --scratch ci_runs --label devel-foss-2023a-$GITHUB_SHA
