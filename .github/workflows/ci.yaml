@@ -55,7 +55,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y wget
-    
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
     - name: Build Yambo (and some dependencies) via EESSI-extend
       shell: bash -l {0}
       run: |
@@ -73,5 +78,5 @@ jobs:
         module load EESSI-extend
         module load Yambo/devel-foss-2023a-$GITHUB_SHA
         git clone https://github.com/yambo-code/yambo-tester.git
-        python3 -m pip install yambo-tester/.
+        python3.12 -m pip install yambo-tester/.
         yambo-tester --scratch ci_runs --label devel-foss-2023a-$GITHUB_SHA
