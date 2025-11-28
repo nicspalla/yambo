@@ -40,8 +40,8 @@ dependencies = [
     ('netCDF-Fortran', '4.6.1'),
     ('libxc', '6.2.2'),
     ('DeviceXlib', '0.9.0', '-fb'),
-    ('PETSc', '3.22.5', '-single-fb'),
-    ('SLEPc', '3.22.2', '-single-fb'),
+#    ('PETSc', '3.22.5', '-single-fb'),
+#    ('SLEPc', '3.22.2', '-single-fb'),
 ]
 
 with_configure = True
@@ -63,15 +63,16 @@ configopts += '--with-blas-libs="-L$EBROOTFLEXIBLAS/lib -lflexiblas" '
 configopts += '--with-lapack-libs="-L$EBROOTFLEXIBLAS/lib -lflexiblas" '
 configopts += '--with-scalapack-libs="-L$EBROOTSCALAPACK/lib -lscalapack" '
 configopts += '--with-blacs-libs="-L$EBROOTSCALAPACK/lib -lscalapack" '
+configopts += '--enable-par-linalg '
 configopts += '--with-fft-path="$EBROOTFFTWMPI" '
 configopts += '--with-netcdf-path="$EBROOTNETCDF" '
 configopts += '--with-netcdff-path="$EBROOTNETCDFMINFORTRAN" '
 configopts += '--with-hdf5-path="$EBROOTHDF5" '
 configopts += '--with-libxc-path="$EBROOTLIBXC" '
 configopts += '--with-devxlib-path="$EBROOTDEVICEXLIB" '
-configopts += '--with-petsc-path="$EBROOTPETSC" '
-configopts += '--with-slepc-path="$EBROOTSLEPC" '
-configopts += '--enable-par-linalg --enable-slepc-linalg '
+#configopts += '--with-petsc-path="$EBROOTPETSC" '
+#configopts += '--with-slepc-path="$EBROOTSLEPC" '
+#configopts += '--enable-slepc-linalg '
 
 prebuildopts = 'unset LIBS && '
 prebuildopts += "export SHELL='sh -x' && "
