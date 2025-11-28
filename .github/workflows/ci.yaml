@@ -77,6 +77,9 @@ jobs:
       run: |
         module load EESSI-extend
         module load Yambo/devel-foss-2023a-$GITHUB_SHA
-        git clone -b toml https://github.com/yambo-code/yambo-tester.git
-        python3 -m pip install yambo-tester/.
+        git clone https://github.com/yambo-code/yambo-tester.git
+        cd yambo-tester
+        git checkout toml
+        python3 -m pip install .
+        cd ..
         yambo-tester --scratch ci_runs --label devel-foss-2023a-$GITHUB_SHA
