@@ -72,7 +72,7 @@ subroutine X_irredux(iq,what,X_par,Xen,Xk,Xw,X,Dip)
  ! Work Space
  !
  character(schlen)    :: live_t_string
- integer              :: ig1,ig2,iw,n_poles,i_cg,i_bg,mutexid,ngrho,&
+ integer              :: ig1,ig2,ig_row,ig_col,ig_row_transp,ig_col_transp,iw,n_poles,i_cg,i_bg,mutexid,ngrho,&
 &                        X_rows1,X_rows2,X_cols1,X_cols2,X_nrows,io_err
  logical              :: force_bare_X_G,Drude_pole,skip_WF_load
  real(SP)             :: minmax_ehe(2,PAR_COM_X_WORLD%n_CPU),cutoff,lcut,Dirac_v_f_au
@@ -178,13 +178,9 @@ subroutine X_irredux(iq,what,X_par,Xen,Xk,Xw,X,Dip)
 #endif
  
  !
- ! AF: Despite one could exploit
- !
- ! Time-Rev is Spatial Inv to evaluate only half X
- ! if (X_FILL_UP_matrix_only.and.current_iq==0) write(*,*) '[X] Upper matrix
- ! triangle filled'
- !
- ! in the present version, the whole matrix is evaluated
+ ! Time-Rev is Spatial Inv => only half X is evaluated
+ !                            ========================
+ if (X_FILL_UP_matrix_only.and.current_iq==0) call msg('s', '[X] Upper matrix triangle filled')
 
  !
  ! omp settings and workspace
@@ -376,7 +372,8 @@ subroutine X_irredux(iq,what,X_par,Xen,Xk,Xw,X,Dip)
      !DEV_OMPGPU teams loop collapse(2)
      do ig2=X_cols1,X_cols2
      do ig1=X_rows1,X_rows2
-       X_par_p(ig1,ig2,iw)=X_par_p(ig1,ig2,iw)+GreenF_iw*Xo_res(ig1,ig2)
+       if (.not.X_FILL_UP_matrix_only.or.ig1<=ig2) &
+&        X_par_p(ig1,ig2,iw)=X_par_p(ig1,ig2,iw)+GreenF_iw*Xo_res(ig1,ig2)
      enddo
      enddo
      !DEV_OMPGPU end target
@@ -392,7 +389,14 @@ subroutine X_irredux(iq,what,X_par,Xen,Xk,Xw,X,Dip)
        endif
 #  endif
        !
-       call V_plus_alpha_V(X_nrows,GreenF(iw),Xo_res(X_rows1:X_rows2,ig2),X_par%blc(X_rows1:X_rows2,ig2,iw))
+       if (X_FILL_UP_matrix_only) then
+         if (min(ig2,X_rows2)>=X_rows1) &
+&          call V_plus_alpha_V(min(ig2,X_rows2)-X_rows1+1,GreenF(iw),&
+&                              Xo_res(X_rows1:min(ig2,X_rows2),ig2),&
+&                              X_par%blc(X_rows1:min(ig2,X_rows2),ig2,iw))
+       else
+         call V_plus_alpha_V(X_nrows,GreenF(iw),Xo_res(X_rows1:X_rows2,ig2),X_par%blc(X_rows1:X_rows2,ig2,iw))
+       endif
        !
 #  if defined _OPENMP
        if(n_threads_X>1) call omp_unset_lock(omp_locks(mutexid))
@@ -447,6 +451,25 @@ subroutine X_irredux(iq,what,X_par,Xen,Xk,Xw,X,Dip)
  do iw=1,Xw%n_freqs
    call PP_redux_wait(X_par%blc(:,:,iw),COMM=PAR_COM_X_WORLD_RL_resolved%COMM)
  enddo
+ !
+ ! Populate the lower triangle/piece of Xo for the serial/single-RL-rank path.
+ ! The multi-RL-rank auxiliary lower-triangle exchange is intentionally not
+ ! reintroduced here.
+ !
+ if (X_FILL_UP_matrix_only.and.PAR_COM_RL_INDEX%n_CPU==1) then
+   !$omp parallel do default(shared), private(iw,ig_col,ig_row,ig_row_transp,ig_col_transp), collapse(2)
+   do iw=1,Xw%n_freqs
+   do ig_col=X_par%cols(1),X_par%cols(2)
+     ig_row_transp=ig_col
+     do ig_row=max(ig_col+1,X_par%rows(1)),X_par%rows(2)
+       ig_col_transp=ig_row
+       if (i_space_inv==1) X_par%blc(ig_row,ig_col,iw)=      X_par%blc(ig_row_transp,ig_col_transp,iw)
+       if (i_space_inv==0) X_par%blc(ig_row,ig_col,iw)=conjg(X_par%blc(ig_row_transp,ig_col_transp,iw))
+     enddo
+   enddo
+   enddo
+   !$omp end parallel do
+ endif
  !
  call timing(what//' (REDUX)',OPR='stop')
  !
